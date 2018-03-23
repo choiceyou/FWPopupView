@@ -21,20 +21,33 @@ class ViewController: UIViewController {
     
     @IBAction func alertAction(_ sender: Any) {
         
-        let items = [FWPopupItem(title: "Done", itemType: .normal, isCancel: false, handler: block),
-                     FWPopupItem(title: "Cancel", itemType: .normal, isCancel: true, handler: block)]
+//        let items = [FWPopupItem(title: "取消", itemType: .normal, isCancel: true, handler: block),
+//            FWPopupItem(title: "确定", itemType: .normal, isCancel: false, handler: block)]
+//
+//        let customView = UILabel(frame: CGRect(x: 0, y: 0, width: 255, height: 60))
+//        customView.text = "自定义视图自定义视图自定义视图自定义视图自定义视图自定义视图自定义视图自定义视图自定义视图自定义视图自定义视图自定义视图自定义视图自定义视图"
+//        customView.textColor = UIColor.red
+//        customView.textAlignment = .center
+//        customView.font = UIFont.boldSystemFont(ofSize: 14.0)
+//        customView.numberOfLines = 5
+//        customView.backgroundColor = UIColor.clear
+//
+//        let alertView = FWAlertView.alert(title: "测试", detail: "开始测试了哦", inputPlaceholder: "", customView: nil, items: items)
+//        alertView.attachedView = self.view
+//        alertView.show(completionBlock: completeBlock)
         
-        let customView = UILabel(frame: CGRect(x: 0, y: 0, width: 255, height: 60))
-        customView.text = "自定义视图自定义视图自定义视图自定义视图自定义视图自定义视图自定义视图自定义视图自定义视图自定义视图自定义视图自定义视图自定义视图自定义视图"
-        customView.textColor = UIColor.red
-        customView.textAlignment = .center
-        customView.font = UIFont.boldSystemFont(ofSize: 14.0)
-        customView.numberOfLines = 5
-        customView.backgroundColor = UIColor.clear
+//        let alertView2 = FWAlertView.alert(title: "测试", detail: "开始测试了哦", confirmBlock: { (index) in
+//            print("1111111111")
+//        }) { (index) in
+//            print("2222222")
+//        }
+//        alertView2.show()
         
-        let alertView = FWAlertView.alert(title: "测试", detail: "开始测试了哦开始测试了哦", inputPlaceholder: nil, customView: customView, items: items)
-        alertView.attachedView = self.view
-        alertView.show(completionBlock: completeBlock)
+        let alertView2 = FWAlertView.alert(title: "测试", detail: "开始测试了哦") { (index) in
+            print("1111111111")
+        }
+        alertView2.fwBackgroundViewColor = UIColor.red
+        alertView2.show()
         
     }
     

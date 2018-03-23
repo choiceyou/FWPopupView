@@ -12,6 +12,7 @@ import UIKit
 let fwReferenceCountKey: UnsafeRawPointer! = UnsafeRawPointer.init(bitPattern: "fwReferenceCountKey".hashValue)
 
 let fwBackgroundViewKey: UnsafeRawPointer! = UnsafeRawPointer.init(bitPattern: "fwBackgroundViewKey".hashValue)
+let fwBackgroundViewColorKey: UnsafeRawPointer! = UnsafeRawPointer.init(bitPattern: "fwBackgroundViewColorKey".hashValue)
 let fwBackgroundAnimatingKey: UnsafeRawPointer! = UnsafeRawPointer.init(bitPattern: "fwBackgroundAnimatingKey".hashValue)
 let fwAnimationDurationKey: UnsafeRawPointer! = UnsafeRawPointer.init(bitPattern: "fwAnimationDurationKey".hashValue)
 
@@ -25,7 +26,7 @@ extension UIView {
             return isAnimating
         }
         set {
-            objc_setAssociatedObject(self, fwBackgroundAnimatingKey, fwBackgroundAnimating, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+            objc_setAssociatedObject(self, fwBackgroundAnimatingKey, newValue, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
         }
     }
     
@@ -37,7 +38,7 @@ extension UIView {
             return duration
         }
         set {
-            objc_setAssociatedObject(self, fwAnimationDurationKey, fwAnimationDuration, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+            objc_setAssociatedObject(self, fwAnimationDurationKey, newValue, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
         }
     }
     
@@ -49,7 +50,21 @@ extension UIView {
             return count
         }
         set {
-            objc_setAssociatedObject(self, fwReferenceCountKey, fwReferenceCount, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+            objc_setAssociatedObject(self, fwReferenceCountKey, newValue, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+        }
+    }
+    
+    var fwBackgroundViewColor: UIColor {
+        get {
+            guard let color = objc_getAssociatedObject(self, fwBackgroundViewColorKey) as? UIColor else {
+                return UIColor(white: 0.05, alpha: 0.05)
+            }
+            return color
+        }
+        set {
+            objc_setAssociatedObject(self, fwBackgroundViewColorKey, newValue, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+            self.fwBackgroundView.backgroundColor = newValue
+            print("111111111")
         }
     }
     

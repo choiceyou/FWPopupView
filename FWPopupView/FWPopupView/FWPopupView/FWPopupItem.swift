@@ -20,7 +20,7 @@ public enum FWItemType: Int {
     case disabled
 }
 
-typealias FWPopupItemHandler = (_ index: Int) -> Void
+public typealias FWPopupItemHandler = (_ index: Int) -> Void
 
 open class FWPopupItem: NSObject {
     

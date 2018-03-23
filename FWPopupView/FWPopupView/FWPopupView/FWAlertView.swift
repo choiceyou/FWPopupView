@@ -13,28 +13,43 @@ public typealias FWPopupInputHandler = (_ text: String) -> Void
 
 @objc open class FWAlertView: FWPopupView {
     
-    public var maxInputLength: Int          = 0
-    
+    // FWAlertView宽度
     public var vwidth: CGFloat              = 275.0
+    // 单个点击按钮的高度
     public var buttonHeight: CGFloat        = 48.0
+    // FWAlertView的圆角值
     public var cornerRadius: CGFloat        = 5.0
     
+    // 标题字体大小
     public var titleFontSize: CGFloat       = 18.0
+    // 描述字体大小
     public var detailFontSize: CGFloat      = 14.0
+    // 点击按钮字体大小
     public var buttonFontSize: CGFloat      = 17.0
     
+    //
     public var vbackgroundColor: UIColor    = kPV_RGBA(r: 248, g: 248, b: 248, a: 1)
+    // 标题文字颜色
     public var titleColor: UIColor          = kPV_RGBA(r: 51, g: 51, b: 51, a: 1)
+    // 描述文字颜色
     public var detailColor: UIColor         = kPV_RGBA(r: 51, g: 51, b: 51, a: 1)
+    // 边框、分割线颜色
     public var splitColor: UIColor          = kPV_RGBA(r: 231, g: 231, b: 241, a: 1)
+    // 边框宽度
     public var splitWidth: CGFloat          = (1/UIScreen.main.scale)
     
+    // 普通按钮颜色
     public var itemNormalColor: UIColor     = kPV_RGBA(r: 51, g: 51, b: 51, a: 1)
+    // 高亮按钮颜色
     public var itemHighlightColor: UIColor  = kPV_RGBA(r: 254, g: 226, b: 4, a: 1)
+    // 选中按钮颜色
     public var itemPressedColor: UIColor    = kPV_RGBA(r: 231, g: 231, b: 231, a: 1)
     
-    public var defaultTextOK                = "好"
+    // 确定按钮默认名称
+    public var defaultTextOK                = "知道了"
+    // 取消按钮默认名称
     public var defaultTextCancel            = "取消"
+    // 确定按钮默认名称
     public var defaultTextConfirm           = "确定"
     
     // 上下间距
@@ -58,6 +73,33 @@ public typealias FWPopupInputHandler = (_ text: String) -> Void
     
     private var customView: UIView?
     
+    
+    open class func alert(title: String, detail: String, confirmBlock:@escaping FWPopupItemHandler) -> FWAlertView {
+        
+        let alertView = FWAlertView()
+        let items = [FWPopupItem(title: alertView.defaultTextOK, itemType: .normal, isCancel: false, handler: confirmBlock)]
+        
+        alertView.setupUI(title: title, detail: detail, inputPlaceholder: nil, customView: nil, items: items)
+        return alertView
+    }
+    
+    /// 类初始化方法
+    ///
+    /// - Parameters:
+    ///   - title: 标题
+    ///   - detail: 描述
+    ///   - confirmBlock: 确定按钮回调
+    ///   - cancelBlock: 取消按钮回调
+    /// - Returns: self
+    open class func alert(title: String, detail: String, confirmBlock:@escaping FWPopupItemHandler, cancelBlock:@escaping FWPopupItemHandler) -> FWAlertView {
+        
+        let alertView = FWAlertView()
+        let items = [FWPopupItem(title: alertView.defaultTextCancel, itemType: .normal, isCancel: true, handler: cancelBlock),
+                     FWPopupItem(title: alertView.defaultTextConfirm, itemType: .normal, isCancel: false, handler: confirmBlock)]
+        
+        alertView.setupUI(title: title, detail: detail, inputPlaceholder: nil, customView: nil, items: items)
+        return alertView
+    }
     
     /// 类初始化方法
     ///
@@ -96,6 +138,10 @@ public typealias FWPopupInputHandler = (_ text: String) -> Void
     
     open override func hideKeyboard() {
         self.inputTF?.resignFirstResponder()
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self, name: .UITextFieldTextDidChange, object: nil)
     }
 }
 
