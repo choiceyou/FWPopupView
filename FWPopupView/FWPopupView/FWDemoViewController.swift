@@ -11,7 +11,7 @@ import UIKit
 
 class FWDemoViewController: UITableViewController {
     
-    var titleArray = ["Alert - 单个按钮", "Alert - 两个按钮", "Alert - 多个按钮", "Alert - 带输入框", "Alert - 带自定义视图", "Sheet - 少量Item", "Sheet - 大量Item"]
+    var titleArray = ["Alert - 单个按钮", "Alert - 两个按钮", "Alert - 多个按钮", "Alert - 带输入框", "Alert - 带自定义视图", "Sheet - 少量Item", "Sheet - 大量Item", "Custom - 自定义弹窗"]
     
     let block: FWPopupItemHandler = { (index) in
         print("AlertView：点击了第\(index)个按钮")
