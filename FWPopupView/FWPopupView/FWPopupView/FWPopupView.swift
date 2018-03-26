@@ -313,7 +313,7 @@ extension FWPopupView {
     // 标题文字颜色
     public var titleColor: UIColor          = kPV_RGBA(r: 51, g: 51, b: 51, a: 1)
     // 边框、分割线颜色
-    public var splitColor: UIColor          = kPV_RGBA(r: 231, g: 231, b: 241, a: 1)
+    public var splitColor: UIColor          = kPV_RGBA(r: 231, g: 231, b: 231, a: 1)
     // 边框宽度
     public var splitWidth: CGFloat          = (1/UIScreen.main.scale)
     
