@@ -50,8 +50,8 @@ let FWPopupViewHideAllNotification = "FWPopupViewHideAllNotification"
                 self.hideAnimation = self.alertHideAnimation()
                 break
             case .sheet:
-                //                self.showAnimation = self.sheetShowAnimation()
-                //                self.hideAnimation = self.sheetHideAnimation()
+                self.showAnimation = self.sheetShowAnimation()
+                self.hideAnimation = self.sheetHideAnimation()
                 break
             case .custom:
                 //                self.showAnimation = self.customShowAnimation()
@@ -224,7 +224,7 @@ extension FWPopupView {
         let popupBlock:FWPopupBlock = { [weak self] popupView in
             if self?.superview == nil {
                 self?.attachedView?.fwBackgroundView.addSubview(self!)
-                self?.center = (self?.attachedView?.center)!
+                self?.frame.origin.y =  UIScreen.main.bounds.height - (self?.frame.height)!
                 self?.layoutIfNeeded()
             }
             
@@ -244,10 +244,29 @@ extension FWPopupView {
         return popupBlock
     }
     
-    //    func sheetHideAnimation() -> FWPopupBlock {
-    //
-    //    }
-    //
+    func sheetHideAnimation() -> FWPopupBlock {
+
+        let popupBlock:FWPopupBlock = { [weak self] popupView in
+            
+            UIView.animate(withDuration: (self?.animationDuration)!, delay: 0.0, options: [.curveEaseIn, .beginFromCurrentState], animations: {
+                
+                self?.superview?.layoutIfNeeded()
+                
+            }, completion: { (finished) in
+                
+                if finished {
+                    self?.removeFromSuperview()
+                }
+                if self?.hideCompletionBlock != nil {
+                    self?.hideCompletionBlock!(self!, finished)
+                }
+                
+            })
+        }
+        
+        return popupBlock
+    }
+
     //    func customShowAnimation() -> FWPopupBlock {
     //
     //    }
@@ -255,5 +274,60 @@ extension FWPopupView {
     //    func customHideAnimation() -> FWPopupBlock {
     //
     //    }
+    
+    /// 将颜色转换为图片
+    ///
+    /// - Parameter color: 颜色
+    /// - Returns: UIImage
+    public func getImageWithColor(color: UIColor) -> UIImage {
+        
+        let rect = CGRect(x: 0, y: 0, width: 1, height: 1)
+        UIGraphicsBeginImageContext(rect.size)
+        let context = UIGraphicsGetCurrentContext()
+        context!.setFillColor(color.cgColor)
+        context!.fill(rect)
+        let image = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        return image!
+    }
 }
 
+
+/// FWSheetView的相关属性
+@objc open class FWPopupViewProperty: NSObject {
+    
+    // 单个点击按钮的高度
+    public var buttonHeight: CGFloat        = 48.0
+    // 圆角值
+    public var cornerRadius: CGFloat        = 5.0
+    
+    // 标题字体大小
+    public var titleFontSize: CGFloat       = 18.0
+    // 点击按钮字体大小
+    public var buttonFontSize: CGFloat      = 17.0
+    
+    // 弹窗的背景色
+    public var vbackgroundColor: UIColor    = UIColor.white
+    // 标题文字颜色
+    public var titleColor: UIColor          = kPV_RGBA(r: 51, g: 51, b: 51, a: 1)
+    // 边框、分割线颜色
+    public var splitColor: UIColor          = kPV_RGBA(r: 231, g: 231, b: 241, a: 1)
+    // 边框宽度
+    public var splitWidth: CGFloat          = (1/UIScreen.main.scale)
+    
+    // 普通按钮颜色
+    public var itemNormalColor: UIColor     = kPV_RGBA(r: 51, g: 51, b: 51, a: 1)
+    // 高亮按钮颜色
+    public var itemHighlightColor: UIColor  = kPV_RGBA(r: 254, g: 226, b: 4, a: 1)
+    // 选中按钮颜色
+    public var itemPressedColor: UIColor    = kPV_RGBA(r: 231, g: 231, b: 231, a: 1)
+    
+    // 上下间距
+    public var topBottomMargin:CGFloat      = 10
+    // 左右间距
+    public var letfRigthMargin:CGFloat      = 10
+    
+    public override init() {
+        super.init()
+    }
+}

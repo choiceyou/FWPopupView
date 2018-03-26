@@ -11,7 +11,7 @@ import UIKit
 
 class FWDemoViewController: UITableViewController {
     
-    var titleArray = ["Alert - 单个按钮", "Alert - 两个按钮", "Alert - 多个按钮", "Alert - 带输入框", "Alert - 带自定义视图", "Sheet - Default"]
+    var titleArray = ["Alert - 单个按钮", "Alert - 两个按钮", "Alert - 多个按钮", "Alert - 带输入框", "Alert - 带自定义视图", "Sheet - 少量Item", "Sheet - 大量Item"]
     
     let block: FWPopupItemHandler = { (index) in
         print("点击了第\(index)个按钮")
@@ -29,6 +29,9 @@ class FWDemoViewController: UITableViewController {
         self.tableView.estimatedRowHeight = 44.0
         self.tableView.rowHeight = UITableViewAutomaticDimension
         self.tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cellId")
+        
+        // 设置弹窗外部可点击（当且仅当attachedView = FWPopupWindow.sharedInstance.attachView()时有效）
+        FWPopupWindow.sharedInstance.touchWildToHide = true
     }
 }
 
@@ -100,6 +103,36 @@ extension FWDemoViewController {
             alertView.show(completionBlock: { (popupView, isCompletion) in
                 print("点击了取消")
             })
+            break
+        case 5:
+            let items = [FWPopupItem(title: "Sheet0", itemType: .normal, isCancel: true, handler: block),
+                         FWPopupItem(title: "Sheet1", itemType: .normal, isCancel: false, handler: block),
+                         FWPopupItem(title: "Sheet2", itemType: .normal, isCancel: false, handler: block),
+                         FWPopupItem(title: "Sheet3", itemType: .normal, isCancel: false, handler: block),
+                         FWPopupItem(title: "Sheet4", itemType: .normal, isCancel: false, handler: block)]
+            
+            let sheetView = FWSheetView.sheet(title: "测试", items: items)
+            sheetView.show()
+            break
+        case 6:
+            let items = [FWPopupItem(title: "Sheet0", itemType: .normal, isCancel: true, handler: block),
+                         FWPopupItem(title: "Sheet1", itemType: .normal, isCancel: false, handler: block),
+                         FWPopupItem(title: "Sheet2", itemType: .normal, isCancel: false, handler: block),
+                         FWPopupItem(title: "Sheet3", itemType: .normal, isCancel: false, handler: block),
+                         FWPopupItem(title: "Sheet4", itemType: .normal, isCancel: false, handler: block),
+                         FWPopupItem(title: "Sheet5", itemType: .normal, isCancel: false, handler: block),
+                         FWPopupItem(title: "Sheet6", itemType: .normal, isCancel: false, handler: block),
+                         FWPopupItem(title: "Sheet7", itemType: .normal, isCancel: false, handler: block),
+                         FWPopupItem(title: "Sheet8", itemType: .normal, isCancel: false, handler: block),
+                         FWPopupItem(title: "Sheet9", itemType: .normal, isCancel: false, handler: block),
+                         FWPopupItem(title: "Sheet10", itemType: .normal, isCancel: false, handler: block),
+                         FWPopupItem(title: "Sheet11", itemType: .normal, isCancel: false, handler: block),
+                         FWPopupItem(title: "Sheet12", itemType: .normal, isCancel: false, handler: block),
+                         FWPopupItem(title: "Sheet13", itemType: .normal, isCancel: false, handler: block),
+                         FWPopupItem(title: "Sheet14", itemType: .normal, isCancel: false, handler: block)]
+            
+            let sheetView = FWSheetView.sheet(title: "测试", items: items)
+            sheetView.show()
             break
             
         default:
