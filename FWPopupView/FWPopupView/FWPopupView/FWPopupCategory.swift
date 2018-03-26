@@ -20,10 +20,11 @@ extension UIView {
     
     var fwBackgroundAnimating: Bool {
         get {
-            guard let isAnimating = objc_getAssociatedObject(self, fwBackgroundAnimatingKey) as? Bool else {
+            let isAnimating = objc_getAssociatedObject(self, fwBackgroundAnimatingKey) as? Bool
+            guard isAnimating != nil else {
                 return false
             }
-            return isAnimating
+            return isAnimating!
         }
         set {
             objc_setAssociatedObject(self, fwBackgroundAnimatingKey, newValue, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
@@ -32,10 +33,11 @@ extension UIView {
     
     var fwAnimationDuration: TimeInterval {
         get {
-            guard let duration = objc_getAssociatedObject(self, fwAnimationDurationKey) as? TimeInterval else {
+            let duration = objc_getAssociatedObject(self, fwAnimationDurationKey) as? TimeInterval
+            guard duration != nil else {
                 return 0.0
             }
-            return duration
+            return duration!
         }
         set {
             objc_setAssociatedObject(self, fwAnimationDurationKey, newValue, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
@@ -44,10 +46,11 @@ extension UIView {
     
     var fwReferenceCount: Int {
         get {
-            guard let count = objc_getAssociatedObject(self, fwReferenceCountKey) as? Int else {
+            let count = objc_getAssociatedObject(self, fwReferenceCountKey) as? Int
+            guard count != nil else {
                 return 0
             }
-            return count
+            return count!
         }
         set {
             objc_setAssociatedObject(self, fwReferenceCountKey, newValue, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
@@ -56,15 +59,14 @@ extension UIView {
     
     var fwBackgroundViewColor: UIColor {
         get {
-            guard let color = objc_getAssociatedObject(self, fwBackgroundViewColorKey) as? UIColor else {
+            let color = objc_getAssociatedObject(self, fwBackgroundViewColorKey) as? UIColor
+            guard color != nil else {
                 return UIColor(white: 0.05, alpha: 0.05)
             }
-            return color
+            return color!
         }
         set {
             objc_setAssociatedObject(self, fwBackgroundViewColorKey, newValue, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
-            self.fwBackgroundView.backgroundColor = newValue
-            print("111111111")
         }
     }
     
@@ -73,9 +75,9 @@ extension UIView {
         if tmpView == nil {
             tmpView = UIView(frame: self.bounds)
             self.addSubview(tmpView!)
+            tmpView?.backgroundColor = fwBackgroundViewColor
             
             tmpView?.alpha = 0.0
-            tmpView?.backgroundColor = UIColor(white: 0.05, alpha: 0.05)
             tmpView?.layer.zPosition = CGFloat(MAXFLOAT)
             
             objc_setAssociatedObject(self, fwBackgroundViewKey, tmpView, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)

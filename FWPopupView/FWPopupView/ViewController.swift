@@ -46,7 +46,7 @@ class ViewController: UIViewController {
         let alertView2 = FWAlertView.alert(title: "测试", detail: "开始测试了哦") { (index) in
             print("1111111111")
         }
-        alertView2.fwBackgroundViewColor = UIColor.red
+        alertView2.attachedView?.fwBackgroundViewColor = UIColor(white: 0.5, alpha: 0.5)
         alertView2.show()
         
     }

@@ -142,8 +142,8 @@
 				49812DA6205F91F100639DDC /* FWPopupView.swift */,
 				49812DA8205F94CF00639DDC /* FWPopupWindow.swift */,
 				49BB210E2060B86A00E0DE6E /* FWPopupCategory.swift */,
-				49BB212420623C4A00E0DE6E /* FWAlertView.swift */,
 				49BB212620623E8100E0DE6E /* FWPopupItem.swift */,
+				49BB212420623C4A00E0DE6E /* FWAlertView.swift */,
 			);
 			path = FWPopupView;
 			sourceTree = "<group>";

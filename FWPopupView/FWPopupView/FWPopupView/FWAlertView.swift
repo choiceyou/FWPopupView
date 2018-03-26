@@ -27,8 +27,8 @@ public typealias FWPopupInputHandler = (_ text: String) -> Void
     // 点击按钮字体大小
     public var buttonFontSize: CGFloat      = 17.0
     
-    //
-    public var vbackgroundColor: UIColor    = kPV_RGBA(r: 248, g: 248, b: 248, a: 1)
+    // FWAlertView背景色
+    public var vbackgroundColor: UIColor    = UIColor.white
     // 标题文字颜色
     public var titleColor: UIColor          = kPV_RGBA(r: 51, g: 51, b: 51, a: 1)
     // 描述文字颜色
@@ -59,6 +59,7 @@ public typealias FWPopupInputHandler = (_ text: String) -> Void
     // 为保持FWAlertView美观，设置FWAlertView的最小高度
     public var alertViewMinHeight: CGFloat  = 150
     
+    // 输入框回调
     public var inputHandler: FWPopupInputHandler?
     
     
@@ -154,7 +155,7 @@ extension FWAlertView {
             return
         }
         
-        self.backgroundColor = UIColor.white
+        self.backgroundColor = vbackgroundColor
         self.clipsToBounds = true
         
         self.popupType = .alert
