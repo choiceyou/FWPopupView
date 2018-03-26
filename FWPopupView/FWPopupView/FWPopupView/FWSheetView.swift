@@ -139,7 +139,7 @@ extension FWSheetView {
                 btnY = self.property.buttonHeight * CGFloat(tmpIndex) + self.property.cancelBtnMarginTop
                 
                 cancelBtnTopView = UIView(frame: CGRect(x: 0, y: btnY - self.property.cancelBtnMarginTop, width: self.frame.width, height: self.property.cancelBtnMarginTop))
-                cancelBtnTopView?.backgroundColor = UIColor.lightGray
+                cancelBtnTopView?.backgroundColor = UIColor(white: 0.1, alpha: 0.1)
                 self.addSubview(cancelBtnTopView!)
                 
                 cancelBtn = btn
