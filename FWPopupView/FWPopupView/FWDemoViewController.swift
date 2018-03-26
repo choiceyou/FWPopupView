@@ -57,7 +57,7 @@ extension FWDemoViewController {
             alertView.show()
             break
         case 1:
-            let alertView = FWAlertView.alert(title: "标题", detail: "描述 - Stay hungry Stay foolish, Stay hungry Stay foolish, Stay hungry Stay foolish, Stay hungry Stay foolish", confirmBlock: { (index) in
+            let alertView = FWAlertView.alert(title: "标题", detail: "描述描述描述描述描述描述描述描述描述描述", confirmBlock: { (index) in
                 print("点击了确定")
             }, cancelBlock: { (index) in
                 print("点击了取消")
@@ -73,7 +73,10 @@ extension FWDemoViewController {
                          FWPopupItem(title: "确定", itemType: .normal, isCancel: false, handler: block),
                          FWPopupItem(title: "其他", itemType: .normal, isCancel: false, handler: block)]
             
-            let alertView = FWAlertView.alert(title: "标题", detail: "描述描述描述描述描述描述描述描述描述描述", inputPlaceholder: nil, items: items)
+            let vProperty = FWAlertViewProperty()
+            vProperty.detailColor = UIColor.red
+            
+            let alertView = FWAlertView.alert(title: "标题", detail: "描述描述描述描述描述描述描述描述描述描述", inputPlaceholder: nil, customView: nil, items: items, vProperty: vProperty)
             alertView.show()
             break
         case 3:
