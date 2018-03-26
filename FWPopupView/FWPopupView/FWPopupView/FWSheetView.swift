@@ -19,20 +19,19 @@ import UIKit
     
     private var commponenetArray: [UIView] = []
     
-    
-    open class func sheet(title: String?, items: [FWPopupItem]) -> FWSheetView {
+    open class func sheet(title: String?, itemTitles: [String], itemBlock:@escaping FWPopupItemHandler, cancenlBlock:@escaping FWPopupVoidBlock) -> FWSheetView {
         
         let sheetView = FWSheetView()
-        sheetView.setupUI(title: title, items: items)
+        sheetView.setupUI(title: title, itemTitles: itemTitles, itemBlock:itemBlock, cancenlBlock: cancenlBlock)
         return sheetView
     }
 }
 
 extension FWSheetView {
     
-    func setupUI(title: String?, items: [FWPopupItem]) {
+    func setupUI(title: String?, itemTitles: [String], itemBlock:@escaping FWPopupItemHandler, cancenlBlock:@escaping FWPopupVoidBlock) {
         
-        if items.count == 0 {
+        if itemTitles.count == 0 {
             return
         }
         
@@ -42,7 +41,12 @@ extension FWSheetView {
         self.popupType = .sheet
         self.animationDuration = 0.3
         
-        self.actionItemArray = items
+        let itemClickBlock: FWPopupItemHandler = { (index) in
+            itemBlock(index)
+        }
+        for title in itemTitles {
+            self.actionItemArray.append(FWPopupItem(title: title, itemType: .normal, isCancel: true, handler: itemClickBlock))
+        }
         
         self.clipsToBounds = true
         
@@ -85,24 +89,23 @@ extension FWSheetView {
         currentMaxY = btnContrainerView.frame.maxY
         
         let block: FWPopupItemHandler = { (index) in
-            print("点击了第\(index)个按钮")
+            cancenlBlock()
         }
         
         var tmpIndex = 0
-        var tmpItems = items
-        tmpItems.append(FWPopupItem(title: "取消", itemType: .normal, isCancel: true, handler: block))
+        self.actionItemArray.append(FWPopupItem(title: "取消", itemType: .normal, isCancel: true, handler: block))
         
         var cancelBtnTopView: UIView?
         var cancelBtn: UIButton?
         
-        for popupItem: FWPopupItem in tmpItems {
+        for popupItem: FWPopupItem in self.actionItemArray {
             
             let btn = UIButton(type: .custom)
             btn.addTarget(self, action: #selector(btnAction(_:)), for: .touchUpInside)
             btn.tag = tmpIndex
             
             var btnY: CGFloat = 0.0
-            if tmpIndex < tmpItems.count - 1 {
+            if tmpIndex < self.actionItemArray.count - 1 {
                 btnY = self.property.buttonHeight * CGFloat(tmpIndex)
                 btnContrainerView.addSubview(btn)
             } else {
@@ -119,7 +122,7 @@ extension FWSheetView {
             
             if tmpIndex > 0 {
                 currentMaxY += btn.frame.height
-                if tmpIndex == tmpItems.count - 1 {
+                if tmpIndex == self.actionItemArray.count - 1 {
                     if btn.frame.minY - self.property.cancelBtnMarginTop <= self.property.btnContrainerViewMaxHeight {
                         btnContrainerView.frame.size.height = btn.frame.minY - self.property.cancelBtnMarginTop
                     } else {
@@ -151,7 +154,17 @@ extension FWSheetView {
     
     @objc private func btnAction(_ sender: Any) {
         
+        let btn = sender as! UIButton
+        let item = self.actionItemArray[btn.tag]
+        if item.disabled {
+            return
+        }
         
+        self.hide()
+        
+        if item.itemHandler != nil {
+            item.itemHandler!(btn.tag)
+        }
     }
 }
 

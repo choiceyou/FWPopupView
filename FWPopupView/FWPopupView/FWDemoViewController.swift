@@ -14,7 +14,7 @@ class FWDemoViewController: UITableViewController {
     var titleArray = ["Alert - 单个按钮", "Alert - 两个按钮", "Alert - 多个按钮", "Alert - 带输入框", "Alert - 带自定义视图", "Sheet - 少量Item", "Sheet - 大量Item"]
     
     let block: FWPopupItemHandler = { (index) in
-        print("点击了第\(index)个按钮")
+        print("AlertView：点击了第\(index)个按钮")
     }
     
     let completeBlock: FWPopupCompletionBlock = { (popupView, isCompletion) in
@@ -105,33 +105,23 @@ extension FWDemoViewController {
             })
             break
         case 5:
-            let items = [FWPopupItem(title: "Sheet0", itemType: .normal, isCancel: true, handler: block),
-                         FWPopupItem(title: "Sheet1", itemType: .normal, isCancel: false, handler: block),
-                         FWPopupItem(title: "Sheet2", itemType: .normal, isCancel: false, handler: block),
-                         FWPopupItem(title: "Sheet3", itemType: .normal, isCancel: false, handler: block),
-                         FWPopupItem(title: "Sheet4", itemType: .normal, isCancel: false, handler: block)]
+            let items = ["Sheet0", "Sheet1", "Sheet2", "Sheet3"]
             
-            let sheetView = FWSheetView.sheet(title: "测试", items: items)
+            let sheetView = FWSheetView.sheet(title: "测试", itemTitles: items, itemBlock: { (index) in
+                print("Sheet：点击了第\(index)个按钮")
+            }, cancenlBlock: {
+                print("点击了取消")
+            })
             sheetView.show()
             break
         case 6:
-            let items = [FWPopupItem(title: "Sheet0", itemType: .normal, isCancel: true, handler: block),
-                         FWPopupItem(title: "Sheet1", itemType: .normal, isCancel: false, handler: block),
-                         FWPopupItem(title: "Sheet2", itemType: .normal, isCancel: false, handler: block),
-                         FWPopupItem(title: "Sheet3", itemType: .normal, isCancel: false, handler: block),
-                         FWPopupItem(title: "Sheet4", itemType: .normal, isCancel: false, handler: block),
-                         FWPopupItem(title: "Sheet5", itemType: .normal, isCancel: false, handler: block),
-                         FWPopupItem(title: "Sheet6", itemType: .normal, isCancel: false, handler: block),
-                         FWPopupItem(title: "Sheet7", itemType: .normal, isCancel: false, handler: block),
-                         FWPopupItem(title: "Sheet8", itemType: .normal, isCancel: false, handler: block),
-                         FWPopupItem(title: "Sheet9", itemType: .normal, isCancel: false, handler: block),
-                         FWPopupItem(title: "Sheet10", itemType: .normal, isCancel: false, handler: block),
-                         FWPopupItem(title: "Sheet11", itemType: .normal, isCancel: false, handler: block),
-                         FWPopupItem(title: "Sheet12", itemType: .normal, isCancel: false, handler: block),
-                         FWPopupItem(title: "Sheet13", itemType: .normal, isCancel: false, handler: block),
-                         FWPopupItem(title: "Sheet14", itemType: .normal, isCancel: false, handler: block)]
+            let items = ["Sheet0", "Sheet1", "Sheet2", "Sheet3", "Sheet4", "Sheet5", "Sheet6", "Sheet7", "Sheet8", "Sheet9", "Sheet10", "Sheet11", "Sheet12", "Sheet13", "Sheet14"]
             
-            let sheetView = FWSheetView.sheet(title: "测试", items: items)
+            let sheetView = FWSheetView.sheet(title: "测试", itemTitles: items, itemBlock: { (index) in
+                print("Sheet：点击了第\(index)个按钮")
+            }, cancenlBlock: {
+                print("点击了取消")
+            })
             sheetView.show()
             break
             

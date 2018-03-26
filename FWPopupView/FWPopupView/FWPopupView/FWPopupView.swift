@@ -24,6 +24,8 @@ import UIKit
 public typealias FWPopupBlock = (_ popupView: FWPopupView) -> Void
 /// 显示、隐藏完成回调
 public typealias FWPopupCompletionBlock = (_ popupView: FWPopupView, _ isCompletion: Bool) -> Void
+/// 普通无参数回调
+public typealias FWPopupVoidBlock = () -> Void
 
 let FWPopupViewHideAllNotification = "FWPopupViewHideAllNotification"
 
