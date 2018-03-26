@@ -31,7 +31,7 @@ class FWDemoViewController: UITableViewController {
         self.tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cellId")
         
         // 设置弹窗外部可点击（当且仅当attachedView = FWPopupWindow.sharedInstance.attachView()时有效）
-        FWPopupWindow.sharedInstance.touchWildToHide = true
+        // FWPopupWindow.sharedInstance.touchWildToHide = true
     }
 }
 
@@ -87,7 +87,7 @@ extension FWDemoViewController {
                          FWPopupItem(title: "确定", itemType: .normal, isCancel: false, handler: block)]
             
             let alertView = FWAlertView.alert(title: "标题", detail: "带输入框", inputPlaceholder: "请输入...", customView: nil, items: items)
-                print("点击了确定")
+            print("点击了确定")
             alertView.show(completionBlock: { (popupView, isCompletion) in
                 print("点击了取消")
             })
@@ -99,7 +99,7 @@ extension FWDemoViewController {
             let customImageView = UIImageView(image: UIImage(named: "audio_bgm_4"))
             
             let alertView = FWAlertView.alert(title: "标题", detail: "带自定义视图", inputPlaceholder: nil, customView: customImageView, items: items)
-                print("点击了确定")
+            print("点击了确定")
             alertView.show(completionBlock: { (popupView, isCompletion) in
                 print("点击了取消")
             })

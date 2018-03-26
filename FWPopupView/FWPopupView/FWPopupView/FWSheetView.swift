@@ -19,9 +19,36 @@ import UIKit
     
     private var commponenetArray: [UIView] = []
     
+    /// 类初始化方法
+    ///
+    /// - Parameters:
+    ///   - title: 标题
+    ///   - itemTitles: 点击项标题
+    ///   - itemBlock: 点击回调
+    ///   - cancenlBlock: 取消按钮回调
+    /// - Returns: self
     open class func sheet(title: String?, itemTitles: [String], itemBlock:@escaping FWPopupItemHandler, cancenlBlock:@escaping FWPopupVoidBlock) -> FWSheetView {
         
         let sheetView = FWSheetView()
+        sheetView.setupUI(title: title, itemTitles: itemTitles, itemBlock:itemBlock, cancenlBlock: cancenlBlock)
+        return sheetView
+    }
+    
+    /// 类初始化方法
+    ///
+    /// - Parameters:
+    ///   - title: 标题
+    ///   - itemTitles: 点击项标题
+    ///   - itemBlock: 点击回调
+    ///   - cancenlBlock: 取消按钮回调
+    ///   - property: FWSheetView的相关属性
+    /// - Returns: self
+    open class func sheet(title: String?, itemTitles: [String], itemBlock:@escaping FWPopupItemHandler, cancenlBlock:@escaping FWPopupVoidBlock, property: FWSheetViewProperty?) -> FWSheetView {
+        
+        let sheetView = FWSheetView()
+        if property != nil {
+            sheetView.property = property!
+        }
         sheetView.setupUI(title: title, itemTitles: itemTitles, itemBlock:itemBlock, cancenlBlock: cancenlBlock)
         return sheetView
     }
