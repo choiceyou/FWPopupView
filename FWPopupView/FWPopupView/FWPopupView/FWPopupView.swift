@@ -20,7 +20,9 @@ import UIKit
     case custom
 }
 
+/// 显示、隐藏回调
 public typealias FWPopupBlock = (_ popupView: FWPopupView) -> Void
+/// 显示、隐藏完成回调
 public typealias FWPopupCompletionBlock = (_ popupView: FWPopupView, _ isCompletion: Bool) -> Void
 
 let FWPopupViewHideAllNotification = "FWPopupViewHideAllNotification"

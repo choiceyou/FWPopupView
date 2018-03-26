@@ -63,23 +63,30 @@ public typealias FWPopupInputHandler = (_ text: String) -> Void
     public var inputHandler: FWPopupInputHandler?
     
     
+    private var titleStr: String?
+    private var detailStr: String?
+    private var inputPlaceholder: String?
     private var actionItemArray: [FWPopupItem] = []
-    private var commponenetArray: [UIView] = []
     
     private var titleLabel: UILabel?
-    
     private var detailLabel: UILabel?
-    
     private var inputTF: UITextField?
-    
     private var customView: UIView?
     
+    private var commponenetArray: [UIView] = []
     
+    
+    /// 类初始化方法
+    ///
+    /// - Parameters:
+    ///   - title: 标题
+    ///   - detail: 描述
+    ///   - confirmBlock: 确定按钮回调
+    /// - Returns: self
     open class func alert(title: String, detail: String, confirmBlock:@escaping FWPopupItemHandler) -> FWAlertView {
         
         let alertView = FWAlertView()
         let items = [FWPopupItem(title: alertView.defaultTextOK, itemType: .normal, isCancel: false, handler: confirmBlock)]
-        
         alertView.setupUI(title: title, detail: detail, inputPlaceholder: nil, customView: nil, items: items)
         return alertView
     }
@@ -149,7 +156,7 @@ public typealias FWPopupInputHandler = (_ text: String) -> Void
 
 extension FWAlertView {
     
-    private func setupUI(title: String, detail: String, inputPlaceholder: String?, customView: UIView?, items: [FWPopupItem]) {
+    private func setupUI(title: String?, detail: String?, inputPlaceholder: String?, customView: UIView?, items: [FWPopupItem]) {
         
         if items.count == 0 {
             return
@@ -177,7 +184,7 @@ extension FWAlertView {
         
         var currentMaxY:CGFloat = topBottomMargin
         
-        if !title.isEmpty {
+        if title != nil && !title!.isEmpty {
             self.titleLabel = UILabel(frame: CGRect(x: letfRigthMargin, y: currentMaxY, width: self.frame.width - letfRigthMargin * 2, height: CGFloat.greatestFiniteMagnitude))
             self.addSubview(self.titleLabel!)
             self.titleLabel?.text = title
@@ -196,7 +203,7 @@ extension FWAlertView {
             self.commponenetArray.append(self.titleLabel!)
         }
         
-        if !detail.isEmpty {
+        if detail != nil && !detail!.isEmpty {
             currentMaxY += topBottomMargin
             
             self.detailLabel = UILabel(frame: CGRect(x: letfRigthMargin, y: currentMaxY, width: self.frame.width - letfRigthMargin * 2, height: CGFloat.greatestFiniteMagnitude))
