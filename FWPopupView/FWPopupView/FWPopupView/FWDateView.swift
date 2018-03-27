@@ -14,17 +14,17 @@ public typealias FWDateViewConfirmBlock = (_ datePicker: UIDatePicker) -> Void
 
 @objc open class FWDateView: FWPopupView {
     
-    let property = FWDateViewProperty()
+    @objc public let property = FWDateViewProperty()
     
-    var confirmBtn: UIButton?
-    var cancelBtn: UIButton?
+    private var confirmBtn: UIButton?
+    private var cancelBtn: UIButton?
     
-    let datePicker = UIDatePicker()
+    private let datePicker = UIDatePicker()
     
-    var confirmBlock: FWDateViewConfirmBlock?
-    var cancelBlock: FWPopupVoidBlock?
+    private var confirmBlock: FWDateViewConfirmBlock?
+    private var cancelBlock: FWPopupVoidBlock?
     
-    open class func date(confirmBlock:@escaping FWDateViewConfirmBlock, cancelBlock:@escaping FWPopupVoidBlock) -> FWDateView {
+    @objc open class func date(confirmBlock:@escaping FWDateViewConfirmBlock, cancelBlock:@escaping FWPopupVoidBlock) -> FWDateView {
         
         let dateView = FWDateView()
         dateView.setupUI(confirmBlock: confirmBlock, cancelBlock: cancelBlock)
@@ -42,7 +42,7 @@ public typealias FWDateViewConfirmBlock = (_ datePicker: UIDatePicker) -> Void
 
 extension FWDateView {
     
-    func setupUI(confirmBlock:@escaping FWDateViewConfirmBlock, cancelBlock:@escaping FWPopupVoidBlock) {
+    private func setupUI(confirmBlock:@escaping FWDateViewConfirmBlock, cancelBlock:@escaping FWPopupVoidBlock) {
         
         self.backgroundColor = self.property.vbackgroundColor
         self.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: self.property.datePickerHeight + self.property.btnHeight)
@@ -63,7 +63,7 @@ extension FWDateView {
         self.cancelBlock = cancelBlock
     }
     
-    func setupBtn(frame: CGRect, title: String, tag: Int) -> UIButton {
+    private func setupBtn(frame: CGRect, title: String, tag: Int) -> UIButton {
         
         let btn = UIButton(type: .custom)
         btn.addTarget(self, action: #selector(btnAction(_:)), for: .touchUpInside)
@@ -93,17 +93,17 @@ extension FWDateView {
 @objc open class FWDateViewProperty : FWPopupViewProperty {
     
     // UIDatePicker的高度
-    public var datePickerHeight: CGFloat = 240
+    @objc public var datePickerHeight: CGFloat = 240
     // 确定、取消按钮的高度
-    public var btnHeight: CGFloat = 40
+    @objc public var btnHeight: CGFloat = 40
     // 确定、取消按钮的宽度
-    public var btnWidth: CGFloat = 60
+    @objc public var btnWidth: CGFloat = 60
     // 按钮文字颜色
-    public var btnTitleColor: UIColor = kPV_RGBA(r: 51, g: 51, b: 51, a: 1)
+    @objc public var btnTitleColor: UIColor = kPV_RGBA(r: 51, g: 51, b: 51, a: 1)
     // 按钮文字大小
-    public var btnTitleFont: CGFloat = 17.0
+    @objc public var btnTitleFont: CGFloat = 17.0
     // 取消按钮名称
-    public var cancelBtnTitle = "取消"
+    @objc public var cancelBtnTitle = "取消"
     // 确定按钮名称
-    public var confirmBtnTitle = "确定"
+    @objc public var confirmBtnTitle = "确定"
 }

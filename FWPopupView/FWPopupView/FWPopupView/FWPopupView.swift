@@ -33,9 +33,9 @@ let FWPopupViewHideAllNotification = "FWPopupViewHideAllNotification"
 @objc open class FWPopupView: UIView {
     
     /// 1、当外部没有传入该参数时，默认为UIWindow的根控制器的视图，即表示弹窗放在FWPopupWindow上，此时若FWPopupWindow.sharedInstance.touchWildToHide = true表示弹窗视图外部可点击；2、当外部传入该参数时，该视图为传入的UIView，即表示弹窗放在传入的UIView上；
-    public var attachedView = FWPopupWindow.sharedInstance.attachView()
+    @objc public var attachedView = FWPopupWindow.sharedInstance.attachView()
     
-    public var visible: Bool {
+    @objc public var visible: Bool {
         get {
             if self.attachedView != nil {
                 return !(self.attachedView?.fwBackgroundView.isHidden)!
@@ -44,7 +44,7 @@ let FWPopupViewHideAllNotification = "FWPopupViewHideAllNotification"
         }
     }
     
-    var popupType: FWPopupType = .alert {
+    @objc public var popupType: FWPopupType = .alert {
         willSet {
             switch newValue {
             case .alert:
@@ -63,21 +63,21 @@ let FWPopupViewHideAllNotification = "FWPopupViewHideAllNotification"
         }
     }
     
-    var animationDuration: TimeInterval = 0.3 {
+    @objc public var animationDuration: TimeInterval = 0.3 {
         willSet {
             self.attachedView?.fwAnimationDuration = newValue
         }
     }
     
-    var withKeyboard = false
+    @objc public var withKeyboard = false
     
-    var showCompletionBlock: FWPopupCompletionBlock?
+    private var showCompletionBlock: FWPopupCompletionBlock?
     
-    var hideCompletionBlock: FWPopupCompletionBlock?
+    private var hideCompletionBlock: FWPopupCompletionBlock?
     
-    var showAnimation: FWPopupBlock?
+    private var showAnimation: FWPopupBlock?
     
-    var hideAnimation: FWPopupBlock?
+    private var hideAnimation: FWPopupBlock?
     
     public override init(frame: CGRect) {
         super.init(frame: frame)
@@ -107,14 +107,14 @@ let FWPopupViewHideAllNotification = "FWPopupViewHideAllNotification"
 // MARK: - 显示、隐藏
 extension FWPopupView {
     
-    open func show() {
+    @objc open func show() {
         
         self.show { (self, isFinished) in
             
         }
     }
     
-    func show(completionBlock:@escaping FWPopupCompletionBlock) {
+    @objc func show(completionBlock:@escaping FWPopupCompletionBlock) {
         
         self.showCompletionBlock = completionBlock
         
@@ -131,13 +131,13 @@ extension FWPopupView {
         }
     }
     
-    open func hide() {
+    @objc open func hide() {
         self.hide { (self, isFinished) in
             
         }
     }
     
-    func hide(completionBlock:@escaping FWPopupCompletionBlock) {
+    @objc func hide(completionBlock:@escaping FWPopupCompletionBlock) {
         
         self.hideCompletionBlock = completionBlock
         
@@ -154,7 +154,7 @@ extension FWPopupView {
         hideAnimation!(self)
     }
     
-    open class func hideAll() {
+    @objc open class func hideAll() {
         NotificationCenter.default.post(name: NSNotification.Name(rawValue: FWPopupViewHideAllNotification), object: FWPopupView.self)
     }
     
@@ -169,7 +169,7 @@ extension FWPopupView {
 // MARK: - 动画事件
 extension FWPopupView {
     
-    func alertShowAnimation() -> FWPopupBlock {
+    private func alertShowAnimation() -> FWPopupBlock {
         
         let popupBlock = { [weak self] (popupView: FWPopupView) in
             if self?.superview == nil {
@@ -200,7 +200,7 @@ extension FWPopupView {
         return popupBlock
     }
     
-    func alertHideAnimation() -> FWPopupBlock {
+    private func alertHideAnimation() -> FWPopupBlock {
         
         let popupBlock:FWPopupBlock = { [weak self] popupView in
             
@@ -223,7 +223,7 @@ extension FWPopupView {
         return popupBlock
     }
     
-    func sheetShowAnimation() -> FWPopupBlock {
+    private func sheetShowAnimation() -> FWPopupBlock {
         
         let popupBlock:FWPopupBlock = { [weak self] popupView in
             if self?.superview == nil {
@@ -248,7 +248,7 @@ extension FWPopupView {
         return popupBlock
     }
     
-    func sheetHideAnimation() -> FWPopupBlock {
+    private func sheetHideAnimation() -> FWPopupBlock {
         
         let popupBlock:FWPopupBlock = { [weak self] popupView in
             
@@ -271,7 +271,7 @@ extension FWPopupView {
         return popupBlock
     }
     
-    func customShowAnimation() -> FWPopupBlock {
+    private func customShowAnimation() -> FWPopupBlock {
         
         let popupBlock = { [weak self] (popupView: FWPopupView) in
             if self?.superview == nil {
@@ -299,7 +299,7 @@ extension FWPopupView {
         return popupBlock
     }
     
-    func customHideAnimation() -> FWPopupBlock {
+    private func customHideAnimation() -> FWPopupBlock {
         
         let popupBlock:FWPopupBlock = { [weak self] popupView in
             
@@ -344,35 +344,35 @@ extension FWPopupView {
 @objc open class FWPopupViewProperty: NSObject {
     
     // 单个点击按钮的高度
-    public var buttonHeight: CGFloat        = 48.0
+    @objc public var buttonHeight: CGFloat        = 48.0
     // 圆角值
-    public var cornerRadius: CGFloat        = 5.0
+    @objc public var cornerRadius: CGFloat        = 5.0
     
     // 标题字体大小
-    public var titleFontSize: CGFloat       = 18.0
+    @objc public var titleFontSize: CGFloat       = 18.0
     // 点击按钮字体大小
-    public var buttonFontSize: CGFloat      = 17.0
+    @objc public var buttonFontSize: CGFloat      = 17.0
     
     // 弹窗的背景色
-    public var vbackgroundColor: UIColor    = UIColor.white
+    @objc public var vbackgroundColor: UIColor    = UIColor.white
     // 标题文字颜色
-    public var titleColor: UIColor          = kPV_RGBA(r: 51, g: 51, b: 51, a: 1)
+    @objc public var titleColor: UIColor          = kPV_RGBA(r: 51, g: 51, b: 51, a: 1)
     // 边框、分割线颜色
-    public var splitColor: UIColor          = kPV_RGBA(r: 231, g: 231, b: 231, a: 1)
+    @objc public var splitColor: UIColor          = kPV_RGBA(r: 231, g: 231, b: 231, a: 1)
     // 边框宽度
-    public var splitWidth: CGFloat          = (1/UIScreen.main.scale)
+    @objc public var splitWidth: CGFloat          = (1/UIScreen.main.scale)
     
     // 普通按钮颜色
-    public var itemNormalColor: UIColor     = kPV_RGBA(r: 51, g: 51, b: 51, a: 1)
+    @objc public var itemNormalColor: UIColor     = kPV_RGBA(r: 51, g: 51, b: 51, a: 1)
     // 高亮按钮颜色
-    public var itemHighlightColor: UIColor  = kPV_RGBA(r: 254, g: 226, b: 4, a: 1)
+    @objc public var itemHighlightColor: UIColor  = kPV_RGBA(r: 254, g: 226, b: 4, a: 1)
     // 选中按钮颜色
-    public var itemPressedColor: UIColor    = kPV_RGBA(r: 231, g: 231, b: 231, a: 1)
+    @objc public var itemPressedColor: UIColor    = kPV_RGBA(r: 231, g: 231, b: 231, a: 1)
     
     // 上下间距
-    public var topBottomMargin:CGFloat      = 10
+    @objc public var topBottomMargin:CGFloat      = 10
     // 左右间距
-    public var letfRigthMargin:CGFloat      = 10
+    @objc public var letfRigthMargin:CGFloat      = 10
     
     public override init() {
         super.init()

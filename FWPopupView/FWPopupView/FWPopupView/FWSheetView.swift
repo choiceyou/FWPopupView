@@ -11,7 +11,7 @@ import UIKit
 
 @objc open class FWSheetView: FWPopupView {
     
-    var property = FWSheetViewProperty()
+    @objc public var property = FWSheetViewProperty()
     
     private var actionItemArray: [FWPopupItem] = []
     
@@ -27,7 +27,7 @@ import UIKit
     ///   - itemBlock: 点击回调
     ///   - cancenlBlock: 取消按钮回调
     /// - Returns: self
-    open class func sheet(title: String?, itemTitles: [String], itemBlock:@escaping FWPopupItemHandler, cancenlBlock:@escaping FWPopupVoidBlock) -> FWSheetView {
+    @objc open class func sheet(title: String?, itemTitles: [String], itemBlock:@escaping FWPopupItemHandler, cancenlBlock:@escaping FWPopupVoidBlock) -> FWSheetView {
         
         let sheetView = FWSheetView()
         sheetView.setupUI(title: title, itemTitles: itemTitles, itemBlock:itemBlock, cancenlBlock: cancenlBlock)
@@ -43,7 +43,7 @@ import UIKit
     ///   - cancenlBlock: 取消按钮回调
     ///   - property: FWSheetView的相关属性
     /// - Returns: self
-    open class func sheet(title: String?, itemTitles: [String], itemBlock:@escaping FWPopupItemHandler, cancenlBlock:@escaping FWPopupVoidBlock, property: FWSheetViewProperty?) -> FWSheetView {
+    @objc open class func sheet(title: String?, itemTitles: [String], itemBlock:@escaping FWPopupItemHandler, cancenlBlock:@escaping FWPopupVoidBlock, property: FWSheetViewProperty?) -> FWSheetView {
         
         let sheetView = FWSheetView()
         if property != nil {
@@ -56,7 +56,7 @@ import UIKit
 
 extension FWSheetView {
     
-    func setupUI(title: String?, itemTitles: [String], itemBlock:@escaping FWPopupItemHandler, cancenlBlock:@escaping FWPopupVoidBlock) {
+    private func setupUI(title: String?, itemTitles: [String], itemBlock:@escaping FWPopupItemHandler, cancenlBlock:@escaping FWPopupVoidBlock) {
         
         if itemTitles.count == 0 {
             return
@@ -199,8 +199,8 @@ extension FWSheetView {
 @objc open class FWSheetViewProperty: FWPopupViewProperty {
     
     // 取消按钮距离头部的距离
-    public var cancelBtnMarginTop: CGFloat = 6
+    @objc public var cancelBtnMarginTop: CGFloat = 6
     
-    public var btnContrainerViewMaxHeight: CGFloat = UIScreen.main.bounds.height * CGFloat(0.6)
+    @objc public var btnContrainerViewMaxHeight: CGFloat = UIScreen.main.bounds.height * CGFloat(0.6)
     
 }

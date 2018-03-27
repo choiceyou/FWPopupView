@@ -14,7 +14,7 @@ import UIKit
 /// - normal: 普通
 /// - highlight: 高亮
 /// - disabled: 不可点击
-public enum FWItemType: Int {
+@objc public enum FWItemType: Int {
     case normal
     case highlight
     case disabled
@@ -25,24 +25,24 @@ public typealias FWPopupItemHandler = (_ index: Int) -> Void
 open class FWPopupItem: NSObject {
     
     /// 是否高亮
-    var highlight = false
+    @objc var highlight = false
     /// 是否不可点击
-    var disabled = false
+    @objc var disabled = false
     
     /// 按钮颜色
-    var color = UIColor.clear
+    @objc var color = UIColor.clear
     
     /// 标题
-    var title: String
+    @objc var title: String
     
     /// 按钮类型
-    var itemType: FWItemType
+    @objc var itemType: FWItemType
     /// 是否取消按钮
-    var isCancel: Bool
+    @objc var isCancel: Bool
     
-    var itemHandler: FWPopupItemHandler?
+    @objc var itemHandler: FWPopupItemHandler?
     
-    init(title: String, itemType: FWItemType, isCancel: Bool, handler: @escaping FWPopupItemHandler) {
+    @objc public init(title: String, itemType: FWItemType, isCancel: Bool, handler: @escaping FWPopupItemHandler) {
         self.title = title
         self.itemType = itemType
         self.isCancel = isCancel
