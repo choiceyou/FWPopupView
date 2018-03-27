@@ -8,13 +8,15 @@ pod 'FWPopupView'<br>
 
 简单使用：  
 -----------------------------------  
-### Swift:[^code]
-
-```let alertView = FWAlertView.alert(title: "标题", detail: "描述描述描述描述") { (index) in
+### Swift:
+```python
+let alertView = FWAlertView.alert(title: "标题", detail: "描述描述描述描述") { (index) in
     print("点击了确定")
 }
-alertView.show()```
-            
+alertView.show()
+```
+
+
 ### OC：<br>
 
 效果：
