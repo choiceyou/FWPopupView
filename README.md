@@ -9,6 +9,36 @@ pod 'FWPopupView'<br>
 -----------------------------------
 
 ### 简单使用：  
+```python
+/// 类初始化方法
+///
+/// - Parameters:
+///   - title: 标题
+///   - detail: 描述
+///   - confirmBlock: 确定按钮回调
+/// - Returns: self
+open class func alert(title: String,
+                          detail: String,
+                          confirmBlock:@escaping FWPopupItemHandler) -> FWAlertView
+                          
+```
+
+```python
+/// 类初始化方法
+///
+/// - Parameters:
+///   - title: 标题
+///   - itemTitles: 点击项标题
+///   - itemBlock: 点击回调
+///   - cancenlBlock: 取消按钮回调
+///   - property: FWSheetView的相关属性
+/// - Returns: self
+open class func sheet(title: String?,
+                      itemTitles: [String],
+                      itemBlock:@escaping FWPopupItemHandler,
+                      cancenlBlock:@escaping FWPopupVoidBlock,
+                      property: FWSheetViewProperty?) -> FWSheetView
+```
 
 ### Swift:
 ```python
@@ -16,6 +46,14 @@ let alertView = FWAlertView.alert(title: "标题", detail: "描述描述描述�
     print("点击了确定")
 }
 alertView.show()
+```
+```python
+let sheetView = FWSheetView.sheet(title: "测试", itemTitles: ["Sheet0", "Sheet1", "Sheet2", "Sheet3"], itemBlock: { (index) in
+                print("Sheet：点击了第\(index)个按钮")
+            }, cancenlBlock: {
+                print("点击了取消")
+            })
+sheetView.show()
 ```
 
 
