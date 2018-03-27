@@ -13,6 +13,10 @@ let alertView = FWAlertView.alert(title: "标题", detail: "描述描述描述�
     print("点击了确定") <br>
 } <br>
 alertView.show()<br>
+
+Inline code are surround by ‘backtick’ key. To create a block code:
+	Indent each line by at least 1 tab, or 4 spaces.
+	var Mou = exactlyTheAppIwant;
             
 ### OC：<br>
 
