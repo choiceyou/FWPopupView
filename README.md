@@ -8,23 +8,12 @@ pod 'FWPopupView'<br>
 
 简单使用：  
 -----------------------------------  
-### Swift: <br>
-let alertView = FWAlertView.alert(title: "标题", detail: "描述描述描述描述") { (index) in <br>
-    print("点击了确定") <br>
-} <br>
-alertView.show()<br>
+### Swift:[^code]
 
-### 3. 高亮一段代码[^code]
-
-```python
-@requires_authorization
-class SomeClass:
-    pass
-
-if __name__ == '__main__':
-    # A comment
-    print 'hello world'
-```
+```let alertView = FWAlertView.alert(title: "标题", detail: "描述描述描述描述") { (index) in
+    print("点击了确定")
+}
+alertView.show()```
             
 ### OC：<br>
 
