@@ -14,9 +14,17 @@ let alertView = FWAlertView.alert(title: "标题", detail: "描述描述描述�
 } <br>
 alertView.show()<br>
 
-Inline code are surround by ‘backtick’ key. To create a block code:
-	Indent each line by at least 1 tab, or 4 spaces.
-	var Mou = exactlyTheAppIwant;
+### 3. 高亮一段代码[^code]
+
+```python
+@requires_authorization
+class SomeClass:
+    pass
+
+if __name__ == '__main__':
+    # A comment
+    print 'hello world'
+```
             
 ### OC：<br>
 
