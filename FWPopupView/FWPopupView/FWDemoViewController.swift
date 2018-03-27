@@ -124,6 +124,15 @@ extension FWDemoViewController {
             })
             sheetView.show()
             break
+        case 7:
+            let dateView = FWDateView.date(confirmBlock: { (datePicker) in
+                print("点击了 FWDateView 的确定")
+            }, cancelBlock: {
+                print("点击了 FWDateView 的取消")
+            })
+            dateView.show()
+            
+            break
             
         default:
             break

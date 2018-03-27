@@ -11,9 +11,9 @@ import UIKit
 
 /// 弹窗类型
 ///
-/// - alert: Alert类型
-/// - sheet: Sheet类型
-/// - custom: 自定义类型
+/// - alert: Alert类型，表示弹窗在屏幕中间
+/// - sheet: Sheet类型，表示弹窗在屏幕底部
+/// - custom: 自定义类型，待拓展
 @objc public enum FWPopupType: Int {
     case alert
     case sheet
@@ -104,6 +104,7 @@ let FWPopupViewHideAllNotification = "FWPopupViewHideAllNotification"
     }
 }
 
+// MARK: - 显示、隐藏
 extension FWPopupView {
     
     open func show() {
@@ -165,6 +166,7 @@ extension FWPopupView {
     }
 }
 
+// MARK: - 动画事件
 extension FWPopupView {
     
     func alertShowAnimation() -> FWPopupBlock {
@@ -338,7 +340,7 @@ extension FWPopupView {
 }
 
 
-/// FWSheetView的相关属性
+// MARK: - FWSheetView的相关属性
 @objc open class FWPopupViewProperty: NSObject {
     
     // 单个点击按钮的高度
