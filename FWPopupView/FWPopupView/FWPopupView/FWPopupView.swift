@@ -56,8 +56,8 @@ let FWPopupViewHideAllNotification = "FWPopupViewHideAllNotification"
                 self.hideAnimation = self.sheetHideAnimation()
                 break
             case .custom:
-                //                self.showAnimation = self.customShowAnimation()
-                //                self.hideAnimation = self.customHideAnimation()
+                self.showAnimation = self.customShowAnimation()
+                self.hideAnimation = self.customHideAnimation()
                 break
             }
         }
@@ -247,7 +247,7 @@ extension FWPopupView {
     }
     
     func sheetHideAnimation() -> FWPopupBlock {
-
+        
         let popupBlock:FWPopupBlock = { [weak self] popupView in
             
             UIView.animate(withDuration: (self?.animationDuration)!, delay: 0.0, options: [.curveEaseIn, .beginFromCurrentState], animations: {
@@ -268,14 +268,57 @@ extension FWPopupView {
         
         return popupBlock
     }
-
-    //    func customShowAnimation() -> FWPopupBlock {
-    //
-    //    }
-    //
-    //    func customHideAnimation() -> FWPopupBlock {
-    //
-    //    }
+    
+    func customShowAnimation() -> FWPopupBlock {
+        
+        let popupBlock = { [weak self] (popupView: FWPopupView) in
+            if self?.superview == nil {
+                self?.attachedView?.fwBackgroundView.addSubview(self!)
+                self?.center = (self?.attachedView?.center)!
+                if (self?.withKeyboard)! {
+                    self?.frame.origin.y -= 216/2
+                }
+                self?.layoutIfNeeded()
+            }
+            
+            UIView.animate(withDuration: (self?.animationDuration)!, delay: 0.0, options: [.curveEaseOut, .beginFromCurrentState], animations: {
+                
+                self?.superview?.layoutIfNeeded()
+                
+            }, completion: { (finished) in
+                
+                if self?.showCompletionBlock != nil {
+                    self?.showCompletionBlock!(self!, finished)
+                }
+                
+            })
+        }
+        
+        return popupBlock
+    }
+    
+    func customHideAnimation() -> FWPopupBlock {
+        
+        let popupBlock:FWPopupBlock = { [weak self] popupView in
+            
+            UIView.animate(withDuration: (self?.animationDuration)!, delay: 0.0, options: [.curveEaseIn, .beginFromCurrentState], animations: {
+                
+                self?.superview?.layoutIfNeeded()
+                
+            }, completion: { (finished) in
+                
+                if finished {
+                    self?.removeFromSuperview()
+                }
+                if self?.hideCompletionBlock != nil {
+                    self?.hideCompletionBlock!(self!, finished)
+                }
+                
+            })
+        }
+        
+        return popupBlock
+    }
     
     /// 将颜色转换为图片
     ///
