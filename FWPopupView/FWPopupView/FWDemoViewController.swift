@@ -107,7 +107,7 @@ extension FWDemoViewController {
         case 5:
             let items = ["Sheet0", "Sheet1", "Sheet2", "Sheet3"]
             
-            let sheetView = FWSheetView.sheet(title: "测试", itemTitles: items, itemBlock: { (index) in
+            let sheetView = FWSheetView.sheet(title: "标题", itemTitles: items, itemBlock: { (index) in
                 print("Sheet：点击了第\(index)个按钮")
             }, cancenlBlock: {
                 print("点击了取消")
@@ -117,7 +117,7 @@ extension FWDemoViewController {
         case 6:
             let items = ["Sheet0", "Sheet1", "Sheet2", "Sheet3", "Sheet4", "Sheet5", "Sheet6", "Sheet7", "Sheet8", "Sheet9", "Sheet10", "Sheet11", "Sheet12", "Sheet13", "Sheet14"]
             
-            let sheetView = FWSheetView.sheet(title: "测试", itemTitles: items, itemBlock: { (index) in
+            let sheetView = FWSheetView.sheet(title: "标题", itemTitles: items, itemBlock: { (index) in
                 print("Sheet：点击了第\(index)个按钮")
             }, cancenlBlock: {
                 print("点击了取消")
