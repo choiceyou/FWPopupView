@@ -8,7 +8,7 @@ pod 'FWPopupView'<br>
 
 -----------------------------------
 
-### 简单使用：  
+### 简单使用（注：可下载demo具体查看，分别有OC、Swift的demo）： 
 ```python
 /// 类初始化方法
 ///
@@ -58,6 +58,20 @@ sheetView.show()
 
 
 ### OC：<br>
+```python
+FWAlertView *alertView = [FWAlertView alertWithTitle:@"标题" detail:@"描述描述描述描述" confirmBlock:^(NSInteger index) {
+    NSLog(@"点击了确定");
+}];
+[alertView show];
+```
+```python
+FWSheetView *sheetView = [FWSheetView sheetWithTitle:@"标题" itemTitles:@[@"Sheet0", @"Sheet1", @"Sheet2", @"Sheet3"] itemBlock:^(NSInteger index) {
+    NSLog(@"Sheet：点击了第 %ld 个按钮", (long)index);
+} cancenlBlock:^{
+    NSLog(@"点击了取消");
+}];
+[sheetView show];
+```
 
 -----------------------------------  
 
@@ -75,4 +89,5 @@ sheetView.show()
 
 ### 结尾语：
 
-> 使用过程中有任何问题或者新的需求都可以issues我哦，谢谢！
+> * 使用过程中有任何问题或者新的需求都可以issues我哦；
+> * 欢迎关注本人更多的UI库，谢谢；
