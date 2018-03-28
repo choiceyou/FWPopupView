@@ -9,9 +9,9 @@
 import Foundation
 import UIKit
 
-@objc open class FWSheetView: FWPopupView {
+open class FWSheetView: FWPopupView {
     
-    @objc public var property = FWSheetViewProperty()
+    @objc open var property = FWSheetViewProperty()
     
     private var actionItemArray: [FWPopupItem] = []
     
@@ -196,7 +196,7 @@ extension FWSheetView {
 }
 
 /// FWSheetView的相关属性
-@objc open class FWSheetViewProperty: FWPopupViewProperty {
+open class FWSheetViewProperty: FWPopupViewProperty {
     
     // 取消按钮距离头部的距离
     @objc public var cancelBtnMarginTop: CGFloat = 6

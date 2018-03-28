@@ -328,26 +328,26 @@ extension FWAlertView {
 
 
 /// FWAlertView的相关属性
-@objc open class FWAlertViewProperty: FWPopupViewProperty {
+open class FWAlertViewProperty: FWPopupViewProperty {
     
     // FWAlertView宽度
-    @objc public var vwidth: CGFloat              = 275.0
+    @objc open var vwidth: CGFloat              = 275.0
     
     // 描述字体大小
-    @objc public var detailFontSize: CGFloat      = 14.0
+    @objc open var detailFontSize: CGFloat      = 14.0
     
     // 描述文字颜色
-    @objc public var detailColor: UIColor         = kPV_RGBA(r: 51, g: 51, b: 51, a: 1)
+    @objc open var detailColor: UIColor         = kPV_RGBA(r: 51, g: 51, b: 51, a: 1)
     
     // 确定按钮默认名称
-    @objc public var defaultTextOK                = "知道了"
+    @objc open var defaultTextOK                = "知道了"
     // 取消按钮默认名称
-    @objc public var defaultTextCancel            = "取消"
+    @objc open var defaultTextCancel            = "取消"
     // 确定按钮默认名称
-    @objc public var defaultTextConfirm           = "确定"
+    @objc open var defaultTextConfirm           = "确定"
     
     // 为保持FWAlertView美观，设置FWAlertView的最小高度
-    @objc public var alertViewMinHeight: CGFloat  = 150
+    @objc open var alertViewMinHeight: CGFloat  = 150
     
     public override init() {
         super.init()

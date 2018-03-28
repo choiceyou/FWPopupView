@@ -7,3 +7,10 @@
 //
 
 import Foundation
+
+class Test: NSObject {
+    
+    func setupA() {
+        print("11111")
+    }
+}

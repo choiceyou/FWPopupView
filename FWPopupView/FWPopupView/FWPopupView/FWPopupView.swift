@@ -30,7 +30,7 @@ public typealias FWPopupVoidBlock = () -> Void
 let FWPopupViewHideAllNotification = "FWPopupViewHideAllNotification"
 
 
-@objc open class FWPopupView: UIView {
+open class FWPopupView: UIView {
     
     /// 1、当外部没有传入该参数时，默认为UIWindow的根控制器的视图，即表示弹窗放在FWPopupWindow上，此时若FWPopupWindow.sharedInstance.touchWildToHide = true表示弹窗视图外部可点击；2、当外部传入该参数时，该视图为传入的UIView，即表示弹窗放在传入的UIView上；
     @objc public var attachedView = FWPopupWindow.sharedInstance.attachView()
@@ -71,6 +71,7 @@ let FWPopupViewHideAllNotification = "FWPopupViewHideAllNotification"
     
     @objc public var withKeyboard = false
     
+    
     private var showCompletionBlock: FWPopupCompletionBlock?
     
     private var hideCompletionBlock: FWPopupCompletionBlock?
@@ -95,11 +96,11 @@ let FWPopupViewHideAllNotification = "FWPopupViewHideAllNotification"
         NotificationCenter.default.removeObserver(self)
     }
     
-    open func showKeyboard() {
+    @objc open func showKeyboard() {
         
     }
     
-    open func hideKeyboard() {
+    @objc open func hideKeyboard() {
         
     }
 }
@@ -114,7 +115,7 @@ extension FWPopupView {
         }
     }
     
-    @objc func show(completionBlock:@escaping FWPopupCompletionBlock) {
+    @objc open func show(completionBlock:@escaping FWPopupCompletionBlock) {
         
         self.showCompletionBlock = completionBlock
         
@@ -137,7 +138,7 @@ extension FWPopupView {
         }
     }
     
-    @objc func hide(completionBlock:@escaping FWPopupCompletionBlock) {
+    @objc open func hide(completionBlock:@escaping FWPopupCompletionBlock) {
         
         self.hideCompletionBlock = completionBlock
         
@@ -158,7 +159,7 @@ extension FWPopupView {
         NotificationCenter.default.post(name: NSNotification.Name(rawValue: FWPopupViewHideAllNotification), object: FWPopupView.self)
     }
     
-    @objc func notifyHideAll(notification: Notification) {
+    @objc open func notifyHideAll(notification: Notification) {
         
         if self.isKind(of: notification.object as! AnyClass) {
             self.hide()
@@ -341,7 +342,7 @@ extension FWPopupView {
 
 
 // MARK: - FWSheetView的相关属性
-@objc open class FWPopupViewProperty: NSObject {
+open class FWPopupViewProperty: NSObject {
     
     // 单个点击按钮的高度
     @objc public var buttonHeight: CGFloat        = 48.0

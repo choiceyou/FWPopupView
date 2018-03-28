@@ -12,7 +12,7 @@ import UIKit
 /// 确定回调
 public typealias FWDateViewConfirmBlock = (_ datePicker: UIDatePicker) -> Void
 
-@objc open class FWDateView: FWPopupView {
+open class FWDateView: FWPopupView {
     
     @objc public let property = FWDateViewProperty()
     
@@ -90,7 +90,7 @@ extension FWDateView {
 }
 
 
-@objc open class FWDateViewProperty : FWPopupViewProperty {
+open class FWDateViewProperty : FWPopupViewProperty {
     
     // UIDatePicker的高度
     @objc public var datePickerHeight: CGFloat = 240
