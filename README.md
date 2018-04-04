@@ -25,7 +25,7 @@ pod 'FWPopupView'<br>
 /// - Returns: self
 open class func alert(title: String,
                      detail: String,
-               confirmBlock:@escaping FWPopupItemHandler) -> FWAlertView
+               confirmBlock: @escaping FWPopupItemHandler) -> FWAlertView
                           
 ```
 
@@ -75,8 +75,8 @@ FWAlertView *alertView = [FWAlertView alertWithTitle: @"标题"
 [alertView show];
 ```
 ```oc
-FWSheetView *sheetView = [FWSheetView sheetWithTitle:@"标题" 
-                                          itemTitles:@[@"Sheet0", @"Sheet1", @"Sheet2", @"Sheet3"] 
+FWSheetView *sheetView = [FWSheetView sheetWithTitle: @"标题" 
+                                          itemTitles: @[@"Sheet0", @"Sheet1", @"Sheet2", @"Sheet3"] 
                                            itemBlock:^(NSInteger index) {
     NSLog(@"Sheet：点击了第 %ld 个按钮", (long)index);
 } cancenlBlock:^{
