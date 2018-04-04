@@ -10,7 +10,7 @@
 
 ```cocoaPods
 pod 'FWPopupView'<br>
-注意：如出现 [!] Unable to find a specification for 'FWPopupView' 错误，可执行 pod repo update 命令。                        
+注意：如出现 [!] Unable to find a specification for 'FWPopupView' 错误，可执行 pod repo update 命令。
 ```
 
 
@@ -54,24 +54,30 @@ let alertView = FWAlertView.alert(title: "标题", detail: "描述描述描述�
 alertView.show()
 ```
 ```python
-let sheetView = FWSheetView.sheet(title: "测试", itemTitles: ["Sheet0", "Sheet1", "Sheet2", "Sheet3"], itemBlock: { (index) in
-                print("Sheet：点击了第\(index)个按钮")
-            }, cancenlBlock: {
-                print("点击了取消")
-            })
+let sheetView = FWSheetView.sheet(title: "测试", 
+                             itemTitles: ["Sheet0", "Sheet1", "Sheet2", "Sheet3"], 
+                              itemBlock: { (index) in
+    print("Sheet：点击了第\(index)个按钮")
+}, cancenlBlock: {
+    print("点击了取消")
+})
 sheetView.show()
 ```
 
 
 ### OC：<br>
 ```oc
-FWAlertView *alertView = [FWAlertView alertWithTitle:@"标题" detail:@"描述描述描述描述" confirmBlock:^(NSInteger index) {
+FWAlertView *alertView = [FWAlertView alertWithTitle: @"标题" 
+                                              detail: @"描述描述描述描述" 
+                                        confirmBlock:^(NSInteger index) {
     NSLog(@"点击了确定");
 }];
 [alertView show];
 ```
 ```oc
-FWSheetView *sheetView = [FWSheetView sheetWithTitle:@"标题" itemTitles:@[@"Sheet0", @"Sheet1", @"Sheet2", @"Sheet3"] itemBlock:^(NSInteger index) {
+FWSheetView *sheetView = [FWSheetView sheetWithTitle:@"标题" 
+                                          itemTitles:@[@"Sheet0", @"Sheet1", @"Sheet2", @"Sheet3"] 
+                                           itemBlock:^(NSInteger index) {
     NSLog(@"Sheet：点击了第 %ld 个按钮", (long)index);
 } cancenlBlock:^{
     NSLog(@"点击了取消");
