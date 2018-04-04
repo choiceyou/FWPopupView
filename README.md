@@ -9,7 +9,7 @@
 ## 支持pod导入：
 
 ```cocoaPods
-pod 'FWPopupView'<br>
+pod 'FWPopupView'
 注意：如出现 [!] Unable to find a specification for 'FWPopupView' 错误，可执行 pod repo update 命令。
 ```
 
