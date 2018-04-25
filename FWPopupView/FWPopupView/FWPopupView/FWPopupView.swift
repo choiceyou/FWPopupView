@@ -173,26 +173,30 @@ extension FWPopupView {
     private func alertShowAnimation() -> FWPopupBlock {
         
         let popupBlock = { [weak self] (popupView: FWPopupView) in
-            if self?.superview == nil {
-                self?.attachedView?.fwBackgroundView.addSubview(self!)
-                self?.center = (self?.attachedView?.center)!
-                if (self?.withKeyboard)! {
-                    self?.frame.origin.y -= 216/2
-                }
-                self?.layoutIfNeeded()
-            }
-            self?.layer.transform = CATransform3DMakeScale(1.2, 1.2, 1.0)
-            self?.alpha = 0.0
             
-            UIView.animate(withDuration: (self?.animationDuration)!, delay: 0.0, options: [.curveEaseOut, .beginFromCurrentState], animations: {
+            guard let strongSelf = self else {
+                return
+            }
+            if strongSelf.superview == nil {
+                strongSelf.attachedView?.fwBackgroundView.addSubview(strongSelf)
+                strongSelf.center = (strongSelf.attachedView?.center)!
+                if strongSelf.withKeyboard {
+                    strongSelf.frame.origin.y -= 216/2
+                }
+                strongSelf.layoutIfNeeded()
+            }
+            strongSelf.layer.transform = CATransform3DMakeScale(1.2, 1.2, 1.0)
+            strongSelf.alpha = 0.0
+            
+            UIView.animate(withDuration: strongSelf.animationDuration, delay: 0.0, options: [.curveEaseOut, .beginFromCurrentState], animations: {
                 
-                self?.layer.transform = CATransform3DIdentity
-                self?.alpha = 1.0
+                strongSelf.layer.transform = CATransform3DIdentity
+                strongSelf.alpha = 1.0
                 
             }, completion: { (finished) in
                 
-                if self?.showCompletionBlock != nil {
-                    self?.showCompletionBlock!(self!, finished)
+                if strongSelf.showCompletionBlock != nil {
+                    strongSelf.showCompletionBlock!(strongSelf, finished)
                 }
                 
             })
@@ -205,17 +209,20 @@ extension FWPopupView {
         
         let popupBlock:FWPopupBlock = { [weak self] popupView in
             
-            UIView.animate(withDuration: (self?.animationDuration)!, delay: 0.0, options: [.curveEaseIn, .beginFromCurrentState], animations: {
+            guard let strongSelf = self else {
+                return
+            }
+            UIView.animate(withDuration: strongSelf.animationDuration, delay: 0.0, options: [.curveEaseIn, .beginFromCurrentState], animations: {
                 
-                self?.alpha = 0.0
+                strongSelf.alpha = 0.0
                 
             }, completion: { (finished) in
                 
                 if finished {
-                    self?.removeFromSuperview()
+                    strongSelf.removeFromSuperview()
                 }
-                if self?.hideCompletionBlock != nil {
-                    self?.hideCompletionBlock!(self!, finished)
+                if strongSelf.hideCompletionBlock != nil {
+                    strongSelf.hideCompletionBlock!(strongSelf, finished)
                 }
                 
             })
@@ -227,20 +234,24 @@ extension FWPopupView {
     private func sheetShowAnimation() -> FWPopupBlock {
         
         let popupBlock:FWPopupBlock = { [weak self] popupView in
-            if self?.superview == nil {
-                self?.attachedView?.fwBackgroundView.addSubview(self!)
-                self?.frame.origin.y =  UIScreen.main.bounds.height - (self?.frame.height)!
-                self?.layoutIfNeeded()
+            
+            guard let strongSelf = self else {
+                return
+            }
+            if strongSelf.superview == nil {
+                strongSelf.attachedView?.fwBackgroundView.addSubview(strongSelf)
+                strongSelf.frame.origin.y =  UIScreen.main.bounds.height - strongSelf.frame.height
+                strongSelf.layoutIfNeeded()
             }
             
-            UIView.animate(withDuration: (self?.animationDuration)!, delay: 0.0, options: [.curveEaseOut, .beginFromCurrentState], animations: {
+            UIView.animate(withDuration: strongSelf.animationDuration, delay: 0.0, options: [.curveEaseOut, .beginFromCurrentState], animations: {
                 
-                self?.superview?.layoutIfNeeded()
+                strongSelf.superview?.layoutIfNeeded()
                 
             }, completion: { (finished) in
                 
-                if self?.showCompletionBlock != nil {
-                    self?.showCompletionBlock!(self!, finished)
+                if strongSelf.showCompletionBlock != nil {
+                    strongSelf.showCompletionBlock!(strongSelf, finished)
                 }
                 
             })
@@ -253,17 +264,20 @@ extension FWPopupView {
         
         let popupBlock:FWPopupBlock = { [weak self] popupView in
             
-            UIView.animate(withDuration: (self?.animationDuration)!, delay: 0.0, options: [.curveEaseIn, .beginFromCurrentState], animations: {
+            guard let strongSelf = self else {
+                return
+            }
+            UIView.animate(withDuration: strongSelf.animationDuration, delay: 0.0, options: [.curveEaseIn, .beginFromCurrentState], animations: {
                 
-                self?.superview?.layoutIfNeeded()
+                strongSelf.superview?.layoutIfNeeded()
                 
             }, completion: { (finished) in
                 
                 if finished {
-                    self?.removeFromSuperview()
+                    strongSelf.removeFromSuperview()
                 }
-                if self?.hideCompletionBlock != nil {
-                    self?.hideCompletionBlock!(self!, finished)
+                if strongSelf.hideCompletionBlock != nil {
+                    strongSelf.hideCompletionBlock!(strongSelf, finished)
                 }
                 
             })
@@ -304,17 +318,20 @@ extension FWPopupView {
         
         let popupBlock:FWPopupBlock = { [weak self] popupView in
             
-            UIView.animate(withDuration: (self?.animationDuration)!, delay: 0.0, options: [.curveEaseIn, .beginFromCurrentState], animations: {
+            guard let strongSelf = self else {
+                return
+            }
+            UIView.animate(withDuration: strongSelf.animationDuration, delay: 0.0, options: [.curveEaseIn, .beginFromCurrentState], animations: {
                 
-                self?.superview?.layoutIfNeeded()
+                strongSelf.superview?.layoutIfNeeded()
                 
             }, completion: { (finished) in
                 
                 if finished {
-                    self?.removeFromSuperview()
+                    strongSelf.removeFromSuperview()
                 }
-                if self?.hideCompletionBlock != nil {
-                    self?.hideCompletionBlock!(self!, finished)
+                if strongSelf.hideCompletionBlock != nil {
+                    strongSelf.hideCompletionBlock!(strongSelf, finished)
                 }
                 
             })
