@@ -101,5 +101,5 @@ FWSheetView *sheetView = [FWSheetView sheetWithTitle: @"标题"
 
 ## 结尾语：
 
-> * 使用过程中有任何问题或者新的需求都可以issues我哦；
-> * 欢迎关注本人更多的UI库，谢谢；
+- 使用过程中发现bug请issues或（QQ群：670698309）；
+- 有新的需求欢迎提出；
