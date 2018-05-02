@@ -42,7 +42,7 @@ open class FWPopupItem: NSObject {
     
     @objc open var itemHandler: FWPopupItemHandler?
     
-    @objc public init(title: String, itemType: FWItemType, isCancel: Bool, handler: @escaping FWPopupItemHandler) {
+    @objc public init(title: String, itemType: FWItemType, isCancel: Bool, handler: FWPopupItemHandler? = nil) {
         self.title = title
         self.itemType = itemType
         self.isCancel = isCancel

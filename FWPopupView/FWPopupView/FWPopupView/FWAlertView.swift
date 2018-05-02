@@ -40,7 +40,7 @@ open class FWAlertView: FWPopupView {
     ///   - detail: 描述
     ///   - confirmBlock: 确定按钮回调
     /// - Returns: self
-    @objc open class func alert(title: String, detail: String, confirmBlock:@escaping FWPopupItemHandler) -> FWAlertView {
+    @objc open class func alert(title: String, detail: String, confirmBlock: FWPopupItemHandler? = nil) -> FWAlertView {
         
         let alertView = FWAlertView()
         let items = [FWPopupItem(title: alertView.property.defaultTextOK, itemType: .normal, isCancel: false, handler: confirmBlock)]
@@ -56,7 +56,7 @@ open class FWAlertView: FWPopupView {
     ///   - confirmBlock: 确定按钮回调
     ///   - cancelBlock: 取消按钮回调
     /// - Returns: self
-    @objc open class func alert(title: String, detail: String, confirmBlock:@escaping FWPopupItemHandler, cancelBlock:@escaping FWPopupItemHandler) -> FWAlertView {
+    @objc open class func alert(title: String, detail: String, confirmBlock: FWPopupItemHandler? = nil, cancelBlock: FWPopupItemHandler? = nil) -> FWAlertView {
         
         let alertView = FWAlertView()
         let items = [FWPopupItem(title: alertView.property.defaultTextCancel, itemType: .normal, isCancel: true, handler: cancelBlock),

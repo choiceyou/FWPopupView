@@ -27,7 +27,7 @@ open class FWSheetView: FWPopupView {
     ///   - itemBlock: 点击回调
     ///   - cancenlBlock: 取消按钮回调
     /// - Returns: self
-    @objc open class func sheet(title: String?, itemTitles: [String], itemBlock:@escaping FWPopupItemHandler, cancenlBlock:@escaping FWPopupVoidBlock) -> FWSheetView {
+    @objc open class func sheet(title: String?, itemTitles: [String], itemBlock: FWPopupItemHandler? = nil, cancenlBlock: FWPopupVoidBlock? = nil) -> FWSheetView {
         
         let sheetView = FWSheetView()
         sheetView.setupUI(title: title, itemTitles: itemTitles, itemBlock:itemBlock, cancenlBlock: cancenlBlock)
@@ -43,7 +43,7 @@ open class FWSheetView: FWPopupView {
     ///   - cancenlBlock: 取消按钮回调
     ///   - property: FWSheetView的相关属性
     /// - Returns: self
-    @objc open class func sheet(title: String?, itemTitles: [String], itemBlock:@escaping FWPopupItemHandler, cancenlBlock:@escaping FWPopupVoidBlock, property: FWSheetViewProperty?) -> FWSheetView {
+    @objc open class func sheet(title: String?, itemTitles: [String], itemBlock: FWPopupItemHandler? = nil, cancenlBlock: FWPopupVoidBlock? = nil, property: FWSheetViewProperty?) -> FWSheetView {
         
         let sheetView = FWSheetView()
         if property != nil {
@@ -56,7 +56,7 @@ open class FWSheetView: FWPopupView {
 
 extension FWSheetView {
     
-    private func setupUI(title: String?, itemTitles: [String], itemBlock:@escaping FWPopupItemHandler, cancenlBlock:@escaping FWPopupVoidBlock) {
+    private func setupUI(title: String?, itemTitles: [String], itemBlock: FWPopupItemHandler? = nil, cancenlBlock: FWPopupVoidBlock? = nil) {
         
         if itemTitles.count == 0 {
             return
@@ -69,7 +69,9 @@ extension FWSheetView {
         self.animationDuration = 0.3
         
         let itemClickBlock: FWPopupItemHandler = { (index) in
-            itemBlock(index)
+            if itemBlock != nil {
+                itemBlock!(index)
+            }
         }
         for title in itemTitles {
             self.actionItemArray.append(FWPopupItem(title: title, itemType: .normal, isCancel: true, handler: itemClickBlock))
@@ -116,7 +118,9 @@ extension FWSheetView {
         currentMaxY = btnContrainerView.frame.maxY
         
         let block: FWPopupItemHandler = { (index) in
-            cancenlBlock()
+            if cancenlBlock != nil {
+                cancenlBlock!()
+            }
         }
         
         var tmpIndex = 0

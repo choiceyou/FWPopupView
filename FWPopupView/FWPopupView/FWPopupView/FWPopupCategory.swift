@@ -61,7 +61,7 @@ extension UIView {
         get {
             let color = objc_getAssociatedObject(self, fwBackgroundViewColorKey) as? UIColor
             guard color != nil else {
-                return UIColor(white: 0, alpha: 0.6)
+                return UIColor(white: 0, alpha: 0.5)
             }
             return color!
         }

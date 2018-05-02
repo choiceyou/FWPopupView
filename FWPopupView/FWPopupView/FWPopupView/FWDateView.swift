@@ -24,7 +24,7 @@ open class FWDateView: FWPopupView {
     private var confirmBlock: FWDateViewConfirmBlock?
     private var cancelBlock: FWPopupVoidBlock?
     
-    @objc open class func date(confirmBlock:@escaping FWDateViewConfirmBlock, cancelBlock:@escaping FWPopupVoidBlock) -> FWDateView {
+    @objc open class func date(confirmBlock: FWDateViewConfirmBlock? = nil, cancelBlock: FWPopupVoidBlock? = nil) -> FWDateView {
         
         let dateView = FWDateView()
         dateView.setupUI(confirmBlock: confirmBlock, cancelBlock: cancelBlock)
@@ -42,7 +42,7 @@ open class FWDateView: FWPopupView {
 
 extension FWDateView {
     
-    private func setupUI(confirmBlock:@escaping FWDateViewConfirmBlock, cancelBlock:@escaping FWPopupVoidBlock) {
+    private func setupUI(confirmBlock: FWDateViewConfirmBlock? = nil, cancelBlock: FWPopupVoidBlock? = nil) {
         
         self.backgroundColor = self.property.vbackgroundColor
         self.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: self.property.datePickerHeight + self.property.btnHeight)
@@ -79,9 +79,9 @@ extension FWDateView {
     @objc private func btnAction(_ sender: Any) {
         
         let btn = sender as! UIButton
-        if btn.tag == 0 {
+        if btn.tag == 0 && self.cancelBlock != nil {
             self.cancelBlock!()
-        } else {
+        } else if btn.tag == 1 && self.confirmBlock != nil {
             self.confirmBlock!(self.datePicker)
         }
         

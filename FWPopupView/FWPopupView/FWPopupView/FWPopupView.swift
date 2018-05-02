@@ -22,7 +22,7 @@ import UIKit
 
 /// 显示、隐藏回调
 public typealias FWPopupBlock = (_ popupView: FWPopupView) -> Void
-/// 显示、隐藏完成回调
+/// 显示、隐藏完成回调，某些场景下可能会用到
 public typealias FWPopupCompletionBlock = (_ popupView: FWPopupView, _ isCompletion: Bool) -> Void
 /// 普通无参数回调
 public typealias FWPopupVoidBlock = () -> Void
@@ -63,7 +63,7 @@ open class FWPopupView: UIView {
         }
     }
     
-    @objc public var animationDuration: TimeInterval = 0.3 {
+    @objc public var animationDuration: TimeInterval = 0.2 {
         willSet {
             self.attachedView?.fwAnimationDuration = newValue
         }
@@ -115,7 +115,7 @@ extension FWPopupView {
         }
     }
     
-    @objc open func show(completionBlock:@escaping FWPopupCompletionBlock) {
+    @objc open func show(completionBlock: FWPopupCompletionBlock? = nil) {
         
         self.showCompletionBlock = completionBlock
         
@@ -138,7 +138,7 @@ extension FWPopupView {
         }
     }
     
-    @objc open func hide(completionBlock:@escaping FWPopupCompletionBlock) {
+    @objc open func hide(completionBlock: FWPopupCompletionBlock? = nil) {
         
         self.hideCompletionBlock = completionBlock
         
@@ -152,7 +152,9 @@ extension FWPopupView {
         }
         
         let hideAnimation = self.hideAnimation
-        hideAnimation!(self)
+        if hideAnimation != nil {
+            hideAnimation!(self)
+        }
     }
     
     @objc open class func hideAll() {
@@ -164,6 +166,13 @@ extension FWPopupView {
         if self.isKind(of: notification.object as! AnyClass) {
             self.hide()
         }
+    }
+    
+    /// 弹窗是否隐藏
+    ///
+    /// - Returns: 是否隐藏
+    @objc open class func isPopupViewHiden() -> Bool {
+        return FWPopupWindow.sharedInstance.isHidden
     }
 }
 
@@ -240,12 +249,13 @@ extension FWPopupView {
             }
             if strongSelf.superview == nil {
                 strongSelf.attachedView?.fwBackgroundView.addSubview(strongSelf)
-                strongSelf.frame.origin.y =  UIScreen.main.bounds.height - strongSelf.frame.height
-                strongSelf.layoutIfNeeded()
+                strongSelf.frame.origin.y =  UIScreen.main.bounds.height
             }
             
-            UIView.animate(withDuration: strongSelf.animationDuration, delay: 0.0, options: [.curveEaseOut, .beginFromCurrentState], animations: {
+            UIView.animate(withDuration: strongSelf.animationDuration / 2, delay: 0.0, options: [.curveEaseOut, .beginFromCurrentState], animations: {
                 
+                strongSelf.frame.origin.y =  UIScreen.main.bounds.height - strongSelf.frame.height
+                strongSelf.layoutIfNeeded()
                 strongSelf.superview?.layoutIfNeeded()
                 
             }, completion: { (finished) in
@@ -267,8 +277,9 @@ extension FWPopupView {
             guard let strongSelf = self else {
                 return
             }
-            UIView.animate(withDuration: strongSelf.animationDuration, delay: 0.0, options: [.curveEaseIn, .beginFromCurrentState], animations: {
+            UIView.animate(withDuration: strongSelf.animationDuration / 2, delay: 0.0, options: [.curveEaseIn, .beginFromCurrentState], animations: {
                 
+                strongSelf.frame.origin.y =  UIScreen.main.bounds.height
                 strongSelf.superview?.layoutIfNeeded()
                 
             }, completion: { (finished) in
@@ -358,7 +369,7 @@ extension FWPopupView {
 }
 
 
-// MARK: - FWSheetView的相关属性
+// MARK: - 弹窗的的相关配置属性
 open class FWPopupViewProperty: NSObject {
     
     // 单个点击按钮的高度
