@@ -34,7 +34,7 @@ open class FWSheetView: FWPopupView {
         return sheetView
     }
     
-    /// 类初始化方法
+    /// 类初始化方法，可设置Sheet相关属性
     ///
     /// - Parameters:
     ///   - title: 标题

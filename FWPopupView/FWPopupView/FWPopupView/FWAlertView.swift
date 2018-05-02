@@ -33,7 +33,7 @@ open class FWAlertView: FWPopupView {
     private var commponenetArray: [UIView] = []
     
     
-    /// 类初始化方法
+    /// 单个按钮的弹窗
     ///
     /// - Parameters:
     ///   - title: 标题
@@ -44,11 +44,11 @@ open class FWAlertView: FWPopupView {
         
         let alertView = FWAlertView()
         let items = [FWPopupItem(title: alertView.property.defaultTextOK, itemType: .normal, isCancel: false, handler: confirmBlock)]
-        alertView.setupUI(title: title, detail: detail, inputPlaceholder: nil, customView: nil, items: items)
+        alertView.setupUI(title: title, detail: detail, inputPlaceholder: nil, keyboardType: .default, customView: nil, items: items)
         return alertView
     }
     
-    /// 类初始化方法
+    /// 两个按钮的弹窗
     ///
     /// - Parameters:
     ///   - title: 标题
@@ -62,11 +62,11 @@ open class FWAlertView: FWPopupView {
         let items = [FWPopupItem(title: alertView.property.defaultTextCancel, itemType: .normal, isCancel: true, handler: cancelBlock),
                      FWPopupItem(title: alertView.property.defaultTextConfirm, itemType: .normal, isCancel: false, handler: confirmBlock)]
         
-        alertView.setupUI(title: title, detail: detail, inputPlaceholder: nil, customView: nil, items: items)
+        alertView.setupUI(title: title, detail: detail, inputPlaceholder: nil, keyboardType: .default, customView: nil, items: items)
         return alertView
     }
     
-    /// 类初始化方法
+    /// 可带输入框的弹窗
     ///
     /// - Parameters:
     ///   - title: 标题
@@ -74,14 +74,14 @@ open class FWAlertView: FWPopupView {
     ///   - inputPlaceholder: 输入框提示文字。注意：没有输入框时该参数必须要为nil，反之为空或者字符串即可
     ///   - items: 点击按钮项
     /// - Returns: self
-    @objc open class func alert(title: String, detail: String, inputPlaceholder: String?, items: [FWPopupItem]) -> FWAlertView {
+    @objc open class func alert(title: String, detail: String, inputPlaceholder: String?, keyboardType: UIKeyboardType, items: [FWPopupItem]) -> FWAlertView {
         
         let alertView = FWAlertView()
-        alertView.setupUI(title: title, detail: detail, inputPlaceholder: inputPlaceholder, customView: nil, items: items)
+        alertView.setupUI(title: title, detail: detail, inputPlaceholder: inputPlaceholder, keyboardType: keyboardType, customView: nil, items: items)
         return alertView
     }
     
-    /// 类初始化方法
+    /// 可带输入框、自定义视图的弹窗
     ///
     /// - Parameters:
     ///   - title: 标题
@@ -90,14 +90,14 @@ open class FWAlertView: FWPopupView {
     ///   - items: 点击按钮项
     ///   - customView: 自定义UI
     /// - Returns: self
-    @objc open class func alert(title: String, detail: String, inputPlaceholder: String?, customView: UIView?, items: [FWPopupItem]) -> FWAlertView {
+    @objc open class func alert(title: String, detail: String, inputPlaceholder: String?, keyboardType: UIKeyboardType, customView: UIView?, items: [FWPopupItem]) -> FWAlertView {
         
         let alertView = FWAlertView()
-        alertView.setupUI(title: title, detail: detail, inputPlaceholder: inputPlaceholder, customView: customView, items: items)
+        alertView.setupUI(title: title, detail: detail, inputPlaceholder: inputPlaceholder, keyboardType: keyboardType, customView: customView, items: items)
         return alertView
     }
     
-    /// 类初始化方法
+    /// 可带输入框、自定义视图的弹窗，可设置Alert相关属性
     ///
     /// - Parameters:
     ///   - title: 标题
@@ -107,13 +107,13 @@ open class FWAlertView: FWPopupView {
     ///   - customView: 自定义UI
     ///   - vProperty: FWAlertView的相关属性
     /// - Returns: self
-    @objc open class func alert(title: String, detail: String, inputPlaceholder: String?, customView: UIView?, items: [FWPopupItem], vProperty: FWAlertViewProperty?) -> FWAlertView {
+    @objc open class func alert(title: String, detail: String, inputPlaceholder: String?, keyboardType: UIKeyboardType, customView: UIView?, items: [FWPopupItem], vProperty: FWAlertViewProperty?) -> FWAlertView {
         
         let alertView = FWAlertView()
         if vProperty != nil {
             alertView.property = vProperty!
         }
-        alertView.setupUI(title: title, detail: detail, inputPlaceholder: inputPlaceholder, customView: customView, items: items)
+        alertView.setupUI(title: title, detail: detail, inputPlaceholder: inputPlaceholder, keyboardType: keyboardType, customView: customView, items: items)
         return alertView
     }
     
@@ -133,7 +133,7 @@ open class FWAlertView: FWPopupView {
 
 extension FWAlertView {
     
-    private func setupUI(title: String?, detail: String?, inputPlaceholder: String?, customView: UIView?, items: [FWPopupItem]) {
+    private func setupUI(title: String?, detail: String?, inputPlaceholder: String?, keyboardType: UIKeyboardType, customView: UIView?, items: [FWPopupItem]) {
         
         if items.count == 0 {
             return
@@ -213,6 +213,7 @@ extension FWAlertView {
             self.inputTF?.layer.borderColor = self.property.splitColor.cgColor
             self.inputTF?.layer.borderWidth = self.property.splitWidth
             self.inputTF?.layer.cornerRadius = self.property.cornerRadius
+            self.inputTF?.keyboardType = keyboardType
             
             currentMaxY = self.inputTF!.frame.maxY
             

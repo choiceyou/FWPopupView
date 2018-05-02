@@ -79,14 +79,14 @@ extension FWDemoViewController {
             let vProperty = FWAlertViewProperty()
             vProperty.detailColor = UIColor.red
             
-            let alertView = FWAlertView.alert(title: "标题", detail: "描述描述描述描述描述描述描述描述描述描述", inputPlaceholder: nil, customView: nil, items: items, vProperty: vProperty)
+            let alertView = FWAlertView.alert(title: "标题", detail: "描述描述描述描述描述描述描述描述描述描述", inputPlaceholder: nil, keyboardType: .default, customView: nil, items: items, vProperty: vProperty)
             alertView.show()
             break
         case 3:
             let items = [FWPopupItem(title: "取消", itemType: .normal, isCancel: true, handler: block),
                          FWPopupItem(title: "确定", itemType: .normal, isCancel: false, handler: block)]
             
-            let alertView = FWAlertView.alert(title: "标题", detail: "带输入框", inputPlaceholder: "请输入...", customView: nil, items: items)
+            let alertView = FWAlertView.alert(title: "标题", detail: "带输入框", inputPlaceholder: "请输入...", keyboardType: .default, customView: nil, items: items)
             print("点击了确定")
             alertView.show(completionBlock: { (popupView, isCompletion) in
                 print("点击了取消")
@@ -98,7 +98,7 @@ extension FWDemoViewController {
             // 注意：添加自定义的视图，需要设置确定的Frame值
             let customImageView = UIImageView(image: UIImage(named: "audio_bgm_4"))
             
-            let alertView = FWAlertView.alert(title: "标题", detail: "带自定义视图", inputPlaceholder: nil, customView: customImageView, items: items)
+            let alertView = FWAlertView.alert(title: "标题", detail: "带自定义视图", inputPlaceholder: nil, keyboardType: .default, customView: customImageView, items: items)
             print("点击了确定")
             alertView.show(completionBlock: { (popupView, isCompletion) in
                 print("点击了取消")
