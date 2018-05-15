@@ -26,6 +26,8 @@ pod 'FWPopupView'
 • v2.0.6 :
   1.原FWPopupItemHandler改为FWPopupItemClickedBlock，增加反馈当前弹窗参数；
   2.FWItemType加入参数canAutoHide：点击该按钮后会自动隐藏弹窗。这样子做能够适应更多的弹窗场景；
+• v2.0.7 :
+  1.支持单独设置某个按钮的文字、背景颜色；
 ```
 
 
