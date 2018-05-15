@@ -20,6 +20,8 @@ pod 'FWPopupView'
 1、v2.0.4：
 - 灰色背景默认值由原来的 alpha=0.6 改为 alpha=0.5；
 - 在原类初始化方法中添加输入框键盘类型参数：UIKeyboardType（鉴于方法可能跟着版本改动，所以建议封装使用）；
+2、v2.0.5：
+- 修复弹窗隐藏时未设置原window为keywindow的问题；
 
 
 
