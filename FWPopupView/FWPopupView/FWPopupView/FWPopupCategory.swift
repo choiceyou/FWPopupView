@@ -6,6 +6,15 @@
 //  Copyright © 2018年 xfg. All rights reserved.
 //
 
+/** ************************************************
+ 
+ github地址：https://github.com/choiceyou/FWPopupView
+ bug反馈、交流群：670698309
+ 
+ ***************************************************
+ */
+
+
 import Foundation
 import UIKit
 
@@ -138,11 +147,10 @@ extension UIView {
                 
                 if self == FWPopupWindow.sharedInstance.attachView() {
                     FWPopupWindow.sharedInstance.isHidden = true
-                    FWPopupWindow.sharedInstance.makeKey()
+                    UIApplication.shared.delegate!.window??.makeKey()
                 } else if self.isKind(of: UIWindow.self) {
                     self.isHidden = true
-                    let aa = self as! UIWindow
-                    aa.makeKey()
+                    UIApplication.shared.delegate!.window??.makeKey()
                 }
             }
             
