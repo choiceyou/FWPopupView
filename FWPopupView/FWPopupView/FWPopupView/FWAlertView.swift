@@ -291,10 +291,20 @@ extension FWAlertView {
                     }
                 }
             }
+            // 按钮背景颜色
+            if popupItem.itemBackgroundColor != nil {
+                btn.backgroundColor = popupItem.itemBackgroundColor
+            } else {
+                btn.backgroundColor = self.backgroundColor
+            }
+            // 按钮文字颜色
+            if popupItem.itemTitleColor != nil {
+                btn.setTitleColor(popupItem.itemTitleColor, for: .normal)
+            } else {
+                btn.setTitleColor(popupItem.highlight ? self.property.itemHighlightColor : self.property.itemNormalColor, for: .normal)
+            }
             
-            btn.backgroundColor = self.backgroundColor
             btn.setTitle(popupItem.title, for: .normal)
-            btn.setTitleColor(popupItem.highlight ? self.property.itemHighlightColor : self.property.itemNormalColor, for: .normal)
             btn.layer.borderWidth = self.property.splitWidth
             btn.layer.borderColor = self.property.splitColor.cgColor
             btn.setBackgroundImage(self.getImageWithColor(color: btn.backgroundColor!), for: .normal)

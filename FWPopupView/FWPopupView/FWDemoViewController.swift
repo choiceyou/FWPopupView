@@ -14,7 +14,7 @@ class FWDemoViewController: UITableViewController {
     var alertImage: FWAlertView!
     
     
-    var titleArray = ["Alert - 单个按钮", "Alert - 两个按钮", "Alert - 多个按钮", "Alert - 带输入框", "Alert - 带自定义视图", "Sheet - 少量Item", "Sheet - 大量Item", "Custom - 自定义弹窗"]
+    var titleArray = ["Alert - 单个按钮", "Alert - 两个按钮", "Alert - 两个按钮（修改参数）", "Alert - 多个按钮", "Alert - 带输入框", "Alert - 带自定义视图", "Sheet - 少量Item", "Sheet - 大量Item", "Custom - 自定义弹窗"]
     
     let block: FWPopupItemClickedBlock = { (popupView, index) in
         print("AlertView：点击了第\(index)个按钮")
@@ -75,24 +75,38 @@ extension FWDemoViewController {
             })
             break
         case 2:
-            let items = [FWPopupItem(title: "取消", itemType: .normal, isCancel: true, canAutoHide: true, itemClickedBlock: block),
-                         FWPopupItem(title: "确定", itemType: .normal, isCancel: false, canAutoHide: true, itemClickedBlock: block),
-                         FWPopupItem(title: "其他", itemType: .normal, isCancel: false, canAutoHide: true, itemClickedBlock: block)]
+            // 注意：此时“确定”按钮是不让按钮自己隐藏的
+            let items = [FWPopupItem(title: "取消", itemType: .normal, isCancel: true, canAutoHide: true, itemTitleColor: kPV_RGBA(r: 141, g: 151, b: 163, a: 1.0), itemBackgroundColor: nil, itemClickedBlock: block),
+                         FWPopupItem(title: "确定", itemType: .normal, isCancel: false, canAutoHide: true, itemTitleColor: kPV_RGBA(r: 29, g: 150, b: 227, a: 1.0), itemBackgroundColor: nil, itemClickedBlock: block)]
             
+            // 主要演示修改参数
             let vProperty = FWAlertViewProperty()
-            vProperty.detailColor = UIColor.red
+            vProperty.vwidth = max(UIScreen.main.bounds.width * 0.65, 275)
+            vProperty.titleFontSize = 17.0
+            vProperty.detailFontSize = 14.0
+            vProperty.detailColor = kPV_RGBA(r: 141, g: 151, b: 163, a: 1.0)
+            vProperty.buttonFontSize = 14.0
+            // 还有很多参数可设置...
             
             let alertView = FWAlertView.alert(title: "标题", detail: "描述描述描述描述描述描述描述描述描述描述", inputPlaceholder: nil, keyboardType: .default, customView: nil, items: items, vProperty: vProperty)
             alertView.show()
             break
         case 3:
             let items = [FWPopupItem(title: "取消", itemType: .normal, isCancel: true, canAutoHide: true, itemClickedBlock: block),
+                         FWPopupItem(title: "确定", itemType: .normal, isCancel: false, canAutoHide: true, itemClickedBlock: block),
+                         FWPopupItem(title: "其他", itemType: .normal, isCancel: false, canAutoHide: true, itemClickedBlock: block)]
+            
+            let alertView = FWAlertView.alert(title: "标题", detail: "描述描述描述描述描述描述描述描述描述描述", inputPlaceholder: nil, keyboardType: .default, customView: nil, items: items)
+            alertView.show()
+            break
+        case 4:
+            let items = [FWPopupItem(title: "取消", itemType: .normal, isCancel: true, canAutoHide: true, itemClickedBlock: block),
                          FWPopupItem(title: "确定", itemType: .normal, isCancel: false, canAutoHide: true, itemClickedBlock: block)]
             
             let alertView = FWAlertView.alert(title: "标题", detail: "带输入框", inputPlaceholder: "请输入...", keyboardType: .default, customView: nil, items: items)
             alertView.show()
             break
-        case 4:
+        case 5:
             let block2: FWPopupItemClickedBlock = { [weak self] (popupView, index) in
                 
                 if index == 1 {
@@ -112,7 +126,7 @@ extension FWDemoViewController {
                 print("显示完成")
             })
             break
-        case 5:
+        case 6:
             let items = ["Sheet0", "Sheet1", "Sheet2", "Sheet3"]
             
             let sheetView = FWSheetView.sheet(title: "标题", itemTitles: items, itemBlock: { (popupView, index) in
@@ -122,7 +136,7 @@ extension FWDemoViewController {
             })
             sheetView.show()
             break
-        case 6:
+        case 7:
             let items = ["Sheet0", "Sheet1", "Sheet2", "Sheet3", "Sheet4", "Sheet5", "Sheet6", "Sheet7", "Sheet8", "Sheet9", "Sheet10", "Sheet11", "Sheet12", "Sheet13", "Sheet14"]
             
             let sheetView = FWSheetView.sheet(title: "标题", itemTitles: items, itemBlock: { (popupView, index) in
@@ -132,7 +146,7 @@ extension FWDemoViewController {
             })
             sheetView.show()
             break
-        case 7:
+        case 8:
             let dateView = FWDateView.date(confirmBlock: { (datePicker) in
                 print("点击了 FWDateView 的确定")
             }, cancelBlock: {
