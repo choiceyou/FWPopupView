@@ -6,6 +6,15 @@
 //  Copyright © 2018年 xfg. All rights reserved.
 //
 
+/** ************************************************
+ 
+ github地址：https://github.com/choiceyou/FWPopupView
+ bug反馈、交流群：670698309
+ 
+ ***************************************************
+ */
+
+
 import Foundation
 import UIKit
 
@@ -16,7 +25,7 @@ public func kPV_RGBA (r:CGFloat, g:CGFloat, b:CGFloat, a:CGFloat) -> UIColor {
 open class FWPopupWindow: UIWindow, UIGestureRecognizerDelegate {
     
     /// 单例
-    open static let sharedInstance = FWPopupWindow()
+    @objc open static let sharedInstance = FWPopupWindow()
     
     // default is NO. When YES, popup views will be hidden when user touch the translucent background.
     @objc var touchWildToHide: Bool = false
@@ -61,7 +70,7 @@ extension FWPopupWindow {
         return touch.view == self.attachView()?.fwBackgroundView
     }
     
-    func attachView() -> UIView? {
+    public func attachView() -> UIView? {
         if self.rootViewController != nil {
             return self.rootViewController?.view
         } else {

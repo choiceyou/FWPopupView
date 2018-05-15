@@ -14,14 +14,8 @@
 		495D5E45206A4695008F8545 /* FWPopupView_OCTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 495D5E44206A4695008F8545 /* FWPopupView_OCTests.m */; };
 		495D5E50206A4695008F8545 /* FWPopupView_OCUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 495D5E4F206A4695008F8545 /* FWPopupView_OCUITests.m */; };
 		495D5E5F206A46C8008F8545 /* Test.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495D5E5E206A46C8008F8545 /* Test.swift */; };
-		495D5E68206A46D9008F8545 /* FWPopupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495D5E61206A46D9008F8545 /* FWPopupView.swift */; };
-		495D5E69206A46D9008F8545 /* FWSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495D5E62206A46D9008F8545 /* FWSheetView.swift */; };
-		495D5E6A206A46D9008F8545 /* FWPopupCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495D5E63206A46D9008F8545 /* FWPopupCategory.swift */; };
-		495D5E6B206A46D9008F8545 /* FWPopupItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495D5E64206A46D9008F8545 /* FWPopupItem.swift */; };
-		495D5E6C206A46D9008F8545 /* FWAlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495D5E65206A46D9008F8545 /* FWAlertView.swift */; };
-		495D5E6D206A46D9008F8545 /* FWDateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495D5E66206A46D9008F8545 /* FWDateView.swift */; };
-		495D5E6E206A46D9008F8545 /* FWPopupWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495D5E67206A46D9008F8545 /* FWPopupWindow.swift */; };
 		495D5E71206A46E9008F8545 /* FWDemoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 495D5E70206A46E9008F8545 /* FWDemoViewController.m */; };
+		DC65B6AD01B25393FC8E6323 /* Pods_FWPopupView_OC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03BB08F72D0D257361AC20D3 /* Pods_FWPopupView_OC.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -42,6 +36,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		03BB08F72D0D257361AC20D3 /* Pods_FWPopupView_OC.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FWPopupView_OC.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		495D5E28206A4695008F8545 /* FWPopupView_OC.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FWPopupView_OC.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		495D5E2B206A4695008F8545 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		495D5E2C206A4695008F8545 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -57,15 +52,12 @@
 		495D5E51206A4695008F8545 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		495D5E5D206A46C8008F8545 /* FWPopupView_OC-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "FWPopupView_OC-Bridging-Header.h"; sourceTree = "<group>"; };
 		495D5E5E206A46C8008F8545 /* Test.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Test.swift; sourceTree = "<group>"; };
-		495D5E61206A46D9008F8545 /* FWPopupView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FWPopupView.swift; sourceTree = "<group>"; };
-		495D5E62206A46D9008F8545 /* FWSheetView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FWSheetView.swift; sourceTree = "<group>"; };
-		495D5E63206A46D9008F8545 /* FWPopupCategory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FWPopupCategory.swift; sourceTree = "<group>"; };
-		495D5E64206A46D9008F8545 /* FWPopupItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FWPopupItem.swift; sourceTree = "<group>"; };
-		495D5E65206A46D9008F8545 /* FWAlertView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FWAlertView.swift; sourceTree = "<group>"; };
-		495D5E66206A46D9008F8545 /* FWDateView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FWDateView.swift; sourceTree = "<group>"; };
-		495D5E67206A46D9008F8545 /* FWPopupWindow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FWPopupWindow.swift; sourceTree = "<group>"; };
 		495D5E6F206A46E9008F8545 /* FWDemoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FWDemoViewController.h; sourceTree = "<group>"; };
 		495D5E70206A46E9008F8545 /* FWDemoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FWDemoViewController.m; sourceTree = "<group>"; };
+		604AAD4F1FB3DE7AEBDA14F8 /* Pods-FWPopupView_OC.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FWPopupView_OC.debug.xcconfig"; path = "Pods/Target Support Files/Pods-FWPopupView_OC/Pods-FWPopupView_OC.debug.xcconfig"; sourceTree = "<group>"; };
+		61F5B1CCAF3BD049ACBFADE2 /* Pods_FWPopupView_OCUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FWPopupView_OCUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		6CCD887969761536C01A0E2B /* Pods-FWPopupView_OC.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FWPopupView_OC.release.xcconfig"; path = "Pods/Target Support Files/Pods-FWPopupView_OC/Pods-FWPopupView_OC.release.xcconfig"; sourceTree = "<group>"; };
+		9811B543FC2CFA6C181C66C6 /* Pods_FWPopupView_OCTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FWPopupView_OCTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -73,6 +65,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DC65B6AD01B25393FC8E6323 /* Pods_FWPopupView_OC.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -98,11 +91,12 @@
 			children = (
 				495D5E5E206A46C8008F8545 /* Test.swift */,
 				495D5E5D206A46C8008F8545 /* FWPopupView_OC-Bridging-Header.h */,
-				495D5E60206A46D9008F8545 /* PopupView */,
 				495D5E2A206A4695008F8545 /* FWPopupView_OC */,
 				495D5E43206A4695008F8545 /* FWPopupView_OCTests */,
 				495D5E4E206A4695008F8545 /* FWPopupView_OCUITests */,
 				495D5E29206A4695008F8545 /* Products */,
+				B140CF27EBE0D8DC094279DB /* Pods */,
+				ADDC6A4BFE970A777B49A3FA /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -149,18 +143,23 @@
 			path = FWPopupView_OCUITests;
 			sourceTree = "<group>";
 		};
-		495D5E60206A46D9008F8545 /* PopupView */ = {
+		ADDC6A4BFE970A777B49A3FA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				495D5E61206A46D9008F8545 /* FWPopupView.swift */,
-				495D5E67206A46D9008F8545 /* FWPopupWindow.swift */,
-				495D5E63206A46D9008F8545 /* FWPopupCategory.swift */,
-				495D5E64206A46D9008F8545 /* FWPopupItem.swift */,
-				495D5E65206A46D9008F8545 /* FWAlertView.swift */,
-				495D5E66206A46D9008F8545 /* FWDateView.swift */,
-				495D5E62206A46D9008F8545 /* FWSheetView.swift */,
+				03BB08F72D0D257361AC20D3 /* Pods_FWPopupView_OC.framework */,
+				9811B543FC2CFA6C181C66C6 /* Pods_FWPopupView_OCTests.framework */,
+				61F5B1CCAF3BD049ACBFADE2 /* Pods_FWPopupView_OCUITests.framework */,
 			);
-			path = PopupView;
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		B140CF27EBE0D8DC094279DB /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				604AAD4F1FB3DE7AEBDA14F8 /* Pods-FWPopupView_OC.debug.xcconfig */,
+				6CCD887969761536C01A0E2B /* Pods-FWPopupView_OC.release.xcconfig */,
+			);
+			name = Pods;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -170,9 +169,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 495D5E54206A4695008F8545 /* Build configuration list for PBXNativeTarget "FWPopupView_OC" */;
 			buildPhases = (
+				6E8E2BFDC3ED6430C4B72F0C /* [CP] Check Pods Manifest.lock */,
 				495D5E24206A4695008F8545 /* Sources */,
 				495D5E25206A4695008F8545 /* Frameworks */,
 				495D5E26206A4695008F8545 /* Resources */,
+				0F2B77513F3960C0E29E1E40 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -291,19 +292,51 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		0F2B77513F3960C0E29E1E40 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-FWPopupView_OC/Pods-FWPopupView_OC-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/FWPopupView/FWPopupView.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FWPopupView.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-FWPopupView_OC/Pods-FWPopupView_OC-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		6E8E2BFDC3ED6430C4B72F0C /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-FWPopupView_OC-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		495D5E24206A4695008F8545 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				495D5E68206A46D9008F8545 /* FWPopupView.swift in Sources */,
 				495D5E3B206A4695008F8545 /* main.m in Sources */,
-				495D5E69206A46D9008F8545 /* FWSheetView.swift in Sources */,
-				495D5E6A206A46D9008F8545 /* FWPopupCategory.swift in Sources */,
-				495D5E6C206A46D9008F8545 /* FWAlertView.swift in Sources */,
-				495D5E6E206A46D9008F8545 /* FWPopupWindow.swift in Sources */,
-				495D5E6D206A46D9008F8545 /* FWDateView.swift in Sources */,
-				495D5E6B206A46D9008F8545 /* FWPopupItem.swift in Sources */,
 				495D5E71206A46E9008F8545 /* FWDemoViewController.m in Sources */,
 				495D5E2D206A4695008F8545 /* AppDelegate.m in Sources */,
 				495D5E5F206A46C8008F8545 /* Test.swift in Sources */,
@@ -459,6 +492,7 @@
 		};
 		495D5E55206A4695008F8545 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 604AAD4F1FB3DE7AEBDA14F8 /* Pods-FWPopupView_OC.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -478,6 +512,7 @@
 		};
 		495D5E56206A4695008F8545 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 6CCD887969761536C01A0E2B /* Pods-FWPopupView_OC.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;

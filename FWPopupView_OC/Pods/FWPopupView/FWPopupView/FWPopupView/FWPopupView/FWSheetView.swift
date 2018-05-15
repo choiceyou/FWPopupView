@@ -6,12 +6,21 @@
 //  Copyright © 2018年 xfg. All rights reserved.
 //
 
+/** ************************************************
+ 
+ github地址：https://github.com/choiceyou/FWPopupView
+ bug反馈、交流群：670698309
+ 
+ ***************************************************
+ */
+
+
 import Foundation
 import UIKit
 
-@objc open class FWSheetView: FWPopupView {
+open class FWSheetView: FWPopupView {
     
-    @objc public var property = FWSheetViewProperty()
+    @objc open var property = FWSheetViewProperty()
     
     private var actionItemArray: [FWPopupItem] = []
     
@@ -27,14 +36,14 @@ import UIKit
     ///   - itemBlock: 点击回调
     ///   - cancenlBlock: 取消按钮回调
     /// - Returns: self
-    @objc open class func sheet(title: String?, itemTitles: [String], itemBlock:@escaping FWPopupItemHandler, cancenlBlock:@escaping FWPopupVoidBlock) -> FWSheetView {
+    @objc open class func sheet(title: String?, itemTitles: [String], itemBlock: FWPopupItemClickedBlock? = nil, cancenlBlock: FWPopupVoidBlock? = nil) -> FWSheetView {
         
         let sheetView = FWSheetView()
         sheetView.setupUI(title: title, itemTitles: itemTitles, itemBlock:itemBlock, cancenlBlock: cancenlBlock)
         return sheetView
     }
     
-    /// 类初始化方法
+    /// 类初始化方法，可设置Sheet相关属性
     ///
     /// - Parameters:
     ///   - title: 标题
@@ -43,7 +52,7 @@ import UIKit
     ///   - cancenlBlock: 取消按钮回调
     ///   - property: FWSheetView的相关属性
     /// - Returns: self
-    @objc open class func sheet(title: String?, itemTitles: [String], itemBlock:@escaping FWPopupItemHandler, cancenlBlock:@escaping FWPopupVoidBlock, property: FWSheetViewProperty?) -> FWSheetView {
+    @objc open class func sheet(title: String?, itemTitles: [String], itemBlock: FWPopupItemClickedBlock? = nil, cancenlBlock: FWPopupVoidBlock? = nil, property: FWSheetViewProperty?) -> FWSheetView {
         
         let sheetView = FWSheetView()
         if property != nil {
@@ -56,7 +65,7 @@ import UIKit
 
 extension FWSheetView {
     
-    private func setupUI(title: String?, itemTitles: [String], itemBlock:@escaping FWPopupItemHandler, cancenlBlock:@escaping FWPopupVoidBlock) {
+    private func setupUI(title: String?, itemTitles: [String], itemBlock: FWPopupItemClickedBlock? = nil, cancenlBlock: FWPopupVoidBlock? = nil) {
         
         if itemTitles.count == 0 {
             return
@@ -68,11 +77,13 @@ extension FWSheetView {
         self.popupType = .sheet
         self.animationDuration = 0.3
         
-        let itemClickBlock: FWPopupItemHandler = { (index) in
-            itemBlock(index)
+        let itemClickedBlock: FWPopupItemClickedBlock = { (popupView, index) in
+            if itemBlock != nil {
+                itemBlock!(self, index)
+            }
         }
         for title in itemTitles {
-            self.actionItemArray.append(FWPopupItem(title: title, itemType: .normal, isCancel: true, handler: itemClickBlock))
+            self.actionItemArray.append(FWPopupItem(title: title, itemType: .normal, isCancel: true, canAutoHide: true, itemClickedBlock: itemClickedBlock))
         }
         
         self.clipsToBounds = true
@@ -115,12 +126,14 @@ extension FWSheetView {
         
         currentMaxY = btnContrainerView.frame.maxY
         
-        let block: FWPopupItemHandler = { (index) in
-            cancenlBlock()
+        let block: FWPopupItemClickedBlock = { (popupView, index) in
+            if cancenlBlock != nil {
+                cancenlBlock!()
+            }
         }
         
         var tmpIndex = 0
-        self.actionItemArray.append(FWPopupItem(title: "取消", itemType: .normal, isCancel: true, handler: block))
+        self.actionItemArray.append(FWPopupItem(title: "取消", itemType: .normal, isCancel: true, canAutoHide: true, itemClickedBlock: block))
         
         var cancelBtnTopView: UIView?
         var cancelBtn: UIButton?
@@ -187,16 +200,18 @@ extension FWSheetView {
             return
         }
         
-        self.hide()
+        if item.canAutoHide {
+            self.hide()
+        }
         
-        if item.itemHandler != nil {
-            item.itemHandler!(btn.tag)
+        if item.itemClickedBlock != nil {
+            item.itemClickedBlock!(self, btn.tag)
         }
     }
 }
 
 /// FWSheetView的相关属性
-@objc open class FWSheetViewProperty: FWPopupViewProperty {
+open class FWSheetViewProperty: FWPopupViewProperty {
     
     // 取消按钮距离头部的距离
     @objc public var cancelBtnMarginTop: CGFloat = 6

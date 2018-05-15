@@ -1,0 +1,16 @@
+PODS:
+  - FWPopupView (2.0.6)
+
+DEPENDENCIES:
+  - FWPopupView
+
+SPEC REPOS:
+  https://github.com/CocoaPods/Specs.git:
+    - FWPopupView
+
+SPEC CHECKSUMS:
+  FWPopupView: cd5f3897b5ffd30e1061c86acb4ebaf1f5b8ff92
+
+PODFILE CHECKSUM: d700e49639f5354039bb04dd5a37382bdb8408ff
+
+COCOAPODS: 1.5.0

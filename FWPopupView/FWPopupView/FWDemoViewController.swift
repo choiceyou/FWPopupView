@@ -93,10 +93,12 @@ extension FWDemoViewController {
             alertView.show()
             break
         case 4:
-            let block2: FWPopupItemClickedBlock = { (popupView, index) in
+            let block2: FWPopupItemClickedBlock = { [weak self] (popupView, index) in
                 
-                // 这边演示了如何手动去调用隐藏
-                self.alertImage.hide()
+                if index == 1 {
+                    // 这边演示了如何手动去调用隐藏
+                    self?.alertImage.hide()
+                }
             }
             
             // 注意：此时“确定”按钮是不让按钮自己隐藏的
