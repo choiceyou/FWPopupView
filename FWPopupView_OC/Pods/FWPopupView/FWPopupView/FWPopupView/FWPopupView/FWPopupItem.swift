@@ -39,8 +39,10 @@ open class FWPopupItem: NSObject {
     /// 是否不可点击
     @objc open var disabled = false
     
-    /// 按钮颜色
-    @objc open var color = UIColor.clear
+    /// 按钮文字颜色
+    @objc open var itemTitleColor: UIColor?
+    /// 按钮背景颜色
+    @objc open var itemBackgroundColor: UIColor?
     
     /// 标题
     @objc open var title: String
@@ -52,15 +54,39 @@ open class FWPopupItem: NSObject {
     /// 点击该按钮后会自动隐藏弹窗
     @objc open var canAutoHide: Bool
     
+    /// 点击按钮回调
     @objc open var itemClickedBlock: FWPopupItemClickedBlock?
     
     @objc public init(title: String, itemType: FWItemType, isCancel: Bool, canAutoHide: Bool, itemClickedBlock: FWPopupItemClickedBlock? = nil) {
+        
         self.title = title
         self.itemType = itemType
         self.isCancel = isCancel
         self.canAutoHide = canAutoHide
         self.itemClickedBlock = itemClickedBlock
         
+        super.init()
+        
+        self.setupItemType(itemType: itemType)
+    }
+    
+    @objc public init(title: String, itemType: FWItemType, isCancel: Bool, canAutoHide: Bool, itemTitleColor: UIColor?, itemBackgroundColor: UIColor?, itemClickedBlock: FWPopupItemClickedBlock? = nil) {
+        
+        self.title = title
+        self.itemType = itemType
+        self.isCancel = isCancel
+        self.canAutoHide = canAutoHide
+        self.itemTitleColor = itemTitleColor
+        self.itemBackgroundColor = itemBackgroundColor
+        self.itemClickedBlock = itemClickedBlock
+        
+        super.init()
+        
+        self.setupItemType(itemType: itemType)
+    }
+    
+    private func setupItemType(itemType: FWItemType) {
+    
         switch itemType {
         case .normal:
             break

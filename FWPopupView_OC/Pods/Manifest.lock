@@ -1,5 +1,5 @@
 PODS:
-  - FWPopupView (2.0.6)
+  - FWPopupView (2.0.7)
 
 DEPENDENCIES:
   - FWPopupView
@@ -9,7 +9,7 @@ SPEC REPOS:
     - FWPopupView
 
 SPEC CHECKSUMS:
-  FWPopupView: cd5f3897b5ffd30e1061c86acb4ebaf1f5b8ff92
+  FWPopupView: 3b37e8da5fd73b29c6435ae63e0278ed1df1ee99
 
 PODFILE CHECKSUM: d700e49639f5354039bb04dd5a37382bdb8408ff
 
