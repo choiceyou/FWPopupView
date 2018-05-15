@@ -11,9 +11,12 @@ import UIKit
 
 class FWDemoViewController: UITableViewController {
     
+    var alertImage: FWAlertView!
+    
+    
     var titleArray = ["Alert - 单个按钮", "Alert - 两个按钮", "Alert - 多个按钮", "Alert - 带输入框", "Alert - 带自定义视图", "Sheet - 少量Item", "Sheet - 大量Item", "Custom - 自定义弹窗"]
     
-    let block: FWPopupItemHandler = { (index) in
+    let block: FWPopupItemClickedBlock = { (popupView, index) in
         print("AlertView：点击了第\(index)个按钮")
     }
     
@@ -54,15 +57,15 @@ extension FWDemoViewController {
         
         switch indexPath.row {
         case 0:
-            let alertView = FWAlertView.alert(title: "标题", detail: "描述描述描述描述") { (index) in
+            let alertView = FWAlertView.alert(title: "标题", detail: "描述描述描述描述") { (popupView, index) in
                 print("点击了确定")
             }
             alertView.show()
             break
         case 1:
-            let alertView = FWAlertView.alert(title: "标题", detail: "描述描述描述描述描述描述描述描述描述描述", confirmBlock: { (index) in
+            let alertView = FWAlertView.alert(title: "标题", detail: "描述描述描述描述描述描述描述描述描述描述", confirmBlock: { (popupView, index) in
                 print("点击了确定")
-            }, cancelBlock: { (index) in
+            }, cancelBlock: { (popupView, index) in
                 print("点击了取消")
             })
             // 设置AlertView外部背景色
@@ -72,9 +75,9 @@ extension FWDemoViewController {
             })
             break
         case 2:
-            let items = [FWPopupItem(title: "取消", itemType: .normal, isCancel: true, handler: block),
-                         FWPopupItem(title: "确定", itemType: .normal, isCancel: false, handler: block),
-                         FWPopupItem(title: "其他", itemType: .normal, isCancel: false, handler: block)]
+            let items = [FWPopupItem(title: "取消", itemType: .normal, isCancel: true, canAutoHide: true, itemClickedBlock: block),
+                         FWPopupItem(title: "确定", itemType: .normal, isCancel: false, canAutoHide: true, itemClickedBlock: block),
+                         FWPopupItem(title: "其他", itemType: .normal, isCancel: false, canAutoHide: true, itemClickedBlock: block)]
             
             let vProperty = FWAlertViewProperty()
             vProperty.detailColor = UIColor.red
@@ -83,31 +86,34 @@ extension FWDemoViewController {
             alertView.show()
             break
         case 3:
-            let items = [FWPopupItem(title: "取消", itemType: .normal, isCancel: true, handler: block),
-                         FWPopupItem(title: "确定", itemType: .normal, isCancel: false, handler: block)]
+            let items = [FWPopupItem(title: "取消", itemType: .normal, isCancel: true, canAutoHide: true, itemClickedBlock: block),
+                         FWPopupItem(title: "确定", itemType: .normal, isCancel: false, canAutoHide: true, itemClickedBlock: block)]
             
             let alertView = FWAlertView.alert(title: "标题", detail: "带输入框", inputPlaceholder: "请输入...", keyboardType: .default, customView: nil, items: items)
-            print("点击了确定")
-            alertView.show(completionBlock: { (popupView, isCompletion) in
-                print("点击了取消")
-            })
+            alertView.show()
             break
         case 4:
-            let items = [FWPopupItem(title: "取消", itemType: .normal, isCancel: true, handler: block),
-                         FWPopupItem(title: "确定", itemType: .normal, isCancel: false, handler: block)]
+            let block2: FWPopupItemClickedBlock = { (popupView, index) in
+                
+                // 这边演示了如何手动去调用隐藏
+                self.alertImage.hide()
+            }
+            
+            // 注意：此时“确定”按钮是不让按钮自己隐藏的
+            let items = [FWPopupItem(title: "取消", itemType: .normal, isCancel: true, canAutoHide: true, itemClickedBlock: block2),
+                         FWPopupItem(title: "确定", itemType: .normal, isCancel: false, canAutoHide: false, itemClickedBlock: block2)]
             // 注意：添加自定义的视图，需要设置确定的Frame值
             let customImageView = UIImageView(image: UIImage(named: "audio_bgm_4"))
             
-            let alertView = FWAlertView.alert(title: "标题", detail: "带自定义视图", inputPlaceholder: nil, keyboardType: .default, customView: customImageView, items: items)
-            print("点击了确定")
-            alertView.show(completionBlock: { (popupView, isCompletion) in
-                print("点击了取消")
+            self.alertImage = FWAlertView.alert(title: "标题", detail: "带自定义视图", inputPlaceholder: nil, keyboardType: .default, customView: customImageView, items: items)
+            self.alertImage.show(completionBlock: { (popupView, isCompletion) in
+                print("显示完成")
             })
             break
         case 5:
             let items = ["Sheet0", "Sheet1", "Sheet2", "Sheet3"]
             
-            let sheetView = FWSheetView.sheet(title: "标题", itemTitles: items, itemBlock: { (index) in
+            let sheetView = FWSheetView.sheet(title: "标题", itemTitles: items, itemBlock: { (popupView, index) in
                 print("Sheet：点击了第\(index)个按钮")
             }, cancenlBlock: {
                 print("点击了取消")
@@ -117,7 +123,7 @@ extension FWDemoViewController {
         case 6:
             let items = ["Sheet0", "Sheet1", "Sheet2", "Sheet3", "Sheet4", "Sheet5", "Sheet6", "Sheet7", "Sheet8", "Sheet9", "Sheet10", "Sheet11", "Sheet12", "Sheet13", "Sheet14"]
             
-            let sheetView = FWSheetView.sheet(title: "标题", itemTitles: items, itemBlock: { (index) in
+            let sheetView = FWSheetView.sheet(title: "标题", itemTitles: items, itemBlock: { (popupView, index) in
                 print("Sheet：点击了第\(index)个按钮")
             }, cancenlBlock: {
                 print("点击了取消")

@@ -36,7 +36,7 @@ open class FWSheetView: FWPopupView {
     ///   - itemBlock: 点击回调
     ///   - cancenlBlock: 取消按钮回调
     /// - Returns: self
-    @objc open class func sheet(title: String?, itemTitles: [String], itemBlock: FWPopupItemHandler? = nil, cancenlBlock: FWPopupVoidBlock? = nil) -> FWSheetView {
+    @objc open class func sheet(title: String?, itemTitles: [String], itemBlock: FWPopupItemClickedBlock? = nil, cancenlBlock: FWPopupVoidBlock? = nil) -> FWSheetView {
         
         let sheetView = FWSheetView()
         sheetView.setupUI(title: title, itemTitles: itemTitles, itemBlock:itemBlock, cancenlBlock: cancenlBlock)
@@ -52,7 +52,7 @@ open class FWSheetView: FWPopupView {
     ///   - cancenlBlock: 取消按钮回调
     ///   - property: FWSheetView的相关属性
     /// - Returns: self
-    @objc open class func sheet(title: String?, itemTitles: [String], itemBlock: FWPopupItemHandler? = nil, cancenlBlock: FWPopupVoidBlock? = nil, property: FWSheetViewProperty?) -> FWSheetView {
+    @objc open class func sheet(title: String?, itemTitles: [String], itemBlock: FWPopupItemClickedBlock? = nil, cancenlBlock: FWPopupVoidBlock? = nil, property: FWSheetViewProperty?) -> FWSheetView {
         
         let sheetView = FWSheetView()
         if property != nil {
@@ -65,7 +65,7 @@ open class FWSheetView: FWPopupView {
 
 extension FWSheetView {
     
-    private func setupUI(title: String?, itemTitles: [String], itemBlock: FWPopupItemHandler? = nil, cancenlBlock: FWPopupVoidBlock? = nil) {
+    private func setupUI(title: String?, itemTitles: [String], itemBlock: FWPopupItemClickedBlock? = nil, cancenlBlock: FWPopupVoidBlock? = nil) {
         
         if itemTitles.count == 0 {
             return
@@ -77,13 +77,13 @@ extension FWSheetView {
         self.popupType = .sheet
         self.animationDuration = 0.3
         
-        let itemClickBlock: FWPopupItemHandler = { (index) in
+        let itemClickedBlock: FWPopupItemClickedBlock = { (popupView, index) in
             if itemBlock != nil {
-                itemBlock!(index)
+                itemBlock!(self, index)
             }
         }
         for title in itemTitles {
-            self.actionItemArray.append(FWPopupItem(title: title, itemType: .normal, isCancel: true, handler: itemClickBlock))
+            self.actionItemArray.append(FWPopupItem(title: title, itemType: .normal, isCancel: true, canAutoHide: true, itemClickedBlock: itemClickedBlock))
         }
         
         self.clipsToBounds = true
@@ -126,14 +126,14 @@ extension FWSheetView {
         
         currentMaxY = btnContrainerView.frame.maxY
         
-        let block: FWPopupItemHandler = { (index) in
+        let block: FWPopupItemClickedBlock = { (popupView, index) in
             if cancenlBlock != nil {
                 cancenlBlock!()
             }
         }
         
         var tmpIndex = 0
-        self.actionItemArray.append(FWPopupItem(title: "取消", itemType: .normal, isCancel: true, handler: block))
+        self.actionItemArray.append(FWPopupItem(title: "取消", itemType: .normal, isCancel: true, canAutoHide: true, itemClickedBlock: block))
         
         var cancelBtnTopView: UIView?
         var cancelBtn: UIButton?
@@ -200,10 +200,12 @@ extension FWSheetView {
             return
         }
         
-        self.hide()
+        if item.canAutoHide {
+            self.hide()
+        }
         
-        if item.itemHandler != nil {
-            item.itemHandler!(btn.tag)
+        if item.itemClickedBlock != nil {
+            item.itemClickedBlock!(self, btn.tag)
         }
     }
 }

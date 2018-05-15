@@ -18,7 +18,7 @@
 import Foundation
 import UIKit
 
-public typealias FWPopupInputHandler = (_ text: String) -> Void
+public typealias FWPopupInputBlock = (_ text: String) -> Void
 
 open class FWAlertView: FWPopupView {
     
@@ -26,7 +26,7 @@ open class FWAlertView: FWPopupView {
     @objc public var property = FWAlertViewProperty()
     
     // 输入框回调
-    @objc public var inputHandler: FWPopupInputHandler?
+    @objc public var inputBlock: FWPopupInputBlock?
     
     
     private var titleStr: String?
@@ -49,10 +49,10 @@ open class FWAlertView: FWPopupView {
     ///   - detail: 描述
     ///   - confirmBlock: 确定按钮回调
     /// - Returns: self
-    @objc open class func alert(title: String, detail: String, confirmBlock: FWPopupItemHandler? = nil) -> FWAlertView {
+    @objc open class func alert(title: String, detail: String, confirmBlock: FWPopupItemClickedBlock? = nil) -> FWAlertView {
         
         let alertView = FWAlertView()
-        let items = [FWPopupItem(title: alertView.property.defaultTextOK, itemType: .normal, isCancel: false, handler: confirmBlock)]
+        let items = [FWPopupItem(title: alertView.property.defaultTextOK, itemType: .normal, isCancel: false, canAutoHide: true, itemClickedBlock: confirmBlock)]
         alertView.setupUI(title: title, detail: detail, inputPlaceholder: nil, keyboardType: .default, customView: nil, items: items)
         return alertView
     }
@@ -65,11 +65,11 @@ open class FWAlertView: FWPopupView {
     ///   - confirmBlock: 确定按钮回调
     ///   - cancelBlock: 取消按钮回调
     /// - Returns: self
-    @objc open class func alert(title: String, detail: String, confirmBlock: FWPopupItemHandler? = nil, cancelBlock: FWPopupItemHandler? = nil) -> FWAlertView {
+    @objc open class func alert(title: String, detail: String, confirmBlock: FWPopupItemClickedBlock? = nil, cancelBlock: FWPopupItemClickedBlock? = nil) -> FWAlertView {
         
         let alertView = FWAlertView()
-        let items = [FWPopupItem(title: alertView.property.defaultTextCancel, itemType: .normal, isCancel: true, handler: cancelBlock),
-                     FWPopupItem(title: alertView.property.defaultTextConfirm, itemType: .normal, isCancel: false, handler: confirmBlock)]
+        let items = [FWPopupItem(title: alertView.property.defaultTextCancel, itemType: .normal, isCancel: true, canAutoHide: true, itemClickedBlock: cancelBlock),
+                     FWPopupItem(title: alertView.property.defaultTextConfirm, itemType: .normal, isCancel: false, canAutoHide: true, itemClickedBlock: confirmBlock)]
         
         alertView.setupUI(title: title, detail: detail, inputPlaceholder: nil, keyboardType: .default, customView: nil, items: items)
         return alertView
@@ -318,19 +318,19 @@ extension FWAlertView {
             return
         }
         
-        if self.withKeyboard && item.isCancel == false {
+        if self.withKeyboard && item.isCancel == false && item.canAutoHide {
             if self.inputTF!.text != nil && !self.inputTF!.text!.isEmpty {
                 self.hide()
             }
-        } else {
+        } else if item.canAutoHide {
             self.hide()
         }
         
-        if self.inputHandler != nil && item.isCancel == false {
-            self.inputHandler!(self.inputTF!.text!)
+        if self.inputBlock != nil && item.isCancel == false {
+            self.inputBlock!(self.inputTF!.text!)
         } else {
-            if item.itemHandler != nil {
-                item.itemHandler!(btn.tag)
+            if item.itemClickedBlock != nil {
+                item.itemClickedBlock!(self, btn.tag)
             }
         }
     }

@@ -29,7 +29,8 @@ import UIKit
     case disabled
 }
 
-public typealias FWPopupItemHandler = (_ index: Int) -> Void
+/// 点击Item回调
+public typealias FWPopupItemClickedBlock = (_ popupView: FWPopupView, _ index: Int) -> Void
 
 open class FWPopupItem: NSObject {
     
@@ -48,14 +49,17 @@ open class FWPopupItem: NSObject {
     @objc open var itemType: FWItemType
     /// 是否取消按钮
     @objc open var isCancel: Bool
+    /// 点击该按钮后会自动隐藏弹窗
+    @objc open var canAutoHide: Bool
     
-    @objc open var itemHandler: FWPopupItemHandler?
+    @objc open var itemClickedBlock: FWPopupItemClickedBlock?
     
-    @objc public init(title: String, itemType: FWItemType, isCancel: Bool, handler: FWPopupItemHandler? = nil) {
+    @objc public init(title: String, itemType: FWItemType, isCancel: Bool, canAutoHide: Bool, itemClickedBlock: FWPopupItemClickedBlock? = nil) {
         self.title = title
         self.itemType = itemType
         self.isCancel = isCancel
-        self.itemHandler = handler
+        self.canAutoHide = canAutoHide
+        self.itemClickedBlock = itemClickedBlock
         
         switch itemType {
         case .normal:
