@@ -28,7 +28,7 @@ open class FWPopupWindow: UIWindow, UIGestureRecognizerDelegate {
     @objc open static let sharedInstance = FWPopupWindow()
     
     // default is NO. When YES, popup views will be hidden when user touch the translucent background.
-    @objc var touchWildToHide: Bool = false
+    @objc open var touchWildToHide: Bool = false
     
     public override init(frame: CGRect) {
         super.init(frame: frame)

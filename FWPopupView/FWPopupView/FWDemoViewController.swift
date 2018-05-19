@@ -20,10 +20,6 @@ class FWDemoViewController: UITableViewController {
         print("AlertView：点击了第\(index)个按钮")
     }
     
-    let completeBlock: FWPopupCompletionBlock = { (popupView, isCompletion) in
-        print(popupView)
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -134,7 +130,14 @@ extension FWDemoViewController {
             }, cancenlBlock: {
                 print("点击了取消")
             })
-            sheetView.show()
+            sheetView.show { (popupView, isShow) in
+                
+                if isShow {
+                    FWPopupWindow.sharedInstance.touchWildToHide = true
+                } else {
+                    FWPopupWindow.sharedInstance.touchWildToHide = false
+                }
+            }
             break
         case 7:
             let items = ["Sheet0", "Sheet1", "Sheet2", "Sheet3", "Sheet4", "Sheet5", "Sheet6", "Sheet7", "Sheet8", "Sheet9", "Sheet10", "Sheet11", "Sheet12", "Sheet13", "Sheet14"]
