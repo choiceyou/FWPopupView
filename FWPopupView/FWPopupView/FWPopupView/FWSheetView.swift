@@ -38,9 +38,7 @@ open class FWSheetView: FWPopupView {
     /// - Returns: self
     @objc open class func sheet(title: String?, itemTitles: [String], itemBlock: FWPopupItemClickedBlock? = nil, cancenlBlock: FWPopupVoidBlock? = nil) -> FWSheetView {
         
-        let sheetView = FWSheetView()
-        sheetView.setupUI(title: title, itemTitles: itemTitles, itemBlock:itemBlock, cancenlBlock: cancenlBlock)
-        return sheetView
+        return self.sheet(title: title, itemTitles: itemTitles, itemBlock: itemBlock, cancenlBlock: cancenlBlock, property: nil)
     }
     
     /// 类初始化方法，可设置Sheet相关属性

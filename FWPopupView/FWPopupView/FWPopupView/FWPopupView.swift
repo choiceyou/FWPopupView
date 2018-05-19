@@ -115,11 +115,15 @@ open class FWPopupView: UIView {
 // MARK: - 显示、隐藏
 extension FWPopupView {
     
+    /// 显示
     @objc open func show() {
         
         self.show(completionBlock: nil)
     }
     
+    /// 显示
+    ///
+    /// - Parameter completionBlock: 显示、隐藏回调
     @objc open func show(completionBlock: FWPopupCompletionBlock? = nil) {
         
         if completionBlock != nil {
@@ -139,11 +143,15 @@ extension FWPopupView {
         }
     }
     
+    /// 隐藏
     @objc open func hide() {
         
         self.hide(completionBlock: nil)
     }
     
+    /// 隐藏
+    ///
+    /// - Parameter completionBlock: 显示、隐藏回调
     @objc open func hide(completionBlock: FWPopupCompletionBlock? = nil) {
         
         if completionBlock != nil {

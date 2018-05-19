@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		491A970B20AFB976006E3D70 /* FWPopupMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 491A970A20AFB976006E3D70 /* FWPopupMenu.swift */; };
+		491A970D20AFCD17006E3D70 /* FWMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 491A970C20AFCD17006E3D70 /* FWMenuView.swift */; };
 		493BE226206A322B00E5EF80 /* FWDateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 493BE225206A322B00E5EF80 /* FWDateView.swift */; };
 		495AC10120688B3B002773F9 /* FWDemoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495AC10020688B3B002773F9 /* FWDemoViewController.swift */; };
 		495AC1052068C900002773F9 /* FWSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495AC1042068C900002773F9 /* FWSheetView.swift */; };
@@ -41,7 +41,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		491A970A20AFB976006E3D70 /* FWPopupMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FWPopupMenu.swift; sourceTree = "<group>"; };
+		491A970C20AFCD17006E3D70 /* FWMenuView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FWMenuView.swift; sourceTree = "<group>"; };
 		493BE225206A322B00E5EF80 /* FWDateView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FWDateView.swift; sourceTree = "<group>"; };
 		495AC10020688B3B002773F9 /* FWDemoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FWDemoViewController.swift; sourceTree = "<group>"; };
 		495AC1042068C900002773F9 /* FWSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FWSheetView.swift; sourceTree = "<group>"; };
@@ -148,8 +148,8 @@
 				49BB212620623E8100E0DE6E /* FWPopupItem.swift */,
 				49BB212420623C4A00E0DE6E /* FWAlertView.swift */,
 				495AC1042068C900002773F9 /* FWSheetView.swift */,
+				491A970C20AFCD17006E3D70 /* FWMenuView.swift */,
 				493BE225206A322B00E5EF80 /* FWDateView.swift */,
-				491A970A20AFB976006E3D70 /* FWPopupMenu.swift */,
 			);
 			path = FWPopupView;
 			sourceTree = "<group>";
@@ -289,9 +289,9 @@
 			files = (
 				49BB212520623C4A00E0DE6E /* FWAlertView.swift in Sources */,
 				49812D78205F915600639DDC /* AppDelegate.swift in Sources */,
-				491A970B20AFB976006E3D70 /* FWPopupMenu.swift in Sources */,
 				49BB210F2060B86A00E0DE6E /* FWPopupCategory.swift in Sources */,
 				49BB212720623E8100E0DE6E /* FWPopupItem.swift in Sources */,
+				491A970D20AFCD17006E3D70 /* FWMenuView.swift in Sources */,
 				49812DA7205F91F100639DDC /* FWPopupView.swift in Sources */,
 				493BE226206A322B00E5EF80 /* FWDateView.swift in Sources */,
 				495AC1052068C900002773F9 /* FWSheetView.swift in Sources */,
