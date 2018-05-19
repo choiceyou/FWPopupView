@@ -22,7 +22,7 @@ public typealias FWPopupInputBlock = (_ text: String) -> Void
 
 open class FWAlertView: FWPopupView {
     
-    // FWAlertView的相关属性
+    // 可设置属性
     @objc public var property = FWAlertViewProperty()
     
     // 输入框回调
@@ -347,7 +347,7 @@ extension FWAlertView {
 }
 
 
-/// FWAlertView的相关属性
+/// FWAlertView的相关属性，请注意其父类中还有很多公共属性
 open class FWAlertViewProperty: FWPopupViewProperty {
     
     // FWAlertView宽度

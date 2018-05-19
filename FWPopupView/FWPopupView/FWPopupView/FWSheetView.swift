@@ -20,7 +20,9 @@ import UIKit
 
 open class FWSheetView: FWPopupView {
     
+    // 可设置属性
     @objc open var property = FWSheetViewProperty()
+    
     
     private var actionItemArray: [FWPopupItem] = []
     
@@ -219,7 +221,7 @@ extension FWSheetView {
     }
 }
 
-/// FWSheetView的相关属性
+/// FWSheetView的相关属性，请注意其父类中还有很多公共属性
 open class FWSheetViewProperty: FWPopupViewProperty {
     
     // 取消按钮距离头部的距离
