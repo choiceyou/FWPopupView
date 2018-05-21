@@ -166,11 +166,13 @@ extension FWDemoViewController {
             let items = ["Menu0", "Menu1", "Menu2", "Menu3"]
             
             let vProperty = FWMenuViewProperty()
-            vProperty.maskViewColor = UIColor.clear
+            vProperty.maskViewColor = UIColor(white: 0, alpha: 0.4)
             vProperty.touchWildToHide = "1"
+            vProperty.popupCustomAlignment = .topRight
+            vProperty.popupViewEdgeInsets = UIEdgeInsetsMake(64, 0, 0, 0)
             
             let menuView = FWMenuView.menu(itemTitles: items, itemImageNames: nil, itemBlock: { (popupView, index) in
-                
+                print("Menu：点击了第\(index)个按钮")
             }, property: vProperty)
             menuView.show()
             break

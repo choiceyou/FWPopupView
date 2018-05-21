@@ -37,10 +37,6 @@ class FWMenuViewTableViewCell: UITableViewCell {
 
 open class FWMenuView: FWPopupView, UITableViewDelegate, UITableViewDataSource {
     
-    // 可设置属性
-    @objc open var property = FWMenuViewProperty()
-    
-    
     /// 外部传入的标题数组
     private var itemTitleArray: [String]?
     /// 外部传入的图片数组
@@ -82,16 +78,18 @@ extension FWMenuView {
         }
         
         if property != nil {
-            self.property = property!
+            self.vProperty = property!
+        } else {
+            self.vProperty = FWMenuViewProperty()
         }
         
-        self.backgroundColor = self.property.backgroundColor
-        if self.property.maskViewColor != nil {
-            self.attachedView?.fwMaskViewColor = self.property.maskViewColor!
+        self.backgroundColor = self.vProperty?.backgroundColor
+        if self.vProperty?.maskViewColor != nil {
+            self.attachedView?.fwMaskViewColor = self.vProperty!.maskViewColor!
         }
         
-        if self.property.touchWildToHide != nil && !self.property.touchWildToHide!.isEmpty {
-            FWPopupWindow.sharedInstance.touchWildToHide = (Int(self.property.touchWildToHide!) == 1) ? true : false
+        if self.vProperty!.touchWildToHide != nil && !self.vProperty!.touchWildToHide!.isEmpty {
+            FWPopupWindow.sharedInstance.touchWildToHide = (Int(self.vProperty!.touchWildToHide!) == 1) ? true : false
         }
         
         self.clipsToBounds = true
@@ -131,7 +129,5 @@ open class FWMenuViewProperty: FWPopupViewProperty {
     /// 弹窗箭头的样式
     @objc public var menuArrowStyle: FWMenuArrowStyle = .round
     
-    /// 自定义弹窗校准位置
-    @objc public var popupCustomAlignment: FWPopupCustomAlignment = .top
 }
 

@@ -22,7 +22,7 @@ import UIKit
 ///
 /// - alert: Alert类型，表示弹窗在屏幕中间
 /// - sheet: Sheet类型，表示弹窗在屏幕底部
-/// - custom: 自定义类型，待拓展
+/// - custom: 自定义类型
 @objc public enum FWPopupType: Int {
     case alert
     case sheet
@@ -31,7 +31,7 @@ import UIKit
 
 /// 自定义弹窗校准位置
 ///
-/// - center: 中间
+/// - center: 中间，默认值
 /// - top: 上
 /// - left: 左
 /// - bottom: 下
@@ -42,10 +42,6 @@ import UIKit
 /// - bottomRight: 下右
 @objc public enum FWPopupCustomAlignment: Int {
     case center
-    case top
-    case left
-    case bottom
-    case right
     case topLeft
     case topRight
     case bottomLeft
@@ -59,6 +55,7 @@ public typealias FWPopupCompletionBlock = (_ popupView: FWPopupView, _ isShow: B
 /// 普通无参数回调
 public typealias FWPopupVoidBlock = () -> Void
 
+/// 隐藏所有弹窗的通知
 let FWPopupViewHideAllNotification = "FWPopupViewHideAllNotification"
 
 
@@ -66,6 +63,9 @@ open class FWPopupView: UIView {
     
     /// 1、当外部没有传入该参数时，默认为UIWindow的根控制器的视图，即表示弹窗放在FWPopupWindow上，此时若FWPopupWindow.sharedInstance.touchWildToHide = true表示弹窗视图外部可点击；2、当外部传入该参数时，该视图为传入的UIView，即表示弹窗放在传入的UIView上；
     @objc public var attachedView = FWPopupWindow.sharedInstance.attachView()
+    
+    /// FWPopupType = custom 的可设置参数
+    @objc public var vProperty: FWPopupViewProperty?
     
     @objc public var visible: Bool {
         get {
@@ -361,10 +361,36 @@ extension FWPopupView {
             }
             if strongSelf.superview == nil {
                 strongSelf.attachedView?.fwMaskView.addSubview(strongSelf)
-                strongSelf.center = (strongSelf.attachedView?.center)!
-                if strongSelf.withKeyboard {
-                    strongSelf.frame.origin.y -= 216/2
+                
+                if strongSelf.vProperty == nil {
+                    strongSelf.vProperty = FWPopupViewProperty()
                 }
+                
+                switch strongSelf.vProperty!.popupCustomAlignment {
+                case .center:
+                    strongSelf.center = (strongSelf.attachedView?.center)!
+                    if strongSelf.withKeyboard {
+                        strongSelf.frame.origin.y -= 216/2
+                    }
+                    break
+                case .topLeft:
+                    strongSelf.frame.origin.x = strongSelf.vProperty!.popupViewEdgeInsets.left
+                    strongSelf.frame.origin.y = strongSelf.vProperty!.popupViewEdgeInsets.top
+                    break
+                case .topRight:
+                    strongSelf.frame.origin.x = strongSelf.attachedView!.frame.width - strongSelf.frame.width - strongSelf.vProperty!.popupViewEdgeInsets.right
+                    strongSelf.frame.origin.y = strongSelf.vProperty!.popupViewEdgeInsets.top
+                    break
+                case .bottomLeft:
+                    strongSelf.frame.origin.x = strongSelf.vProperty!.popupViewEdgeInsets.left
+                    strongSelf.frame.origin.y = strongSelf.attachedView!.frame.height - strongSelf.frame.height - strongSelf.vProperty!.popupViewEdgeInsets.bottom
+                    break
+                case .bottomRight:
+                    strongSelf.frame.origin.x = strongSelf.attachedView!.frame.width - strongSelf.frame.width - strongSelf.vProperty!.popupViewEdgeInsets.right
+                    strongSelf.frame.origin.y = strongSelf.attachedView!.frame.height - strongSelf.frame.height - strongSelf.vProperty!.popupViewEdgeInsets.bottom
+                    break
+                }
+                
                 strongSelf.layoutIfNeeded()
             }
             
@@ -467,6 +493,11 @@ open class FWPopupViewProperty: NSObject {
     @objc public var topBottomMargin:CGFloat        = 10
     // 左右间距
     @objc public var letfRigthMargin:CGFloat        = 10
+    
+    /// 自定义弹窗校准位置
+    @objc public var popupCustomAlignment           = FWPopupCustomAlignment.center
+    /// 弹窗EdgeInsets
+    @objc public var popupViewEdgeInsets            = UIEdgeInsetsMake(0, 0, 0, 0)
     
     public override init() {
         super.init()
