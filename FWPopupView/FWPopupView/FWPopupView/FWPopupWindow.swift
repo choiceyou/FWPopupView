@@ -57,7 +57,7 @@ extension FWPopupWindow {
     @objc func tapGesClick(tap: UITapGestureRecognizer) {
         
         if self.touchWildToHide && !self.fwBackgroundAnimating {
-            for view: UIView in (self.attachView()?.fwBackgroundView.subviews)! {
+            for view: UIView in (self.attachView()?.fwMaskView.subviews)! {
                 if view.isKind(of: FWPopupView.self) {
                     let popupView = view as! FWPopupView
                     popupView.hide()
@@ -67,7 +67,7 @@ extension FWPopupWindow {
     }
     
     public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
-        return touch.view == self.attachView()?.fwBackgroundView
+        return touch.view == self.attachView()?.fwMaskView
     }
     
     public func attachView() -> UIView? {

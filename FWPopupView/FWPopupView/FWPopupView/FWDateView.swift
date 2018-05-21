@@ -53,7 +53,7 @@ extension FWDateView {
     
     private func setupUI(confirmBlock: FWDateViewConfirmBlock? = nil, cancelBlock: FWPopupVoidBlock? = nil) {
         
-        self.backgroundColor = self.property.vbackgroundColor
+        self.backgroundColor = self.property.backgroundColor
         self.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: self.property.datePickerHeight + self.property.btnHeight)
         
         self.popupType = .sheet
@@ -65,7 +65,7 @@ extension FWDateView {
         self.addSubview(self.confirmBtn!)
         
         self.datePicker.frame = CGRect(x: 0, y: self.property.btnHeight, width: self.frame.width, height: self.property.datePickerHeight)
-        self.datePicker.backgroundColor = self.property.vbackgroundColor
+        self.datePicker.backgroundColor = self.property.backgroundColor
         self.addSubview(self.datePicker)
         
         self.confirmBlock = confirmBlock
@@ -80,7 +80,7 @@ extension FWDateView {
         btn.tag = tag
         btn.setTitle(title, for: .normal)
         btn.setTitleColor(self.property.btnTitleColor, for: .normal)
-        btn.backgroundColor = self.property.vbackgroundColor
+        btn.backgroundColor = self.property.backgroundColor
         btn.titleLabel?.font = UIFont.boldSystemFont(ofSize: self.property.btnTitleFont)
         return btn
     }

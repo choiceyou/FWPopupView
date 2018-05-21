@@ -25,6 +25,10 @@ let fwBackgroundViewColorKey: UnsafeRawPointer! = UnsafeRawPointer.init(bitPatte
 let fwBackgroundAnimatingKey: UnsafeRawPointer! = UnsafeRawPointer.init(bitPattern: "fwBackgroundAnimatingKey".hashValue)
 let fwAnimationDurationKey: UnsafeRawPointer! = UnsafeRawPointer.init(bitPattern: "fwAnimationDurationKey".hashValue)
 
+/// 遮罩层的默认背景色
+let kDefaultMaskViewColor = UIColor(white: 0, alpha: 0.5)
+
+
 extension UIView {
     
     var fwBackgroundAnimating: Bool {
@@ -66,11 +70,12 @@ extension UIView {
         }
     }
     
-    var fwBackgroundViewColor: UIColor {
+    /// 遮罩层颜色
+    var fwMaskViewColor: UIColor {
         get {
             let color = objc_getAssociatedObject(self, fwBackgroundViewColorKey) as? UIColor
             guard color != nil else {
-                return UIColor(white: 0, alpha: 0.5)
+                return kDefaultMaskViewColor
             }
             return color!
         }
@@ -79,21 +84,20 @@ extension UIView {
         }
     }
     
-    var fwBackgroundView: UIView {
+    /// 遮罩层
+    var fwMaskView: UIView {
         var tmpView = objc_getAssociatedObject(self, fwBackgroundViewKey) as? UIView
         if tmpView == nil {
             tmpView = UIView(frame: self.bounds)
             self.addSubview(tmpView!)
-            tmpView?.backgroundColor = fwBackgroundViewColor
             
             tmpView?.alpha = 0.0
             tmpView?.layer.zPosition = CGFloat(MAXFLOAT)
-            
-            objc_setAssociatedObject(self, fwBackgroundViewKey, tmpView, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
         }
+        tmpView?.backgroundColor = fwMaskViewColor
+        objc_setAssociatedObject(self, fwBackgroundViewKey, tmpView, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
         return tmpView!
     }
-    
     
     func showFwBackground() {
         
@@ -101,7 +105,7 @@ extension UIView {
         if self.fwReferenceCount > 1 {
             return
         }
-        self.fwBackgroundView.isHidden = false
+        self.fwMaskView.isHidden = false
         self.fwBackgroundAnimating = true
         
         if self == FWPopupWindow.sharedInstance.attachView() {
@@ -112,12 +116,12 @@ extension UIView {
             let aa = self as! UIWindow
             aa.makeKeyAndVisible()
         } else {
-            self.bringSubview(toFront: self.fwBackgroundView)
+            self.bringSubview(toFront: self.fwMaskView)
         }
         
         UIView.animate(withDuration: self.fwAnimationDuration, delay: 0, options: [.curveEaseOut, .beginFromCurrentState], animations: {
             
-            self.fwBackgroundView.alpha = 1.0
+            self.fwMaskView.alpha = 1.0
             
         }) { (finished) in
             
@@ -138,7 +142,7 @@ extension UIView {
         
         UIView.animate(withDuration: self.fwAnimationDuration, delay: 0, options: [.curveEaseIn, .beginFromCurrentState], animations: {
             
-            self.fwBackgroundView.alpha = 0.0
+            self.fwMaskView.alpha = 0.0
             
         }) { (finished) in
             

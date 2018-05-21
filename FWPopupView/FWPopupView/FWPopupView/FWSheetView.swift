@@ -71,7 +71,7 @@ extension FWSheetView {
             return
         }
         
-        self.backgroundColor = self.property.vbackgroundColor
+        self.backgroundColor = self.property.backgroundColor
         self.clipsToBounds = true
         
         self.popupType = .sheet
@@ -178,7 +178,7 @@ extension FWSheetView {
             if popupItem.itemBackgroundColor != nil {
                 btn.backgroundColor = popupItem.itemBackgroundColor
             } else {
-                btn.backgroundColor = self.property.vbackgroundColor
+                btn.backgroundColor = self.property.backgroundColor
             }
             // 按钮文字颜色
             if popupItem.itemTitleColor != nil {

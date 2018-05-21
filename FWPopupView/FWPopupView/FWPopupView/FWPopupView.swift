@@ -47,7 +47,7 @@ open class FWPopupView: UIView {
     @objc public var visible: Bool {
         get {
             if self.attachedView != nil {
-                return !(self.attachedView?.fwBackgroundView.isHidden)!
+                return !(self.attachedView?.fwMaskView.isHidden)!
             }
             return false
         }
@@ -203,7 +203,7 @@ extension FWPopupView {
                 return
             }
             if strongSelf.superview == nil {
-                strongSelf.attachedView?.fwBackgroundView.addSubview(strongSelf)
+                strongSelf.attachedView?.fwMaskView.addSubview(strongSelf)
                 strongSelf.center = (strongSelf.attachedView?.center)!
                 if strongSelf.withKeyboard {
                     strongSelf.frame.origin.y -= 216/2
@@ -264,7 +264,7 @@ extension FWPopupView {
                 return
             }
             if strongSelf.superview == nil {
-                strongSelf.attachedView?.fwBackgroundView.addSubview(strongSelf)
+                strongSelf.attachedView?.fwMaskView.addSubview(strongSelf)
                 strongSelf.frame.origin.y =  UIScreen.main.bounds.height
             }
             
@@ -321,7 +321,7 @@ extension FWPopupView {
                 return
             }
             if strongSelf.superview == nil {
-                strongSelf.attachedView?.fwBackgroundView.addSubview(strongSelf)
+                strongSelf.attachedView?.fwMaskView.addSubview(strongSelf)
                 strongSelf.center = (strongSelf.attachedView?.center)!
                 if strongSelf.withKeyboard {
                     strongSelf.frame.origin.y -= 216/2
@@ -393,35 +393,36 @@ extension FWPopupView {
 open class FWPopupViewProperty: NSObject {
     
     // 单个点击按钮的高度
-    @objc public var buttonHeight: CGFloat        = 48.0
+    @objc public var buttonHeight: CGFloat          = 48.0
     // 圆角值
-    @objc public var cornerRadius: CGFloat        = 5.0
+    @objc public var cornerRadius: CGFloat          = 5.0
     
     // 标题字体大小
-    @objc public var titleFontSize: CGFloat       = 18.0
+    @objc public var titleFontSize: CGFloat         = 18.0
     // 点击按钮字体大小
-    @objc public var buttonFontSize: CGFloat      = 17.0
+    @objc public var buttonFontSize: CGFloat        = 17.0
     
-    // 弹窗的背景色
-    @objc public var vbackgroundColor: UIColor    = UIColor.white
+    // 弹窗的背景色（注意：这边指的是弹窗而不是遮罩层，遮罩层背景色的设置是：fwMaskViewColor）
+    @objc public var backgroundColor: UIColor       = UIColor.white
+    
     // 标题文字颜色
-    @objc public var titleColor: UIColor          = kPV_RGBA(r: 51, g: 51, b: 51, a: 1)
+    @objc public var titleColor: UIColor            = kPV_RGBA(r: 51, g: 51, b: 51, a: 1)
     // 边框、分割线颜色
-    @objc public var splitColor: UIColor          = kPV_RGBA(r: 231, g: 231, b: 231, a: 1)
+    @objc public var splitColor: UIColor            = kPV_RGBA(r: 231, g: 231, b: 231, a: 1)
     // 边框宽度
-    @objc public var splitWidth: CGFloat          = (1/UIScreen.main.scale)
+    @objc public var splitWidth: CGFloat            = (1/UIScreen.main.scale)
     
     // 普通按钮颜色
-    @objc public var itemNormalColor: UIColor     = kPV_RGBA(r: 51, g: 51, b: 51, a: 1)
+    @objc public var itemNormalColor: UIColor       = kPV_RGBA(r: 51, g: 51, b: 51, a: 1)
     // 高亮按钮颜色
-    @objc public var itemHighlightColor: UIColor  = kPV_RGBA(r: 254, g: 226, b: 4, a: 1)
+    @objc public var itemHighlightColor: UIColor    = kPV_RGBA(r: 254, g: 226, b: 4, a: 1)
     // 选中按钮颜色
-    @objc public var itemPressedColor: UIColor    = kPV_RGBA(r: 231, g: 231, b: 231, a: 1)
+    @objc public var itemPressedColor: UIColor      = kPV_RGBA(r: 231, g: 231, b: 231, a: 1)
     
     // 上下间距
-    @objc public var topBottomMargin:CGFloat      = 10
+    @objc public var topBottomMargin:CGFloat        = 10
     // 左右间距
-    @objc public var letfRigthMargin:CGFloat      = 10
+    @objc public var letfRigthMargin:CGFloat        = 10
     
     public override init() {
         super.init()

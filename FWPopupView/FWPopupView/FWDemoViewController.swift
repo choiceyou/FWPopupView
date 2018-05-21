@@ -14,7 +14,8 @@ class FWDemoViewController: UITableViewController {
     var alertImage: FWAlertView!
     
     
-    var titleArray = ["Alert - 单个按钮", "Alert - 两个按钮", "Alert - 两个按钮（修改参数）", "Alert - 多个按钮", "Alert - 带输入框", "Alert - 带自定义视图", "Sheet - 少量Item", "Sheet - 大量Item", "Custom - 自定义弹窗"]
+    /// 注意：这边不同的示例可能还附加演示了一些特性（比如：遮罩层是否能够点击、遮罩层的背景颜色等等），有用到时可以参考
+    var titleArray = ["Alert - 单个按钮", "Alert - 两个按钮", "Alert - 两个按钮（修改参数）", "Alert - 多个按钮", "Alert - 带输入框", "Alert - 带自定义视图", "Sheet - 少量Item", "Sheet - 大量Item", "Date - 自定义日期选择", "Menu - 自定义菜单"]
     
     let block: FWPopupItemClickedBlock = { (popupView, index) in
         print("AlertView：点击了第\(index)个按钮")
@@ -65,10 +66,13 @@ extension FWDemoViewController {
                 print("点击了取消")
             })
             // 设置AlertView外部背景色
-            alertView.attachedView?.fwBackgroundViewColor = UIColor(white: 0, alpha: 0.4)
-            alertView.show(completionBlock: { (popupView, isCompletion) in
-                
-            })
+            alertView.attachedView?.fwMaskViewColor = UIColor(white: 0, alpha: 0.2)
+            alertView.show { (popupView, isShow) in
+                if !isShow {
+                    // 隐藏时把背景色改回来（这个非必要，我这边只是一个演示）
+                    alertView.attachedView?.fwMaskViewColor = UIColor(white: 0, alpha: 0.5)
+                }
+            }
             break
         case 2:
             // 注意：此时“确定”按钮是不让按钮自己隐藏的
@@ -118,9 +122,7 @@ extension FWDemoViewController {
             let customImageView = UIImageView(image: UIImage(named: "audio_bgm_4"))
             
             self.alertImage = FWAlertView.alert(title: "标题", detail: "带自定义视图", inputPlaceholder: nil, keyboardType: .default, customView: customImageView, items: items)
-            self.alertImage.show(completionBlock: { (popupView, isCompletion) in
-                print("显示完成")
-            })
+            self.alertImage.show()
             break
         case 6:
             let items = ["Sheet0", "Sheet1", "Sheet2", "Sheet3"]
@@ -156,6 +158,14 @@ extension FWDemoViewController {
                 print("点击了 FWDateView 的取消")
             })
             dateView.show()
+            break
+        case 9:
+            let items = ["Menu0", "Menu1", "Menu2", "Menu3"]
+            
+            let menuView = FWMenuView.menu(itemTitles: items) { (popupView, index) in
+                print("Menu：点击了第\(index)个按钮")
+            }
+            menuView.show()
             break
             
         default:

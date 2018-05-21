@@ -148,7 +148,7 @@ extension FWAlertView {
             return
         }
         
-        self.backgroundColor = self.property.vbackgroundColor
+        self.backgroundColor = self.property.backgroundColor
         self.clipsToBounds = true
         
         self.popupType = .alert

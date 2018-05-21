@@ -52,7 +52,13 @@ extension FWMenuView {
     
     private func setupUI(itemTitles: [String], itemImageNames: [String]?, itemBlock: FWPopupItemClickedBlock? = nil) {
         
+        self.popupType = .custom
         
+        
+    }
+    
+    open override func hide(completionBlock: FWPopupCompletionBlock?) {
+        super.hide(completionBlock: completionBlock)
     }
 }
 
