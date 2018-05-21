@@ -72,6 +72,14 @@ extension FWSheetView {
         }
         
         self.backgroundColor = self.property.backgroundColor
+        if self.property.maskViewColor != nil {
+            self.attachedView?.fwMaskViewColor = self.property.maskViewColor!
+        }
+        
+        if self.property.touchWildToHide != nil && !self.property.touchWildToHide!.isEmpty {
+            FWPopupWindow.sharedInstance.touchWildToHide = (Int(self.property.touchWildToHide!) == 1) ? true : false
+        }
+        
         self.clipsToBounds = true
         
         self.popupType = .sheet
@@ -85,8 +93,6 @@ extension FWSheetView {
         for title in itemTitles {
             self.actionItemArray.append(FWPopupItem(title: title, itemType: .normal, isCancel: true, canAutoHide: true, itemClickedBlock: itemClickedBlock))
         }
-        
-        self.clipsToBounds = true
         
         self.frame.origin.x = 0
         self.frame.origin.y = 100

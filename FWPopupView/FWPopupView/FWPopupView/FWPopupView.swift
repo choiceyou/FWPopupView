@@ -29,6 +29,29 @@ import UIKit
     case custom
 }
 
+/// 自定义弹窗校准位置
+///
+/// - center: 中间
+/// - top: 上
+/// - left: 左
+/// - bottom: 下
+/// - right: 右
+/// - topLeft: 上左
+/// - topRight: 上右
+/// - bottomLeft: 下左
+/// - bottomRight: 下右
+@objc public enum FWPopupCustomAlignment: Int {
+    case center
+    case top
+    case left
+    case bottom
+    case right
+    case topLeft
+    case topRight
+    case bottomLeft
+    case bottomRight
+}
+
 /// 显示、隐藏回调
 public typealias FWPopupBlock = (_ popupView: FWPopupView) -> Void
 /// 显示、隐藏完成回调，某些场景下可能会用到 isShow ==》true: 显示 false：隐藏
@@ -54,7 +77,9 @@ open class FWPopupView: UIView {
     }
     
     @objc public var popupType: FWPopupType = .alert {
+        
         willSet {
+            
             switch newValue {
             case .alert:
                 self.showAnimation = self.alertShowAnimation()
@@ -87,10 +112,18 @@ open class FWPopupView: UIView {
     
     private var hideAnimation: FWPopupBlock?
     
+    /// 记录遮罩层设置前的颜色
+    internal var originMaskViewColor: UIColor!
+    /// 记录遮罩层设置前的是否可点击
+    internal var originTouchWildToHide: Bool!
+    
     public override init(frame: CGRect) {
         super.init(frame: frame)
         
         FWPopupWindow.sharedInstance.backgroundColor = UIColor.clear
+        
+        self.originMaskViewColor = self.attachedView?.fwMaskViewColor
+        self.originTouchWildToHide = FWPopupWindow.sharedInstance.touchWildToHide
         
         NotificationCenter.default.addObserver(self, selector: #selector(notifyHideAll(notification:)), name: NSNotification.Name(rawValue: FWPopupViewHideAllNotification), object: nil)
     }
@@ -133,6 +166,7 @@ extension FWPopupView {
         if self.attachedView == nil {
             self.attachedView = FWPopupWindow.sharedInstance.attachView()
         }
+        
         self.attachedView?.showFwBackground()
         
         let showA = self.showAnimation
@@ -171,8 +205,13 @@ extension FWPopupView {
         if hideAnimation != nil {
             hideAnimation!(self)
         }
+        
+        // 还原弹窗弹起时的相关参数
+        self.attachedView?.fwMaskViewColor = self.originMaskViewColor
+        FWPopupWindow.sharedInstance.touchWildToHide = self.originTouchWildToHide
     }
     
+    /// 隐藏所有的弹窗
     @objc open class func hideAll() {
         NotificationCenter.default.post(name: NSNotification.Name(rawValue: FWPopupViewHideAllNotification), object: FWPopupView.self)
     }
@@ -404,6 +443,11 @@ open class FWPopupViewProperty: NSObject {
     
     // 弹窗的背景色（注意：这边指的是弹窗而不是遮罩层，遮罩层背景色的设置是：fwMaskViewColor）
     @objc public var backgroundColor: UIColor       = UIColor.white
+    // 遮罩层的背景色（也可以使用fwMaskViewColor），注意：该参数在弹窗隐藏后，还原为弹窗弹起时的值
+    @objc public var maskViewColor: UIColor?
+    
+    // 为了兼容OC，0表示NO，1表示YES，为YES时：用户点击外部遮罩层页面可以消失，注意：该参数在弹窗隐藏后，还原为弹窗弹起时的值
+    @objc open var touchWildToHide: String?
     
     // 标题文字颜色
     @objc public var titleColor: UIColor            = kPV_RGBA(r: 51, g: 51, b: 51, a: 1)

@@ -86,9 +86,12 @@ extension FWDemoViewController {
             vProperty.detailFontSize = 14.0
             vProperty.detailColor = kPV_RGBA(r: 141, g: 151, b: 163, a: 1.0)
             vProperty.buttonFontSize = 14.0
+            vProperty.maskViewColor = UIColor(white: 0, alpha: 0.8)
+            vProperty.touchWildToHide = "1"
             // 还有很多参数可设置...
             
             let alertView = FWAlertView.alert(title: "标题", detail: "描述描述描述描述描述描述描述描述描述描述", inputPlaceholder: nil, keyboardType: .default, customView: nil, items: items, vProperty: vProperty)
+            
             alertView.show()
             break
         case 3:
@@ -162,9 +165,13 @@ extension FWDemoViewController {
         case 9:
             let items = ["Menu0", "Menu1", "Menu2", "Menu3"]
             
-            let menuView = FWMenuView.menu(itemTitles: items) { (popupView, index) in
-                print("Menu：点击了第\(index)个按钮")
-            }
+            let vProperty = FWMenuViewProperty()
+            vProperty.maskViewColor = UIColor.clear
+            vProperty.touchWildToHide = "1"
+            
+            let menuView = FWMenuView.menu(itemTitles: items, itemImageNames: nil, itemBlock: { (popupView, index) in
+                
+            }, property: vProperty)
             menuView.show()
             break
             

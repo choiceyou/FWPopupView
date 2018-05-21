@@ -54,6 +54,14 @@ extension FWDateView {
     private func setupUI(confirmBlock: FWDateViewConfirmBlock? = nil, cancelBlock: FWPopupVoidBlock? = nil) {
         
         self.backgroundColor = self.property.backgroundColor
+        if self.property.maskViewColor != nil {
+            self.attachedView?.fwMaskViewColor = self.property.maskViewColor!
+        }
+        
+        if self.property.touchWildToHide != nil && !self.property.touchWildToHide!.isEmpty {
+            FWPopupWindow.sharedInstance.touchWildToHide = (Int(self.property.touchWildToHide!) == 1) ? true : false
+        }
+        
         self.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: self.property.datePickerHeight + self.property.btnHeight)
         
         self.popupType = .sheet

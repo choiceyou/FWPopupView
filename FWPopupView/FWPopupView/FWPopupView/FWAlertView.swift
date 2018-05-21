@@ -149,6 +149,14 @@ extension FWAlertView {
         }
         
         self.backgroundColor = self.property.backgroundColor
+        if self.property.maskViewColor != nil {
+            self.attachedView?.fwMaskViewColor = self.property.maskViewColor!
+        }
+        
+        if self.property.touchWildToHide != nil && !self.property.touchWildToHide!.isEmpty {
+            FWPopupWindow.sharedInstance.touchWildToHide = (Int(self.property.touchWildToHide!) == 1) ? true : false
+        }
+        
         self.clipsToBounds = true
         
         self.popupType = .alert
@@ -159,7 +167,6 @@ extension FWAlertView {
         self.withKeyboard = (inputPlaceholder != nil)
         
         self.layer.cornerRadius = self.property.cornerRadius
-        self.clipsToBounds = true
         
         self.frame.origin.x = (UIScreen.main.bounds.width - self.property.vwidth) / 2
         self.frame.origin.y = 100

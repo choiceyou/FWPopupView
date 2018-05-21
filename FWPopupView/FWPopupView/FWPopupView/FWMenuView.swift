@@ -18,15 +18,40 @@
 import Foundation
 import UIKit
 
-open class FWMenuView: FWPopupView {
+/// 弹窗箭头的样式
+///
+/// - none: 无箭头
+/// - round: 圆角
+/// - triangle: 菱角
+@objc public enum FWMenuArrowStyle: Int {
+    case none
+    case round
+    case triangle
+}
+
+
+class FWMenuViewTableViewCell: UITableViewCell {
+    
+}
+
+
+open class FWMenuView: FWPopupView, UITableViewDelegate, UITableViewDataSource {
     
     // 可设置属性
     @objc open var property = FWMenuViewProperty()
     
     
+    /// 外部传入的标题数组
+    private var itemTitleArray: [String]?
+    /// 外部传入的图片数组
+    private var itemImageNameArray: [String]?
+    
     private lazy var tableView: UITableView = {
-       
+        
         let tableView = UITableView()
+        tableView.delegate = self
+        tableView.dataSource = self
+        self.addSubview(tableView)
         return tableView
     }()
     
@@ -40,25 +65,62 @@ open class FWMenuView: FWPopupView {
         return self.menu(itemTitles: itemTitles, itemImageNames: nil, itemBlock: itemBlock, property: property)
     }
     
-    @objc open class func menu(itemTitles: [String], itemImageNames: [String]?, itemBlock: FWPopupItemClickedBlock? = nil, property: FWMenuViewProperty?) -> FWMenuView {
+    @objc open class func menu(itemTitles: [String]?, itemImageNames: [String]?, itemBlock: FWPopupItemClickedBlock? = nil, property: FWMenuViewProperty?) -> FWMenuView {
         
         let popupMenu = FWMenuView()
-        popupMenu.setupUI(itemTitles: itemTitles, itemImageNames: itemImageNames, itemBlock: itemBlock)
+        popupMenu.setupUI(itemTitles: itemTitles, itemImageNames: itemImageNames, itemBlock: itemBlock, property: property)
         return popupMenu
     }
 }
 
 extension FWMenuView {
     
-    private func setupUI(itemTitles: [String], itemImageNames: [String]?, itemBlock: FWPopupItemClickedBlock? = nil) {
+    private func setupUI(itemTitles: [String]?, itemImageNames: [String]?, itemBlock: FWPopupItemClickedBlock? = nil, property: FWMenuViewProperty?) {
+        
+        if itemTitles == nil && itemImageNames == nil {
+            return
+        }
+        
+        if property != nil {
+            self.property = property!
+        }
+        
+        self.backgroundColor = self.property.backgroundColor
+        if self.property.maskViewColor != nil {
+            self.attachedView?.fwMaskViewColor = self.property.maskViewColor!
+        }
+        
+        if self.property.touchWildToHide != nil && !self.property.touchWildToHide!.isEmpty {
+            FWPopupWindow.sharedInstance.touchWildToHide = (Int(self.property.touchWildToHide!) == 1) ? true : false
+        }
+        
+        self.clipsToBounds = true
         
         self.popupType = .custom
         
+        self.itemTitleArray = itemTitles
+        self.itemImageNameArray = itemImageNames
         
+        self.tableView.register(FWMenuViewTableViewCell.self, forCellReuseIdentifier: "cellId")
+        self.frame = CGRect(x: 0, y: 0, width: 200, height: 200)
+        self.tableView.frame = self.frame
+    }
+}
+
+extension FWMenuView {
+    
+    public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if self.itemTitleArray != nil {
+            return self.itemTitleArray!.count
+        } else {
+            return self.itemImageNameArray!.count
+        }
     }
     
-    open override func hide(completionBlock: FWPopupCompletionBlock?) {
-        super.hide(completionBlock: completionBlock)
+    public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cellId", for: indexPath) as! FWMenuViewTableViewCell
+        cell.textLabel?.text = self.itemTitleArray![indexPath.row]
+        return cell
     }
 }
 
@@ -66,7 +128,10 @@ extension FWMenuView {
 /// FWMenuView的相关属性，请注意其父类中还有很多公共属性
 open class FWMenuViewProperty: FWPopupViewProperty {
     
+    /// 弹窗箭头的样式
+    @objc public var menuArrowStyle: FWMenuArrowStyle = .round
     
-    
+    /// 自定义弹窗校准位置
+    @objc public var popupCustomAlignment: FWPopupCustomAlignment = .top
 }
 
