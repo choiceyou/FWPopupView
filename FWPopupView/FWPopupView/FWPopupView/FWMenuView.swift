@@ -16,6 +16,7 @@
 
 
 import Foundation
+import UIKit
 
 open class FWMenuView: FWPopupView {
     
@@ -23,7 +24,7 @@ open class FWMenuView: FWPopupView {
     @objc open var property = FWMenuViewProperty()
     
     
-    private lazy var tableView: UI = {
+    private lazy var tableView: UITableView = {
        
         let tableView = UITableView()
         return tableView
