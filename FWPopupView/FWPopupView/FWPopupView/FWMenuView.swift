@@ -51,6 +51,7 @@ class FWMenuViewTableViewCell: UITableViewCell {
         self.itemBtn.frame = CGRect(x: property.letfRigthMargin, y: property.topBottomMargin, width: self.frame.width - property.letfRigthMargin * 2, height: self.frame.height - property.topBottomMargin * 2)
         
         self.itemBtn.contentHorizontalAlignment = property.contentHorizontalAlignment
+        self.selectionStyle = property.selectionStyle
         
         if image != nil {
             self.itemBtn.setImage(image!, for: .normal)
@@ -315,6 +316,8 @@ open class FWMenuViewProperty: FWPopupViewProperty {
     
     /// 内容位置
     @objc public var contentHorizontalAlignment: UIControlContentHorizontalAlignment = .left
+    /// 选中风格
+    @objc public var selectionStyle: UITableViewCellSelectionStyle = .none
     
     public override init() {
         super.init()

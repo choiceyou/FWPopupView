@@ -215,9 +215,6 @@ extension FWPopupView {
         if self.vProperty.touchWildToHide != nil && !self.vProperty.touchWildToHide!.isEmpty {
             FWPopupWindow.sharedInstance.touchWildToHide = (Int(self.vProperty.touchWildToHide!) == 1) ? true : false
         }
-        if self.attachedView!.isKind(of: UIScrollView.self) {
-            (self.attachedView! as! UIScrollView).isScrollEnabled = true
-        }
     }
     
     /// 隐藏
