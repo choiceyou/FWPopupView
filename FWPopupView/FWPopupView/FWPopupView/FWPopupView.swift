@@ -80,7 +80,7 @@ open class FWPopupView: UIView, UIGestureRecognizerDelegate {
     @objc public var attachedView = FWPopupWindow.sharedInstance.attachView()
     
     /// FWPopupType = custom 的可设置参数
-    @objc public var vProperty: FWPopupViewProperty?
+    @objc public var vProperty = FWPopupViewProperty()
     
     @objc public var visible: Bool {
         get {
@@ -209,13 +209,11 @@ extension FWPopupView {
                 (self.attachedView! as! UIScrollView).isScrollEnabled = false
             }
         }
-        if self.vProperty != nil {
-            if self.attachedView != nil && self.vProperty!.maskViewColor != nil {
-                self.attachedView?.fwMaskViewColor = self.vProperty!.maskViewColor!
-            }
-            if self.vProperty!.touchWildToHide != nil && !self.vProperty!.touchWildToHide!.isEmpty {
-                FWPopupWindow.sharedInstance.touchWildToHide = (Int(self.vProperty!.touchWildToHide!) == 1) ? true : false
-            }
+        if self.attachedView != nil && self.vProperty.maskViewColor != nil {
+            self.attachedView?.fwMaskViewColor = self.vProperty.maskViewColor!
+        }
+        if self.vProperty.touchWildToHide != nil && !self.vProperty.touchWildToHide!.isEmpty {
+            FWPopupWindow.sharedInstance.touchWildToHide = (Int(self.vProperty.touchWildToHide!) == 1) ? true : false
         }
         if self.attachedView!.isKind(of: UIScrollView.self) {
             (self.attachedView! as! UIScrollView).isScrollEnabled = true
@@ -416,86 +414,82 @@ extension FWPopupView {
                 return
             }
             
-            if strongSelf.vProperty == nil {
-                strongSelf.vProperty = FWPopupViewProperty()
-            }
-            
             let originFrame = strongSelf.frame
             
             if strongSelf.superview == nil {
                 strongSelf.attachedView?.fwMaskView.addSubview(strongSelf)
                 
-                switch strongSelf.vProperty!.popupCustomAlignment {
+                switch strongSelf.vProperty.popupCustomAlignment {
                 case .center:
                     strongSelf.center = strongSelf.attachedView!.center
-                    strongSelf.frame.origin.x += strongSelf.vProperty!.popupViewEdgeInsets.left - strongSelf.vProperty!.popupViewEdgeInsets.right
-                    strongSelf.frame.origin.y = strongSelf.vProperty!.popupViewEdgeInsets.top - strongSelf.vProperty!.popupViewEdgeInsets.bottom
+                    strongSelf.frame.origin.x += strongSelf.vProperty.popupViewEdgeInsets.left - strongSelf.vProperty.popupViewEdgeInsets.right
+                    strongSelf.frame.origin.y = strongSelf.vProperty.popupViewEdgeInsets.top - strongSelf.vProperty.popupViewEdgeInsets.bottom
                     break
                     
                 case .top:
-                    strongSelf.frame.origin.x += strongSelf.vProperty!.popupViewEdgeInsets.left - strongSelf.vProperty!.popupViewEdgeInsets.right
-                    strongSelf.frame.origin.y = strongSelf.vProperty!.popupViewEdgeInsets.top
+                    strongSelf.frame.origin.x += strongSelf.vProperty.popupViewEdgeInsets.left - strongSelf.vProperty.popupViewEdgeInsets.right
+                    strongSelf.frame.origin.y = strongSelf.vProperty.popupViewEdgeInsets.top
                     strongSelf.frame.size.height = 0
                     break
                 case .left:
-                    strongSelf.frame.origin.x = strongSelf.vProperty!.popupViewEdgeInsets.left
-                    strongSelf.frame.origin.y += strongSelf.vProperty!.popupViewEdgeInsets.top - strongSelf.vProperty!.popupViewEdgeInsets.bottom
+                    strongSelf.frame.origin.x = strongSelf.vProperty.popupViewEdgeInsets.left
+                    strongSelf.frame.origin.y += strongSelf.vProperty.popupViewEdgeInsets.top - strongSelf.vProperty.popupViewEdgeInsets.bottom
                     strongSelf.frame.size.width = 0
                     break
                 case .bottom:
-                    strongSelf.frame.origin.x += strongSelf.vProperty!.popupViewEdgeInsets.left - strongSelf.vProperty!.popupViewEdgeInsets.right
-                    strongSelf.frame.origin.y = strongSelf.attachedView!.frame.height - strongSelf.vProperty!.popupViewEdgeInsets.bottom
+                    strongSelf.frame.origin.x += strongSelf.vProperty.popupViewEdgeInsets.left - strongSelf.vProperty.popupViewEdgeInsets.right
+                    strongSelf.frame.origin.y = strongSelf.attachedView!.frame.height - strongSelf.vProperty.popupViewEdgeInsets.bottom
                     strongSelf.frame.size.height = 0
                     break
                 case .right:
-                    strongSelf.frame.origin.x = strongSelf.attachedView!.frame.width - strongSelf.vProperty!.popupViewEdgeInsets.right
-                    strongSelf.frame.origin.y += strongSelf.vProperty!.popupViewEdgeInsets.top - strongSelf.vProperty!.popupViewEdgeInsets.bottom
+                    strongSelf.frame.origin.x = strongSelf.attachedView!.frame.width - strongSelf.vProperty.popupViewEdgeInsets.right
+                    strongSelf.frame.origin.y += strongSelf.vProperty.popupViewEdgeInsets.top - strongSelf.vProperty.popupViewEdgeInsets.bottom
                     strongSelf.frame.size.width = 0
                     break
                     
                 case .topCenter:
-                    strongSelf.frame.origin.x = (strongSelf.attachedView!.frame.width - strongSelf.frame.width) / 2 + strongSelf.vProperty!.popupViewEdgeInsets.left - strongSelf.vProperty!.popupViewEdgeInsets.right
-                    strongSelf.frame.origin.y = strongSelf.vProperty!.popupViewEdgeInsets.top
+                    strongSelf.frame.origin.x = (strongSelf.attachedView!.frame.width - strongSelf.frame.width) / 2 + strongSelf.vProperty.popupViewEdgeInsets.left - strongSelf.vProperty.popupViewEdgeInsets.right
+                    strongSelf.frame.origin.y = strongSelf.vProperty.popupViewEdgeInsets.top
                     strongSelf.frame.size.height = 0
                     break
                 case .leftCenter:
-                    strongSelf.frame.origin.x = strongSelf.vProperty!.popupViewEdgeInsets.left
-                    strongSelf.frame.origin.y = (strongSelf.attachedView!.frame.height - strongSelf.frame.height) / 2 + strongSelf.vProperty!.popupViewEdgeInsets.top - strongSelf.vProperty!.popupViewEdgeInsets.bottom
+                    strongSelf.frame.origin.x = strongSelf.vProperty.popupViewEdgeInsets.left
+                    strongSelf.frame.origin.y = (strongSelf.attachedView!.frame.height - strongSelf.frame.height) / 2 + strongSelf.vProperty.popupViewEdgeInsets.top - strongSelf.vProperty.popupViewEdgeInsets.bottom
                     strongSelf.frame.size.width = 0
                     break
                 case .bottomCenter:
-                    strongSelf.frame.origin.x = (strongSelf.attachedView!.frame.width - strongSelf.frame.width) / 2 + strongSelf.vProperty!.popupViewEdgeInsets.left - strongSelf.vProperty!.popupViewEdgeInsets.right
-                    strongSelf.frame.origin.y = strongSelf.attachedView!.frame.height - strongSelf.vProperty!.popupViewEdgeInsets.bottom
+                    strongSelf.frame.origin.x = (strongSelf.attachedView!.frame.width - strongSelf.frame.width) / 2 + strongSelf.vProperty.popupViewEdgeInsets.left - strongSelf.vProperty.popupViewEdgeInsets.right
+                    strongSelf.frame.origin.y = strongSelf.attachedView!.frame.height - strongSelf.vProperty.popupViewEdgeInsets.bottom
                     strongSelf.frame.size.height = 0
                     break
                 case .rightCenter:
-                    strongSelf.frame.origin.x = strongSelf.attachedView!.frame.width - strongSelf.vProperty!.popupViewEdgeInsets.right
-                    strongSelf.frame.origin.y = (strongSelf.attachedView!.frame.height - strongSelf.frame.height) / 2 + strongSelf.vProperty!.popupViewEdgeInsets.top - strongSelf.vProperty!.popupViewEdgeInsets.bottom
+                    strongSelf.frame.origin.x = strongSelf.attachedView!.frame.width - strongSelf.vProperty.popupViewEdgeInsets.right
+                    strongSelf.frame.origin.y = (strongSelf.attachedView!.frame.height - strongSelf.frame.height) / 2 + strongSelf.vProperty.popupViewEdgeInsets.top - strongSelf.vProperty.popupViewEdgeInsets.bottom
                     strongSelf.frame.size.width = 0
                     break
                     
                 case .topLeft:
-                    strongSelf.frame.origin.x = strongSelf.vProperty!.popupViewEdgeInsets.left
-                    strongSelf.frame.origin.y = strongSelf.vProperty!.popupViewEdgeInsets.top
+                    strongSelf.frame.origin.x = strongSelf.vProperty.popupViewEdgeInsets.left
+                    strongSelf.frame.origin.y = strongSelf.vProperty.popupViewEdgeInsets.top
                     break
                 case .topRight:
-                    strongSelf.frame.origin.x = strongSelf.attachedView!.frame.width - strongSelf.frame.width - strongSelf.vProperty!.popupViewEdgeInsets.right
-                    strongSelf.frame.origin.y = strongSelf.vProperty!.popupViewEdgeInsets.top
+                    strongSelf.frame.origin.x = strongSelf.attachedView!.frame.width - strongSelf.frame.width - strongSelf.vProperty.popupViewEdgeInsets.right
+                    strongSelf.frame.origin.y = strongSelf.vProperty.popupViewEdgeInsets.top
                     break
                 case .bottomLeft:
-                    strongSelf.frame.origin.x = strongSelf.vProperty!.popupViewEdgeInsets.left
-                    strongSelf.frame.origin.y = strongSelf.attachedView!.frame.height - strongSelf.frame.height - strongSelf.vProperty!.popupViewEdgeInsets.bottom
+                    strongSelf.frame.origin.x = strongSelf.vProperty.popupViewEdgeInsets.left
+                    strongSelf.frame.origin.y = strongSelf.attachedView!.frame.height - strongSelf.frame.height - strongSelf.vProperty.popupViewEdgeInsets.bottom
                     break
                 case .bottomRight:
-                    strongSelf.frame.origin.x = strongSelf.attachedView!.frame.width - strongSelf.frame.width - strongSelf.vProperty!.popupViewEdgeInsets.right
-                    strongSelf.frame.origin.y = strongSelf.attachedView!.frame.height - strongSelf.frame.height - strongSelf.vProperty!.popupViewEdgeInsets.bottom
+                    strongSelf.frame.origin.x = strongSelf.attachedView!.frame.width - strongSelf.frame.width - strongSelf.vProperty.popupViewEdgeInsets.right
+                    strongSelf.frame.origin.y = strongSelf.attachedView!.frame.height - strongSelf.frame.height - strongSelf.vProperty.popupViewEdgeInsets.bottom
                     break
                 }
                 
-                if strongSelf.vProperty!.popupCustomAlignment == .center {
+                if strongSelf.vProperty.popupCustomAlignment == .center {
                     strongSelf.transform = CGAffineTransform.init(scaleX: 0.01, y: 0.01)
-                } else if strongSelf.vProperty!.popupCustomAlignment.rawValue >= FWPopupCustomAlignment.topLeft.rawValue {
-                    strongSelf.layer.anchorPoint = CGPoint(x: 0.5, y: ( strongSelf.vProperty!.popupCustomAlignment == .topLeft || strongSelf.vProperty!.popupCustomAlignment == .topRight ? 0 : 1))
+                } else if strongSelf.vProperty.popupCustomAlignment.rawValue >= FWPopupCustomAlignment.topLeft.rawValue {
+                    strongSelf.layer.anchorPoint = CGPoint(x: 0.5, y: ( strongSelf.vProperty.popupCustomAlignment == .topLeft || strongSelf.vProperty.popupCustomAlignment == .topRight ? 0 : 1))
                     strongSelf.frame = originFrame
                     strongSelf.transform = CGAffineTransform.init(scaleX: 0.01, y: 0.01)
                 }
@@ -505,22 +499,22 @@ extension FWPopupView {
             
             UIView.animate(withDuration: strongSelf.animationDuration, delay: 0.0, options: [.curveEaseOut, .beginFromCurrentState], animations: {
                 
-                switch strongSelf.vProperty!.popupCustomAlignment {
+                switch strongSelf.vProperty.popupCustomAlignment {
                 case .top, .topCenter:
-                    strongSelf.frame.origin.y = strongSelf.vProperty!.popupViewEdgeInsets.top
+                    strongSelf.frame.origin.y = strongSelf.vProperty.popupViewEdgeInsets.top
                     strongSelf.frame.size.height = originFrame.height
                     break
                 case .left, .leftCenter:
-                    strongSelf.frame.origin.x = strongSelf.vProperty!.popupViewEdgeInsets.left
+                    strongSelf.frame.origin.x = strongSelf.vProperty.popupViewEdgeInsets.left
                     strongSelf.frame.size.width = originFrame.width
                     break
                 case .bottom, .bottomCenter:
                     strongSelf.frame.size.height = originFrame.height
-                    strongSelf.frame.origin.y = strongSelf.attachedView!.frame.height - strongSelf.frame.height - strongSelf.vProperty!.popupViewEdgeInsets.bottom
+                    strongSelf.frame.origin.y = strongSelf.attachedView!.frame.height - strongSelf.frame.height - strongSelf.vProperty.popupViewEdgeInsets.bottom
                     break
                 case .right, .rightCenter:
                     strongSelf.frame.size.width = originFrame.width
-                    strongSelf.frame.origin.x = strongSelf.attachedView!.frame.width - strongSelf.frame.width - strongSelf.vProperty!.popupViewEdgeInsets.right
+                    strongSelf.frame.origin.x = strongSelf.attachedView!.frame.width - strongSelf.frame.width - strongSelf.vProperty.popupViewEdgeInsets.right
                     break
                 default:
                     strongSelf.transform = CGAffineTransform.identity

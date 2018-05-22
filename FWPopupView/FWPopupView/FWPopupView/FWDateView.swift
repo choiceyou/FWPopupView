@@ -23,8 +23,6 @@ public typealias FWDateViewConfirmBlock = (_ datePicker: UIDatePicker) -> Void
 
 open class FWDateView: FWPopupView {
     
-    @objc public let property = FWDateViewProperty()
-    
     private var confirmBtn: UIButton?
     private var cancelBtn: UIButton?
     
@@ -42,6 +40,8 @@ open class FWDateView: FWPopupView {
     
     public override init(frame: CGRect) {
         super.init(frame: frame)
+        
+        self.vProperty = FWDateViewProperty()
     }
     
     required public init?(coder aDecoder: NSCoder) {
@@ -53,27 +53,29 @@ extension FWDateView {
     
     private func setupUI(confirmBlock: FWDateViewConfirmBlock? = nil, cancelBlock: FWPopupVoidBlock? = nil) {
         
-        self.backgroundColor = self.property.backgroundColor
-        if self.property.maskViewColor != nil {
-            self.attachedView?.fwMaskViewColor = self.property.maskViewColor!
+        let property = self.vProperty as! FWDateViewProperty
+        
+        self.backgroundColor = self.vProperty.backgroundColor
+        if property.maskViewColor != nil {
+            self.attachedView?.fwMaskViewColor = property.maskViewColor!
         }
         
-        if self.property.touchWildToHide != nil && !self.property.touchWildToHide!.isEmpty {
-            FWPopupWindow.sharedInstance.touchWildToHide = (Int(self.property.touchWildToHide!) == 1) ? true : false
+        if property.touchWildToHide != nil && !property.touchWildToHide!.isEmpty {
+            FWPopupWindow.sharedInstance.touchWildToHide = (Int(property.touchWildToHide!) == 1) ? true : false
         }
         
-        self.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: self.property.datePickerHeight + self.property.btnHeight)
+        self.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: property.datePickerHeight + property.btnHeight)
         
         self.popupType = .sheet
         
-        self.cancelBtn = self.setupBtn(frame: CGRect(x: 0, y: 0, width: self.property.btnWidth, height: self.property.btnHeight), title: self.property.cancelBtnTitle, tag: 0)
+        self.cancelBtn = self.setupBtn(frame: CGRect(x: 0, y: 0, width: property.btnWidth, height: property.btnHeight), title: property.cancelBtnTitle, tag: 0)
         self.addSubview(self.cancelBtn!)
         
-        self.confirmBtn = self.setupBtn(frame: CGRect(x: self.frame.width - self.property.btnWidth, y: 0, width: self.property.btnWidth, height: self.property.btnHeight), title: self.property.confirmBtnTitle, tag: 1)
+        self.confirmBtn = self.setupBtn(frame: CGRect(x: self.frame.width - property.btnWidth, y: 0, width: property.btnWidth, height: property.btnHeight), title: property.confirmBtnTitle, tag: 1)
         self.addSubview(self.confirmBtn!)
         
-        self.datePicker.frame = CGRect(x: 0, y: self.property.btnHeight, width: self.frame.width, height: self.property.datePickerHeight)
-        self.datePicker.backgroundColor = self.property.backgroundColor
+        self.datePicker.frame = CGRect(x: 0, y: property.btnHeight, width: self.frame.width, height: property.datePickerHeight)
+        self.datePicker.backgroundColor = property.backgroundColor
         self.addSubview(self.datePicker)
         
         self.confirmBlock = confirmBlock
@@ -82,14 +84,16 @@ extension FWDateView {
     
     private func setupBtn(frame: CGRect, title: String, tag: Int) -> UIButton {
         
+        let property = self.vProperty as! FWDateViewProperty
+        
         let btn = UIButton(type: .custom)
         btn.addTarget(self, action: #selector(btnAction(_:)), for: .touchUpInside)
         btn.frame = frame
         btn.tag = tag
         btn.setTitle(title, for: .normal)
-        btn.setTitleColor(self.property.btnTitleColor, for: .normal)
-        btn.backgroundColor = self.property.backgroundColor
-        btn.titleLabel?.font = UIFont.boldSystemFont(ofSize: self.property.btnTitleFont)
+        btn.setTitleColor(property.btnTitleColor, for: .normal)
+        btn.backgroundColor = property.backgroundColor
+        btn.titleLabel?.font = UIFont.boldSystemFont(ofSize: property.btnTitleFont)
         return btn
     }
     

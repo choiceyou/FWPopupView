@@ -130,6 +130,16 @@ open class FWMenuView: FWPopupView, UITableViewDelegate, UITableViewDataSource {
         popupMenu.setupUI(itemTitles: itemTitles, itemImageNames: itemImageNames, itemBlock: itemBlock, property: property)
         return popupMenu
     }
+    
+    public override init(frame: CGRect) {
+        super.init(frame: frame)
+        
+        self.vProperty = FWMenuViewProperty()
+    }
+    
+    required public init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 }
 
 extension FWMenuView {
@@ -146,16 +156,16 @@ extension FWMenuView {
             self.vProperty = FWMenuViewProperty()
         }
         
-        self.backgroundColor = self.vProperty?.backgroundColor
-        if self.vProperty?.maskViewColor != nil {
-            self.attachedView?.fwMaskViewColor = self.vProperty!.maskViewColor!
+        self.backgroundColor = self.vProperty.backgroundColor
+        if self.vProperty.maskViewColor != nil {
+            self.attachedView?.fwMaskViewColor = self.vProperty.maskViewColor!
         }
         
-        if self.vProperty!.touchWildToHide != nil && !self.vProperty!.touchWildToHide!.isEmpty {
-            FWPopupWindow.sharedInstance.touchWildToHide = (Int(self.vProperty!.touchWildToHide!) == 1) ? true : false
+        if self.vProperty.touchWildToHide != nil && !self.vProperty.touchWildToHide!.isEmpty {
+            FWPopupWindow.sharedInstance.touchWildToHide = (Int(self.vProperty.touchWildToHide!) == 1) ? true : false
         }
         
-        self.layer.cornerRadius = self.vProperty!.cornerRadius
+        self.layer.cornerRadius = self.vProperty.cornerRadius
         self.clipsToBounds = true
         
         self.popupType = .custom
@@ -170,17 +180,17 @@ extension FWMenuView {
         self.tableView.register(FWMenuViewTableViewCell.self, forCellReuseIdentifier: "cellId")
         self.tableView.separatorInset = UIEdgeInsets.zero
         self.tableView.layoutMargins = UIEdgeInsets.zero
-        self.tableView.separatorColor = self.vProperty!.splitColor
-        self.tableView.layer.borderColor = self.vProperty!.splitColor.cgColor
-        self.tableView.layer.borderWidth = self.vProperty!.splitWidth
+        self.tableView.separatorColor = self.vProperty.splitColor
+        self.tableView.layer.borderColor = self.vProperty.splitColor.cgColor
+        self.tableView.layer.borderWidth = self.vProperty.splitWidth
         
         let property = self.vProperty as! FWMenuViewProperty
         
         var selfSize: CGSize = CGSize(width: 0, height: 0)
         if property.popupViewSize.width > 0 && property.popupViewSize.height > 0 {
             selfSize = property.popupViewSize
-        } else if self.vProperty!.popupViewMaxHeight > 0 && self.maxItemSize.height * CGFloat(self.itemsCount()) > self.vProperty!.popupViewMaxHeight {
-            selfSize = CGSize(width: self.maxItemSize.width, height: self.vProperty!.popupViewMaxHeight)
+        } else if self.vProperty.popupViewMaxHeight > 0 && self.maxItemSize.height * CGFloat(self.itemsCount()) > self.vProperty.popupViewMaxHeight {
+            selfSize = CGSize(width: self.maxItemSize.width, height: self.vProperty.popupViewMaxHeight)
         } else {
             selfSize = CGSize(width: self.maxItemSize.width, height: self.maxItemSize.height * CGFloat(self.itemsCount()))
         }

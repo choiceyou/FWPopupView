@@ -82,7 +82,7 @@ extension FWDemoViewController {
             
             // 主要演示修改参数
             let vProperty = FWAlertViewProperty()
-            vProperty.vwidth = max(UIScreen.main.bounds.width * 0.65, 275)
+            vProperty.alertViewWidth = max(UIScreen.main.bounds.width * 0.65, 275)
             vProperty.titleFontSize = 17.0
             vProperty.detailFontSize = 14.0
             vProperty.detailColor = kPV_RGBA(r: 141, g: 151, b: 163, a: 1.0)
