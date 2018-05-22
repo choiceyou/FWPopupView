@@ -12,6 +12,7 @@ import UIKit
 class FWDemoViewController: UITableViewController {
     
     var alertImage: FWAlertView!
+    var menuView: FWMenuView!
     
     
     /// 注意：这边不同的示例可能还附加演示了一些特性（比如：遮罩层是否能够点击、遮罩层的背景颜色等等），有用到时可以参考
@@ -110,21 +111,28 @@ extension FWDemoViewController {
             alertView.show()
             break
         case 5:
-            let block2: FWPopupItemClickedBlock = { [weak self] (popupView, index) in
+            if self.alertImage == nil {
                 
-                if index == 1 {
-                    // 这边演示了如何手动去调用隐藏
-                    self?.alertImage.hide()
+                let block2: FWPopupItemClickedBlock = { [weak self] (popupView, index) in
+                    
+                    if index == 1 {
+                        // 这边演示了如何手动去调用隐藏
+                        self?.alertImage.hide()
+                    }
                 }
+                
+                // 注意：此时“确定”按钮是不让按钮自己隐藏的
+                let items = [FWPopupItem(title: "取消", itemType: .normal, isCancel: true, canAutoHide: true, itemClickedBlock: block2),
+                             FWPopupItem(title: "确定", itemType: .normal, isCancel: false, canAutoHide: false, itemClickedBlock: block2)]
+                // 注意：添加自定义的视图，需要设置确定的Frame值
+                let customImageView = UIImageView(image: UIImage(named: "audio_bgm_4"))
+                
+                let vProperty = FWAlertViewProperty()
+                vProperty.touchWildToHide = "1"
+                
+                self.alertImage = FWAlertView.alert(title: "标题", detail: "带自定义视图", inputPlaceholder: nil, keyboardType: .default, customView: customImageView, items: items, vProperty: vProperty)
             }
             
-            // 注意：此时“确定”按钮是不让按钮自己隐藏的
-            let items = [FWPopupItem(title: "取消", itemType: .normal, isCancel: true, canAutoHide: true, itemClickedBlock: block2),
-                         FWPopupItem(title: "确定", itemType: .normal, isCancel: false, canAutoHide: false, itemClickedBlock: block2)]
-            // 注意：添加自定义的视图，需要设置确定的Frame值
-            let customImageView = UIImageView(image: UIImage(named: "audio_bgm_4"))
-            
-            self.alertImage = FWAlertView.alert(title: "标题", detail: "带自定义视图", inputPlaceholder: nil, keyboardType: .default, customView: customImageView, items: items)
             self.alertImage.show()
             break
         case 6:
@@ -135,14 +143,7 @@ extension FWDemoViewController {
             }, cancenlBlock: {
                 print("点击了取消")
             })
-            sheetView.show { (popupView, isShow) in
-                
-                if isShow {
-                    FWPopupWindow.sharedInstance.touchWildToHide = true
-                } else {
-                    FWPopupWindow.sharedInstance.touchWildToHide = false
-                }
-            }
+            sheetView.show()
             break
         case 7:
             let items = ["Sheet0", "Sheet1", "Sheet2", "Sheet3", "Sheet4", "Sheet5", "Sheet6", "Sheet7", "Sheet8", "Sheet9", "Sheet10", "Sheet11", "Sheet12", "Sheet13", "Sheet14"]
@@ -163,17 +164,28 @@ extension FWDemoViewController {
             dateView.show()
             break
         case 9:
-            let items = ["Menu0", "Menu1", "Menu2", "Menu3"]
+            if self.menuView == nil {
+                let titles = ["发起多人聊天", "加好友", "扫一扫", "面对面快传", "付款"]
+                let images = [UIImage(named: "right_menu_multichat"),
+                              UIImage(named: "right_menu_addFri"),
+                              UIImage(named: "right_menu_QR"),
+                              UIImage(named: "right_menu_facetoface"),
+                              UIImage(named: "right_menu_payMoney")]
+                
+                let vProperty = FWMenuViewProperty()
+                vProperty.maskViewColor = UIColor(white: 0, alpha: 0.4)
+                vProperty.touchWildToHide = "1"
+                vProperty.popupCustomAlignment = .topCenter
+                vProperty.popupViewEdgeInsets = UIEdgeInsetsMake(64, 0, 0, 0)
+                //            vProperty.popupViewSize = CGSize(width: UIScreen.main.bounds.width * 0.6, height: UIScreen.main.bounds.height)
+                vProperty.topBottomMargin = 0
+                
+                menuView = FWMenuView.menu(itemTitles: titles, itemImageNames: images as? [UIImage], itemBlock: { (popupView, index) in
+                    print("Menu：点击了第\(index)个按钮")
+                }, property: vProperty)
+                menuView.attachedView = self.view
+            }
             
-            let vProperty = FWMenuViewProperty()
-            vProperty.maskViewColor = UIColor(white: 0, alpha: 0.4)
-            vProperty.touchWildToHide = "1"
-            vProperty.popupCustomAlignment = .right
-            vProperty.popupViewEdgeInsets = UIEdgeInsetsMake(64, 0, 0, 0)
-            
-            let menuView = FWMenuView.menu(itemTitles: items, itemImageNames: nil, itemBlock: { (popupView, index) in
-                print("Menu：点击了第\(index)个按钮")
-            }, property: vProperty)
             menuView.show()
             break
             

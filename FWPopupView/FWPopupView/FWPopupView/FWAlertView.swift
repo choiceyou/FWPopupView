@@ -197,7 +197,7 @@ extension FWAlertView {
         }
         
         if detail != nil && !detail!.isEmpty {
-            currentMaxY += self.property.topBottomMargin
+            currentMaxY += self.property.commponentMargin
             
             self.detailLabel = UILabel(frame: CGRect(x: self.property.letfRigthMargin, y: currentMaxY, width: self.frame.width - self.property.letfRigthMargin * 2, height: CGFloat.greatestFiniteMagnitude))
             self.addSubview(self.detailLabel!)
@@ -218,7 +218,7 @@ extension FWAlertView {
         }
         
         if inputPlaceholder != nil {
-            currentMaxY += self.property.topBottomMargin
+            currentMaxY += self.property.commponentMargin
                 
             self.inputTF = UITextField(frame: CGRect(x: self.property.letfRigthMargin, y: currentMaxY, width: self.frame.width - self.property.letfRigthMargin * 2, height: 40))
             self.addSubview(self.inputTF!)
@@ -237,7 +237,7 @@ extension FWAlertView {
         }
         
         if customView != nil {
-            currentMaxY += self.property.topBottomMargin
+            currentMaxY += self.property.commponentMargin
             
             self.customView = customView
             self.customView?.frame = CGRect(x: (self.frame.width - self.customView!.frame.width) / 2, y: currentMaxY, width: self.customView!.frame.width, height: self.customView!.frame.height)

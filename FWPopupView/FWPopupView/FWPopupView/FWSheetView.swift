@@ -169,10 +169,10 @@ extension FWSheetView {
             if tmpIndex > 0 {
                 currentMaxY += btn.frame.height
                 if tmpIndex == self.actionItemArray.count - 1 {
-                    if btn.frame.minY - self.property.cancelBtnMarginTop <= self.property.btnContrainerViewMaxHeight {
+                    if btn.frame.minY - self.property.cancelBtnMarginTop <= self.property.popupViewMaxHeight {
                         btnContrainerView.frame.size.height = btn.frame.minY - self.property.cancelBtnMarginTop
                     } else {
-                        btnContrainerView.frame.size.height = self.property.btnContrainerViewMaxHeight
+                        btnContrainerView.frame.size.height = self.property.popupViewMaxHeight
                         btnContrainerView.contentSize = CGSize(width: self.frame.width, height: btn.frame.minY - self.property.cancelBtnMarginTop)
                     }
                     cancelBtnTopView?.frame.origin.y = btnContrainerView.frame.maxY
@@ -232,7 +232,5 @@ open class FWSheetViewProperty: FWPopupViewProperty {
     
     // 取消按钮距离头部的距离
     @objc public var cancelBtnMarginTop: CGFloat = 6
-    
-    @objc public var btnContrainerViewMaxHeight: CGFloat = UIScreen.main.bounds.height * CGFloat(0.6)
     
 }
