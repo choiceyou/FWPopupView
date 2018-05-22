@@ -168,7 +168,7 @@ extension FWDemoViewController {
             let vProperty = FWMenuViewProperty()
             vProperty.maskViewColor = UIColor(white: 0, alpha: 0.4)
             vProperty.touchWildToHide = "1"
-            vProperty.popupCustomAlignment = .topRight
+            vProperty.popupCustomAlignment = .right
             vProperty.popupViewEdgeInsets = UIEdgeInsetsMake(64, 0, 0, 0)
             
             let menuView = FWMenuView.menu(itemTitles: items, itemImageNames: nil, itemBlock: { (popupView, index) in

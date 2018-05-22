@@ -51,16 +51,37 @@ open class FWMenuView: FWPopupView, UITableViewDelegate, UITableViewDataSource {
         return tableView
     }()
     
+    /// 类初始化方法
+    ///
+    /// - Parameters:
+    ///   - itemTitles: 标题
+    ///   - itemBlock: 点击回调
+    /// - Returns: self
     @objc open class func menu(itemTitles: [String], itemBlock: FWPopupItemClickedBlock? = nil) -> FWMenuView {
         
         return self.menu(itemTitles: itemTitles, itemImageNames: nil, itemBlock: itemBlock, property: nil)
     }
     
+    /// 类初始化方法
+    ///
+    /// - Parameters:
+    ///   - itemTitles: 标题
+    ///   - itemBlock: 点击回调
+    ///   - property: 可设置参数
+    /// - Returns: self
     @objc open class func menu(itemTitles: [String], itemBlock: FWPopupItemClickedBlock? = nil, property: FWMenuViewProperty?) -> FWMenuView {
         
         return self.menu(itemTitles: itemTitles, itemImageNames: nil, itemBlock: itemBlock, property: property)
     }
     
+    /// 类初始化方法
+    ///
+    /// - Parameters:
+    ///   - itemTitles: 标题
+    ///   - itemImageNames: 图片
+    ///   - itemBlock: 点击回调
+    ///   - property: 可设置参数
+    /// - Returns: self
     @objc open class func menu(itemTitles: [String]?, itemImageNames: [String]?, itemBlock: FWPopupItemClickedBlock? = nil, property: FWMenuViewProperty?) -> FWMenuView {
         
         let popupMenu = FWMenuView()

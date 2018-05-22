@@ -29,7 +29,7 @@ import UIKit
     case custom
 }
 
-/// 自定义弹窗校准位置
+/// 自定义弹窗校准位置，注意：这边设置靠置哪边动画就从哪边出来
 ///
 /// - center: 中间，默认值
 /// - top: 上
@@ -42,6 +42,10 @@ import UIKit
 /// - bottomRight: 下右
 @objc public enum FWPopupCustomAlignment: Int {
     case center
+    case top
+    case left
+    case bottom
+    case right
     case topLeft
     case topRight
     case bottomLeft
@@ -359,19 +363,41 @@ extension FWPopupView {
             guard let strongSelf = self else {
                 return
             }
+            
+            if strongSelf.vProperty == nil {
+                strongSelf.vProperty = FWPopupViewProperty()
+            }
+            
+            let originFrame = strongSelf.frame
+            
             if strongSelf.superview == nil {
                 strongSelf.attachedView?.fwMaskView.addSubview(strongSelf)
                 
-                if strongSelf.vProperty == nil {
-                    strongSelf.vProperty = FWPopupViewProperty()
-                }
-                
                 switch strongSelf.vProperty!.popupCustomAlignment {
                 case .center:
-                    strongSelf.center = (strongSelf.attachedView?.center)!
-                    if strongSelf.withKeyboard {
-                        strongSelf.frame.origin.y -= 216/2
-                    }
+                    strongSelf.center = strongSelf.attachedView!.center
+                    strongSelf.frame.origin.x += strongSelf.vProperty!.popupViewEdgeInsets.left - strongSelf.vProperty!.popupViewEdgeInsets.right
+                    strongSelf.frame.origin.y = strongSelf.vProperty!.popupViewEdgeInsets.top - strongSelf.vProperty!.popupViewEdgeInsets.bottom
+                    break
+                case .top:
+                    strongSelf.frame.origin.x += strongSelf.vProperty!.popupViewEdgeInsets.left - strongSelf.vProperty!.popupViewEdgeInsets.right
+                    strongSelf.frame.origin.y = strongSelf.vProperty!.popupViewEdgeInsets.top
+                    strongSelf.frame.size.height = 0
+                    break
+                case .left:
+                    strongSelf.frame.origin.x = strongSelf.vProperty!.popupViewEdgeInsets.left
+                    strongSelf.frame.origin.y += strongSelf.vProperty!.popupViewEdgeInsets.top - strongSelf.vProperty!.popupViewEdgeInsets.bottom
+                    strongSelf.frame.size.width = 0
+                    break
+                case .bottom:
+                    strongSelf.frame.origin.x += strongSelf.vProperty!.popupViewEdgeInsets.left - strongSelf.vProperty!.popupViewEdgeInsets.right
+                    strongSelf.frame.origin.y = strongSelf.attachedView!.frame.height - strongSelf.vProperty!.popupViewEdgeInsets.bottom
+                    strongSelf.frame.size.height = 0
+                    break
+                case .right:
+                    strongSelf.frame.origin.x = strongSelf.attachedView!.frame.width - strongSelf.vProperty!.popupViewEdgeInsets.right
+                    strongSelf.frame.origin.y += strongSelf.vProperty!.popupViewEdgeInsets.top - strongSelf.vProperty!.popupViewEdgeInsets.bottom
+                    strongSelf.frame.size.width = 0
                     break
                 case .topLeft:
                     strongSelf.frame.origin.x = strongSelf.vProperty!.popupViewEdgeInsets.left
@@ -391,10 +417,50 @@ extension FWPopupView {
                     break
                 }
                 
+                if strongSelf.vProperty!.popupCustomAlignment == .center {
+                    
+                    strongSelf.transform = CGAffineTransform.init(scaleX: 0.01, y: 0.01)
+                    
+                } else if strongSelf.vProperty!.popupCustomAlignment.rawValue >= FWPopupCustomAlignment.top.rawValue && strongSelf.vProperty!.popupCustomAlignment.rawValue <= FWPopupCustomAlignment.right.rawValue {
+                    
+                } else {
+                    strongSelf.layer.anchorPoint = CGPoint(x: 0.5, y: ( strongSelf.vProperty!.popupCustomAlignment == .topLeft || strongSelf.vProperty!.popupCustomAlignment == .topRight ? 0 : 1))
+                    strongSelf.frame = originFrame
+                    
+                    strongSelf.transform = CGAffineTransform.init(scaleX: 0.01, y: 0.01)
+                }
+                
                 strongSelf.layoutIfNeeded()
             }
             
             UIView.animate(withDuration: strongSelf.animationDuration, delay: 0.0, options: [.curveEaseOut, .beginFromCurrentState], animations: {
+                
+                if strongSelf.vProperty!.popupCustomAlignment.rawValue >= FWPopupCustomAlignment.top.rawValue && strongSelf.vProperty!.popupCustomAlignment.rawValue <= FWPopupCustomAlignment.right.rawValue {
+                    
+                    switch strongSelf.vProperty!.popupCustomAlignment {
+                    case .top:
+                        strongSelf.frame.origin.y = strongSelf.vProperty!.popupViewEdgeInsets.top
+                        strongSelf.frame.size.height = originFrame.height
+                        break
+                    case .left:
+                        strongSelf.frame.origin.x = strongSelf.vProperty!.popupViewEdgeInsets.left
+                        strongSelf.frame.size.width = originFrame.width
+                        break
+                    case .bottom:
+                        strongSelf.frame.size.height = originFrame.height
+                        strongSelf.frame.origin.y = strongSelf.attachedView!.frame.height - strongSelf.frame.height - strongSelf.vProperty!.popupViewEdgeInsets.bottom
+                        break
+                    case .right:
+                        strongSelf.frame.size.width = originFrame.width
+                        strongSelf.frame.origin.x = strongSelf.attachedView!.frame.width - strongSelf.frame.width - strongSelf.vProperty!.popupViewEdgeInsets.right
+                        break
+                    default:
+                        break
+                    }
+                    
+                } else {
+                    strongSelf.transform = CGAffineTransform.identity
+                }
                 
                 strongSelf.superview?.layoutIfNeeded()
                 
