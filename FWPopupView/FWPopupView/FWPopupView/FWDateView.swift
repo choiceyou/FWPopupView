@@ -56,13 +56,6 @@ extension FWDateView {
         let property = self.vProperty as! FWDateViewProperty
         
         self.backgroundColor = self.vProperty.backgroundColor
-        if property.maskViewColor != nil {
-            self.attachedView?.fwMaskViewColor = property.maskViewColor!
-        }
-        
-        if property.touchWildToHide != nil && !property.touchWildToHide!.isEmpty {
-            FWPopupWindow.sharedInstance.touchWildToHide = (Int(property.touchWildToHide!) == 1) ? true : false
-        }
         
         self.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: property.datePickerHeight + property.btnHeight)
         

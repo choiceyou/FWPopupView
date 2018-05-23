@@ -158,13 +158,6 @@ extension FWMenuView {
         }
         
         self.backgroundColor = self.vProperty.backgroundColor
-        if self.vProperty.maskViewColor != nil {
-            self.attachedView?.fwMaskViewColor = self.vProperty.maskViewColor!
-        }
-        
-        if self.vProperty.touchWildToHide != nil && !self.vProperty.touchWildToHide!.isEmpty {
-            FWPopupWindow.sharedInstance.touchWildToHide = (Int(self.vProperty.touchWildToHide!) == 1) ? true : false
-        }
         
         self.layer.cornerRadius = self.vProperty.cornerRadius
         self.clipsToBounds = true
@@ -319,8 +312,8 @@ open class FWMenuViewProperty: FWPopupViewProperty {
     /// 选中风格
     @objc public var selectionStyle: UITableViewCellSelectionStyle = .none
     
-    public override init() {
-        super.init()
+    public override func reSetParams() {
+        super.reSetParams()
         
         self.titleTextAttributes = [NSAttributedStringKey.foregroundColor: self.itemNormalColor, NSAttributedStringKey.backgroundColor: UIColor.clear, NSAttributedStringKey.font: UIFont.systemFont(ofSize: self.buttonFontSize)]
         
@@ -334,7 +327,6 @@ open class FWMenuViewProperty: FWPopupViewProperty {
         self.letfRigthMargin = 20
         
         self.popupViewMaxHeight = UIScreen.main.bounds.height * CGFloat(0.7)
-        
     }
 }
 

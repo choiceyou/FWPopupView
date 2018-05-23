@@ -31,7 +31,7 @@ class FWDemoViewController: UITableViewController {
         self.tableView.rowHeight = UITableViewAutomaticDimension
         self.tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cellId")
         
-        // 设置弹窗外部可点击（当且仅当attachedView = FWPopupWindow.sharedInstance.attachView()时有效）
+        // 设置弹窗外部可点击
         // FWPopupWindow.sharedInstance.touchWildToHide = true
     }
 }
@@ -173,7 +173,7 @@ extension FWDemoViewController {
                               UIImage(named: "right_menu_payMoney")]
                 
                 let vProperty = FWMenuViewProperty()
-                vProperty.maskViewColor = UIColor(white: 0, alpha: 0.4)
+                vProperty.maskViewColor = UIColor.clear
                 vProperty.touchWildToHide = "1"
                 vProperty.popupCustomAlignment = .topCenter
                 vProperty.popupViewEdgeInsets = UIEdgeInsetsMake(64, 0, 0, 0)
@@ -183,7 +183,7 @@ extension FWDemoViewController {
                 menuView = FWMenuView.menu(itemTitles: titles, itemImageNames: images as? [UIImage], itemBlock: { (popupView, index) in
                     print("Menu：点击了第\(index)个按钮")
                 }, property: vProperty)
-                menuView.attachedView = self.view
+//                menuView.attachedView = self.view
             }
             
             menuView.show()

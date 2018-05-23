@@ -27,8 +27,10 @@ open class FWPopupWindow: UIWindow, UIGestureRecognizerDelegate {
     /// 单例
     @objc open static let sharedInstance = FWPopupWindow()
     
-    // 默认NO，当为YES时：用户点击外部遮罩层页面可以消失
+    // 默认false，当为true时：用户点击外部遮罩层页面可以消失
     @objc open var touchWildToHide: Bool = false
+    // 默认false，当为true时：用户拖动外部遮罩层页面可以消失
+    @objc open var panWildToHide: Bool = false
     
     public override init(frame: CGRect) {
         super.init(frame: frame)
@@ -46,7 +48,7 @@ open class FWPopupWindow: UIWindow, UIGestureRecognizerDelegate {
         tapGest.delegate = self
         self.addGestureRecognizer(tapGest)
         
-        let panGest = UIPanGestureRecognizer(target: self, action: #selector(tapGesClick(tap:)))
+        let panGest = UIPanGestureRecognizer(target: self, action: #selector(panGesClick(pan:)))
         self.addGestureRecognizer(panGest)
     }
     
@@ -57,7 +59,7 @@ open class FWPopupWindow: UIWindow, UIGestureRecognizerDelegate {
 
 extension FWPopupWindow {
     
-    @objc func tapGesClick(tap: UITapGestureRecognizer) {
+    @objc func tapGesClick(tap: UIGestureRecognizer) {
         
         if self.touchWildToHide && !self.fwBackgroundAnimating {
             for view: UIView in (self.attachView()?.fwMaskView.subviews)! {
@@ -66,6 +68,13 @@ extension FWPopupWindow {
                     popupView.hide()
                 }
             }
+        }
+    }
+    
+    @objc func panGesClick(pan: UIGestureRecognizer) {
+        
+        if self.panWildToHide {
+            self.tapGesClick(tap: pan)
         }
     }
     

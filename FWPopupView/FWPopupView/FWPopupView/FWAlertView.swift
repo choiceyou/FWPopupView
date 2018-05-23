@@ -149,13 +149,6 @@ extension FWAlertView {
         }
         
         self.backgroundColor = self.vProperty.backgroundColor
-        if self.vProperty.maskViewColor != nil {
-            self.attachedView?.fwMaskViewColor = self.vProperty.maskViewColor!
-        }
-        
-        if self.vProperty.touchWildToHide != nil && !self.vProperty.touchWildToHide!.isEmpty {
-            FWPopupWindow.sharedInstance.touchWildToHide = (Int(self.vProperty.touchWildToHide!) == 1) ? true : false
-        }
         
         self.clipsToBounds = true
         

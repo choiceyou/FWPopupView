@@ -77,7 +77,13 @@ open class FWPopupView: UIView, UIGestureRecognizerDelegate {
     private var tapGest: UITapGestureRecognizer?
     
     /// 1、当外部没有传入该参数时，默认为UIWindow的根控制器的视图，即表示弹窗放在FWPopupWindow上，此时若FWPopupWindow.sharedInstance.touchWildToHide = true表示弹窗视图外部可点击；2、当外部传入该参数时，该视图为传入的UIView，即表示弹窗放在传入的UIView上；
-    @objc public var attachedView = FWPopupWindow.sharedInstance.attachView()
+    @objc public var attachedView = FWPopupWindow.sharedInstance.attachView() {
+        willSet {
+            if newValue!.isKind(of: UIScrollView.self) {
+                self.originScrollEnabled = (newValue! as! UIScrollView).isScrollEnabled
+            }
+        }
+    }
     
     /// FWPopupType = custom 的可设置参数
     @objc public var vProperty = FWPopupViewProperty()
@@ -91,6 +97,7 @@ open class FWPopupView: UIView, UIGestureRecognizerDelegate {
         }
     }
     
+    /// 设置当前弹窗类型，每个自定义弹窗都需要重新设置该值
     @objc public var popupType: FWPopupType = .alert {
         
         willSet {
@@ -104,7 +111,7 @@ open class FWPopupView: UIView, UIGestureRecognizerDelegate {
                 self.showAnimation = self.sheetShowAnimation()
                 self.hideAnimation = self.sheetHideAnimation()
                 break
-            case .custom:
+            default:
                 self.showAnimation = self.customShowAnimation()
                 self.hideAnimation = self.customHideAnimation()
                 break
@@ -131,6 +138,8 @@ open class FWPopupView: UIView, UIGestureRecognizerDelegate {
     internal var originMaskViewColor: UIColor!
     /// 记录遮罩层设置前的是否可点击
     internal var originTouchWildToHide: Bool!
+    /// 遮罩层为UIScrollView或其子类时，记录是否可以滚动
+    internal var originScrollEnabled: Bool?
     
     public override init(frame: CGRect) {
         super.init(frame: frame)
@@ -150,8 +159,8 @@ open class FWPopupView: UIView, UIGestureRecognizerDelegate {
     deinit {
         NotificationCenter.default.removeObserver(self)
         
-        if self.attachedView!.isKind(of: UIScrollView.self) {
-            (self.attachedView! as! UIScrollView).isScrollEnabled = true
+        if self.attachedView!.isKind(of: UIScrollView.self) && self.originScrollEnabled != nil {
+            (self.attachedView! as! UIScrollView).isScrollEnabled = self.originScrollEnabled!
         }
     }
     
@@ -178,6 +187,28 @@ extension FWPopupView {
     /// - Parameter completionBlock: 显示、隐藏回调
     @objc open func show(completionBlock: FWPopupCompletionBlock? = nil) {
         
+        // 弹起时设置相关参数，因为隐藏或者销毁时会被重置掉，所以每次弹起时都重新调用
+        if self.attachedView != nil && self.vProperty.maskViewColor != nil {
+            self.attachedView?.fwMaskViewColor = self.vProperty.maskViewColor!
+        }
+        if self.vProperty.touchWildToHide != nil && !self.vProperty.touchWildToHide!.isEmpty {
+            FWPopupWindow.sharedInstance.touchWildToHide = (Int(self.vProperty.touchWildToHide!) == 1) ? true : false
+        }
+        
+        if self.attachedView != nil && self.attachedView != FWPopupWindow.sharedInstance.attachView() {
+            if tapGest == nil {
+                tapGest = UITapGestureRecognizer(target: self, action: #selector(tapGesClick(tap:)))
+                //                tapGest?.cancelsTouchesInView = false
+                tapGest?.delegate = self
+                self.attachedView?.addGestureRecognizer(tapGest!)
+            } else {
+                self.tapGest?.isEnabled = true
+            }
+            if self.attachedView!.isKind(of: UIScrollView.self) {
+                (self.attachedView! as! UIScrollView).isScrollEnabled = false
+            }
+        }
+        
         if completionBlock != nil {
             self.popupCompletionBlock = completionBlock
         }
@@ -193,27 +224,6 @@ extension FWPopupView {
         
         if self.withKeyboard {
             self.showKeyboard()
-        }
-        
-        // 弹起时设置相关参数，因为隐藏或者销毁时会被重置掉，所以每次弹起时都重新调用
-        if self.attachedView != nil && self.attachedView != FWPopupWindow.sharedInstance.attachView() {
-            if tapGest == nil {
-                tapGest = UITapGestureRecognizer(target: self, action: #selector(tapGesClick(tap:)))
-                //                tapGest?.cancelsTouchesInView = false
-                tapGest?.delegate = self
-                self.attachedView?.addGestureRecognizer(tapGest!)
-            } else {
-                self.tapGest?.isEnabled = true
-            }
-            if self.attachedView!.isKind(of: UIScrollView.self) {
-                (self.attachedView! as! UIScrollView).isScrollEnabled = false
-            }
-        }
-        if self.attachedView != nil && self.vProperty.maskViewColor != nil {
-            self.attachedView?.fwMaskViewColor = self.vProperty.maskViewColor!
-        }
-        if self.vProperty.touchWildToHide != nil && !self.vProperty.touchWildToHide!.isEmpty {
-            FWPopupWindow.sharedInstance.touchWildToHide = (Int(self.vProperty.touchWildToHide!) == 1) ? true : false
         }
     }
     
@@ -250,15 +260,11 @@ extension FWPopupView {
             self.tapGest?.isEnabled = false
         }
         
-        if self.attachedView!.isKind(of: UIScrollView.self) {
-            (self.attachedView! as! UIScrollView).isScrollEnabled = true
-        }
-        
         // 还原弹窗弹起时的相关参数
         self.attachedView?.fwMaskViewColor = self.originMaskViewColor
         FWPopupWindow.sharedInstance.touchWildToHide = self.originTouchWildToHide
-        if self.attachedView!.isKind(of: UIScrollView.self) {
-            (self.attachedView! as! UIScrollView).isScrollEnabled = true
+        if self.attachedView!.isKind(of: UIScrollView.self) && self.originScrollEnabled != nil {
+            (self.attachedView! as! UIScrollView).isScrollEnabled = self.originScrollEnabled!
         }
     }
     
@@ -654,5 +660,12 @@ open class FWPopupViewProperty: NSObject {
     
     public override init() {
         super.init()
+        
+        self.reSetParams()
+    }
+    
+    /// 如果发现部分属性设置后没有生效，可执行该方法
+    @objc public func reSetParams() {
+        
     }
 }
