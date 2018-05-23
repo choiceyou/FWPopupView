@@ -18,18 +18,6 @@
 import Foundation
 import UIKit
 
-/// 弹窗箭头的样式
-///
-/// - none: 无箭头
-/// - round: 圆角
-/// - triangle: 菱角
-@objc public enum FWMenuArrowStyle: Int {
-    case none
-    case round
-    case triangle
-}
-
-
 class FWMenuViewTableViewCell: UITableViewCell {
     
     var itemBtn: UIButton!
@@ -296,9 +284,6 @@ extension FWMenuView {
 /// FWMenuView的相关属性，请注意其父类中还有很多公共属性
 open class FWMenuViewProperty: FWPopupViewProperty {
     
-    /// 弹窗箭头的样式
-    @objc public var menuArrowStyle: FWMenuArrowStyle = .none
-    
     /// 弹窗大小，如果没有设置，将按照统一的计算方式
     @objc public var popupViewSize = CGSize(width: 0, height: 0)
     
@@ -320,7 +305,7 @@ open class FWMenuViewProperty: FWPopupViewProperty {
         self.selectedTitleTextAttributes = [NSAttributedStringKey.foregroundColor: self.itemNormalColor, NSAttributedStringKey.backgroundColor: UIColor.clear, NSAttributedStringKey.font: UIFont.systemFont(ofSize: self.buttonFontSize)]
         
         // 修改圆角默认值
-        if self.menuArrowStyle == .none {
+        if self.popupArrowStyle == .none {
             self.cornerRadius = 0.0
         }
         

@@ -173,11 +173,12 @@ extension FWDemoViewController {
                               UIImage(named: "right_menu_payMoney")]
                 
                 let vProperty = FWMenuViewProperty()
-                vProperty.maskViewColor = UIColor.clear
-                vProperty.touchWildToHide = "1"
                 vProperty.popupCustomAlignment = .topCenter
+                vProperty.popupAnimationType = .frame
+                vProperty.maskViewColor = UIColor(white: 0, alpha: 0.4)
+                vProperty.touchWildToHide = "1"
                 vProperty.popupViewEdgeInsets = UIEdgeInsetsMake(64, 0, 0, 0)
-                //            vProperty.popupViewSize = CGSize(width: UIScreen.main.bounds.width * 0.6, height: UIScreen.main.bounds.height)
+                vProperty.popupViewSize = CGSize(width: UIScreen.main.bounds.width * 0.5, height: UIScreen.main.bounds.height * 0.5)
                 vProperty.topBottomMargin = 0
                 
                 menuView = FWMenuView.menu(itemTitles: titles, itemImageNames: images as? [UIImage], itemBlock: { (popupView, index) in
