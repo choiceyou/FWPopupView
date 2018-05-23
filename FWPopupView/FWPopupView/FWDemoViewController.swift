@@ -16,7 +16,7 @@ class FWDemoViewController: UITableViewController {
     
     
     /// 注意：这边不同的示例可能还附加演示了一些特性（比如：遮罩层是否能够点击、遮罩层的背景颜色等等），有用到时可以参考
-    var titleArray = ["Alert - 单个按钮", "Alert - 两个按钮", "Alert - 两个按钮（修改参数）", "Alert - 多个按钮", "Alert - 带输入框", "Alert - 带自定义视图", "Sheet - 少量Item", "Sheet - 大量Item", "Date - 自定义日期选择", "Menu - 自定义菜单"]
+    var titleArray = ["Alert - 单个按钮", "Alert - 两个按钮", "Alert - 两个按钮（修改参数）", "Alert - 多个按钮", "Alert - 带输入框", "Alert - 带自定义视图", "Sheet - 少量Item", "Sheet - 大量Item", "Date - 自定义日期选择", "Menu - 自定义菜单", "Custom - 自定义弹窗"]
     
     let block: FWPopupItemClickedBlock = { (popupView, index) in
         print("AlertView：点击了第\(index)个按钮")
@@ -184,12 +184,23 @@ extension FWDemoViewController {
                 menuView = FWMenuView.menu(itemTitles: titles, itemImageNames: images as? [UIImage], itemBlock: { (popupView, index) in
                     print("Menu：点击了第\(index)个按钮")
                 }, property: vProperty)
-//                menuView.attachedView = self.view
+                // menuView.attachedView = self.view
             }
-            
             menuView.show()
             break
+        case 10:
+            let customPopupView = FWCustomPopupView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width * 0.5, height: UIScreen.main.bounds.height * 0.5))
             
+            let vProperty = FWPopupViewProperty()
+            vProperty.popupCustomAlignment = .center
+            vProperty.popupAnimationType = .scale
+            vProperty.maskViewColor = UIColor(white: 0, alpha: 0.5)
+            vProperty.touchWildToHide = "1"
+            vProperty.popupViewEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 0)
+            customPopupView.vProperty = vProperty
+            
+            customPopupView.show()
+            break
         default:
             break
         }

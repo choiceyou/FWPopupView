@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		491A970D20AFCD17006E3D70 /* FWMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 491A970C20AFCD17006E3D70 /* FWMenuView.swift */; };
 		493BE226206A322B00E5EF80 /* FWDateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 493BE225206A322B00E5EF80 /* FWDateView.swift */; };
+		49552D3D20B56C24000A1FA6 /* FWCustomPopupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49552D3C20B56C24000A1FA6 /* FWCustomPopupView.swift */; };
 		495AC10120688B3B002773F9 /* FWDemoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495AC10020688B3B002773F9 /* FWDemoViewController.swift */; };
 		495AC1052068C900002773F9 /* FWSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495AC1042068C900002773F9 /* FWSheetView.swift */; };
 		49812D78205F915600639DDC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49812D77205F915600639DDC /* AppDelegate.swift */; };
@@ -43,6 +44,7 @@
 /* Begin PBXFileReference section */
 		491A970C20AFCD17006E3D70 /* FWMenuView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FWMenuView.swift; sourceTree = "<group>"; };
 		493BE225206A322B00E5EF80 /* FWDateView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FWDateView.swift; sourceTree = "<group>"; };
+		49552D3C20B56C24000A1FA6 /* FWCustomPopupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FWCustomPopupView.swift; sourceTree = "<group>"; };
 		495AC10020688B3B002773F9 /* FWDemoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FWDemoViewController.swift; sourceTree = "<group>"; };
 		495AC1042068C900002773F9 /* FWSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FWSheetView.swift; sourceTree = "<group>"; };
 		49812D74205F915600639DDC /* FWPopupView.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FWPopupView.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -114,6 +116,7 @@
 				49812DA5205F916F00639DDC /* FWPopupView */,
 				49812D77205F915600639DDC /* AppDelegate.swift */,
 				495AC10020688B3B002773F9 /* FWDemoViewController.swift */,
+				49552D3C20B56C24000A1FA6 /* FWCustomPopupView.swift */,
 				49812D7E205F915600639DDC /* Assets.xcassets */,
 				49812D80205F915600639DDC /* LaunchScreen.storyboard */,
 				49812D83205F915600639DDC /* Info.plist */,
@@ -292,6 +295,7 @@
 				49BB210F2060B86A00E0DE6E /* FWPopupCategory.swift in Sources */,
 				49BB212720623E8100E0DE6E /* FWPopupItem.swift in Sources */,
 				491A970D20AFCD17006E3D70 /* FWMenuView.swift in Sources */,
+				49552D3D20B56C24000A1FA6 /* FWCustomPopupView.swift in Sources */,
 				49812DA7205F91F100639DDC /* FWPopupView.swift in Sources */,
 				493BE226206A322B00E5EF80 /* FWDateView.swift in Sources */,
 				495AC1052068C900002773F9 /* FWSheetView.swift in Sources */,

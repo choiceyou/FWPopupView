@@ -123,7 +123,6 @@ open class FWPopupView: UIView, UIGestureRecognizerDelegate {
     @objc public var popupType: FWPopupType = .alert {
         
         willSet {
-            
             switch newValue {
             case .alert:
                 self.showAnimation = self.alertShowAnimation()
