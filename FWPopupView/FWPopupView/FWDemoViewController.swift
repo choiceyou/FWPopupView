@@ -138,11 +138,14 @@ extension FWDemoViewController {
         case 6:
             let items = ["Sheet0", "Sheet1", "Sheet2", "Sheet3"]
             
+            let vProperty = FWSheetViewProperty()
+            vProperty.touchWildToHide = "1"
+            
             let sheetView = FWSheetView.sheet(title: "标题", itemTitles: items, itemBlock: { (popupView, index) in
                 print("Sheet：点击了第\(index)个按钮")
             }, cancenlBlock: {
                 print("点击了取消")
-            })
+            }, property: vProperty)
             sheetView.show()
             break
         case 7:
@@ -189,11 +192,11 @@ extension FWDemoViewController {
             menuView.show()
             break
         case 10:
-            let customPopupView = FWCustomPopupView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width * 0.5, height: UIScreen.main.bounds.height * 0.5))
+            let customPopupView = FWCustomPopupView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height * 0.5))
             
             let vProperty = FWPopupViewProperty()
-            vProperty.popupCustomAlignment = .center
-            vProperty.popupAnimationType = .scale
+            vProperty.popupCustomAlignment = .bottomCenter
+            vProperty.popupAnimationType = .position
             vProperty.maskViewColor = UIColor(white: 0, alpha: 0.5)
             vProperty.touchWildToHide = "1"
             vProperty.popupViewEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 0)

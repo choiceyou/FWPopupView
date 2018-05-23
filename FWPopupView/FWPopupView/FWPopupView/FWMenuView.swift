@@ -145,8 +145,6 @@ extension FWMenuView {
             self.vProperty = FWMenuViewProperty()
         }
         
-        self.backgroundColor = self.vProperty.backgroundColor
-        
         self.layer.cornerRadius = self.vProperty.cornerRadius
         self.clipsToBounds = true
         

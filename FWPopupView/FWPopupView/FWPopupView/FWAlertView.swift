@@ -148,12 +148,10 @@ extension FWAlertView {
             self.vProperty = vProperty!
         }
         
-        self.backgroundColor = self.vProperty.backgroundColor
-        
         self.clipsToBounds = true
         
         self.popupType = .alert
-        self.animationDuration = 0.3
+        self.vProperty.animationDuration = 0.3
         
         self.actionItemArray = items
         
@@ -354,10 +352,11 @@ open class FWAlertViewProperty: FWPopupViewProperty {
     
     // FWAlertView宽度
     @objc open var alertViewWidth: CGFloat      = 275.0
+    // 为保持FWAlertView美观，设置FWAlertView的最小高度
+    @objc open var alertViewMinHeight: CGFloat  = 150
     
     // 描述字体大小
     @objc open var detailFontSize: CGFloat      = 14.0
-    
     // 描述文字颜色
     @objc open var detailColor: UIColor         = kPV_RGBA(r: 51, g: 51, b: 51, a: 1)
     
@@ -368,11 +367,10 @@ open class FWAlertViewProperty: FWPopupViewProperty {
     // 确定按钮默认名称
     @objc open var defaultTextConfirm           = "确定"
     
-    // 为保持FWAlertView美观，设置FWAlertView的最小高度
-    @objc open var alertViewMinHeight: CGFloat  = 150
     
-    public override init() {
-        super.init()
+    public override func reSetParams() {
+        super.reSetParams()
+        
     }
 }
 

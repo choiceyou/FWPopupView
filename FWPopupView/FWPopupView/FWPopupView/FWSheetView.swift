@@ -78,12 +78,10 @@ extension FWSheetView {
             self.vProperty = property!
         }
         
-        self.backgroundColor = self.vProperty.backgroundColor
-        
         self.clipsToBounds = true
         
         self.popupType = .sheet
-        self.animationDuration = 0.3
+        self.vProperty.animationDuration = 0.3
         
         let itemClickedBlock: FWPopupItemClickedBlock = { (popupView, index) in
             if itemBlock != nil {
@@ -186,7 +184,7 @@ extension FWSheetView {
             if popupItem.itemBackgroundColor != nil {
                 btn.backgroundColor = popupItem.itemBackgroundColor
             } else {
-                btn.backgroundColor = self.vProperty.backgroundColor
+                btn.backgroundColor = self.backgroundColor
             }
             // 按钮文字颜色
             if popupItem.itemTitleColor != nil {
@@ -235,4 +233,9 @@ open class FWSheetViewProperty: FWPopupViewProperty {
     // 取消按钮距离头部的距离
     @objc public var cancelBtnMarginTop: CGFloat = 6
     
+    
+    public override func reSetParams() {
+        super.reSetParams()
+        
+    }
 }
