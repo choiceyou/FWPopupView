@@ -177,17 +177,20 @@ extension FWDemoViewController {
                 
                 let vProperty = FWMenuViewProperty()
                 vProperty.popupCustomAlignment = .topCenter
-                vProperty.popupAnimationType = .frame
-                vProperty.maskViewColor = UIColor(white: 0, alpha: 0.4)
+                vProperty.popupAnimationType = .scale
+                vProperty.maskViewColor = UIColor.clear
                 vProperty.touchWildToHide = "1"
                 vProperty.popupViewEdgeInsets = UIEdgeInsetsMake(64, 0, 0, 0)
-                vProperty.popupViewSize = CGSize(width: UIScreen.main.bounds.width * 0.5, height: UIScreen.main.bounds.height * 0.5)
+                //                vProperty.popupViewSize = CGSize(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height * 0.5)
                 vProperty.topBottomMargin = 0
+                vProperty.animationDuration = 0.2
+                vProperty.popupArrowStyle = .triangle
+                vProperty.popupArrowVertexScaleX = 0.5
                 
                 menuView = FWMenuView.menu(itemTitles: titles, itemImageNames: images as? [UIImage], itemBlock: { (popupView, index) in
                     print("Menu：点击了第\(index)个按钮")
                 }, property: vProperty)
-                // menuView.attachedView = self.view
+                //                menuView.attachedView = self.view
             }
             menuView.show()
             break
@@ -196,7 +199,7 @@ extension FWDemoViewController {
             
             let vProperty = FWPopupViewProperty()
             vProperty.popupCustomAlignment = .bottomCenter
-            vProperty.popupAnimationType = .position
+            vProperty.popupAnimationType = .scale
             vProperty.maskViewColor = UIColor(white: 0, alpha: 0.5)
             vProperty.touchWildToHide = "1"
             vProperty.popupViewEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 0)

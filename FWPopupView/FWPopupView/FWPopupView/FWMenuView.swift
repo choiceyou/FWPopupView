@@ -145,9 +145,6 @@ extension FWMenuView {
             self.vProperty = FWMenuViewProperty()
         }
         
-        self.layer.cornerRadius = self.vProperty.cornerRadius
-        self.clipsToBounds = true
-        
         self.popupType = .custom
         
         self.itemTitleArray = itemTitles
@@ -161,12 +158,35 @@ extension FWMenuView {
         self.tableView.separatorInset = UIEdgeInsets.zero
         self.tableView.layoutMargins = UIEdgeInsets.zero
         self.tableView.separatorColor = self.vProperty.splitColor
-        self.tableView.layer.borderColor = self.vProperty.splitColor.cgColor
-        self.tableView.layer.borderWidth = self.vProperty.splitWidth
         
         let property = self.vProperty as! FWMenuViewProperty
         
+        var selfY: CGFloat = 0
+        switch property.popupArrowStyle {
+        case .none:
+            selfY = 0
+            self.layer.cornerRadius = self.vProperty.cornerRadius
+            self.layer.borderColor = self.vProperty.splitColor.cgColor
+            self.layer.borderWidth = self.vProperty.splitWidth
+            break
+        case .round, .triangle:
+            selfY = property.popupArrowSize.height
+            break
+        }
+        
+        // 箭头方向
+        var isUpArrow = true
+        switch property.popupCustomAlignment {
+        case .bottom, .bottomLeft, .bottomRight, .bottomCenter:
+            isUpArrow = false
+            break
+        default:
+            isUpArrow = true
+            break
+        }
+        
         var selfSize: CGSize = CGSize(width: 0, height: 0)
+        
         if property.popupViewSize.width > 0 && property.popupViewSize.height > 0 {
             selfSize = property.popupViewSize
         } else if self.vProperty.popupViewMaxHeight > 0 && self.maxItemSize.height * CGFloat(self.itemsCount()) > self.vProperty.popupViewMaxHeight {
@@ -174,8 +194,103 @@ extension FWMenuView {
         } else {
             selfSize = CGSize(width: self.maxItemSize.width, height: self.maxItemSize.height * CGFloat(self.itemsCount()))
         }
-        self.frame = CGRect(x: 0, y: 0, width: selfSize.width, height: selfSize.height)
-        self.tableView.frame = self.frame
+        selfSize.height += selfY
+        self.frame = CGRect(x: 0, y: selfY, width: selfSize.width, height: selfSize.height)
+        self.tableView.frame = CGRect(x: 0, y: isUpArrow ? selfY : 0, width: selfSize.width, height: selfSize.height)
+        
+        // 用来隐藏多余的线条，不想自定义线条
+        let footerView = UIView(frame: CGRect(x: 0, y: 0, width: self.frame.width, height: 1))
+        footerView.backgroundColor = UIColor.clear
+        self.tableView.tableFooterView = footerView
+        
+        // 绘制箭头
+        if property.popupArrowStyle != .none {
+            
+            // 圆角值
+            let cornerRadius = property.cornerRadius
+            /// 箭头的尺寸
+            let arrowSize = property.popupArrowSize
+            
+            if property.popupArrowVertexScaleX > 1 {
+                property.popupArrowVertexScaleX = 1
+            } else if property.popupArrowVertexScaleX < 0 {
+                property.popupArrowVertexScaleX = 0
+            }
+            
+            // 弹窗箭头顶点坐标
+            let arrowPoint = CGPoint(x: (self.frame.width - arrowSize.width - cornerRadius * 2) * property.popupArrowVertexScaleX + arrowSize.width/2 + cornerRadius, y: isUpArrow ? 0 : self.frame.height)
+            
+            // 顶部Y值
+            let maskTop = isUpArrow ? arrowSize.height : 0
+            // 底部Y值
+            let maskBottom = isUpArrow ? self.frame.height : self.frame.height - arrowSize.height
+            
+            // 开始画贝塞尔曲线
+            let maskPath = UIBezierPath()
+            
+            // 左上圆角
+            maskPath.move(to: CGPoint(x: 0, y: cornerRadius + maskTop))
+            maskPath.addArc(withCenter: CGPoint(x: cornerRadius, y: cornerRadius + maskTop), radius: cornerRadius, startAngle: self.degreesToRadians(angle: 180), endAngle: self.degreesToRadians(angle: 270), clockwise: true)
+            
+            // 箭头向上时的箭头位置
+            if isUpArrow {
+                maskPath.addLine(to: CGPoint(x: arrowPoint.x - arrowSize.width/2, y: arrowSize.height))
+                
+                if property.popupArrowStyle == .triangle { // 菱角箭头
+                    maskPath.addLine(to: arrowPoint)
+                    maskPath.addLine(to: CGPoint(x: arrowPoint.x + arrowSize.width/2, y: arrowSize.height))
+                } else { // 圆角箭头
+                    maskPath.addQuadCurve(to: CGPoint(x: arrowPoint.x - property.popupArrowCornerRadius, y: property.popupArrowCornerRadius), controlPoint: CGPoint(x: arrowPoint.x - arrowSize.width/2 + property.popupArrowBottomCornerRadius, y: arrowSize.height))
+                    maskPath.addQuadCurve(to: CGPoint(x: arrowPoint.x + property.popupArrowCornerRadius, y: property.popupArrowCornerRadius), controlPoint: arrowPoint)
+                    maskPath.addQuadCurve(to: CGPoint(x: arrowPoint.x + arrowSize.width/2, y: arrowSize.height), controlPoint: CGPoint(x: arrowPoint.x + arrowSize.width/2 - property.popupArrowBottomCornerRadius, y: arrowSize.height))
+                }
+            }
+            
+            // 右上圆角
+            maskPath.addLine(to: CGPoint(x: self.frame.width - cornerRadius, y: maskTop))
+            maskPath.addArc(withCenter: CGPoint(x: self.frame.width - cornerRadius, y: maskTop + cornerRadius), radius: cornerRadius, startAngle: self.degreesToRadians(angle: 270), endAngle: self.degreesToRadians(angle: 0), clockwise: true)
+            
+            // 右下圆角
+            maskPath.addLine(to: CGPoint(x: self.frame.width, y: maskBottom - cornerRadius))
+            maskPath.addArc(withCenter: CGPoint(x: self.frame.width - cornerRadius, y: maskBottom - cornerRadius), radius: cornerRadius, startAngle: self.degreesToRadians(angle: 0), endAngle: self.degreesToRadians(angle: 90), clockwise: true)
+            
+            // 箭头向下时的箭头位置
+            if !isUpArrow {
+                maskPath.addLine(to: CGPoint(x: arrowPoint.x + arrowSize.width/2, y:self.frame.height - arrowSize.height))
+                
+                if property.popupArrowStyle == .triangle { // 菱角箭头
+                    maskPath.addLine(to: arrowPoint)
+                    maskPath.addLine(to: CGPoint(x: arrowPoint.x - arrowSize.width/2, y: self.frame.height - arrowSize.height))
+                } else { // 圆角箭头
+                    maskPath.addQuadCurve(to: CGPoint(x: arrowPoint.x + property.popupArrowCornerRadius, y: self.frame.height -  property.popupArrowCornerRadius), controlPoint: CGPoint(x: arrowPoint.x + arrowSize.width/2 - property.popupArrowBottomCornerRadius, y: self.frame.height - arrowSize.height))
+                    
+                    maskPath.addQuadCurve(to: CGPoint(x: arrowPoint.x - property.popupArrowCornerRadius, y: self.frame.height - property.popupArrowCornerRadius), controlPoint: arrowPoint)
+                    
+                    maskPath.addQuadCurve(to: CGPoint(x: arrowPoint.x - arrowSize.width/2, y: self.frame.height - arrowSize.height), controlPoint: CGPoint(x: arrowPoint.x - arrowSize.width/2 + property.popupArrowBottomCornerRadius, y: self.frame.height - arrowSize.height))
+                }
+            }
+            
+            // 左下圆角
+            maskPath.addLine(to: CGPoint(x: cornerRadius, y: maskBottom))
+            maskPath.addArc(withCenter: CGPoint(x: cornerRadius, y: maskBottom - cornerRadius), radius: cornerRadius, startAngle: self.degreesToRadians(angle: 90), endAngle: self.degreesToRadians(angle: 180), clockwise: true)
+            
+            maskPath.close()
+            
+            // 截取圆角和箭头
+            let maskLayer = CAShapeLayer()
+            maskLayer.frame = self.bounds
+            maskLayer.path = maskPath.cgPath
+            self.layer.mask = maskLayer
+            
+            // 边框
+            let borderLayer = CAShapeLayer()
+            borderLayer.frame = self.bounds
+            borderLayer.path = maskPath.cgPath
+            borderLayer.lineWidth = 1
+            borderLayer.fillColor = UIColor.clear.cgColor
+            borderLayer.strokeColor = property.splitColor.cgColor
+            self.layer.addSublayer(borderLayer)
+        }
     }
 }
 
@@ -192,6 +307,11 @@ extension FWMenuView {
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cellId", for: indexPath) as! FWMenuViewTableViewCell
         cell.setupContent(title: (self.itemTitleArray != nil) ? self.itemTitleArray![indexPath.row] : nil , image: (self.itemImageNameArray != nil) ? self.itemImageNameArray![indexPath.row] : nil, property: self.vProperty as! FWMenuViewProperty)
+        if indexPath.row >= self.itemsCount()-1 {
+            cell.separatorInset = UIEdgeInsetsMake(0, 0, 0, CGFloat(MAXFLOAT))
+        } else {
+            cell.separatorInset = UIEdgeInsets.zero
+        }
         return cell
     }
     
@@ -276,6 +396,14 @@ extension FWMenuView {
             return 0
         }
     }
+    
+    /// 角度转换
+    ///
+    /// - Parameter angle: 传入的角度值
+    /// - Returns: CGFloat
+    fileprivate func degreesToRadians(angle: CGFloat) -> CGFloat {
+        return angle * CGFloat(Double.pi) / 180
+    }
 }
 
 
@@ -301,11 +429,6 @@ open class FWMenuViewProperty: FWPopupViewProperty {
         self.titleTextAttributes = [NSAttributedStringKey.foregroundColor: self.itemNormalColor, NSAttributedStringKey.backgroundColor: UIColor.clear, NSAttributedStringKey.font: UIFont.systemFont(ofSize: self.buttonFontSize)]
         
         self.selectedTitleTextAttributes = [NSAttributedStringKey.foregroundColor: self.itemNormalColor, NSAttributedStringKey.backgroundColor: UIColor.clear, NSAttributedStringKey.font: UIFont.systemFont(ofSize: self.buttonFontSize)]
-        
-        // 修改圆角默认值
-        if self.popupArrowStyle == .none {
-            self.cornerRadius = 0.0
-        }
         
         self.letfRigthMargin = 20
         

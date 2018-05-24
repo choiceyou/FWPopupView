@@ -64,7 +64,7 @@ import UIKit
 ///
 /// - position: 位移动画，视图靠边的时候建议使用
 /// - scale: 缩放动画
-/// - frame: 修改frame值的动画
+/// - frame: 修改frame值的动画，视图未靠边的时候建议使用
 @objc public enum FWPopupAnimationType: Int {
     case position
     case scale
@@ -225,6 +225,7 @@ extension FWPopupView {
         if self.vProperty.touchWildToHide != nil && !self.vProperty.touchWildToHide!.isEmpty {
             FWPopupWindow.sharedInstance.touchWildToHide = (Int(self.vProperty.touchWildToHide!) == 1) ? true : false
         }
+        self.attachedView?.fwAnimationDuration = self.vProperty.animationDuration
         
         if self.attachedView != nil && self.attachedView != FWPopupWindow.sharedInstance.attachView() {
             if tapGest == nil {
@@ -268,6 +269,8 @@ extension FWPopupView {
     ///
     /// - Parameter completionBlock: 显示、隐藏回调
     @objc open func hide(completionBlock: FWPopupCompletionBlock? = nil) {
+        
+        self.attachedView?.fwAnimationDuration = self.vProperty.animationDuration
         
         if completionBlock != nil {
             self.popupCompletionBlock = completionBlock
@@ -482,15 +485,28 @@ extension FWPopupView {
                         strongSelf.transform = CGAffineTransform.init(scaleX: 0.01, y: 0.01)
                     } else {
                         
+                        var tmpX: CGFloat = 0
                         var tmpY: CGFloat = 0
                         switch strongSelf.vProperty.popupCustomAlignment {
                         case .top, .topLeft, .topCenter, .topRight:
+                            tmpX = 0.5
                             tmpY = 0
+                            break
+                        case .left, .leftCenter:
+                            tmpX = 0
+                            tmpY = 0.5
+                            break
+                        case .right, .rightCenter:
+                            tmpX = 1
+                            tmpY = 0.5
+                            break
                         default:
+                            tmpX = 0.5
                             tmpY = 1
+                            break
                         }
                         
-                        strongSelf.layer.anchorPoint = CGPoint(x: 0.5, y: tmpY)
+                        strongSelf.layer.anchorPoint = CGPoint(x: tmpX, y: tmpY)
                         strongSelf.frame = strongSelf.finalFrame
                         strongSelf.transform = CGAffineTransform.init(scaleX: 0.01, y: 0.01)
                     }
@@ -577,15 +593,28 @@ extension FWPopupView {
                         strongSelf.transform = CGAffineTransform.init(scaleX: 0.01, y: 0.01)
                     } else {
                         
+                        var tmpX: CGFloat = 0
                         var tmpY: CGFloat = 0
                         switch strongSelf.vProperty.popupCustomAlignment {
                         case .top, .topLeft, .topCenter, .topRight:
+                            tmpX = 0.5
                             tmpY = 0
+                            break
+                        case .left, .leftCenter:
+                            tmpX = 0
+                            tmpY = 0.5
+                            break
+                        case .right, .rightCenter:
+                            tmpX = 1
+                            tmpY = 0.5
+                            break
                         default:
+                            tmpX = 0.5
                             tmpY = 1
+                            break
                         }
                         
-                        strongSelf.layer.anchorPoint = CGPoint(x: 0.5, y: tmpY)
+                        strongSelf.layer.anchorPoint = CGPoint(x: tmpX, y: tmpY)
                         strongSelf.frame = finalFrame
                         strongSelf.transform = CGAffineTransform.init(scaleX: 0.01, y: 0.01)
                     }
@@ -621,7 +650,15 @@ extension FWPopupView {
                     strongSelf.popupCompletionBlock!(strongSelf, false)
                 }
                 
-                strongSelf.frame = strongSelf.finalFrame
+                // 还原视图，防止下次动画时出错
+                switch strongSelf.vProperty.popupAnimationType {
+                case .frame, .position:
+                    strongSelf.frame = strongSelf.finalFrame
+                    break
+                case .scale:
+                    strongSelf.transform = CGAffineTransform.identity
+                    break
+                }
             })
         }
         
@@ -779,8 +816,17 @@ open class FWPopupViewProperty: NSObject {
     @objc open var backgroundColor: UIColor?
     /// 弹窗的最大高度，0：表示不限制
     @objc open var popupViewMaxHeight: CGFloat      = UIScreen.main.bounds.height * CGFloat(0.6)
+    
     /// 弹窗箭头的样式
     @objc open var popupArrowStyle                  = FWMenuArrowStyle.none
+    /// 弹窗箭头的尺寸
+    @objc open var popupArrowSize                   = CGSize(width: 28, height: 12)
+    /// 弹窗箭头的顶点的X值相对于弹窗的宽度，默认在弹窗X轴的一半，因此设置范围：0~1
+    @objc open var popupArrowVertexScaleX: CGFloat  = 0.5
+    /// 弹窗圆角箭头的圆角值
+    @objc open var popupArrowCornerRadius: CGFloat  = 2.5
+    /// 弹窗圆角箭头与边线交汇处的圆角值
+    @objc open var popupArrowBottomCornerRadius: CGFloat  = 4.0
     
     
     // ===== 自定义弹窗（继承FWPopupView）时可能会用到 =====
