@@ -485,11 +485,23 @@ extension FWPopupView {
                         strongSelf.transform = CGAffineTransform.init(scaleX: 0.01, y: 0.01)
                     } else {
                         
+                        if strongSelf.vProperty.popupArrowVertexScaleX > 1 {
+                            strongSelf.vProperty.popupArrowVertexScaleX = 1
+                        } else if strongSelf.vProperty.popupArrowVertexScaleX < 0 {
+                            strongSelf.vProperty.popupArrowVertexScaleX = 0
+                        }
+                        
+                        // 计算anchorPoint
                         var tmpX: CGFloat = 0
                         var tmpY: CGFloat = 0
                         switch strongSelf.vProperty.popupCustomAlignment {
                         case .top, .topLeft, .topCenter, .topRight:
-                            tmpX = 0.5
+                            if strongSelf.vProperty.popupArrowStyle == .none {
+                                tmpX = strongSelf.vProperty.popupArrowVertexScaleX
+                            } else {
+                                let arrowVertexX = (strongSelf.frame.width - strongSelf.vProperty.popupArrowSize.width) *  strongSelf.vProperty.popupArrowVertexScaleX + strongSelf.vProperty.popupArrowSize.width / 2
+                                tmpX = arrowVertexX / strongSelf.frame.width
+                            }
                             tmpY = 0
                             break
                         case .left, .leftCenter:
@@ -501,7 +513,12 @@ extension FWPopupView {
                             tmpY = 0.5
                             break
                         default:
-                            tmpX = 0.5
+                            if strongSelf.vProperty.popupArrowStyle == .none {
+                                tmpX = strongSelf.vProperty.popupArrowVertexScaleX
+                            } else {
+                                let arrowVertexX = (strongSelf.frame.width - strongSelf.vProperty.popupArrowSize.width) *  strongSelf.vProperty.popupArrowVertexScaleX + strongSelf.vProperty.popupArrowSize.width / 2
+                                tmpX = arrowVertexX / strongSelf.frame.width
+                            }
                             tmpY = 1
                             break
                         }
@@ -593,11 +610,23 @@ extension FWPopupView {
                         strongSelf.transform = CGAffineTransform.init(scaleX: 0.01, y: 0.01)
                     } else {
                         
+                        if strongSelf.vProperty.popupArrowVertexScaleX > 1 {
+                            strongSelf.vProperty.popupArrowVertexScaleX = 1
+                        } else if strongSelf.vProperty.popupArrowVertexScaleX < 0 {
+                            strongSelf.vProperty.popupArrowVertexScaleX = 0
+                        }
+                        
+                        // 计算anchorPoint
                         var tmpX: CGFloat = 0
                         var tmpY: CGFloat = 0
                         switch strongSelf.vProperty.popupCustomAlignment {
                         case .top, .topLeft, .topCenter, .topRight:
-                            tmpX = 0.5
+                            if strongSelf.vProperty.popupArrowStyle == .none {
+                                tmpX = strongSelf.vProperty.popupArrowVertexScaleX
+                            } else {
+                                let arrowVertexX = (strongSelf.frame.width - strongSelf.vProperty.popupArrowSize.width) *  strongSelf.vProperty.popupArrowVertexScaleX + strongSelf.vProperty.popupArrowSize.width / 2
+                                tmpX = arrowVertexX / strongSelf.frame.width
+                            }
                             tmpY = 0
                             break
                         case .left, .leftCenter:
@@ -609,7 +638,12 @@ extension FWPopupView {
                             tmpY = 0.5
                             break
                         default:
-                            tmpX = 0.5
+                            if strongSelf.vProperty.popupArrowStyle == .none {
+                                tmpX = strongSelf.vProperty.popupArrowVertexScaleX
+                            } else {
+                                let arrowVertexX = (strongSelf.frame.width - strongSelf.vProperty.popupArrowSize.width) *  strongSelf.vProperty.popupArrowVertexScaleX + strongSelf.vProperty.popupArrowSize.width / 2
+                                tmpX = arrowVertexX / strongSelf.frame.width
+                            }
                             tmpY = 1
                             break
                         }
@@ -832,19 +866,19 @@ open class FWPopupViewProperty: NSObject {
     // ===== 自定义弹窗（继承FWPopupView）时可能会用到 =====
     
     /// 弹窗校准位置
-    @objc open var popupCustomAlignment             = FWPopupCustomAlignment.center
+    @objc open var popupCustomAlignment: FWPopupCustomAlignment     = .center
     /// 弹窗动画类型
-    @objc open var popupAnimationType               = FWPopupAnimationType.position
+    @objc open var popupAnimationType: FWPopupAnimationType         = .position
     
     /// 弹窗EdgeInsets
-    @objc open var popupViewEdgeInsets              = UIEdgeInsetsMake(0, 0, 0, 0)
+    @objc open var popupViewEdgeInsets                              = UIEdgeInsetsMake(0, 0, 0, 0)
     /// 遮罩层的背景色（也可以使用fwMaskViewColor），注意：该参数在弹窗隐藏后，还原为弹窗弹起时的值
     @objc open var maskViewColor: UIColor?
     /// 为了兼容OC，0表示false，1表示true，为true时：用户点击外部遮罩层页面可以消失，注意：该参数在弹窗隐藏后，还原为弹窗弹起时的值
     @objc open var touchWildToHide: String?
     
     /// 显示、隐藏动画所需的时间
-    @objc open var animationDuration: TimeInterval  = 0.2
+    @objc open var animationDuration: TimeInterval                  = 0.2
     
     
     public override init() {

@@ -12,7 +12,6 @@ import UIKit
 class FWDemoViewController: UITableViewController {
     
     var alertImage: FWAlertView!
-    var menuView: FWMenuView!
     
     
     /// 注意：这边不同的示例可能还附加演示了一些特性（比如：遮罩层是否能够点击、遮罩层的背景颜色等等），有用到时可以参考
@@ -167,45 +166,10 @@ extension FWDemoViewController {
             dateView.show()
             break
         case 9:
-            if self.menuView == nil {
-                let titles = ["发起多人聊天", "加好友", "扫一扫", "面对面快传", "付款"]
-                let images = [UIImage(named: "right_menu_multichat"),
-                              UIImage(named: "right_menu_addFri"),
-                              UIImage(named: "right_menu_QR"),
-                              UIImage(named: "right_menu_facetoface"),
-                              UIImage(named: "right_menu_payMoney")]
-                
-                let vProperty = FWMenuViewProperty()
-                vProperty.popupCustomAlignment = .topCenter
-                vProperty.popupAnimationType = .scale
-                vProperty.maskViewColor = UIColor.clear
-                vProperty.touchWildToHide = "1"
-                vProperty.popupViewEdgeInsets = UIEdgeInsetsMake(64, 0, 0, 0)
-                //                vProperty.popupViewSize = CGSize(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height * 0.5)
-                vProperty.topBottomMargin = 0
-                vProperty.animationDuration = 0.2
-                vProperty.popupArrowStyle = .triangle
-                vProperty.popupArrowVertexScaleX = 0.5
-                
-                menuView = FWMenuView.menu(itemTitles: titles, itemImageNames: images as? [UIImage], itemBlock: { (popupView, index) in
-                    print("Menu：点击了第\(index)个按钮")
-                }, property: vProperty)
-                //                menuView.attachedView = self.view
-            }
-            menuView.show()
+            self.navigationController?.pushViewController(FWMenuViewDemoVC(), animated: true)
             break
         case 10:
-            let customPopupView = FWCustomPopupView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height * 0.5))
-            
-            let vProperty = FWPopupViewProperty()
-            vProperty.popupCustomAlignment = .bottomCenter
-            vProperty.popupAnimationType = .scale
-            vProperty.maskViewColor = UIColor(white: 0, alpha: 0.5)
-            vProperty.touchWildToHide = "1"
-            vProperty.popupViewEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 0)
-            customPopupView.vProperty = vProperty
-            
-            customPopupView.show()
+            self.navigationController?.pushViewController(FWCustomPopupDemoVC(), animated: true)
             break
         default:
             break

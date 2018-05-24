@@ -19,6 +19,9 @@
 		49812D98205F915600639DDC /* FWPopupViewUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49812D97205F915600639DDC /* FWPopupViewUITests.swift */; };
 		49812DA7205F91F100639DDC /* FWPopupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49812DA6205F91F100639DDC /* FWPopupView.swift */; };
 		49812DA9205F94CF00639DDC /* FWPopupWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49812DA8205F94CF00639DDC /* FWPopupWindow.swift */; };
+		49A7307D20B6AF8A002A989C /* FWMenuViewDemoVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49A7307C20B6AF8A002A989C /* FWMenuViewDemoVC.swift */; };
+		49A7307F20B6B187002A989C /* FWNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49A7307E20B6B187002A989C /* FWNavigationController.swift */; };
+		49A7308120B6D395002A989C /* FWCustomPopupDemoVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49A7308020B6D395002A989C /* FWCustomPopupDemoVC.swift */; };
 		49BB210F2060B86A00E0DE6E /* FWPopupCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49BB210E2060B86A00E0DE6E /* FWPopupCategory.swift */; };
 		49BB212520623C4A00E0DE6E /* FWAlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49BB212420623C4A00E0DE6E /* FWAlertView.swift */; };
 		49BB212720623E8100E0DE6E /* FWPopupItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49BB212620623E8100E0DE6E /* FWPopupItem.swift */; };
@@ -60,6 +63,9 @@
 		49812D99205F915600639DDC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		49812DA6205F91F100639DDC /* FWPopupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FWPopupView.swift; sourceTree = "<group>"; };
 		49812DA8205F94CF00639DDC /* FWPopupWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FWPopupWindow.swift; sourceTree = "<group>"; };
+		49A7307C20B6AF8A002A989C /* FWMenuViewDemoVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FWMenuViewDemoVC.swift; sourceTree = "<group>"; };
+		49A7307E20B6B187002A989C /* FWNavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FWNavigationController.swift; sourceTree = "<group>"; };
+		49A7308020B6D395002A989C /* FWCustomPopupDemoVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FWCustomPopupDemoVC.swift; sourceTree = "<group>"; };
 		49BB210E2060B86A00E0DE6E /* FWPopupCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FWPopupCategory.swift; sourceTree = "<group>"; };
 		49BB212420623C4A00E0DE6E /* FWAlertView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FWAlertView.swift; sourceTree = "<group>"; };
 		49BB212620623E8100E0DE6E /* FWPopupItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FWPopupItem.swift; sourceTree = "<group>"; };
@@ -115,7 +121,10 @@
 			children = (
 				49812DA5205F916F00639DDC /* FWPopupView */,
 				49812D77205F915600639DDC /* AppDelegate.swift */,
+				49A7307E20B6B187002A989C /* FWNavigationController.swift */,
 				495AC10020688B3B002773F9 /* FWDemoViewController.swift */,
+				49A7307C20B6AF8A002A989C /* FWMenuViewDemoVC.swift */,
+				49A7308020B6D395002A989C /* FWCustomPopupDemoVC.swift */,
 				49552D3C20B56C24000A1FA6 /* FWCustomPopupView.swift */,
 				49812D7E205F915600639DDC /* Assets.xcassets */,
 				49812D80205F915600639DDC /* LaunchScreen.storyboard */,
@@ -290,8 +299,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				49A7307D20B6AF8A002A989C /* FWMenuViewDemoVC.swift in Sources */,
+				49A7307F20B6B187002A989C /* FWNavigationController.swift in Sources */,
 				49BB212520623C4A00E0DE6E /* FWAlertView.swift in Sources */,
 				49812D78205F915600639DDC /* AppDelegate.swift in Sources */,
+				49A7308120B6D395002A989C /* FWCustomPopupDemoVC.swift in Sources */,
 				49BB210F2060B86A00E0DE6E /* FWPopupCategory.swift in Sources */,
 				49BB212720623E8100E0DE6E /* FWPopupItem.swift in Sources */,
 				491A970D20AFCD17006E3D70 /* FWMenuView.swift in Sources */,

@@ -147,6 +147,8 @@ extension FWMenuView {
         
         self.popupType = .custom
         
+        self.clipsToBounds = true
+        
         self.itemTitleArray = itemTitles
         self.itemImageNameArray = itemImageNames
         
