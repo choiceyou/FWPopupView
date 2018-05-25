@@ -87,7 +87,7 @@ alpha:1.f]
                                [[FWPopupItem alloc] initWithTitle:@"确定" itemType:FWItemTypeNormal isCancel:NO canAutoHide:YES itemTitleColor:kRGB(29, 150, 227) itemBackgroundColor:nil itemClickedBlock:block]];
             
             FWAlertViewProperty *vProperty = [[FWAlertViewProperty alloc] init];
-            vProperty.vwidth = MAX([UIScreen mainScreen].bounds.size.width * 0.65, 275);
+            vProperty.alertViewWidth = MAX([UIScreen mainScreen].bounds.size.width * 0.65, 275);
             vProperty.titleFontSize = 17.0;
             vProperty.detailFontSize = 14.0;
             vProperty.detailColor = kRGB(141, 151, 163);

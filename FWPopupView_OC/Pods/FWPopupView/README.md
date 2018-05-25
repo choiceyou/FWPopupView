@@ -21,11 +21,16 @@ pod 'FWPopupView'
 • v2.0.4 ：
   1.灰色背景默认值由原来的 alpha=0.6 改为 alpha=0.5；
   2.在原类初始化方法中添加输入框键盘类型参数：UIKeyboardType（鉴于方法可能跟着版本改动，所以建议封装使用）；
+  
 • v2.0.5 :
   1.修复弹窗隐藏时未设置原window为keywindow的问题；
+  
 • v2.0.6 :
   1.原FWPopupItemHandler改为FWPopupItemClickedBlock，增加反馈当前弹窗参数；
   2.FWItemType加入参数canAutoHide：点击该按钮后会自动隐藏弹窗。这样子做能够适应更多的弹窗场景；
+  
+• v2.0.7 :
+  1.支持单独设置某个按钮的文字、背景颜色；
 ```
 
 

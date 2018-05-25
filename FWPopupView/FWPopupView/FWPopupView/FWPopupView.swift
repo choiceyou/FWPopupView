@@ -735,7 +735,7 @@ open class FWPopupViewProperty: NSObject {
     /// 弹窗动画类型
     @objc open var popupAnimationType: FWPopupAnimationType         = .position
     
-    /// 弹窗EdgeInsets
+    /// 弹窗偏移量
     @objc open var popupViewEdgeInsets                              = UIEdgeInsetsMake(0, 0, 0, 0)
     /// 遮罩层的背景色（也可以使用fwMaskViewColor），注意：该参数在弹窗隐藏后，还原为弹窗弹起时的值
     @objc open var maskViewColor: UIColor?

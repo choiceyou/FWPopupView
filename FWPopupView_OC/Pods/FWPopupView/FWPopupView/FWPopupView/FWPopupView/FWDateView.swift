@@ -23,8 +23,6 @@ public typealias FWDateViewConfirmBlock = (_ datePicker: UIDatePicker) -> Void
 
 open class FWDateView: FWPopupView {
     
-    @objc public let property = FWDateViewProperty()
-    
     private var confirmBtn: UIButton?
     private var cancelBtn: UIButton?
     
@@ -42,6 +40,8 @@ open class FWDateView: FWPopupView {
     
     public override init(frame: CGRect) {
         super.init(frame: frame)
+        
+        self.vProperty = FWDateViewProperty()
     }
     
     required public init?(coder aDecoder: NSCoder) {
@@ -53,35 +53,39 @@ extension FWDateView {
     
     private func setupUI(confirmBlock: FWDateViewConfirmBlock? = nil, cancelBlock: FWPopupVoidBlock? = nil) {
         
-        self.backgroundColor = self.property.vbackgroundColor
-        self.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: self.property.datePickerHeight + self.property.btnHeight)
+        let property = self.vProperty as! FWDateViewProperty
         
-        self.popupType = .sheet
+        self.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: property.datePickerHeight + property.btnHeight)
         
-        self.cancelBtn = self.setupBtn(frame: CGRect(x: 0, y: 0, width: self.property.btnWidth, height: self.property.btnHeight), title: self.property.cancelBtnTitle, tag: 0)
+        self.cancelBtn = self.setupBtn(frame: CGRect(x: 0, y: 0, width: property.btnWidth, height: property.btnHeight), title: property.cancelBtnTitle, tag: 0)
         self.addSubview(self.cancelBtn!)
         
-        self.confirmBtn = self.setupBtn(frame: CGRect(x: self.frame.width - self.property.btnWidth, y: 0, width: self.property.btnWidth, height: self.property.btnHeight), title: self.property.confirmBtnTitle, tag: 1)
+        self.confirmBtn = self.setupBtn(frame: CGRect(x: self.frame.width - property.btnWidth, y: 0, width: property.btnWidth, height: property.btnHeight), title: property.confirmBtnTitle, tag: 1)
         self.addSubview(self.confirmBtn!)
         
-        self.datePicker.frame = CGRect(x: 0, y: self.property.btnHeight, width: self.frame.width, height: self.property.datePickerHeight)
-        self.datePicker.backgroundColor = self.property.vbackgroundColor
+        self.datePicker.frame = CGRect(x: 0, y: property.btnHeight, width: self.frame.width, height: property.datePickerHeight)
+        self.datePicker.backgroundColor = self.backgroundColor
         self.addSubview(self.datePicker)
         
         self.confirmBlock = confirmBlock
         self.cancelBlock = cancelBlock
+        
+        property.popupCustomAlignment = .bottomCenter
+        property.popupAnimationType = .position
     }
     
     private func setupBtn(frame: CGRect, title: String, tag: Int) -> UIButton {
+        
+        let property = self.vProperty as! FWDateViewProperty
         
         let btn = UIButton(type: .custom)
         btn.addTarget(self, action: #selector(btnAction(_:)), for: .touchUpInside)
         btn.frame = frame
         btn.tag = tag
         btn.setTitle(title, for: .normal)
-        btn.setTitleColor(self.property.btnTitleColor, for: .normal)
-        btn.backgroundColor = self.property.vbackgroundColor
-        btn.titleLabel?.font = UIFont.boldSystemFont(ofSize: self.property.btnTitleFont)
+        btn.setTitleColor(property.btnTitleColor, for: .normal)
+        btn.backgroundColor = self.backgroundColor
+        btn.titleLabel?.font = UIFont.boldSystemFont(ofSize: property.btnTitleFont)
         return btn
     }
     
@@ -102,17 +106,23 @@ extension FWDateView {
 open class FWDateViewProperty : FWPopupViewProperty {
     
     // UIDatePicker的高度
-    @objc public var datePickerHeight: CGFloat = 240
+    @objc public var datePickerHeight: CGFloat  = 240
+    
     // 确定、取消按钮的高度
-    @objc public var btnHeight: CGFloat = 40
+    @objc public var btnHeight: CGFloat         = 40
     // 确定、取消按钮的宽度
-    @objc public var btnWidth: CGFloat = 60
+    @objc public var btnWidth: CGFloat          = 60
     // 按钮文字颜色
-    @objc public var btnTitleColor: UIColor = kPV_RGBA(r: 51, g: 51, b: 51, a: 1)
+    @objc public var btnTitleColor: UIColor     = kPV_RGBA(r: 51, g: 51, b: 51, a: 1)
     // 按钮文字大小
-    @objc public var btnTitleFont: CGFloat = 17.0
+    @objc public var btnTitleFont: CGFloat      = 17.0
     // 取消按钮名称
-    @objc public var cancelBtnTitle = "取消"
+    @objc public var cancelBtnTitle             = "取消"
     // 确定按钮名称
-    @objc public var confirmBtnTitle = "确定"
+    @objc public var confirmBtnTitle            = "确定"
+    
+    public override func reSetParams() {
+        super.reSetParams()
+        
+    }
 }

@@ -47,6 +47,11 @@ extension FWDemoViewController {
         let cell = UITableViewCell(style: .default, reuseIdentifier: "cellId")
         cell.textLabel?.text = titleArray[indexPath.row]
         cell.textLabel?.numberOfLines = 0
+        if indexPath.row == 9 || indexPath.row == 10 {
+            cell.accessoryType = .disclosureIndicator
+        } else {
+            cell.accessoryType = .none
+        }
         return cell
     }
     

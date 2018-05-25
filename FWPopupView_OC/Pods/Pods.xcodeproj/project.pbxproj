@@ -7,19 +7,20 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		02490D90D80A05B3B6CDAF4AA4EB8E1A /* FWPopupItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A437CB98942E8A676A6E3F3A3FC73C /* FWPopupItem.swift */; };
+		10F08C087DF73ED3D9ABBB02A63C705D /* FWPopupWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA704E4E17989FE56E5F389CA3212842 /* FWPopupWindow.swift */; };
 		13AB221456F261E64EBABCE644E9D897 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6604A7D69453B4569E4E4827FB9155A9 /* Foundation.framework */; };
+		22EFB71FA1ECEFAEB9F8CB4736A88D1B /* FWPopupView-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = B0A7B38D86705A5221C87BBA2D56C49C /* FWPopupView-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		2E0E684F8C76E7998A43917EB949CDE2 /* FWDateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B1A1007AFB8D18B41FCAD0AD18B95AF /* FWDateView.swift */; };
 		34D7E3FB7451CD3799496AFCD0191471 /* Pods-FWPopupView_OC-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 386717ACCED0892E742BDC9BD4E95D6D /* Pods-FWPopupView_OC-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		747D4D919016701F6BDEDCA66A29FDAB /* FWPopupView-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CDA1ABAE1E0E220F5263EDDE651F8AB /* FWPopupView-dummy.m */; };
-		7C3AEBCC1D316171AE089A65E8B4C732 /* FWPopupWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08DD9D2B2EEC05B468E8D2EE7CC27CD1 /* FWPopupWindow.swift */; };
-		7D2AFEA6F79E56D3B6B8EC40F2702DDF /* FWDateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 562706785FC085951B53A7AEACA19DB6 /* FWDateView.swift */; };
+		6FE954B4BC1301D6F34A94F7AFE76D07 /* FWMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 250835B81111B3A1A30788D7AABAA7AC /* FWMenuView.swift */; };
 		7DCD469B4F07A4029AB334B6DB6C5BC9 /* Pods-FWPopupView_OC-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F15000F5EC82FDDF52C1C94311E0160 /* Pods-FWPopupView_OC-dummy.m */; };
-		804D66939A33B6B76E934D62DE3AA889 /* FWSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CACD26B9F8A7E256EA4F5B40014F306D /* FWSheetView.swift */; };
-		979D7B42964AEB6107190886545CE2DB /* FWPopupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95E1FE36C2F18E6650813B95C6CF721B /* FWPopupView.swift */; };
-		AC0354224F219D6854E1E0A8B7728A42 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6604A7D69453B4569E4E4827FB9155A9 /* Foundation.framework */; };
-		B306DB0DF6B7D358A8A97335799C67A2 /* FWPopupView-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 612EBDFE092E6590D5309312E2319901 /* FWPopupView-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		BED004942582D77414EF863AF4927578 /* FWPopupCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89DADAB489D22C03A5D6545599CBF453 /* FWPopupCategory.swift */; };
-		CBFA64CA005B58D5AB7E8E2EEF8A5EEC /* FWPopupItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EEB14A6B7C5588C73AB8C08E4C371C5 /* FWPopupItem.swift */; };
-		CC85B360DD4065CE974E59323ED0D0DB /* FWAlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C054BE8720D479B0E332A2C7EC88107 /* FWAlertView.swift */; };
+		8F7F0B86FC207EE1EB999B76D2FF93D3 /* FWPopupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 820D4CC402A8129EF74F896B1D322393 /* FWPopupView.swift */; };
+		A6796F268B073C70C96E235D7ECD22F7 /* FWPopupCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 096585ADA0174D363FC377FF9C235478 /* FWPopupCategory.swift */; };
+		E1E243DAC4A5C0E9149C9C0F848AC409 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6604A7D69453B4569E4E4827FB9155A9 /* Foundation.framework */; };
+		E8868183E777DC8DFC11EF0AF34C28F9 /* FWPopupView-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A540D80BA723AFC641FF559C1432303 /* FWPopupView-dummy.m */; };
+		F718FDD5014FC44C9EB2ABD90BDAEF1F /* FWAlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C082A6A49A642BA361B7508EC0D4F67 /* FWAlertView.swift */; };
+		FD07B20803F92E1E67D2A38504E354ED /* FWSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38EAE95BEC6E64CDE97E95F6B5A4DAF2 /* FWSheetView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -27,47 +28,48 @@
 			isa = PBXContainerItemProxy;
 			containerPortal = D41D8CD98F00B204E9800998ECF8427E /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 2B826BED94164D8828934D922FA9F5AC;
+			remoteGlobalIDString = C79552A98A74890FEF58C2E551E27E03;
 			remoteInfo = FWPopupView;
 		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		08DD9D2B2EEC05B468E8D2EE7CC27CD1 /* FWPopupWindow.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = FWPopupWindow.swift; path = FWPopupView/FWPopupView/FWPopupView/FWPopupWindow.swift; sourceTree = "<group>"; };
+		017FF5B4962170B81872164F2EACA670 /* FWPopupView.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = FWPopupView.modulemap; sourceTree = "<group>"; };
+		096585ADA0174D363FC377FF9C235478 /* FWPopupCategory.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = FWPopupCategory.swift; path = FWPopupView/FWPopupView/FWPopupView/FWPopupCategory.swift; sourceTree = "<group>"; };
 		0A67F4549D401F4049885AF906FB62B3 /* Pods-FWPopupView_OC-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-FWPopupView_OC-acknowledgements.markdown"; sourceTree = "<group>"; };
-		248D6DC60E67AB7BBA01C295D496C0BD /* FWPopupView-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "FWPopupView-prefix.pch"; sourceTree = "<group>"; };
+		250835B81111B3A1A30788D7AABAA7AC /* FWMenuView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = FWMenuView.swift; path = FWPopupView/FWPopupView/FWPopupView/FWMenuView.swift; sourceTree = "<group>"; };
+		25768FA44B6686D2AAE8EE2DFC229FFA /* FWPopupView-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "FWPopupView-prefix.pch"; sourceTree = "<group>"; };
 		2655798DAC780C1C04ABF6620DD31F41 /* Pods_FWPopupView_OC.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = Pods_FWPopupView_OC.framework; path = "Pods-FWPopupView_OC.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
+		2B1A1007AFB8D18B41FCAD0AD18B95AF /* FWDateView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = FWDateView.swift; path = FWPopupView/FWPopupView/FWPopupView/FWDateView.swift; sourceTree = "<group>"; };
 		386717ACCED0892E742BDC9BD4E95D6D /* Pods-FWPopupView_OC-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-FWPopupView_OC-umbrella.h"; sourceTree = "<group>"; };
-		423F9E65A7A360E089250BAEEDDFA4C8 /* FWPopupView.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = FWPopupView.xcconfig; sourceTree = "<group>"; };
-		562706785FC085951B53A7AEACA19DB6 /* FWDateView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = FWDateView.swift; path = FWPopupView/FWPopupView/FWPopupView/FWDateView.swift; sourceTree = "<group>"; };
-		5CDA1ABAE1E0E220F5263EDDE651F8AB /* FWPopupView-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "FWPopupView-dummy.m"; sourceTree = "<group>"; };
+		38EAE95BEC6E64CDE97E95F6B5A4DAF2 /* FWSheetView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = FWSheetView.swift; path = FWPopupView/FWPopupView/FWPopupView/FWSheetView.swift; sourceTree = "<group>"; };
+		4A540D80BA723AFC641FF559C1432303 /* FWPopupView-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "FWPopupView-dummy.m"; sourceTree = "<group>"; };
 		5F15000F5EC82FDDF52C1C94311E0160 /* Pods-FWPopupView_OC-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-FWPopupView_OC-dummy.m"; sourceTree = "<group>"; };
-		612EBDFE092E6590D5309312E2319901 /* FWPopupView-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "FWPopupView-umbrella.h"; sourceTree = "<group>"; };
 		6369F2AE69B5240940FF6D1155DCF7EA /* Pods-FWPopupView_OC-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-FWPopupView_OC-acknowledgements.plist"; sourceTree = "<group>"; };
 		6604A7D69453B4569E4E4827FB9155A9 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS10.3.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
-		6C054BE8720D479B0E332A2C7EC88107 /* FWAlertView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = FWAlertView.swift; path = FWPopupView/FWPopupView/FWPopupView/FWAlertView.swift; sourceTree = "<group>"; };
-		7EEB14A6B7C5588C73AB8C08E4C371C5 /* FWPopupItem.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = FWPopupItem.swift; path = FWPopupView/FWPopupView/FWPopupView/FWPopupItem.swift; sourceTree = "<group>"; };
-		84B566E59E88854B5F4C1E1266CC35FE /* FWPopupView.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = FWPopupView.modulemap; sourceTree = "<group>"; };
-		89DADAB489D22C03A5D6545599CBF453 /* FWPopupCategory.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = FWPopupCategory.swift; path = FWPopupView/FWPopupView/FWPopupView/FWPopupCategory.swift; sourceTree = "<group>"; };
-		901AFBC8A645A9C9FA48BFE798FD1762 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		7C082A6A49A642BA361B7508EC0D4F67 /* FWAlertView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = FWAlertView.swift; path = FWPopupView/FWPopupView/FWPopupView/FWAlertView.swift; sourceTree = "<group>"; };
+		820D4CC402A8129EF74F896B1D322393 /* FWPopupView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = FWPopupView.swift; path = FWPopupView/FWPopupView/FWPopupView/FWPopupView.swift; sourceTree = "<group>"; };
+		911E2AD5D33CC7E77B16C5558F11298C /* FWPopupView.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = FWPopupView.xcconfig; sourceTree = "<group>"; };
 		91F7F5C2C6516A0B903BDA32CD7E7E26 /* Pods-FWPopupView_OC.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-FWPopupView_OC.release.xcconfig"; sourceTree = "<group>"; };
 		93A4A3777CF96A4AAC1D13BA6DCCEA73 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
-		95E1FE36C2F18E6650813B95C6CF721B /* FWPopupView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = FWPopupView.swift; path = FWPopupView/FWPopupView/FWPopupView/FWPopupView.swift; sourceTree = "<group>"; };
+		AA704E4E17989FE56E5F389CA3212842 /* FWPopupWindow.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = FWPopupWindow.swift; path = FWPopupView/FWPopupView/FWPopupView/FWPopupWindow.swift; sourceTree = "<group>"; };
+		B0A7B38D86705A5221C87BBA2D56C49C /* FWPopupView-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "FWPopupView-umbrella.h"; sourceTree = "<group>"; };
 		BC33318AD590F72C454B33AA726DC5D8 /* Pods-FWPopupView_OC-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-FWPopupView_OC-frameworks.sh"; sourceTree = "<group>"; };
-		CACD26B9F8A7E256EA4F5B40014F306D /* FWSheetView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = FWSheetView.swift; path = FWPopupView/FWPopupView/FWPopupView/FWSheetView.swift; sourceTree = "<group>"; };
 		CD120BA458018F5CB45EF00E0968903B /* Pods-FWPopupView_OC.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = "Pods-FWPopupView_OC.modulemap"; sourceTree = "<group>"; };
+		D1A437CB98942E8A676A6E3F3A3FC73C /* FWPopupItem.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = FWPopupItem.swift; path = FWPopupView/FWPopupView/FWPopupView/FWPopupItem.swift; sourceTree = "<group>"; };
 		D671C41A0B15037C2200F0A85A2E4AED /* Pods-FWPopupView_OC-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-FWPopupView_OC-resources.sh"; sourceTree = "<group>"; };
+		DE2710D87ADF9530EF2F18DB8CAB9A63 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		DF4E9B0F10698D7E8D2775DDC62E2FE3 /* FWPopupView.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = FWPopupView.framework; path = FWPopupView.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E8D356212B9C177A4CF3DE5E8E67A262 /* Pods-FWPopupView_OC.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-FWPopupView_OC.debug.xcconfig"; sourceTree = "<group>"; };
 		EB8B0BE6ED4FF7D9E66A5F476B1B8A60 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		23C09C22A74DB017E8308167B45EA3F0 /* Frameworks */ = {
+		07F258B0938D1822B079956976D81EA1 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AC0354224F219D6854E1E0A8B7728A42 /* Foundation.framework in Frameworks */,
+				E1E243DAC4A5C0E9149C9C0F848AC409 /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -82,12 +84,29 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2535D91753768A5D5B161078FCAE65F8 /* FWPopupView */ = {
+			isa = PBXGroup;
+			children = (
+				7C082A6A49A642BA361B7508EC0D4F67 /* FWAlertView.swift */,
+				2B1A1007AFB8D18B41FCAD0AD18B95AF /* FWDateView.swift */,
+				250835B81111B3A1A30788D7AABAA7AC /* FWMenuView.swift */,
+				096585ADA0174D363FC377FF9C235478 /* FWPopupCategory.swift */,
+				D1A437CB98942E8A676A6E3F3A3FC73C /* FWPopupItem.swift */,
+				820D4CC402A8129EF74F896B1D322393 /* FWPopupView.swift */,
+				AA704E4E17989FE56E5F389CA3212842 /* FWPopupWindow.swift */,
+				38EAE95BEC6E64CDE97E95F6B5A4DAF2 /* FWSheetView.swift */,
+				F211E3D7C824A0D0B116F4EE68488E08 /* Support Files */,
+			);
+			name = FWPopupView;
+			path = FWPopupView;
+			sourceTree = "<group>";
+		};
 		7DB346D0F39D3F0E887471402A8071AB = {
 			isa = PBXGroup;
 			children = (
 				93A4A3777CF96A4AAC1D13BA6DCCEA73 /* Podfile */,
 				BC3CA7F9E30CC8F7E2DD044DD34432FC /* Frameworks */,
-				B03AB5C1000EEE69CB7DDE0A27C5ED80 /* Pods */,
+				F84F2EA80E57A9E07D8769E47B046585 /* Pods */,
 				7DB78E7A61F4CF468FD8410FA0A2437B /* Products */,
 				EA9CE2A80622694229EC23046B950F28 /* Targets Support Files */,
 			);
@@ -102,50 +121,12 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		A16CF5BC5E3477A465DFEB59F0C510CF /* FWPopupView */ = {
-			isa = PBXGroup;
-			children = (
-				6C054BE8720D479B0E332A2C7EC88107 /* FWAlertView.swift */,
-				562706785FC085951B53A7AEACA19DB6 /* FWDateView.swift */,
-				89DADAB489D22C03A5D6545599CBF453 /* FWPopupCategory.swift */,
-				7EEB14A6B7C5588C73AB8C08E4C371C5 /* FWPopupItem.swift */,
-				95E1FE36C2F18E6650813B95C6CF721B /* FWPopupView.swift */,
-				08DD9D2B2EEC05B468E8D2EE7CC27CD1 /* FWPopupWindow.swift */,
-				CACD26B9F8A7E256EA4F5B40014F306D /* FWSheetView.swift */,
-				CB5E38BCAA4B62CF4EB101B2907B0974 /* Support Files */,
-			);
-			name = FWPopupView;
-			path = FWPopupView;
-			sourceTree = "<group>";
-		};
-		B03AB5C1000EEE69CB7DDE0A27C5ED80 /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				A16CF5BC5E3477A465DFEB59F0C510CF /* FWPopupView */,
-			);
-			name = Pods;
-			sourceTree = "<group>";
-		};
 		BC3CA7F9E30CC8F7E2DD044DD34432FC /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
 				D35AF013A5F0BAD4F32504907A52519E /* iOS */,
 			);
 			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		CB5E38BCAA4B62CF4EB101B2907B0974 /* Support Files */ = {
-			isa = PBXGroup;
-			children = (
-				84B566E59E88854B5F4C1E1266CC35FE /* FWPopupView.modulemap */,
-				423F9E65A7A360E089250BAEEDDFA4C8 /* FWPopupView.xcconfig */,
-				5CDA1ABAE1E0E220F5263EDDE651F8AB /* FWPopupView-dummy.m */,
-				248D6DC60E67AB7BBA01C295D496C0BD /* FWPopupView-prefix.pch */,
-				612EBDFE092E6590D5309312E2319901 /* FWPopupView-umbrella.h */,
-				901AFBC8A645A9C9FA48BFE798FD1762 /* Info.plist */,
-			);
-			name = "Support Files";
-			path = "../Target Support Files/FWPopupView";
 			sourceTree = "<group>";
 		};
 		D208B77D42EEECBCD37010AD60CE6651 /* Pods-FWPopupView_OC */ = {
@@ -182,6 +163,28 @@
 			name = "Targets Support Files";
 			sourceTree = "<group>";
 		};
+		F211E3D7C824A0D0B116F4EE68488E08 /* Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				017FF5B4962170B81872164F2EACA670 /* FWPopupView.modulemap */,
+				911E2AD5D33CC7E77B16C5558F11298C /* FWPopupView.xcconfig */,
+				4A540D80BA723AFC641FF559C1432303 /* FWPopupView-dummy.m */,
+				25768FA44B6686D2AAE8EE2DFC229FFA /* FWPopupView-prefix.pch */,
+				B0A7B38D86705A5221C87BBA2D56C49C /* FWPopupView-umbrella.h */,
+				DE2710D87ADF9530EF2F18DB8CAB9A63 /* Info.plist */,
+			);
+			name = "Support Files";
+			path = "../Target Support Files/FWPopupView";
+			sourceTree = "<group>";
+		};
+		F84F2EA80E57A9E07D8769E47B046585 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				2535D91753768A5D5B161078FCAE65F8 /* FWPopupView */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -193,34 +196,17 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		BCD6E023AA80C86AA1750960CD74D809 /* Headers */ = {
+		E5D8D0198D330E763ACBB5CD7A49415B /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B306DB0DF6B7D358A8A97335799C67A2 /* FWPopupView-umbrella.h in Headers */,
+				22EFB71FA1ECEFAEB9F8CB4736A88D1B /* FWPopupView-umbrella.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		2B826BED94164D8828934D922FA9F5AC /* FWPopupView */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = C77ADA6832342E757D8A4A5EC2820375 /* Build configuration list for PBXNativeTarget "FWPopupView" */;
-			buildPhases = (
-				D96A04BFA124612566A08BE7489E79C5 /* Sources */,
-				23C09C22A74DB017E8308167B45EA3F0 /* Frameworks */,
-				BCD6E023AA80C86AA1750960CD74D809 /* Headers */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = FWPopupView;
-			productName = FWPopupView;
-			productReference = DF4E9B0F10698D7E8D2775DDC62E2FE3 /* FWPopupView.framework */;
-			productType = "com.apple.product-type.framework";
-		};
 		B493587E5531BA8CAE12EB3D4880EECF /* Pods-FWPopupView_OC */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 305672DF60D67E7F73873398FC688553 /* Build configuration list for PBXNativeTarget "Pods-FWPopupView_OC" */;
@@ -237,6 +223,23 @@
 			name = "Pods-FWPopupView_OC";
 			productName = "Pods-FWPopupView_OC";
 			productReference = 2655798DAC780C1C04ABF6620DD31F41 /* Pods_FWPopupView_OC.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		C79552A98A74890FEF58C2E551E27E03 /* FWPopupView */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 2E0C8CFFFC90B1F5E39A91058FDC8E0D /* Build configuration list for PBXNativeTarget "FWPopupView" */;
+			buildPhases = (
+				073BDB5AC547ACE2B8B8041BE19C776F /* Sources */,
+				07F258B0938D1822B079956976D81EA1 /* Frameworks */,
+				E5D8D0198D330E763ACBB5CD7A49415B /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = FWPopupView;
+			productName = FWPopupView;
+			productReference = DF4E9B0F10698D7E8D2775DDC62E2FE3 /* FWPopupView.framework */;
 			productType = "com.apple.product-type.framework";
 		};
 /* End PBXNativeTarget section */
@@ -260,33 +263,34 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				2B826BED94164D8828934D922FA9F5AC /* FWPopupView */,
+				C79552A98A74890FEF58C2E551E27E03 /* FWPopupView */,
 				B493587E5531BA8CAE12EB3D4880EECF /* Pods-FWPopupView_OC */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXSourcesBuildPhase section */
+		073BDB5AC547ACE2B8B8041BE19C776F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F718FDD5014FC44C9EB2ABD90BDAEF1F /* FWAlertView.swift in Sources */,
+				2E0E684F8C76E7998A43917EB949CDE2 /* FWDateView.swift in Sources */,
+				6FE954B4BC1301D6F34A94F7AFE76D07 /* FWMenuView.swift in Sources */,
+				A6796F268B073C70C96E235D7ECD22F7 /* FWPopupCategory.swift in Sources */,
+				02490D90D80A05B3B6CDAF4AA4EB8E1A /* FWPopupItem.swift in Sources */,
+				E8868183E777DC8DFC11EF0AF34C28F9 /* FWPopupView-dummy.m in Sources */,
+				8F7F0B86FC207EE1EB999B76D2FF93D3 /* FWPopupView.swift in Sources */,
+				10F08C087DF73ED3D9ABBB02A63C705D /* FWPopupWindow.swift in Sources */,
+				FD07B20803F92E1E67D2A38504E354ED /* FWSheetView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		3F7DF3C0ED9D193AEF2A57AD3411FC56 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 				7DCD469B4F07A4029AB334B6DB6C5BC9 /* Pods-FWPopupView_OC-dummy.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		D96A04BFA124612566A08BE7489E79C5 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				CC85B360DD4065CE974E59323ED0D0DB /* FWAlertView.swift in Sources */,
-				7D2AFEA6F79E56D3B6B8EC40F2702DDF /* FWDateView.swift in Sources */,
-				BED004942582D77414EF863AF4927578 /* FWPopupCategory.swift in Sources */,
-				CBFA64CA005B58D5AB7E8E2EEF8A5EEC /* FWPopupItem.swift in Sources */,
-				747D4D919016701F6BDEDCA66A29FDAB /* FWPopupView-dummy.m in Sources */,
-				979D7B42964AEB6107190886545CE2DB /* FWPopupView.swift in Sources */,
-				7C3AEBCC1D316171AE089A65E8B4C732 /* FWPopupWindow.swift in Sources */,
-				804D66939A33B6B76E934D62DE3AA889 /* FWSheetView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -296,45 +300,12 @@
 		BB8EA04933BB09236DD33204186ED01C /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = FWPopupView;
-			target = 2B826BED94164D8828934D922FA9F5AC /* FWPopupView */;
+			target = C79552A98A74890FEF58C2E551E27E03 /* FWPopupView */;
 			targetProxy = 4EC4A5E59F244A72931F64F3F2F8AD0A /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
-		1AFFF22C947E3DCC0ECC9F3C10EFD742 /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 423F9E65A7A360E089250BAEEDDFA4C8 /* FWPopupView.xcconfig */;
-			buildSettings = {
-				CODE_SIGN_IDENTITY = "";
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				CURRENT_PROJECT_VERSION = 1;
-				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				GCC_PREFIX_HEADER = "Target Support Files/FWPopupView/FWPopupView-prefix.pch";
-				INFOPLIST_FILE = "Target Support Files/FWPopupView/Info.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MODULEMAP_FILE = "Target Support Files/FWPopupView/FWPopupView.modulemap";
-				PRODUCT_MODULE_NAME = FWPopupView;
-				PRODUCT_NAME = FWPopupView;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
-				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
-				SWIFT_VERSION = 4.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VALIDATE_PRODUCT = YES;
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Release;
-		};
 		1EE19F5DD95931924296F637BF18BD8F /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -398,9 +369,9 @@
 			};
 			name = Debug;
 		};
-		67F242643D70732B077537083498F7D4 /* Debug */ = {
+		38D2A1A21CC95D18817069056BC5C341 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 423F9E65A7A360E089250BAEEDDFA4C8 /* FWPopupView.xcconfig */;
+			baseConfigurationReference = 911E2AD5D33CC7E77B16C5558F11298C /* FWPopupView.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
@@ -422,13 +393,14 @@
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
-				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
-			name = Debug;
+			name = Release;
 		};
 		70BA72FE56295F2D443BD1D61403AE33 /* Release */ = {
 			isa = XCBuildConfiguration;
@@ -464,6 +436,38 @@
 				VERSION_INFO_PREFIX = "";
 			};
 			name = Release;
+		};
+		96104AE58B17C6FF2EAD630D089B0519 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 911E2AD5D33CC7E77B16C5558F11298C /* FWPopupView.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_PREFIX_HEADER = "Target Support Files/FWPopupView/FWPopupView-prefix.pch";
+				INFOPLIST_FILE = "Target Support Files/FWPopupView/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MODULEMAP_FILE = "Target Support Files/FWPopupView/FWPopupView.modulemap";
+				PRODUCT_MODULE_NAME = FWPopupView;
+				PRODUCT_NAME = FWPopupView;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
 		};
 		A194C6B87F90527F8B8B0983502E0F51 /* Debug */ = {
 			isa = XCBuildConfiguration;
@@ -570,20 +574,20 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
+		2E0C8CFFFC90B1F5E39A91058FDC8E0D /* Build configuration list for PBXNativeTarget "FWPopupView" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				96104AE58B17C6FF2EAD630D089B0519 /* Debug */,
+				38D2A1A21CC95D18817069056BC5C341 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		305672DF60D67E7F73873398FC688553 /* Build configuration list for PBXNativeTarget "Pods-FWPopupView_OC" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				A194C6B87F90527F8B8B0983502E0F51 /* Debug */,
 				70BA72FE56295F2D443BD1D61403AE33 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		C77ADA6832342E757D8A4A5EC2820375 /* Build configuration list for PBXNativeTarget "FWPopupView" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				67F242643D70732B077537083498F7D4 /* Debug */,
-				1AFFF22C947E3DCC0ECC9F3C10EFD742 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
