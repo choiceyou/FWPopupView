@@ -15,11 +15,12 @@
  */
 
 
-static const void *fw_dimReferenceCountKey            = &fw_dimReferenceCountKey;
+static const void *dimReferenceCountKey             = &dimReferenceCountKey;
 
-static const void *fw_dimBackgroundViewKey            = &fw_dimBackgroundViewKey;
-static const void *fw_dimAnimationDurationKey         = &fw_dimAnimationDurationKey;
-static const void *fw_dimBackgroundAnimatingKey       = &fw_dimBackgroundAnimatingKey;
+static const void *dimMaskViewKey                   = &dimMaskViewKey;
+static const void *dimMaskViewColorKey              = &dimMaskViewColorKey;
+static const void *dimMaskAnimationDurationKey      = &dimMaskAnimationDurationKey;
+static const void *dimMaskAnimatingKey              = &dimMaskAnimatingKey;
 
 #import "UIView+PopupView.h"
 #import <objc/runtime.h>
@@ -27,24 +28,34 @@ static const void *fw_dimBackgroundAnimatingKey       = &fw_dimBackgroundAnimati
 
 @implementation UIView (PopupView)
 
-@dynamic fw_dimBackgroundView;
-@dynamic fw_dimAnimationDuration;
-@dynamic fw_dimBackgroundAnimating;
+@dynamic dimMaskView;
+@dynamic dimMaskAnimationDuration;
+@dynamic dimMaskAnimating;
 
-- (NSInteger)fw_dimReferenceCount {
-    return [objc_getAssociatedObject(self, fw_dimReferenceCountKey) integerValue];
+- (NSInteger)dimReferenceCount {
+    return [objc_getAssociatedObject(self, dimReferenceCountKey) integerValue];
 }
 
-- (void)setFw_dimReferenceCount:(NSInteger)fw_dimReferenceCount
+- (void)setDimReferenceCount:(NSInteger)dimReferenceCount
 {
-    objc_setAssociatedObject(self, fw_dimReferenceCountKey, @(fw_dimReferenceCount), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    objc_setAssociatedObject(self, dimReferenceCountKey, @(dimReferenceCount), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
-- (UIView *)fw_dimBackgroundView
+- (UIColor *)dimMaskViewColor
 {
-    UIView *dimView = objc_getAssociatedObject(self, fw_dimBackgroundViewKey);
+    return objc_getAssociatedObject(self, dimMaskViewColorKey);
+}
+
+- (void)setDimMaskViewColor:(UIColor *)dimMaskViewColor
+{
+    objc_setAssociatedObject(self, dimMaskViewColorKey, dimMaskViewColor, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+- (UIView *)dimMaskView
+{
+    UIView *dimView = objc_getAssociatedObject(self, dimMaskViewKey);
     
-    if ( !dimView )
+    if (!dimView)
     {
         dimView = [UIView new];
         dimView.center = self.center;
@@ -53,47 +64,47 @@ static const void *fw_dimBackgroundAnimatingKey       = &fw_dimBackgroundAnimati
         dimView.alpha = 0.0f;
         dimView.layer.zPosition = FLT_MAX;
         
-        self.fw_dimAnimationDuration = 0.3f;
+        self.dimMaskAnimationDuration = 0.3f;
         
-        objc_setAssociatedObject(self, fw_dimBackgroundViewKey, dimView, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+        objc_setAssociatedObject(self, dimMaskViewKey, dimView, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
     }
     
     return dimView;
 }
 
-- (BOOL)fw_dimBackgroundAnimating
+- (BOOL)dimMaskAnimating
 {
-    return [objc_getAssociatedObject(self, fw_dimBackgroundAnimatingKey) boolValue];
+    return [objc_getAssociatedObject(self, dimMaskAnimatingKey) boolValue];
 }
 
-- (void)setFw_dimBackgroundAnimating:(BOOL)fw_dimBackgroundAnimating
+- (void)setDimMaskAnimating:(BOOL)dimMaskAnimating
 {
-    objc_setAssociatedObject(self, fw_dimBackgroundAnimatingKey, @(fw_dimBackgroundAnimating), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    objc_setAssociatedObject(self, dimMaskAnimatingKey, @(dimMaskAnimating), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
-- (NSTimeInterval)fw_dimAnimationDuration
+- (NSTimeInterval)dimMaskAnimationDuration
 {
-    return [objc_getAssociatedObject(self, fw_dimAnimationDurationKey) doubleValue];
+    return [objc_getAssociatedObject(self, dimMaskAnimationDurationKey) doubleValue];
 }
 
-- (void)setFw_dimAnimationDuration:(NSTimeInterval)fw_dimAnimationDuration
+- (void)setDimMaskAnimationDuration:(NSTimeInterval)dimMaskAnimationDuration
 {
-    objc_setAssociatedObject(self, fw_dimAnimationDurationKey, @(fw_dimAnimationDuration), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    objc_setAssociatedObject(self, dimMaskAnimationDurationKey, @(dimMaskAnimationDuration), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
-- (void)fw_showDimBackground
+- (void)showDimMask
 {
-    ++self.fw_dimReferenceCount;
+    ++self.dimReferenceCount;
     
-    if ( self.fw_dimReferenceCount > 1 )
+    if ( self.dimReferenceCount > 1 )
     {
         return;
     }
     
-    self.fw_dimBackgroundView.hidden = NO;
-    self.fw_dimBackgroundAnimating = YES;
+    self.dimMaskView.hidden = NO;
+    self.dimMaskAnimating = YES;
     
-    if ( self == [FWPopupWindow sharedWindow].attachView )
+    if (self == [FWPopupWindow sharedWindow].attachView )
     {
         [FWPopupWindow sharedWindow].hidden = NO;
         [[FWPopupWindow sharedWindow] makeKeyAndVisible];
@@ -105,55 +116,55 @@ static const void *fw_dimBackgroundAnimatingKey       = &fw_dimBackgroundAnimati
     }
     else
     {
-        [self bringSubviewToFront:self.fw_dimBackgroundView];
+        [self bringSubviewToFront:self.dimMaskView];
     }
     
-    [UIView animateWithDuration:self.fw_dimAnimationDuration
+    [UIView animateWithDuration:self.dimMaskAnimationDuration
                           delay:0
                         options:UIViewAnimationOptionCurveEaseOut | UIViewAnimationOptionBeginFromCurrentState
                      animations:^{
                          
-                         self.fw_dimBackgroundView.alpha = 1.0f;
+                         self.dimMaskView.alpha = 1.0f;
                          
                      } completion:^(BOOL finished) {
                          
                          if ( finished )
                          {
-                             self.fw_dimBackgroundAnimating = NO;
+                             self.dimMaskAnimating = NO;
                          }
                          
                      }];
 }
 
-- (void)fw_hideDimBackground
+- (void)hideDimMask
 {
-    --self.fw_dimReferenceCount;
+    --self.dimReferenceCount;
     
-    if ( self.fw_dimReferenceCount > 0 )
+    if ( self.dimReferenceCount > 0 )
     {
         return;
     }
     
-    self.fw_dimBackgroundAnimating = YES;
-    [UIView animateWithDuration:self.fw_dimAnimationDuration
+    self.dimMaskAnimating = YES;
+    [UIView animateWithDuration:self.dimMaskAnimationDuration
                           delay:0
                         options:UIViewAnimationOptionCurveEaseIn | UIViewAnimationOptionBeginFromCurrentState
                      animations:^{
                          
-                         self.fw_dimBackgroundView.alpha = 0.0f;
+                         self.dimMaskView.alpha = 0.0f;
                          
                      } completion:^(BOOL finished) {
                          
-                         if ( finished )
+                         if (finished)
                          {
-                             self.fw_dimBackgroundAnimating = NO;
+                             self.dimMaskAnimating = NO;
                              
-                             if ( self == [FWPopupWindow sharedWindow].attachView )
+                             if (self == [FWPopupWindow sharedWindow].attachView)
                              {
                                  [FWPopupWindow sharedWindow].hidden = YES;
                                  [[[UIApplication sharedApplication].delegate window] makeKeyWindow];
                              }
-                             else if ( self == [FWPopupWindow sharedWindow] )
+                             else if (self == [FWPopupWindow sharedWindow])
                              {
                                  self.hidden = YES;
                                  [[[UIApplication sharedApplication].delegate window] makeKeyWindow];

@@ -10,11 +10,12 @@
 
 @interface UIView (PopupView)
 
-@property (nonatomic, strong, readonly ) UIView            *fw_dimBackgroundView;
-@property (nonatomic, assign, readonly ) BOOL              fw_dimBackgroundAnimating;
-@property (nonatomic, assign           ) NSTimeInterval    fw_dimAnimationDuration;
+@property (nonatomic, strong, readonly) UIView  *dimMaskView;
+@property (nonatomic, strong) UIColor           *dimMaskViewColor;
+@property (nonatomic, assign, readonly) BOOL    dimMaskAnimating;
+@property (nonatomic, assign) NSTimeInterval    dimMaskAnimationDuration;
 
-- (void) fw_showDimBackground;
-- (void) fw_hideDimBackground;
+- (void)showDimMask;
+- (void)hideDimMask;
 
 @end

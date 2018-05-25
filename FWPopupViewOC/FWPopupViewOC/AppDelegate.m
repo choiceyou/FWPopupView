@@ -7,6 +7,7 @@
 //
 
 #import "AppDelegate.h"
+#import <FWPopupView/FWPopupView-Swift.h>
 
 @interface AppDelegate ()
 

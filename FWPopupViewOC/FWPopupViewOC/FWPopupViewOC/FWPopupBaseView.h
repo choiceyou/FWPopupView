@@ -16,6 +16,7 @@
 
 
 #import <UIKit/UIKit.h>
+#import "UIView+PopupView.h"
 
 /**
  自定义弹窗校准位置，注意：这边设置靠置哪边动画就从哪边出来
@@ -111,12 +112,31 @@ static NSString *const FWHideAllPopupViewNotification = @"FWHideAllPopupViewNoti
  1、当外部没有传入该参数时，默认为UIWindow的根控制器的视图，即表示弹窗放在FWPopupWindow上；
  2、当外部传入该参数时，该视图为传入的UIView，即表示弹窗放在传入的UIView上；
  */
-@property (nonatomic, strong) UIView *attachedView;
+@property (nonatomic, strong) UIView                    *attachedView;
 
 /**
  可设置属性
  */
-@property (nonatomic, strong) FWPopupBaseViewProperty *vProperty;
+@property (nonatomic, strong) FWPopupBaseViewProperty   *vProperty;
+
+/**
+ 单击隐藏弹窗，这个当且仅当：attachedView为用户传入的UIView并且 touchWildToHide == YES 时有效
+ */
+@property (nonatomic, strong) UITapGestureRecognizer    *tapGest;
+
+/**
+ 当前弹窗是否可见
+ */
+@property (nonatomic, assign, readonly ) BOOL           visible;
+
+
+- (void)show;
+
+- (void)showWithBlock:(FWPopupCompletionBlock)completionBlock;
+
+- (void)hide;
+
+- (void)hideWithBlock:(FWPopupCompletionBlock)completionBlock;
 
 @end
 
