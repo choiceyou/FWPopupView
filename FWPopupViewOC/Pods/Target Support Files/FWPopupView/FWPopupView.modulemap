@@ -1,0 +1,6 @@
+framework module FWPopupView {
+  umbrella header "FWPopupView-umbrella.h"
+
+  export *
+  module * { export * }
+}

@@ -1,0 +1,92 @@
+//
+//  FWPopupWindow.swift
+//  FWPopupView
+//
+//  Created by xfg on 2018/3/19.
+//  Copyright © 2018年 xfg. All rights reserved.
+//
+
+/** ************************************************
+ 
+ github地址：https://github.com/choiceyou/FWPopupView
+ bug反馈、交流群：670698309
+ 
+ ***************************************************
+ */
+
+
+import Foundation
+import UIKit
+
+public func kPV_RGBA (r:CGFloat, g:CGFloat, b:CGFloat, a:CGFloat) -> UIColor {
+    return UIColor (red: r/255.0, green: g/255.0, blue: b/255.0, alpha: a)
+}
+
+open class FWPopupWindow: UIWindow, UIGestureRecognizerDelegate {
+    
+    /// 单例
+    @objc open static let sharedInstance = FWPopupWindow()
+    
+    // 默认false，当为true时：用户点击外部遮罩层页面可以消失
+    @objc open var touchWildToHide: Bool = false
+    // 默认false，当为true时：用户拖动外部遮罩层页面可以消失
+    @objc open var panWildToHide: Bool = false
+    
+    public override init(frame: CGRect) {
+        super.init(frame: frame)
+        
+        self.frame = UIScreen.main.bounds
+        
+        let rootVC = UIViewController()
+        rootVC.view.backgroundColor = UIColor.clear
+        self.rootViewController = rootVC
+        
+        self.windowLevel = UIWindowLevelStatusBar + 1
+        
+        let tapGest = UITapGestureRecognizer(target: self, action: #selector(tapGesClick(tap:)))
+        //        tapGest.cancelsTouchesInView = false
+        tapGest.delegate = self
+        self.addGestureRecognizer(tapGest)
+        
+        let panGest = UIPanGestureRecognizer(target: self, action: #selector(panGesClick(pan:)))
+        self.addGestureRecognizer(panGest)
+    }
+    
+    required public init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+}
+
+extension FWPopupWindow {
+    
+    @objc func tapGesClick(tap: UIGestureRecognizer) {
+        
+        if self.touchWildToHide && !self.fwBackgroundAnimating {
+            for view: UIView in (self.attachView()?.fwMaskView.subviews)! {
+                if view.isKind(of: FWPopupView.self) {
+                    let popupView = view as! FWPopupView
+                    popupView.hide()
+                }
+            }
+        }
+    }
+    
+    @objc func panGesClick(pan: UIGestureRecognizer) {
+        
+        if self.panWildToHide {
+            self.tapGesClick(tap: pan)
+        }
+    }
+    
+    public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
+        return touch.view == self.attachView()?.fwMaskView
+    }
+    
+    public func attachView() -> UIView? {
+        if self.rootViewController != nil {
+            return self.rootViewController?.view
+        } else {
+            return nil
+        }
+    }
+}
