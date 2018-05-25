@@ -121,7 +121,7 @@ open class FWPopupView: UIView, UIGestureRecognizerDelegate {
     @objc public var visible: Bool {
         get {
             if self.attachedView != nil {
-                return !(self.attachedView?.fwMaskView.isHidden)!
+                return !(self.attachedView!.fwMaskView.alpha == 0)
             }
             return false
         }

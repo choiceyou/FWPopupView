@@ -99,10 +99,12 @@ extension UIView {
         return tmpView!
     }
     
+    /// 显示遮罩层
     func showFwBackground() {
         
         self.fwReferenceCount += 1
         if self.fwReferenceCount > 1 {
+            self.fwReferenceCount -= 1
             return
         }
         self.fwMaskView.isHidden = false
@@ -132,10 +134,10 @@ extension UIView {
         }
     }
     
+    /// 隐藏遮罩层
     func hideFwBackground() {
         
-        self.fwReferenceCount -= 1
-        if self.fwReferenceCount > 0 {
+        if self.fwReferenceCount > 1 {
             return
         }
         self.fwBackgroundAnimating = true
@@ -158,6 +160,7 @@ extension UIView {
                 }
             }
             
+            self.fwReferenceCount -= 1
         }
     }
 }

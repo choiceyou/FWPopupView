@@ -31,12 +31,10 @@ class FWMenuViewDemoVC: UIViewController {
         let vProperty = FWMenuViewProperty()
         vProperty.popupCustomAlignment = .topCenter
         vProperty.popupAnimationType = .scale
-        vProperty.maskViewColor = UIColor(white: 0, alpha: 0.2)
+        vProperty.popupArrowStyle = .round
         vProperty.touchWildToHide = "1"
         vProperty.topBottomMargin = 0
-        vProperty.animationDuration = 0.3
-        vProperty.popupArrowStyle = .triangle
-        vProperty.popupArrowVertexScaleX = 0.5
+        vProperty.maskViewColor = UIColor(white: 0, alpha: 0.3)
         
         let menuView = FWMenuView.menu(itemTitles: titles, itemImageNames: images as? [UIImage], itemBlock: { (popupView, index) in
             print("Menu：点击了第\(index)个按钮")
@@ -126,7 +124,11 @@ extension FWMenuViewDemoVC {
         let btn = sender as! UIButton
         switch btn.tag {
         case 0:
-            self.menuView1.show()
+            if self.menuView1.visible {
+                self.menuView1.hide()
+            } else {
+                self.menuView1.show()
+            }
             break
             
         case 1:
