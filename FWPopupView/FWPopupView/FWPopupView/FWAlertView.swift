@@ -148,27 +148,24 @@ extension FWAlertView {
             self.vProperty = vProperty!
         }
         
-        self.clipsToBounds = true
-        
-        self.popupType = .alert
-        self.vProperty.animationDuration = 0.3
-        
-        self.actionItemArray = items
-        
-        self.withKeyboard = (inputPlaceholder != nil)
-        
-        self.layer.cornerRadius = self.vProperty.cornerRadius
-        
         let property = self.vProperty as! FWAlertViewProperty
         
+        self.clipsToBounds = true
+        self.layer.cornerRadius = self.vProperty.cornerRadius
+        
         self.frame.origin.x = (UIScreen.main.bounds.width - property.alertViewWidth) / 2
-        self.frame.origin.y = 100
         self.frame.size.width = CGFloat(property.alertViewWidth)
         
         self.setContentCompressionResistancePriority(.required, for: .horizontal)
         self.setContentCompressionResistancePriority(.fittingSizeLevel, for: .vertical)
         
-        var currentMaxY:CGFloat = self.vProperty.topBottomMargin
+        self.actionItemArray = items
+        self.withKeyboard = (inputPlaceholder != nil)
+        
+        property.popupCustomAlignment = .center
+        property.popupAnimationType = .scale3D
+        
+        var currentMaxY: CGFloat = property.topBottomMargin
         
         if title != nil && !title!.isEmpty {
             self.titleLabel = UILabel(frame: CGRect(x: self.vProperty.letfRigthMargin, y: currentMaxY, width: self.frame.width - self.vProperty.letfRigthMargin * 2, height: CGFloat.greatestFiniteMagnitude))

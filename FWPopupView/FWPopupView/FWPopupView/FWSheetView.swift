@@ -78,11 +78,6 @@ extension FWSheetView {
             self.vProperty = property!
         }
         
-        self.clipsToBounds = true
-        
-        self.popupType = .sheet
-        self.vProperty.animationDuration = 0.3
-        
         let itemClickedBlock: FWPopupItemClickedBlock = { (popupView, index) in
             if itemBlock != nil {
                 itemBlock!(self, index)
@@ -92,6 +87,8 @@ extension FWSheetView {
             self.actionItemArray.append(FWPopupItem(title: title, itemType: .normal, isCancel: true, canAutoHide: true, itemClickedBlock: itemClickedBlock))
         }
         
+        self.clipsToBounds = true
+        
         self.frame.origin.x = 0
         self.frame.origin.y = 100
         self.frame.size.width = UIScreen.main.bounds.width
@@ -100,6 +97,9 @@ extension FWSheetView {
         self.setContentCompressionResistancePriority(.fittingSizeLevel, for: .vertical)
         
         let property = self.vProperty as! FWSheetViewProperty
+        
+        property.popupCustomAlignment = .bottomCenter
+        property.popupAnimationType = .position
         
         var currentMaxY:CGFloat = self.vProperty.topBottomMargin
         

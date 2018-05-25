@@ -15,9 +15,6 @@ class FWCustomPopupView: FWPopupView {
         super.init(frame: frame)
         
         self.backgroundColor = UIColor.white
-        
-        // 注意：必须得告诉父类现在用的是自定义弹窗方式，不然程序会崩掉
-        self.popupType = .custom
     }
     
     required public init?(coder aDecoder: NSCoder) {

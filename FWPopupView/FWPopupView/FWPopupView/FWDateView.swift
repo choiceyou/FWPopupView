@@ -57,8 +57,6 @@ extension FWDateView {
         
         self.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: property.datePickerHeight + property.btnHeight)
         
-        self.popupType = .sheet
-        
         self.cancelBtn = self.setupBtn(frame: CGRect(x: 0, y: 0, width: property.btnWidth, height: property.btnHeight), title: property.cancelBtnTitle, tag: 0)
         self.addSubview(self.cancelBtn!)
         
@@ -71,6 +69,9 @@ extension FWDateView {
         
         self.confirmBlock = confirmBlock
         self.cancelBlock = cancelBlock
+        
+        property.popupCustomAlignment = .bottomCenter
+        property.popupAnimationType = .position
     }
     
     private func setupBtn(frame: CGRect, title: String, tag: Int) -> UIButton {

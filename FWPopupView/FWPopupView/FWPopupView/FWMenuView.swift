@@ -145,8 +145,6 @@ extension FWMenuView {
             self.vProperty = FWMenuViewProperty()
         }
         
-        self.popupType = .custom
-        
         self.clipsToBounds = true
         
         self.itemTitleArray = itemTitles
