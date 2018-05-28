@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		4953B44F20B7FC36004B87D7 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 4953B44E20B7FC36004B87D7 /* AppDelegate.m */; };
 		4953B45220B7FC36004B87D7 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4953B45120B7FC36004B87D7 /* ViewController.m */; };
-		4953B45520B7FC36004B87D7 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4953B45320B7FC36004B87D7 /* Main.storyboard */; };
 		4953B45720B7FC38004B87D7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4953B45620B7FC38004B87D7 /* Assets.xcassets */; };
 		4953B45A20B7FC38004B87D7 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4953B45820B7FC38004B87D7 /* LaunchScreen.storyboard */; };
 		4953B45D20B7FC38004B87D7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 4953B45C20B7FC38004B87D7 /* main.m */; };
@@ -18,6 +17,7 @@
 		4953B48220B7FD06004B87D7 /* FWPopupBaseView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4953B48120B7FD06004B87D7 /* FWPopupBaseView.m */; };
 		4953B48B20B80D4D004B87D7 /* UIView+PopupView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4953B48A20B80D4D004B87D7 /* UIView+PopupView.m */; };
 		4953B48E20B8152F004B87D7 /* FWPopupWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 4953B48D20B8152F004B87D7 /* FWPopupWindow.m */; };
+		495FFCF620BBB0CD009746B1 /* FWCustomView.m in Sources */ = {isa = PBXBuildFile; fileRef = 495FFCF520BBB0CD009746B1 /* FWCustomView.m */; };
 		5B92C65BF9D4BC083B52834F /* Pods_FWPopupViewOC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A0B9C7DA7A4ABE5F87E5ACD5 /* Pods_FWPopupViewOC.framework */; };
 /* End PBXBuildFile section */
 
@@ -46,7 +46,6 @@
 		4953B44E20B7FC36004B87D7 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		4953B45020B7FC36004B87D7 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
 		4953B45120B7FC36004B87D7 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
-		4953B45420B7FC36004B87D7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		4953B45620B7FC38004B87D7 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		4953B45920B7FC38004B87D7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		4953B45B20B7FC38004B87D7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -63,6 +62,8 @@
 		4953B48A20B80D4D004B87D7 /* UIView+PopupView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIView+PopupView.m"; sourceTree = "<group>"; };
 		4953B48C20B8152F004B87D7 /* FWPopupWindow.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FWPopupWindow.h; sourceTree = "<group>"; };
 		4953B48D20B8152F004B87D7 /* FWPopupWindow.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FWPopupWindow.m; sourceTree = "<group>"; };
+		495FFCF420BBB0CD009746B1 /* FWCustomView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FWCustomView.h; sourceTree = "<group>"; };
+		495FFCF520BBB0CD009746B1 /* FWCustomView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FWCustomView.m; sourceTree = "<group>"; };
 		7C11AEB1B069394B0BA25D5D /* libPods-FWPopupViewOCTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-FWPopupViewOCTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A0B9C7DA7A4ABE5F87E5ACD5 /* Pods_FWPopupViewOC.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FWPopupViewOC.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B6526F36B7EAEC1AEA71EDA5 /* libPods-FWPopupViewOCUITests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-FWPopupViewOCUITests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -133,7 +134,8 @@
 				4953B44E20B7FC36004B87D7 /* AppDelegate.m */,
 				4953B45020B7FC36004B87D7 /* ViewController.h */,
 				4953B45120B7FC36004B87D7 /* ViewController.m */,
-				4953B45320B7FC36004B87D7 /* Main.storyboard */,
+				495FFCF420BBB0CD009746B1 /* FWCustomView.h */,
+				495FFCF520BBB0CD009746B1 /* FWCustomView.m */,
 				4953B45620B7FC38004B87D7 /* Assets.xcassets */,
 				4953B45820B7FC38004B87D7 /* LaunchScreen.storyboard */,
 				4953B45B20B7FC38004B87D7 /* Info.plist */,
@@ -290,7 +292,6 @@
 			files = (
 				4953B45A20B7FC38004B87D7 /* LaunchScreen.storyboard in Resources */,
 				4953B45720B7FC38004B87D7 /* Assets.xcassets in Resources */,
-				4953B45520B7FC36004B87D7 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -360,6 +361,7 @@
 				4953B44F20B7FC36004B87D7 /* AppDelegate.m in Sources */,
 				4953B48220B7FD06004B87D7 /* FWPopupBaseView.m in Sources */,
 				4953B48E20B8152F004B87D7 /* FWPopupWindow.m in Sources */,
+				495FFCF620BBB0CD009746B1 /* FWCustomView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -395,14 +397,6 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		4953B45320B7FC36004B87D7 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				4953B45420B7FC36004B87D7 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		4953B45820B7FC38004B87D7 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (

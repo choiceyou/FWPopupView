@@ -60,7 +60,7 @@ typedef NS_ENUM(NSInteger, FWPopupAlignment) {
  - FWPopupAnimationTypeFrame: 修改frame值的动画，视图未靠边的时候建议使用
  */
 typedef NS_ENUM(NSInteger, FWPopupAnimationType) {
-    FWPopupAnimationTypePosition,
+    FWPopupAnimationTypePosition = 0,
     FWPopupAnimationTypeScale,
     FWPopupAnimationTypeScale3D,
     FWPopupAnimationTypeFrame,
@@ -127,7 +127,12 @@ static NSString *const FWHideAllPopupViewNotification = @"FWHideAllPopupViewNoti
 /**
  当前弹窗是否可见
  */
-@property (nonatomic, assign, readonly ) BOOL           visible;
+@property (nonatomic, assign, readonly) BOOL            visible;
+
+/**
+ 是否有用到键盘
+ */
+@property (nonatomic, assign) BOOL                      withKeyboard;
 
 
 - (void)show;
@@ -141,6 +146,135 @@ static NSString *const FWHideAllPopupViewNotification = @"FWHideAllPopupViewNoti
 @end
 
 
+
 @interface FWPopupBaseViewProperty: NSObject
+
++ (instancetype)manager;
+
+/**
+ 标题字体大小
+ */
+@property (nonatomic, assign) CGFloat titleFontSize;
+/**
+ 标题文字颜色
+ */
+@property (nonatomic, strong) UIColor *titleColor;
+
+/**
+ 按钮字体大小
+ */
+@property (nonatomic, assign) CGFloat buttonFontSize;
+/**
+ 按钮高度
+ */
+@property (nonatomic, assign) CGFloat buttonHeight;
+/**
+ 普通按钮文字颜色
+ */
+@property (nonatomic, strong) UIColor *itemNormalColor;
+/**
+ 高亮按钮文字颜色
+ */
+@property (nonatomic, strong) UIColor *itemHighlightColor;
+/**
+ 选中按钮文字颜色
+ */
+@property (nonatomic, strong) UIColor *itemPressedColor;
+
+/**
+ 上下间距
+ */
+@property (nonatomic, assign) CGFloat topBottomMargin;
+/**
+ 左右间距
+ */
+@property (nonatomic, assign) CGFloat letfRigthMargin;
+/**
+ 控件之间的间距
+ */
+@property (nonatomic, assign) CGFloat commponentMargin;
+
+/**
+ 边框、分割线颜色
+ */
+@property (nonatomic, strong) UIColor *splitColor;
+/**
+ 边框宽度
+ */
+@property (nonatomic, assign) CGFloat splitWidth;
+/**
+ 圆角值
+ */
+@property (nonatomic, assign) CGFloat cornerRadius;
+
+/**
+ 弹窗的背景色（注意：这边指的是弹窗而不是遮罩层，遮罩层背景色的设置是：fwMaskViewColor）
+ */
+@property (nonatomic, strong) UIColor *backgroundColor;
+/**
+ 弹窗的最大高度，0：表示不限制
+ */
+@property (nonatomic, assign) CGFloat popupViewMaxHeight;
+
+/**
+ 弹窗箭头的样式
+ */
+@property (nonatomic, assign) FWPopupArrowStyle popupArrowStyle;
+/**
+ 弹窗箭头的尺寸
+ */
+@property (nonatomic, assign) CGSize popupArrowSize;
+/**
+ 弹窗箭头的顶点的X值相对于弹窗的宽度，默认在弹窗X轴的一半，因此设置范围：0~1
+ */
+@property (nonatomic, assign) CGFloat popupArrowVertexScaleX;
+/**
+ 弹窗圆角箭头的圆角值
+ */
+@property (nonatomic, assign) CGFloat popupArrowCornerRadius;
+/**
+ 弹窗圆角箭头与边线交汇处的圆角值
+ */
+@property (nonatomic, assign) CGFloat popupArrowBottomCornerRadius;
+
+
+// ===== 自定义弹窗（继承FWPopupView）时可能会用到 =====
+
+/**
+ 弹窗校准位置
+ */
+@property (nonatomic, assign) FWPopupAlignment popupAlignment;
+/**
+ 弹窗动画类型
+ */
+@property (nonatomic, assign) FWPopupAnimationType popupAnimationType;
+
+/**
+ 弹窗偏移量
+ */
+@property (nonatomic, assign) UIEdgeInsets popupEdgeInsets;
+/**
+ 遮罩层的背景色（也可以使用fwMaskViewColor），注意：该参数在弹窗隐藏后，还原为弹窗弹起时的值
+ */
+@property (nonatomic, strong) UIColor *maskViewColor;
+
+/**
+ 0表示NO，1表示YES，YES：用户点击外部遮罩层页面可以消失，注意：该参数在弹窗隐藏后，还原为弹窗弹起时的值
+ */
+@property (nonatomic, copy) NSString *touchWildToHide;
+
+/**
+ 显示、隐藏动画所需的时间
+ */
+@property (nonatomic, assign) NSTimeInterval animationDuration;
+
+/**
+ 3D放射动画（当且仅当：popupAnimationType == .scale3D 时有效）
+ */
+@property (nonatomic, assign) CATransform3D transform3D;
+/**
+ 2D放射动画
+ */
+@property (nonatomic, assign) CGAffineTransform transform;
 
 @end

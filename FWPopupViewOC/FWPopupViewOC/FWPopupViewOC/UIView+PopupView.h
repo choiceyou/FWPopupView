@@ -10,10 +10,11 @@
 
 @interface UIView (PopupView)
 
-@property (nonatomic, strong, readonly) UIView  *dimMaskView;
-@property (nonatomic, strong) UIColor           *dimMaskViewColor;
-@property (nonatomic, assign, readonly) BOOL    dimMaskAnimating;
-@property (nonatomic, assign) NSTimeInterval    dimMaskAnimationDuration;
+@property (nonatomic, strong, readonly) UIView      *dimMaskView;
+@property (nonatomic, strong) UIColor               *dimMaskViewColor;
+@property (nonatomic, assign, readonly) BOOL        dimMaskAnimating;
+@property (nonatomic, assign) NSTimeInterval        dimMaskAnimationDuration;
+@property (nonatomic, assign, readwrite) NSInteger  dimReferenceCount;
 
 - (void)showDimMask;
 - (void)hideDimMask;

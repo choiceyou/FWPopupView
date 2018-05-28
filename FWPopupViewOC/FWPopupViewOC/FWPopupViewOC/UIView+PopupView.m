@@ -22,6 +22,11 @@ static const void *dimMaskViewColorKey              = &dimMaskViewColorKey;
 static const void *dimMaskAnimationDurationKey      = &dimMaskAnimationDurationKey;
 static const void *dimMaskAnimatingKey              = &dimMaskAnimatingKey;
 
+/**
+ 遮罩层的默认背景色
+ */
+#define kDefaultMaskViewColor [UIColor colorWithWhite:0 alpha:0.5]
+
 #import "UIView+PopupView.h"
 #import <objc/runtime.h>
 #import "FWPopupWindow.h"
@@ -33,7 +38,12 @@ static const void *dimMaskAnimatingKey              = &dimMaskAnimatingKey;
 @dynamic dimMaskAnimating;
 
 - (NSInteger)dimReferenceCount {
-    return [objc_getAssociatedObject(self, dimReferenceCountKey) integerValue];
+    id count = objc_getAssociatedObject(self, dimReferenceCountKey);
+    if (count == nil) {
+        return 0;
+    } else {
+        return [count integerValue];
+    }
 }
 
 - (void)setDimReferenceCount:(NSInteger)dimReferenceCount
@@ -43,7 +53,12 @@ static const void *dimMaskAnimatingKey              = &dimMaskAnimatingKey;
 
 - (UIColor *)dimMaskViewColor
 {
-    return objc_getAssociatedObject(self, dimMaskViewColorKey);
+    id color = objc_getAssociatedObject(self, dimMaskViewColorKey);
+    if (color == nil) {
+        return kDefaultMaskViewColor;
+    } else {
+        return color;
+    }
 }
 
 - (void)setDimMaskViewColor:(UIColor *)dimMaskViewColor
@@ -51,30 +66,14 @@ static const void *dimMaskAnimatingKey              = &dimMaskAnimatingKey;
     objc_setAssociatedObject(self, dimMaskViewColorKey, dimMaskViewColor, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
-- (UIView *)dimMaskView
-{
-    UIView *dimView = objc_getAssociatedObject(self, dimMaskViewKey);
-    
-    if (!dimView)
-    {
-        dimView = [UIView new];
-        dimView.center = self.center;
-        [self addSubview:dimView];
-        
-        dimView.alpha = 0.0f;
-        dimView.layer.zPosition = FLT_MAX;
-        
-        self.dimMaskAnimationDuration = 0.3f;
-        
-        objc_setAssociatedObject(self, dimMaskViewKey, dimView, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-    }
-    
-    return dimView;
-}
-
 - (BOOL)dimMaskAnimating
 {
-    return [objc_getAssociatedObject(self, dimMaskAnimatingKey) boolValue];
+    id isAnimating = objc_getAssociatedObject(self, dimMaskAnimatingKey);
+    if (isAnimating == nil) {
+        return NO;
+    } else {
+        return [isAnimating boolValue];
+    }
 }
 
 - (void)setDimMaskAnimating:(BOOL)dimMaskAnimating
@@ -84,7 +83,12 @@ static const void *dimMaskAnimatingKey              = &dimMaskAnimatingKey;
 
 - (NSTimeInterval)dimMaskAnimationDuration
 {
-    return [objc_getAssociatedObject(self, dimMaskAnimationDurationKey) doubleValue];
+    id duration = objc_getAssociatedObject(self, dimMaskAnimationDurationKey);
+    if (duration == nil) {
+        return 0;
+    } else {
+        return [duration doubleValue];
+    }
 }
 
 - (void)setDimMaskAnimationDuration:(NSTimeInterval)dimMaskAnimationDuration
@@ -92,27 +96,45 @@ static const void *dimMaskAnimatingKey              = &dimMaskAnimatingKey;
     objc_setAssociatedObject(self, dimMaskAnimationDurationKey, @(dimMaskAnimationDuration), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
+- (UIView *)dimMaskView
+{
+    UIView *dimView = objc_getAssociatedObject(self, dimMaskViewKey);
+    
+    if (!dimView)
+    {
+        dimView = [[UIView alloc] initWithFrame:self.bounds];
+        [self addSubview:dimView];
+        
+        dimView.alpha = 0.0f;
+        dimView.layer.zPosition = FLT_MAX;
+    }
+    dimView.backgroundColor = self.dimMaskViewColor;
+    objc_setAssociatedObject(self, dimMaskViewKey, dimView, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    
+    return dimView;
+}
+
 - (void)showDimMask
 {
     ++self.dimReferenceCount;
-    
-    if ( self.dimReferenceCount > 1 )
+    if (self.dimReferenceCount > 1)
     {
+        --self.dimReferenceCount;
         return;
     }
     
     self.dimMaskView.hidden = NO;
     self.dimMaskAnimating = YES;
     
-    if (self == [FWPopupWindow sharedWindow].attachView )
+    if (self == [FWPopupWindow sharedWindow].attachView)
     {
         [FWPopupWindow sharedWindow].hidden = NO;
         [[FWPopupWindow sharedWindow] makeKeyAndVisible];
     }
-    else if ( [self isKindOfClass:[UIWindow class]] )
+    else if ([self isKindOfClass:[UIWindow class]])
     {
         self.hidden = NO;
-        [(UIWindow*)self makeKeyAndVisible];
+        [(UIWindow *)self makeKeyAndVisible];
     }
     else
     {
@@ -121,7 +143,7 @@ static const void *dimMaskAnimatingKey              = &dimMaskAnimatingKey;
     
     [UIView animateWithDuration:self.dimMaskAnimationDuration
                           delay:0
-                        options:UIViewAnimationOptionCurveEaseOut | UIViewAnimationOptionBeginFromCurrentState
+                        options:UIViewAnimationOptionCurveLinear | UIViewAnimationOptionBeginFromCurrentState
                      animations:^{
                          
                          self.dimMaskView.alpha = 1.0f;
@@ -138,9 +160,7 @@ static const void *dimMaskAnimatingKey              = &dimMaskAnimatingKey;
 
 - (void)hideDimMask
 {
-    --self.dimReferenceCount;
-    
-    if ( self.dimReferenceCount > 0 )
+    if (self.dimReferenceCount > 1)
     {
         return;
     }
@@ -148,7 +168,7 @@ static const void *dimMaskAnimatingKey              = &dimMaskAnimatingKey;
     self.dimMaskAnimating = YES;
     [UIView animateWithDuration:self.dimMaskAnimationDuration
                           delay:0
-                        options:UIViewAnimationOptionCurveEaseIn | UIViewAnimationOptionBeginFromCurrentState
+                        options:UIViewAnimationOptionCurveLinear | UIViewAnimationOptionBeginFromCurrentState
                      animations:^{
                          
                          self.dimMaskView.alpha = 0.0f;
@@ -170,6 +190,8 @@ static const void *dimMaskAnimatingKey              = &dimMaskAnimatingKey;
                                  [[[UIApplication sharedApplication].delegate window] makeKeyWindow];
                              }
                          }
+                         
+                         --self.dimReferenceCount;
                      }];
 }
 

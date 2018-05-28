@@ -32,6 +32,7 @@
     if (self) {
         
         self.windowLevel = UIWindowLevelStatusBar + 1;
+        self.backgroundColor = [UIColor clearColor];
         
         UITapGestureRecognizer *gesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapGestureAction:)];
         gesture.cancelsTouchesInView = NO;

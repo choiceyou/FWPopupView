@@ -10,12 +10,12 @@
 #import "UIView+PopupView.h"
 #import "FWPopupBaseView.h"
 
-#define RGB(r,g,b)      [UIColor colorWithRed:(r)/255.f \
+#define kPvRGB(r,g,b)      [UIColor colorWithRed:(r)/255.f \
 green:(g)/255.f \
 blue:(b)/255.f \
 alpha:1.f]
 
-#define RGBA(r,g,b,a)   [UIColor colorWithRed:(r)/255.f \
+#define kPvRGBA(r,g,b,a)   [UIColor colorWithRed:(r)/255.f \
 green:(g)/255.f \
 blue:(b)/255.f \
 alpha:(a)]

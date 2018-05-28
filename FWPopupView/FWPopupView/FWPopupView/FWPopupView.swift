@@ -336,49 +336,7 @@ extension FWPopupView {
                     break
                     
                 case .scale, .scale3D: // 缩放动画/3D缩放动画
-                    if strongSelf.vProperty.popupArrowVertexScaleX > 1 {
-                        strongSelf.vProperty.popupArrowVertexScaleX = 1
-                    } else if strongSelf.vProperty.popupArrowVertexScaleX < 0 {
-                        strongSelf.vProperty.popupArrowVertexScaleX = 0
-                    }
-                    
-                    // 计算anchorPoint
-                    var tmpX: CGFloat = 0
-                    var tmpY: CGFloat = 0
-                    switch strongSelf.vProperty.popupCustomAlignment {
-                    case .center:
-                        tmpX = 0.5
-                        tmpY = 0.5
-                        break
-                    case .top, .topLeft, .topCenter, .topRight:
-                        if strongSelf.vProperty.popupArrowStyle == .none {
-                            tmpX = strongSelf.vProperty.popupArrowVertexScaleX
-                        } else {
-                            let arrowVertexX = (strongSelf.frame.width - strongSelf.vProperty.popupArrowSize.width) *  strongSelf.vProperty.popupArrowVertexScaleX + strongSelf.vProperty.popupArrowSize.width / 2
-                            tmpX = arrowVertexX / strongSelf.frame.width
-                        }
-                        tmpY = 0
-                        break
-                    case .left, .leftCenter:
-                        tmpX = 0
-                        tmpY = 0.5
-                        break
-                    case .right, .rightCenter:
-                        tmpX = 1
-                        tmpY = 0.5
-                        break
-                    default:
-                        if strongSelf.vProperty.popupArrowStyle == .none {
-                            tmpX = strongSelf.vProperty.popupArrowVertexScaleX
-                        } else {
-                            let arrowVertexX = (strongSelf.frame.width - strongSelf.vProperty.popupArrowSize.width) *  strongSelf.vProperty.popupArrowVertexScaleX + strongSelf.vProperty.popupArrowSize.width / 2
-                            tmpX = arrowVertexX / strongSelf.frame.width
-                        }
-                        tmpY = 1
-                        break
-                    }
-                    
-                    strongSelf.layer.anchorPoint = CGPoint(x: tmpX, y: tmpY)
+                    strongSelf.layer.anchorPoint = strongSelf.obtainAnchorPoint()
                     strongSelf.frame = strongSelf.finalFrame
                     if strongSelf.vProperty.popupAnimationType == .scale {
                         strongSelf.transform = strongSelf.vProperty.transform
@@ -471,49 +429,7 @@ extension FWPopupView {
                     break
                     
                 case .scale, .scale3D: // 缩放动画/3D缩放动画
-                    if strongSelf.vProperty.popupArrowVertexScaleX > 1 {
-                        strongSelf.vProperty.popupArrowVertexScaleX = 1
-                    } else if strongSelf.vProperty.popupArrowVertexScaleX < 0 {
-                        strongSelf.vProperty.popupArrowVertexScaleX = 0
-                    }
-                    
-                    // 计算anchorPoint
-                    var tmpX: CGFloat = 0
-                    var tmpY: CGFloat = 0
-                    switch strongSelf.vProperty.popupCustomAlignment {
-                    case .center:
-                        tmpX = 0.5
-                        tmpY = 0.5
-                        break
-                    case .top, .topLeft, .topCenter, .topRight:
-                        if strongSelf.vProperty.popupArrowStyle == .none {
-                            tmpX = strongSelf.vProperty.popupArrowVertexScaleX
-                        } else {
-                            let arrowVertexX = (strongSelf.frame.width - strongSelf.vProperty.popupArrowSize.width) *  strongSelf.vProperty.popupArrowVertexScaleX + strongSelf.vProperty.popupArrowSize.width / 2
-                            tmpX = arrowVertexX / strongSelf.frame.width
-                        }
-                        tmpY = 0
-                        break
-                    case .left, .leftCenter:
-                        tmpX = 0
-                        tmpY = 0.5
-                        break
-                    case .right, .rightCenter:
-                        tmpX = 1
-                        tmpY = 0.5
-                        break
-                    default:
-                        if strongSelf.vProperty.popupArrowStyle == .none {
-                            tmpX = strongSelf.vProperty.popupArrowVertexScaleX
-                        } else {
-                            let arrowVertexX = (strongSelf.frame.width - strongSelf.vProperty.popupArrowSize.width) *  strongSelf.vProperty.popupArrowVertexScaleX + strongSelf.vProperty.popupArrowSize.width / 2
-                            tmpX = arrowVertexX / strongSelf.frame.width
-                        }
-                        tmpY = 1
-                        break
-                    }
-                    
-                    strongSelf.layer.anchorPoint = CGPoint(x: tmpX, y: tmpY)
+                    strongSelf.layer.anchorPoint = strongSelf.obtainAnchorPoint()
                     strongSelf.frame = finalFrame
                     strongSelf.transform = strongSelf.vProperty.transform
                     break
@@ -562,6 +478,52 @@ extension FWPopupView {
         }
         
         return popupBlock
+    }
+    
+    private func obtainAnchorPoint() -> CGPoint {
+        
+        if self.vProperty.popupArrowVertexScaleX > 1 {
+            self.vProperty.popupArrowVertexScaleX = 1
+        } else if self.vProperty.popupArrowVertexScaleX < 0 {
+            self.vProperty.popupArrowVertexScaleX = 0
+        }
+        
+        // 计算anchorPoint
+        var tmpX: CGFloat = 0
+        var tmpY: CGFloat = 0
+        switch self.vProperty.popupCustomAlignment {
+        case .center:
+            tmpX = 0.5
+            tmpY = 0.5
+            break
+        case .top, .topLeft, .topCenter, .topRight:
+            if self.vProperty.popupArrowStyle == .none {
+                tmpX = self.vProperty.popupArrowVertexScaleX
+            } else {
+                let arrowVertexX = (self.frame.width - self.vProperty.popupArrowSize.width) *  self.vProperty.popupArrowVertexScaleX + self.vProperty.popupArrowSize.width / 2
+                tmpX = arrowVertexX / self.frame.width
+            }
+            tmpY = 0
+            break
+        case .left, .leftCenter:
+            tmpX = 0
+            tmpY = 0.5
+            break
+        case .right, .rightCenter:
+            tmpX = 1
+            tmpY = 0.5
+            break
+        default:
+            if self.vProperty.popupArrowStyle == .none {
+                tmpX = self.vProperty.popupArrowVertexScaleX
+            } else {
+                let arrowVertexX = (self.frame.width - self.vProperty.popupArrowSize.width) *  self.vProperty.popupArrowVertexScaleX + self.vProperty.popupArrowSize.width / 2
+                tmpX = arrowVertexX / self.frame.width
+            }
+            tmpY = 1
+            break
+        }
+        return CGPoint(x: tmpX, y: tmpY)
     }
     
     private func setupFrame() {
