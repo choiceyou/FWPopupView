@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		493CD3D420BCE46B0044C3BB /* FWCustomDemoVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 493CD3D320BCE46B0044C3BB /* FWCustomDemoVC.m */; };
+		493CD3D720BCE4890044C3BB /* FWCustomView.m in Sources */ = {isa = PBXBuildFile; fileRef = 493CD3D520BCE4890044C3BB /* FWCustomView.m */; };
 		495D5E2D206A4695008F8545 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 495D5E2C206A4695008F8545 /* AppDelegate.m */; };
 		495D5E35206A4695008F8545 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 495D5E34206A4695008F8545 /* Assets.xcassets */; };
 		495D5E38206A4695008F8545 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 495D5E36206A4695008F8545 /* LaunchScreen.storyboard */; };
@@ -37,6 +39,10 @@
 
 /* Begin PBXFileReference section */
 		03BB08F72D0D257361AC20D3 /* Pods_FWPopupView_OC.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FWPopupView_OC.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		493CD3D220BCE46B0044C3BB /* FWCustomDemoVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FWCustomDemoVC.h; sourceTree = "<group>"; };
+		493CD3D320BCE46B0044C3BB /* FWCustomDemoVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FWCustomDemoVC.m; sourceTree = "<group>"; };
+		493CD3D520BCE4890044C3BB /* FWCustomView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FWCustomView.m; sourceTree = "<group>"; };
+		493CD3D620BCE4890044C3BB /* FWCustomView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FWCustomView.h; sourceTree = "<group>"; };
 		495D5E28206A4695008F8545 /* FWPopupView_OC.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FWPopupView_OC.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		495D5E2B206A4695008F8545 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		495D5E2C206A4695008F8545 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -117,6 +123,10 @@
 				495D5E2C206A4695008F8545 /* AppDelegate.m */,
 				495D5E6F206A46E9008F8545 /* FWDemoViewController.h */,
 				495D5E70206A46E9008F8545 /* FWDemoViewController.m */,
+				493CD3D220BCE46B0044C3BB /* FWCustomDemoVC.h */,
+				493CD3D320BCE46B0044C3BB /* FWCustomDemoVC.m */,
+				493CD3D620BCE4890044C3BB /* FWCustomView.h */,
+				493CD3D520BCE4890044C3BB /* FWCustomView.m */,
 				495D5E34206A4695008F8545 /* Assets.xcassets */,
 				495D5E36206A4695008F8545 /* LaunchScreen.storyboard */,
 				495D5E39206A4695008F8545 /* Info.plist */,
@@ -319,10 +329,12 @@
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-FWPopupView_OC/Pods-FWPopupView_OC-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/FWPopupView/FWPopupView.framework",
+				"${BUILT_PRODUCTS_DIR}/FWPopupViewOC/FWPopupViewOC.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FWPopupView.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FWPopupViewOC.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -337,8 +349,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				495D5E3B206A4695008F8545 /* main.m in Sources */,
+				493CD3D420BCE46B0044C3BB /* FWCustomDemoVC.m in Sources */,
 				495D5E71206A46E9008F8545 /* FWDemoViewController.m in Sources */,
 				495D5E2D206A4695008F8545 /* AppDelegate.m in Sources */,
+				493CD3D720BCE4890044C3BB /* FWCustomView.m in Sources */,
 				495D5E5F206A46C8008F8545 /* Test.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
