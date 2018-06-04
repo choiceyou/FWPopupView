@@ -35,7 +35,7 @@ pod 'FWPopupView'
 • v3.0.0（大版本） :
   1.弹窗基类重构：设置视图展示位置+偏移量来设置弹窗真正需要展示的位置；有多重可选动画类型。
   2.由于OC类不能继承Swift类，所以弹窗基类实现了两种语言。swift版本：FWPopupView；OC版本：FWPopupBaseView；
-  3.FWAlertView/FWSheetView/FWDateView使用底层提供动画类型；
+  3.FWAlertView/FWSheetView/FWDateView使用基类提供动画类型；
   4.新增FWMenuView，可实现类似QQ/微信首页右上角菜单；
   5.其他细节修改；
 ```
