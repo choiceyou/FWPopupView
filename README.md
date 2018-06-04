@@ -31,6 +31,12 @@ pod 'FWPopupView'
   
 • v2.0.7 :
   1.支持单独设置某个按钮的文字、背景颜色；
+  
+• v3.0.0（大版本） :
+  1.弹窗底层重构：设置视图展示位置+偏移量来设置弹窗真正需要展示的位置；有多重可选动画类型。swift版本：FWPopupView；OC版本：FWPopupBaseView([OC版本链接](https://github.com/choiceyou/FWPopupViewOC))；
+  2.FWAlertView/FWSheetView/FWDateView使用底层提供动画类型；
+  3.新增FWMenuView，可实现类似QQ/微信首页右上角菜单；
+  4.其他细节修改；
 ```
 
 
