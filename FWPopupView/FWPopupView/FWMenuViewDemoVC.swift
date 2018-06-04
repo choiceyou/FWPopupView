@@ -19,12 +19,13 @@ class FWMenuViewDemoVC: UIViewController {
     /// 注意：这边不同的示例可能还附加演示了一些特性（比如：遮罩层是否能够点击、遮罩层的背景颜色等等），有用到时可以参考
     var titleArray = ["头部弹窗 - 位移动画", "Alert - 两个按钮", "Alert - 两个按钮（修改参数）", "Alert - 多个按钮", "Alert - 带输入框", "Alert - 带自定义视图", "Sheet - 少量Item", "Sheet - 大量Item", "Date - 自定义日期选择", "Menu - 自定义菜单", "Custom - 自定义弹窗"]
     
-    let titles = ["发起多人聊天", "加好友", "扫一扫", "面对面快传", "付款"]
+    let titles = ["创建群聊", "加好友/群", "扫一扫", "面对面快传", "付款", "拍摄"]
     let images = [UIImage(named: "right_menu_multichat"),
                   UIImage(named: "right_menu_addFri"),
                   UIImage(named: "right_menu_QR"),
                   UIImage(named: "right_menu_facetoface"),
-                  UIImage(named: "right_menu_payMoney")]
+                  UIImage(named: "right_menu_payMoney"),
+                  UIImage(named: "right_menu_sendvideo")]
     
     lazy var menuView1: FWMenuView = {
         
