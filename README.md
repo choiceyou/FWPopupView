@@ -116,14 +116,20 @@ FWSheetView *sheetView = [FWSheetView sheetWithTitle: @"标题"
 
 
 ## 效果：
-![](https://github.com/choiceyou/FWPopupView/blob/master/%E6%95%88%E6%9E%9C/IMG_0598.PNG)
-![](https://github.com/choiceyou/FWPopupView/blob/master/%E6%95%88%E6%9E%9C/IMG_0599.PNG)
+![](https://github.com/choiceyou/FWPopupView/blob/master/%E6%95%88%E6%9E%9C/IMG_0714.PNG)
+![](https://github.com/choiceyou/FWPopupView/blob/master/%E6%95%88%E6%9E%9C/IMG_0715.PNG)
 
-![](https://github.com/choiceyou/FWPopupView/blob/master/%E6%95%88%E6%9E%9C/IMG_0600.PNG)
-![](https://github.com/choiceyou/FWPopupView/blob/master/%E6%95%88%E6%9E%9C/IMG_0601.PNG)
+![](https://github.com/choiceyou/FWPopupView/blob/master/%E6%95%88%E6%9E%9C/IMG_0716.PNG)
+![](https://github.com/choiceyou/FWPopupView/blob/master/%E6%95%88%E6%9E%9C/IMG_0717.PNG)
 
-![](https://github.com/choiceyou/FWPopupView/blob/master/%E6%95%88%E6%9E%9C/IMG_0603.PNG)
-![](https://github.com/choiceyou/FWPopupView/blob/master/%E6%95%88%E6%9E%9C/IMG_0604.PNG)
+![](https://github.com/choiceyou/FWPopupView/blob/master/%E6%95%88%E6%9E%9C/IMG_0718.PNG)
+![](https://github.com/choiceyou/FWPopupView/blob/master/%E6%95%88%E6%9E%9C/IMG_0719.PNG)
+
+![](https://github.com/choiceyou/FWPopupView/blob/master/%E6%95%88%E6%9E%9C/IMG_0720.PNG)
+![](https://github.com/choiceyou/FWPopupView/blob/master/%E6%95%88%E6%9E%9C/IMG_0721.PNG)
+
+![](https://github.com/choiceyou/FWPopupView/blob/master/%E6%95%88%E6%9E%9C/Custom.gif)
+![](https://github.com/choiceyou/FWPopupView/blob/master/%E6%95%88%E6%9E%9C/Menu.gif)
 
 
 
