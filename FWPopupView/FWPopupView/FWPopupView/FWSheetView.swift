@@ -78,9 +78,9 @@ extension FWSheetView {
             self.vProperty = property!
         }
         
-        let itemClickedBlock: FWPopupItemClickedBlock = { (popupView, index) in
+        let itemClickedBlock: FWPopupItemClickedBlock = { (popupView, index, title) in
             if itemBlock != nil {
-                itemBlock!(self, index)
+                itemBlock!(self, index, title)
             }
         }
         for title in itemTitles {
@@ -101,9 +101,12 @@ extension FWSheetView {
         property.popupCustomAlignment = .bottomCenter
         property.popupAnimationType = .position
         
-        var currentMaxY:CGFloat = self.vProperty.topBottomMargin
+        var currentMaxY:CGFloat = 0
         
         if title != nil && !title!.isEmpty {
+            
+            currentMaxY = self.vProperty.topBottomMargin
+            
             self.titleLabel = UILabel(frame: CGRect(x: self.vProperty.letfRigthMargin, y: currentMaxY, width: self.frame.width - self.vProperty.letfRigthMargin * 2, height: CGFloat.greatestFiniteMagnitude))
             self.addSubview(self.titleLabel!)
             self.titleLabel?.text = title
@@ -120,9 +123,9 @@ extension FWSheetView {
             currentMaxY = self.titleLabel!.frame.maxY
             
             self.commponenetArray.append(self.titleLabel!)
+            
+            currentMaxY += self.vProperty.topBottomMargin
         }
-        
-        currentMaxY += self.vProperty.topBottomMargin
         
         // 开始配置Item
         let btnContrainerView = UIScrollView(frame: CGRect(x: 0, y: currentMaxY, width: self.frame.width, height: self.vProperty.buttonHeight))
@@ -132,7 +135,7 @@ extension FWSheetView {
         
         currentMaxY = btnContrainerView.frame.maxY
         
-        let block: FWPopupItemClickedBlock = { (popupView, index) in
+        let block: FWPopupItemClickedBlock = { (popupView, index, title) in
             if cancenlBlock != nil {
                 cancenlBlock!()
             }
@@ -222,7 +225,7 @@ extension FWSheetView {
         }
         
         if item.itemClickedBlock != nil {
-            item.itemClickedBlock!(self, btn.tag)
+            item.itemClickedBlock!(self, btn.tag, item.title)
         }
     }
 }

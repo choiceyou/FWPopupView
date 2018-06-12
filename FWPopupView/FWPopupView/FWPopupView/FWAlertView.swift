@@ -337,7 +337,7 @@ extension FWAlertView {
             self.inputBlock!(self.inputTF!.text!)
         } else {
             if item.itemClickedBlock != nil {
-                item.itemClickedBlock!(self, btn.tag)
+                item.itemClickedBlock!(self, btn.tag, item.title)
             }
         }
     }

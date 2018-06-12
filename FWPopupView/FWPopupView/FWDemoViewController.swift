@@ -17,7 +17,7 @@ class FWDemoViewController: UITableViewController {
     /// 注意：这边不同的示例可能还附加演示了一些特性（比如：遮罩层是否能够点击、遮罩层的背景颜色等等），有用到时可以参考
     var titleArray = ["Alert - 单个按钮", "Alert - 两个按钮", "Alert - 两个按钮（修改参数）", "Alert - 多个按钮", "Alert - 带输入框", "Alert - 带自定义视图", "Sheet - 少量Item", "Sheet - 大量Item", "Date - 自定义日期选择", "Menu - 自定义菜单", "Custom - 自定义弹窗"]
     
-    let block: FWPopupItemClickedBlock = { (popupView, index) in
+    let block: FWPopupItemClickedBlock = { (popupView, index, title) in
         print("AlertView：点击了第\(index)个按钮")
     }
     
@@ -59,15 +59,15 @@ extension FWDemoViewController {
         
         switch indexPath.row {
         case 0:
-            let alertView = FWAlertView.alert(title: "标题", detail: "描述描述描述描述") { (popupView, index) in
+            let alertView = FWAlertView.alert(title: "标题", detail: "描述描述描述描述") { (popupView, index, title) in
                 print("点击了确定")
             }
             alertView.show()
             break
         case 1:
-            let alertView = FWAlertView.alert(title: "标题", detail: "描述描述描述描述描述描述描述描述描述描述", confirmBlock: { (popupView, index) in
+            let alertView = FWAlertView.alert(title: "标题", detail: "描述描述描述描述描述描述描述描述描述描述", confirmBlock: { (popupView, index, title) in
                 print("点击了确定")
-            }, cancelBlock: { (popupView, index) in
+            }, cancelBlock: { (popupView, index, title) in
                 print("点击了取消")
             })
             // 设置AlertView外部背景色
@@ -91,7 +91,7 @@ extension FWDemoViewController {
             vProperty.detailFontSize = 14.0
             vProperty.detailColor = kPV_RGBA(r: 141, g: 151, b: 163, a: 1.0)
             vProperty.buttonFontSize = 14.0
-            vProperty.maskViewColor = UIColor(white: 0, alpha: 0.8)
+            vProperty.maskViewColor = UIColor(white: 0, alpha: 0.5)
             vProperty.touchWildToHide = "1"
             // 还有很多参数可设置...
             
@@ -117,7 +117,7 @@ extension FWDemoViewController {
         case 5:
             if self.alertImage == nil {
                 
-                let block2: FWPopupItemClickedBlock = { [weak self] (popupView, index) in
+                let block2: FWPopupItemClickedBlock = { [weak self] (popupView, index, title) in
                     
                     if index == 1 {
                         // 这边演示了如何手动去调用隐藏
@@ -145,7 +145,7 @@ extension FWDemoViewController {
             let vProperty = FWSheetViewProperty()
             vProperty.touchWildToHide = "1"
             
-            let sheetView = FWSheetView.sheet(title: "标题", itemTitles: items, itemBlock: { (popupView, index) in
+            let sheetView = FWSheetView.sheet(title: nil, itemTitles: items, itemBlock: { (popupView, index, title) in
                 print("Sheet：点击了第\(index)个按钮")
             }, cancenlBlock: {
                 print("点击了取消")
@@ -155,8 +155,8 @@ extension FWDemoViewController {
         case 7:
             let items = ["Sheet0", "Sheet1", "Sheet2", "Sheet3", "Sheet4", "Sheet5", "Sheet6", "Sheet7", "Sheet8", "Sheet9", "Sheet10", "Sheet11", "Sheet12", "Sheet13", "Sheet14"]
             
-            let sheetView = FWSheetView.sheet(title: "标题", itemTitles: items, itemBlock: { (popupView, index) in
-                print("Sheet：点击了第\(index)个按钮")
+            let sheetView = FWSheetView.sheet(title: "标题", itemTitles: items, itemBlock: { (popupView, index, title) in
+                print("Sheet：点击了第\(index)个按钮，名称为：\(String(describing: title))")
             }, cancenlBlock: {
                 print("点击了取消")
             })

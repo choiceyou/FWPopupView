@@ -134,6 +134,8 @@ open class FWPopupView: UIView, UIGestureRecognizerDelegate {
     internal var originTouchWildToHide: Bool!
     /// 遮罩层为UIScrollView或其子类时，记录是否可以滚动
     internal var originScrollEnabled: Bool?
+    /// 记录弹窗弹起前keywindow
+    internal var originKeyWindow: UIWindow?
     
     /// 当前frame值是否被设置过了
     private var haveSetFrame: Bool = false
@@ -195,6 +197,7 @@ extension FWPopupView {
         if self.attachedView != nil && self.vProperty.maskViewColor != nil {
             self.attachedView?.fwMaskViewColor = self.vProperty.maskViewColor!
         }
+        self.originKeyWindow = UIApplication.shared.keyWindow;
         if self.vProperty.touchWildToHide != nil && !self.vProperty.touchWildToHide!.isEmpty {
             FWPopupWindow.sharedInstance.touchWildToHide = (Int(self.vProperty.touchWildToHide!) == 1) ? true : false
         }
@@ -272,6 +275,9 @@ extension FWPopupView {
         FWPopupWindow.sharedInstance.touchWildToHide = self.originTouchWildToHide
         if self.attachedView!.isKind(of: UIScrollView.self) && self.originScrollEnabled != nil {
             (self.attachedView! as! UIScrollView).isScrollEnabled = self.originScrollEnabled!
+        }
+        if self.originKeyWindow != nil {
+            self.originKeyWindow!.becomeKey()
         }
     }
     

@@ -30,7 +30,7 @@ import UIKit
 }
 
 /// 点击Item回调
-public typealias FWPopupItemClickedBlock = (_ popupView: FWPopupView, _ index: Int) -> Void
+public typealias FWPopupItemClickedBlock = (_ popupView: FWPopupView, _ index: Int, _ title: String?) -> Void
 
 open class FWPopupItem: NSObject {
     

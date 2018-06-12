@@ -37,7 +37,7 @@ class FWMenuViewDemoVC: UIViewController {
         vProperty.topBottomMargin = 0
         vProperty.maskViewColor = UIColor(white: 0, alpha: 0.3)
         
-        let menuView = FWMenuView.menu(itemTitles: titles, itemImageNames: images as? [UIImage], itemBlock: { (popupView, index) in
+        let menuView = FWMenuView.menu(itemTitles: titles, itemImageNames: images as? [UIImage], itemBlock: { (popupView, index, title) in
             print("Menu：点击了第\(index)个按钮")
         }, property: vProperty)
         menuView.attachedView = self.view
@@ -58,7 +58,7 @@ class FWMenuViewDemoVC: UIViewController {
         vProperty.popupArrowStyle = .round
         vProperty.popupArrowVertexScaleX = 1
         
-        let menuView = FWMenuView.menu(itemTitles: titles, itemImageNames: images as? [UIImage], itemBlock: { (popupView, index) in
+        let menuView = FWMenuView.menu(itemTitles: titles, itemImageNames: images as? [UIImage], itemBlock: { (popupView, index, title) in
             print("Menu：点击了第\(index)个按钮")
         }, property: vProperty)
         //                menuView.attachedView = self.view
@@ -144,7 +144,7 @@ extension FWMenuViewDemoVC {
             self.vProperty.popupArrowVertexScaleX = 0.5
             self.vProperty.cornerRadius = 5
             
-            let menuView = FWMenuView.menu(itemTitles: titles, itemImageNames: nil, itemBlock: { (popupView, index) in
+            let menuView = FWMenuView.menu(itemTitles: titles, itemImageNames: nil, itemBlock: { (popupView, index, title) in
                 print("Menu：点击了第\(index)个按钮")
             }, property: self.vProperty)
             menuView.show()
@@ -163,7 +163,7 @@ extension FWMenuViewDemoVC {
             self.vProperty.cornerRadius = 0
             
             let titles = ["Menu0", "Menu1", "Menu2", "Menu3", "Menu4", "Menu5", "Menu6", "Menu7", "Menu8", "Menu9", "Menu10", "Menu11", "Menu12", "Menu13", "Menu14", "Menu15", "Menu16"]
-            let menuView = FWMenuView.menu(itemTitles: titles, itemImageNames: nil, itemBlock: { (popupView, index) in
+            let menuView = FWMenuView.menu(itemTitles: titles, itemImageNames: nil, itemBlock: { (popupView, index, title) in
                 print("Menu：点击了第\(index)个按钮")
             }, property: self.vProperty)
             menuView.show()
@@ -181,7 +181,7 @@ extension FWMenuViewDemoVC {
             self.vProperty.popupArrowVertexScaleX = 0.8
             self.vProperty.cornerRadius = 5
             
-            let menuView = FWMenuView.menu(itemTitles: titles, itemImageNames: images as? [UIImage], itemBlock: { (popupView, index) in
+            let menuView = FWMenuView.menu(itemTitles: titles, itemImageNames: images as? [UIImage], itemBlock: { (popupView, index, title) in
                 print("Menu：点击了第\(index)个按钮")
             }, property: self.vProperty)
             menuView.show()
