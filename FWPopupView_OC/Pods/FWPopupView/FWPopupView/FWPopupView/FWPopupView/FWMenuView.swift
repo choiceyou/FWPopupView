@@ -320,7 +320,7 @@ extension FWMenuView {
         self.hide()
         
         if self.popupItemClickedBlock != nil {
-            self.popupItemClickedBlock!(self, indexPath.row)
+            self.popupItemClickedBlock!(self, indexPath.row, (self.itemTitleArray != nil) ? self.itemTitleArray![indexPath.row] : nil)
         }
     }
 }

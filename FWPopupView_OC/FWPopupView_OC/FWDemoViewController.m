@@ -63,7 +63,7 @@ alpha:1.f]
     switch (indexPath.row) {
         case 0:
         {
-            FWAlertView *alertView = [FWAlertView alertWithTitle:@"标题" detail:@"描述描述描述描述" confirmBlock:^(FWPopupView *popupView, NSInteger index) {
+            FWAlertView *alertView = [FWAlertView alertWithTitle:@"标题" detail:@"描述描述描述描述" confirmBlock:^(FWPopupView *popupView, NSInteger index, NSString *title) {
                 
             }];
             [alertView show];
@@ -71,9 +71,9 @@ alpha:1.f]
             break;
         case 1:
         {
-            FWAlertView *alertView = [FWAlertView alertWithTitle:@"标题" detail:@"描述描述描述描述描述描述描述描述描述描述" confirmBlock:^(FWPopupView *popupView, NSInteger index) {
+            FWAlertView *alertView = [FWAlertView alertWithTitle:@"标题" detail:@"描述描述描述描述描述描述描述描述描述描述" confirmBlock:^(FWPopupView *popupView, NSInteger index, NSString *title) {
                 NSLog(@"点击了确定");
-            } cancelBlock:^(FWPopupView *popupView, NSInteger index) {
+            } cancelBlock:^(FWPopupView *popupView, NSInteger index, NSString *title) {
                 NSLog(@"点击了确定");
             }];
             
@@ -84,7 +84,7 @@ alpha:1.f]
             break;
         case 2:
         {
-            id block = ^(FWPopupView *popupView, NSInteger index){
+            id block = ^(FWPopupView *popupView, NSInteger index, NSString *title){
                 NSLog(@"AlertView：点击了第 %ld 个按钮", (long)index);
             };
             
@@ -106,7 +106,7 @@ alpha:1.f]
             break;
         case 3:
         {
-            id block = ^(FWPopupView *popupView, NSInteger index){
+            id block = ^(FWPopupView *popupView, NSInteger index, NSString *title){
                 NSLog(@"AlertView：点击了第 %ld 个按钮", (long)index);
             };
             
@@ -120,7 +120,7 @@ alpha:1.f]
             break;
         case 4:
         {
-            id block = ^(FWPopupView *popupView, NSInteger index){
+            id block = ^(FWPopupView *popupView, NSInteger index, NSString *title){
                 NSLog(@"AlertView：点击了第 %ld 个按钮", (long)index);
             };
             NSArray *items = @[[[FWPopupItem alloc] initWithTitle:@"取消" itemType:FWItemTypeNormal isCancel:YES canAutoHide:YES itemClickedBlock:block],
@@ -133,7 +133,7 @@ alpha:1.f]
         case 5:
         {
             __weak typeof(self) weakSelf = self;
-            id block = ^(FWPopupView *popupView, NSInteger index){
+            id block = ^(FWPopupView *popupView, NSInteger index, NSString *title){
                 if (index == 1)
                 {
                     // 这边演示了如何手动去调用隐藏
@@ -154,11 +154,12 @@ alpha:1.f]
         {
             NSArray *items = @[@"Sheet0", @"Sheet1", @"Sheet2", @"Sheet3"];
             
-            FWSheetView *sheetView = [FWSheetView sheetWithTitle:@"标题" itemTitles:items itemBlock:^(FWPopupView *popupView, NSInteger index) {
+            FWSheetView *sheetView = [FWSheetView sheetWithTitle:nil itemTitles:items itemBlock:^(FWPopupView *popupView, NSInteger index, NSString *title) {
                 NSLog(@"Sheet：点击了第 %ld 个按钮", (long)index);
             } cancenlBlock:^{
                 NSLog(@"点击了取消");
             }];
+            sheetView.vProperty.touchWildToHide = @"1";
             [sheetView show];
         }
             break;
@@ -166,7 +167,7 @@ alpha:1.f]
         {
             NSArray *items = @[@"Sheet0", @"Sheet1", @"Sheet2", @"Sheet4", @"Sheet5", @"Sheet6", @"Sheet7", @"Sheet8", @"Sheet9", @"Sheet10", @"Sheet11", @"Sheet12", @"Sheet13", @"Sheet14"];
             
-            FWSheetView *sheetView = [FWSheetView sheetWithTitle:@"标题" itemTitles:items itemBlock:^(FWPopupView *popupView, NSInteger index) {
+            FWSheetView *sheetView = [FWSheetView sheetWithTitle:@"标题" itemTitles:items itemBlock:^(FWPopupView *popupView, NSInteger index, NSString *title) {
                 NSLog(@"Sheet：点击了第 %ld 个按钮", (long)index);
             } cancenlBlock:^{
                 NSLog(@"点击了取消");

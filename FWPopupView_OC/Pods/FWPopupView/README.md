@@ -1,4 +1,4 @@
-# IOS之弹窗 -- OC/Swift4.0
+# IOS之弹窗 -- Swift4.x/[OC版本](https://github.com/choiceyou/FWPopupViewOC)（注意：OC版本目前只实现了弹窗基类）
 
 [![Platform](http://img.shields.io/badge/platform-iOS-blue.svg?style=flat)](http://cocoapods.org/?q=FWPopupView)&nbsp;
 ![Language](https://img.shields.io/badge/language-swift-orange.svg?style=flat)&nbsp;
@@ -11,26 +11,6 @@
 ```cocoaPods
 pod 'FWPopupView'
 注意：如出现 [!] Unable to find a specification for 'FWPopupView' 错误，可执行 pod repo update 命令。
-```
-
-
-
-## 更新记录：
-
-```更新记录
-• v2.0.4 ：
-  1.灰色背景默认值由原来的 alpha=0.6 改为 alpha=0.5；
-  2.在原类初始化方法中添加输入框键盘类型参数：UIKeyboardType（鉴于方法可能跟着版本改动，所以建议封装使用）；
-  
-• v2.0.5 :
-  1.修复弹窗隐藏时未设置原window为keywindow的问题；
-  
-• v2.0.6 :
-  1.原FWPopupItemHandler改为FWPopupItemClickedBlock，增加反馈当前弹窗参数；
-  2.FWItemType加入参数canAutoHide：点击该按钮后会自动隐藏弹窗。这样子做能够适应更多的弹窗场景；
-  
-• v2.0.7 :
-  1.支持单独设置某个按钮的文字、背景颜色；
 ```
 
 
@@ -109,14 +89,51 @@ FWSheetView *sheetView = [FWSheetView sheetWithTitle: @"标题"
 
 
 ## 效果：
-![](https://github.com/choiceyou/FWPopupView/blob/master/%E6%95%88%E6%9E%9C/IMG_0598.PNG)
-![](https://github.com/choiceyou/FWPopupView/blob/master/%E6%95%88%E6%9E%9C/IMG_0599.PNG)
+![](https://github.com/choiceyou/FWPopupView/blob/master/%E6%95%88%E6%9E%9C/IMG_0714.PNG)
+![](https://github.com/choiceyou/FWPopupView/blob/master/%E6%95%88%E6%9E%9C/IMG_0715.PNG)
 
-![](https://github.com/choiceyou/FWPopupView/blob/master/%E6%95%88%E6%9E%9C/IMG_0600.PNG)
-![](https://github.com/choiceyou/FWPopupView/blob/master/%E6%95%88%E6%9E%9C/IMG_0601.PNG)
+![](https://github.com/choiceyou/FWPopupView/blob/master/%E6%95%88%E6%9E%9C/IMG_0716.PNG)
+![](https://github.com/choiceyou/FWPopupView/blob/master/%E6%95%88%E6%9E%9C/IMG_0717.PNG)
 
-![](https://github.com/choiceyou/FWPopupView/blob/master/%E6%95%88%E6%9E%9C/IMG_0603.PNG)
-![](https://github.com/choiceyou/FWPopupView/blob/master/%E6%95%88%E6%9E%9C/IMG_0604.PNG)
+![](https://github.com/choiceyou/FWPopupView/blob/master/%E6%95%88%E6%9E%9C/IMG_0718.PNG)
+![](https://github.com/choiceyou/FWPopupView/blob/master/%E6%95%88%E6%9E%9C/IMG_0719.PNG)
+
+![](https://github.com/choiceyou/FWPopupView/blob/master/%E6%95%88%E6%9E%9C/IMG_0720.PNG)
+![](https://github.com/choiceyou/FWPopupView/blob/master/%E6%95%88%E6%9E%9C/IMG_0721.PNG)
+
+![](https://github.com/choiceyou/FWPopupView/blob/master/%E6%95%88%E6%9E%9C/Custom.gif)
+![](https://github.com/choiceyou/FWPopupView/blob/master/%E6%95%88%E6%9E%9C/Menu.gif)
+
+
+
+## 更新记录：
+
+```更新记录
+• v2.0.4 ：
+  1.灰色背景默认值由原来的 alpha=0.6 改为 alpha=0.5；
+  2.在原类初始化方法中添加输入框键盘类型参数：UIKeyboardType（鉴于方法可能跟着版本改动，所以建议封装使用）；
+  
+• v2.0.5 :
+  1.修复弹窗隐藏时未设置原window为keywindow的问题；
+  
+• v2.0.6 :
+  1.原FWPopupItemHandler改为FWPopupItemClickedBlock，增加反馈当前弹窗参数；
+  2.FWItemType加入参数canAutoHide：点击该按钮后会自动隐藏弹窗。这样子做能够适应更多的弹窗场景；
+  
+• v2.0.7 :
+  1.支持单独设置某个按钮的文字、背景颜色；
+  
+• v3.0.0（大版本） :
+  1.弹窗基类重构：设置视图展示位置+偏移量来设置弹窗真正需要展示的位置；有多重可选动画类型。
+  2.由于OC类不能继承Swift类，所以弹窗基类实现了两种语言。swift版本：FWPopupView；OC版本：FWPopupBaseView；
+  3.FWAlertView/FWSheetView/FWDateView使用基类提供动画类型；
+  4.新增FWMenuView，可实现类似QQ/微信首页右上角菜单；
+  5.其他细节修改；
+  
+• v3.0.1 :
+  1.FWPopupItemClickedBlock回调增加标题参数（注：由于不想维护多个回调，这边没有考虑兼容旧版回调，所以建议封装使用）；
+  2.修复FWSheetView未设置标题时有多余间距的问题；
+```
 
 
 

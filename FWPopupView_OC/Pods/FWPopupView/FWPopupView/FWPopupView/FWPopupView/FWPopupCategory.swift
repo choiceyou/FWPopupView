@@ -153,10 +153,8 @@ extension UIView {
                 
                 if self == FWPopupWindow.sharedInstance.attachView() {
                     FWPopupWindow.sharedInstance.isHidden = true
-                    UIApplication.shared.delegate!.window??.makeKey()
                 } else if self.isKind(of: UIWindow.self) {
                     self.isHidden = true
-                    UIApplication.shared.delegate!.window??.makeKey()
                 }
             }
             
