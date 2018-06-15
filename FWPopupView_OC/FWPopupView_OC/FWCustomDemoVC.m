@@ -20,6 +20,8 @@
 {
     [super viewDidLoad];
     
+    self.navigationItem.title = @"信手拈来的弹窗";
+    
     self.titleArray = @[@"center - scale", @"topCenter - position", @"topCenter - frame", @"topCenter - scale", @"leftCenter - position", @"leftCenter - frame", @"leftCenter - scale", @"bottomCenter - position", @"bottomCenter - frame", @"bottomCenter - scale", @"rightCenter - position", @"rightCenter - frame", @"rightCenter - scale"];
     
     [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"cellId"];

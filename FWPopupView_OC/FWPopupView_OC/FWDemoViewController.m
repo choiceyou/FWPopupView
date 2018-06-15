@@ -9,6 +9,7 @@
 #import "FWDemoViewController.h"
 #import <FWPopupView/FWPopupView-Swift.h>
 #import "FWCustomDemoVC.h"
+#import "FWMenuViewDemoVC.h"
 
 #define kRGB(r,g,b)          [UIColor colorWithRed:(r)/255.f \
 green:(g)/255.f \
@@ -30,7 +31,7 @@ alpha:1.f]
     
     self.navigationItem.title = @"FWPopupView";
     
-    self.titleArray = @[@"Alert - 单个按钮", @"Alert - 两个按钮", @"Alert - 两个按钮（修改参数）", @"Alert - 多个按钮", @"Alert - 带输入框", @"Alert - 带自定义视图", @"Sheet - 少量Item", @"Sheet - 大量Item", @"Date - 自定义日期选择", @"Custom - 自定义弹窗"];
+    self.titleArray = @[@"Alert - 单个按钮", @"Alert - 两个按钮", @"Alert - 两个按钮（修改参数）", @"Alert - 多个按钮", @"Alert - 带输入框", @"Alert - 带自定义视图", @"Sheet - 少量Item", @"Sheet - 大量Item", @"Date - 自定义日期选择", @"Menu - 自定义菜单", @"Custom - 自定义弹窗"];
     
     [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"cellId"];
     self.tableView.estimatedRowHeight = 44.0;
@@ -50,7 +51,7 @@ alpha:1.f]
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cellId"];
     cell.textLabel.text = self.titleArray[indexPath.row];
     cell.textLabel.numberOfLines = 0;
-    if (indexPath.row == 9) {
+    if (indexPath.row == 9 || indexPath.row == 10) {
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     } else {
         cell.accessoryType = UITableViewCellAccessoryNone;
@@ -186,6 +187,11 @@ alpha:1.f]
         }
             break;
         case 9:
+        {
+            [self.navigationController pushViewController:[[FWMenuViewDemoVC alloc] init] animated:YES];
+        }
+            break;
+        case 10:
         {
             [self.navigationController pushViewController:[[FWCustomDemoVC alloc] init] animated:YES];
         }

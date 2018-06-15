@@ -17,6 +17,8 @@
 		495D5E50206A4695008F8545 /* FWPopupView_OCUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 495D5E4F206A4695008F8545 /* FWPopupView_OCUITests.m */; };
 		495D5E5F206A46C8008F8545 /* Test.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495D5E5E206A46C8008F8545 /* Test.swift */; };
 		495D5E71206A46E9008F8545 /* FWDemoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 495D5E70206A46E9008F8545 /* FWDemoViewController.m */; };
+		49B9255220D2964200954C3D /* FWMenuViewDemoVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 49B9255120D2964200954C3D /* FWMenuViewDemoVC.m */; };
+		49B9255520D2978D00954C3D /* FWNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 49B9255420D2978D00954C3D /* FWNavigationController.m */; };
 		DC65B6AD01B25393FC8E6323 /* Pods_FWPopupView_OC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03BB08F72D0D257361AC20D3 /* Pods_FWPopupView_OC.framework */; };
 /* End PBXBuildFile section */
 
@@ -60,6 +62,10 @@
 		495D5E5E206A46C8008F8545 /* Test.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Test.swift; sourceTree = "<group>"; };
 		495D5E6F206A46E9008F8545 /* FWDemoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FWDemoViewController.h; sourceTree = "<group>"; };
 		495D5E70206A46E9008F8545 /* FWDemoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FWDemoViewController.m; sourceTree = "<group>"; };
+		49B9255020D2964200954C3D /* FWMenuViewDemoVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FWMenuViewDemoVC.h; sourceTree = "<group>"; };
+		49B9255120D2964200954C3D /* FWMenuViewDemoVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FWMenuViewDemoVC.m; sourceTree = "<group>"; };
+		49B9255320D2978C00954C3D /* FWNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FWNavigationController.h; sourceTree = "<group>"; };
+		49B9255420D2978D00954C3D /* FWNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FWNavigationController.m; sourceTree = "<group>"; };
 		604AAD4F1FB3DE7AEBDA14F8 /* Pods-FWPopupView_OC.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FWPopupView_OC.debug.xcconfig"; path = "Pods/Target Support Files/Pods-FWPopupView_OC/Pods-FWPopupView_OC.debug.xcconfig"; sourceTree = "<group>"; };
 		61F5B1CCAF3BD049ACBFADE2 /* Pods_FWPopupView_OCUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FWPopupView_OCUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6CCD887969761536C01A0E2B /* Pods-FWPopupView_OC.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FWPopupView_OC.release.xcconfig"; path = "Pods/Target Support Files/Pods-FWPopupView_OC/Pods-FWPopupView_OC.release.xcconfig"; sourceTree = "<group>"; };
@@ -119,12 +125,16 @@
 		495D5E2A206A4695008F8545 /* FWPopupView_OC */ = {
 			isa = PBXGroup;
 			children = (
+				49B9255320D2978C00954C3D /* FWNavigationController.h */,
+				49B9255420D2978D00954C3D /* FWNavigationController.m */,
 				495D5E2B206A4695008F8545 /* AppDelegate.h */,
 				495D5E2C206A4695008F8545 /* AppDelegate.m */,
 				495D5E6F206A46E9008F8545 /* FWDemoViewController.h */,
 				495D5E70206A46E9008F8545 /* FWDemoViewController.m */,
 				493CD3D220BCE46B0044C3BB /* FWCustomDemoVC.h */,
 				493CD3D320BCE46B0044C3BB /* FWCustomDemoVC.m */,
+				49B9255020D2964200954C3D /* FWMenuViewDemoVC.h */,
+				49B9255120D2964200954C3D /* FWMenuViewDemoVC.m */,
 				493CD3D620BCE4890044C3BB /* FWCustomView.h */,
 				493CD3D520BCE4890044C3BB /* FWCustomView.m */,
 				495D5E34206A4695008F8545 /* Assets.xcassets */,
@@ -350,7 +360,9 @@
 			files = (
 				495D5E3B206A4695008F8545 /* main.m in Sources */,
 				493CD3D420BCE46B0044C3BB /* FWCustomDemoVC.m in Sources */,
+				49B9255220D2964200954C3D /* FWMenuViewDemoVC.m in Sources */,
 				495D5E71206A46E9008F8545 /* FWDemoViewController.m in Sources */,
+				49B9255520D2978D00954C3D /* FWNavigationController.m in Sources */,
 				495D5E2D206A4695008F8545 /* AppDelegate.m in Sources */,
 				493CD3D720BCE4890044C3BB /* FWCustomView.m in Sources */,
 				495D5E5F206A46C8008F8545 /* Test.swift in Sources */,
