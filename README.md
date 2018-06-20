@@ -133,6 +133,10 @@ FWSheetView *sheetView = [FWSheetView sheetWithTitle: @"标题"
 • v3.0.1 :
   1.FWPopupItemClickedBlock回调增加标题参数（注：由于不想维护多个回调，这边没有考虑兼容旧版回调，所以建议封装使用）；
   2.修复FWSheetView未设置标题时有多余间距的问题；
+  
+• v3.0.2 :
+  1.增加：保证前一次弹窗销毁的处理机制；
+  2.FWDateView开放UIDatePicker，外部可以针对不同需求进行修改；
 ```
 
 
