@@ -313,6 +313,10 @@ extension FWPopupView {
             }
             
             if strongSelf.superview == nil {
+                // 保证前一次弹窗销毁完毕
+                for view in strongSelf.attachedView!.fwMaskView.subviews {
+                    view.removeFromSuperview()
+                }
                 strongSelf.attachedView?.fwMaskView.addSubview(strongSelf)
                 
                 strongSelf.setupFrame()

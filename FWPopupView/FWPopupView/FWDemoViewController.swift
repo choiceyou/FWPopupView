@@ -168,6 +168,8 @@ extension FWDemoViewController {
             }, cancelBlock: {
                 print("点击了 FWDateView 的取消")
             })
+            dateView.datePicker.minimumDate = Date()
+            dateView.datePicker.locale = Locale(identifier: "zh_Hans_CN")
             dateView.show()
             break
         case 9:
