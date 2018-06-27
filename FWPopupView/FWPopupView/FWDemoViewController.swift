@@ -164,7 +164,7 @@ extension FWDemoViewController {
             break
         case 8:
             let dateView = FWDateView.date(confirmBlock: { (datePicker) in
-                print("点击了 FWDateView 的确定")
+                print("当前选定时间：\(datePicker.date)")
             }, cancelBlock: {
                 print("点击了 FWDateView 的取消")
             })
