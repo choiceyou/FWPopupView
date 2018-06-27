@@ -139,6 +139,10 @@ FWSheetView *sheetView = [FWSheetView sheetWithTitle: @"标题"
 • v3.0.2 :
   1.增加：保证前一次弹窗销毁的处理机制；
   2.FWDateView开放UIDatePicker，外部可以针对不同需求进行修改；
+  
+• v3.0.3 :
+  1.修复xib加载View方式时，继承弹窗基类FWPopupView崩溃问题；
+  2.FWSheetView适配iPhoneX（在安全区域显示）；
 ```
 
 
