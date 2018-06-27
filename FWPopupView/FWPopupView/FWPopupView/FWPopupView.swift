@@ -145,6 +145,16 @@ open class FWPopupView: UIView, UIGestureRecognizerDelegate {
     public override init(frame: CGRect) {
         super.init(frame: frame)
         
+        self.setupParams()
+    }
+    
+    open override func awakeFromNib() {
+        super.awakeFromNib()
+        
+        self.setupParams()
+    }
+    
+    private func setupParams() {
         self.backgroundColor = UIColor.white
         
         FWPopupWindow.sharedInstance.backgroundColor = UIColor.clear
@@ -609,22 +619,6 @@ extension FWPopupView {
 // MARK: - 其他
 extension FWPopupView {
     
-    /// 将颜色转换为图片
-    ///
-    /// - Parameter color: 颜色
-    /// - Returns: UIImage
-    public func getImageWithColor(color: UIColor) -> UIImage {
-        
-        let rect = CGRect(x: 0, y: 0, width: 1, height: 1)
-        UIGraphicsBeginImageContext(rect.size)
-        let context = UIGraphicsGetCurrentContext()
-        context!.setFillColor(color.cgColor)
-        context!.fill(rect)
-        let image = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext()
-        return image!
-    }
-    
     /// 点击隐藏
     ///
     /// - Parameter tap: 手势
@@ -647,6 +641,22 @@ extension FWPopupView {
             return false
         }
     }
+    
+    /// 将颜色转换为图片
+    ///
+    /// - Parameter color: 颜色
+    /// - Returns: UIImage
+    public func getImageWithColor(color: UIColor) -> UIImage {
+        
+        let rect = CGRect(x: 0, y: 0, width: 1, height: 1)
+        UIGraphicsBeginImageContext(rect.size)
+        let context = UIGraphicsGetCurrentContext()
+        context!.setFillColor(color.cgColor)
+        context!.fill(rect)
+        let image = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        return image!
+    }
 }
 
 
@@ -667,7 +677,7 @@ open class FWPopupViewProperty: NSObject {
     /// 高亮按钮文字颜色
     @objc open var itemHighlightColor: UIColor      = kPV_RGBA(r: 254, g: 226, b: 4, a: 1)
     /// 选中按钮文字颜色
-    @objc open var itemPressedColor: UIColor        = kPV_RGBA(r: 231, g: 231, b: 231, a: 1)
+    @objc open var itemPressedColor: UIColor        = kPV_RGBA(r: 240, g: 240, b: 240, a: 1)
     
     /// 上下间距
     @objc open var topBottomMargin:CGFloat          = 10

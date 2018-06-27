@@ -170,6 +170,8 @@ extension FWDemoViewController {
             })
             dateView.datePicker.minimumDate = Date()
             dateView.datePicker.locale = Locale(identifier: "zh_Hans_CN")
+            dateView.datePicker.datePickerMode = .dateAndTime
+            dateView.datePicker.calendar = Calendar.current
             dateView.show()
             break
         case 9:
