@@ -72,10 +72,6 @@ extension FWSheetView {
     
     private func setupUI(title: String?, itemTitles: [String], itemBlock: FWPopupItemClickedBlock? = nil, cancenlBlock: FWPopupVoidBlock? = nil, property: FWSheetViewProperty?) {
         
-        if itemTitles.count == 0 {
-            return
-        }
-        
         if property != nil {
             self.vProperty = property!
         }
@@ -134,7 +130,7 @@ extension FWSheetView {
         }
         
         // 开始配置Item
-        let btnContrainerView = UIScrollView(frame: CGRect(x: 0, y: currentMaxY, width: self.frame.width, height: self.vProperty.buttonHeight))
+        let btnContrainerView = UIScrollView(frame: CGRect(x: 0, y: currentMaxY, width: self.frame.width, height: 0))
         btnContrainerView.bounces = false
         btnContrainerView.backgroundColor = UIColor.clear
         self.addSubview(btnContrainerView)
