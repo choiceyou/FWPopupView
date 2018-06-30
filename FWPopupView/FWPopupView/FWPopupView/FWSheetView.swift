@@ -210,7 +210,7 @@ extension FWSheetView {
             tmpIndex += 1
         }
         
-        if #available(iOS 11, *) {
+        if #available(iOS 11.0, *) {
             self.frame.size.height = btnContrainerView.frame.maxY + self.vProperty.buttonHeight + property.cancelBtnMarginTop + FWPopupWindow.sharedInstance.safeAreaInsets.bottom
         } else {
             self.frame.size.height = btnContrainerView.frame.maxY + self.vProperty.buttonHeight + property.cancelBtnMarginTop
