@@ -143,6 +143,10 @@ FWSheetView *sheetView = [FWSheetView sheetWithTitle: @"标题"
 • v3.0.3 :
   1.修复xib加载View方式时，继承弹窗基类FWPopupView崩溃问题；
   2.FWSheetView适配iPhoneX（在安全区域显示）；
+  
+• v3.0.5 :
+  1.为防止点击某个弹窗按钮后需要继续弹出另外一个弹窗后出错问题，改为弹窗消失后执行回调；
+  2.添加支持弹簧动画效果；
 ```
 
 
