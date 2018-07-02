@@ -210,11 +210,20 @@ extension FWSheetView {
             tmpIndex += 1
         }
         
+        // 目前先用该方法来适配iPhoneX
+        if UIScreen.main.bounds.height == 812 {
+            self.frame.size.height = btnContrainerView.frame.maxY + self.vProperty.buttonHeight + property.cancelBtnMarginTop + 34
+        }else {
+            self.frame.size.height = btnContrainerView.frame.maxY + self.vProperty.buttonHeight + property.cancelBtnMarginTop
+        }
+        
+        /**
         if #available(iOS 11.0, *) {
             self.frame.size.height = btnContrainerView.frame.maxY + self.vProperty.buttonHeight + property.cancelBtnMarginTop + FWPopupWindow.sharedInstance.safeAreaInsets.bottom
         } else {
             self.frame.size.height = btnContrainerView.frame.maxY + self.vProperty.buttonHeight + property.cancelBtnMarginTop
         }
+        */
     }
 }
 
