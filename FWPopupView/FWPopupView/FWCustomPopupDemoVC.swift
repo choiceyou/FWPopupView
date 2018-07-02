@@ -179,15 +179,16 @@ extension FWCustomPopupDemoVC {
             break
             
         case 7:
-            let customPopupView = FWCustomPopupView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height * 0.4))
+            let customPopupView = FWCustomPopupView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width-20, height: UIScreen.main.bounds.height * 0.4))
             
             let vProperty = FWPopupViewProperty()
             vProperty.popupCustomAlignment = .bottomCenter
             vProperty.popupAnimationType = .position
             vProperty.maskViewColor = UIColor(white: 0, alpha: 0.5)
             vProperty.touchWildToHide = "1"
-            vProperty.popupViewEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 0)
-            vProperty.animationDuration = 0.2
+            vProperty.popupViewEdgeInsets = UIEdgeInsetsMake(0, 0, 10, 0)
+            vProperty.animationDuration = 0.5
+            vProperty.usingSpringWithDamping = 0.7
             customPopupView.vProperty = vProperty
             
             customPopupView.show()

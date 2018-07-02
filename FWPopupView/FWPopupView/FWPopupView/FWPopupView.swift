@@ -333,26 +333,7 @@ extension FWPopupView {
                 
                 switch strongSelf.vProperty.popupAnimationType {
                 case .position: // 位移动画
-                    let baseAnimation = CABasicAnimation(keyPath: "position")
-                    
-                    switch strongSelf.vProperty.popupCustomAlignment {
-                    case .top, .topCenter, .topLeft, .topRight, .center:
-                        baseAnimation.fromValue = NSValue(cgPoint: CGPoint(x: strongSelf.frame.origin.x + strongSelf.frame.width/2, y: strongSelf.frame.origin.y - strongSelf.frame.height/2))
-                        break
-                    case .left, .leftCenter:
-                        baseAnimation.fromValue = NSValue(cgPoint: CGPoint(x: strongSelf.frame.origin.x - strongSelf.frame.width/2, y: strongSelf.frame.origin.y + strongSelf.frame.height/2))
-                        break
-                    case .bottom, .bottomCenter, .bottomLeft, .bottomRight:
-                        baseAnimation.fromValue = NSValue(cgPoint: CGPoint(x: strongSelf.frame.origin.x + strongSelf.frame.width/2, y: strongSelf.attachedView!.frame.height + strongSelf.frame.height/2))
-                        break
-                    case .right, .rightCenter:
-                        baseAnimation.fromValue = NSValue(cgPoint: CGPoint(x: strongSelf.attachedView!.frame.width + strongSelf.frame.width/2, y:strongSelf.frame.origin.y + strongSelf.frame.height/2))
-                        break
-                    }
-                    
-                    baseAnimation.toValue = NSValue(cgPoint: CGPoint(x: strongSelf.frame.origin.x + strongSelf.frame.width/2, y: strongSelf.frame.origin.y + strongSelf.frame.height/2))
-                    baseAnimation.duration = strongSelf.vProperty.animationDuration
-                    strongSelf.layer.add(baseAnimation, forKey: "positionAnimation")
+                    strongSelf.positionAnimationChangeFrame()
                     break
                     
                 case .scale, .scale3D: // 缩放动画/3D缩放动画
@@ -387,35 +368,54 @@ extension FWPopupView {
                 
                 strongSelf.layoutIfNeeded()
                 
-                UIView.animate(withDuration: strongSelf.vProperty.animationDuration, delay: 0.0, options: [.curveEaseOut, .beginFromCurrentState], animations: {
-                    
-                    switch strongSelf.vProperty.popupAnimationType {
-                    case .position: // 位移动画
-                        break
-                    case .scale: // 缩放动画
-                        strongSelf.transform = CGAffineTransform.identity
-                        break
-                    case .scale3D: // 3D缩放动画
-                        strongSelf.layer.transform = CATransform3DIdentity
-                        break
-                    case .frame: // 修改frame值的动画
-                        strongSelf.frame = strongSelf.finalFrame
-                        break
-                    }
-                    
-                    strongSelf.superview?.layoutIfNeeded()
-                    
-                }, completion: { (finished) in
-                    
-                    if strongSelf.popupCompletionBlock != nil {
-                        strongSelf.popupCompletionBlock!(strongSelf, true)
-                    }
-                    
-                })
+                if strongSelf.vProperty.usingSpringWithDamping >= 0 && strongSelf.vProperty.usingSpringWithDamping <= 1 {
+                    UIView.animate(withDuration: strongSelf.vProperty.animationDuration, delay: 0.0, usingSpringWithDamping: strongSelf.vProperty.usingSpringWithDamping, initialSpringVelocity: strongSelf.vProperty.initialSpringVelocity, options: [.curveEaseOut, .beginFromCurrentState], animations: {
+                        
+                        strongSelf.showAnimationDuration()
+                        
+                    }, completion: { (finished) in
+                        
+                        if strongSelf.popupCompletionBlock != nil {
+                            strongSelf.popupCompletionBlock!(strongSelf, true)
+                        }
+                        
+                    })
+                } else {
+                    UIView.animate(withDuration: strongSelf.vProperty.animationDuration, delay: 0.0, options: [.curveEaseOut, .beginFromCurrentState], animations: {
+                        
+                        strongSelf.showAnimationDuration()
+                        
+                    }, completion: { (finished) in
+                        
+                        if strongSelf.popupCompletionBlock != nil {
+                            strongSelf.popupCompletionBlock!(strongSelf, true)
+                        }
+                        
+                    })
+                }
             }
         }
         
         return popupBlock
+    }
+    
+    private func showAnimationDuration() {
+        switch self.vProperty.popupAnimationType {
+        case .position: // 位移动画
+            self.frame = self.finalFrame
+            break
+        case .scale: // 缩放动画
+            self.transform = CGAffineTransform.identity
+            break
+        case .scale3D: // 3D缩放动画
+            self.layer.transform = CATransform3DIdentity
+            break
+        case .frame: // 修改frame值的动画
+            self.frame = self.finalFrame
+            break
+        }
+        
+        self.superview?.layoutIfNeeded()
     }
     
     private func customHideAnimation() -> FWPopupBlock {
@@ -432,20 +432,7 @@ extension FWPopupView {
                 
                 switch strongSelf.vProperty.popupAnimationType {
                 case .position: // 位移动画
-                    switch strongSelf.vProperty.popupCustomAlignment {
-                    case .top, .topCenter, .topLeft, .topRight, .center:
-                        strongSelf.frame.origin.y = -(strongSelf.frame.origin.y + strongSelf.frame.height)
-                        break
-                    case .left, .leftCenter:
-                        strongSelf.frame.origin.x = -(strongSelf.frame.origin.x + strongSelf.frame.width)
-                        break
-                    case .bottom, .bottomCenter, .bottomLeft, .bottomRight:
-                        strongSelf.frame.origin.y = strongSelf.attachedView!.frame.height
-                        break
-                    case .right, .rightCenter:
-                        strongSelf.frame.origin.x = strongSelf.attachedView!.frame.width
-                        break
-                    }
+                    strongSelf.positionAnimationChangeFrame()
                     break
                     
                 case .scale, .scale3D: // 缩放动画/3D缩放动画
@@ -498,6 +485,23 @@ extension FWPopupView {
         }
         
         return popupBlock
+    }
+    
+    private func positionAnimationChangeFrame() {
+        switch self.vProperty.popupCustomAlignment {
+        case .top, .topCenter, .topLeft, .topRight, .center:
+            self.frame.origin.y = -(self.frame.origin.y + self.frame.height)
+            break
+        case .left, .leftCenter:
+            self.frame.origin.x = -(self.frame.origin.x + self.frame.width)
+            break
+        case .bottom, .bottomCenter, .bottomLeft, .bottomRight:
+            self.frame.origin.y = self.attachedView!.frame.height
+            break
+        case .right, .rightCenter:
+            self.frame.origin.x = self.attachedView!.frame.width
+            break
+        }
     }
     
     private func obtainAnchorPoint() -> CGPoint {
@@ -726,6 +730,10 @@ open class FWPopupViewProperty: NSObject {
     
     /// 显示、隐藏动画所需的时间
     @objc open var animationDuration: TimeInterval                  = 0.2
+    /// 阻尼系数，范围：0.0f~1.0f，数值越小「弹簧」的振动效果越明显。默认：-1，表示没有「弹簧」效果
+    @objc open var usingSpringWithDamping: CGFloat                  = -1
+    /// 初始速率，数值越大一开始移动越快，默认为：5
+    @objc open var initialSpringVelocity: CGFloat                   = 5
     
     /// 3D放射动画（当且仅当：popupAnimationType == .scale3D 时有效）
     @objc open var transform3D: CATransform3D                       = CATransform3DMakeScale(1.2, 1.2, 1.0)
