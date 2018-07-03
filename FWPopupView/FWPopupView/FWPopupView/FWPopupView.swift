@@ -73,10 +73,31 @@ import UIKit
     case triangle
 }
 
-/// 显示、隐藏回调
+/// 弹窗状态
+///
+/// - unKnow: 不知
+/// - willAppear: 将要显示
+/// - didAppear: 已经显示
+/// - willDisappear: 将要隐藏
+/// - didDisappear: 已经隐藏
+@objc public enum FWPopupViewState: Int {
+    case unKnow
+    case willAppear
+    case didAppear
+    case willDisappear
+    case didDisappear
+}
+
+
+/// 弹窗已经显示回调
+public typealias FWPopupDidAppearBlock = (_ popupView: FWPopupView) -> Void
+/// 弹窗已经隐藏回调
+public typealias FWPopupDidDisappearBlock = (_ popupView: FWPopupView) -> Void
+/// 弹窗状态回调，注意：该回调会走N次
+public typealias FWPopupStateBlock = (_ popupView: FWPopupView, _ popupViewState: FWPopupViewState) -> Void
+
+/// 弹窗显示、隐藏回调，内部回调，该回调不对外
 public typealias FWPopupBlock = (_ popupView: FWPopupView) -> Void
-/// 显示、隐藏完成回调，某些场景下可能会用到 isShow ==》true: 显示 false：隐藏
-public typealias FWPopupCompletionBlock = (_ popupView: FWPopupView, _ isShow: Bool) -> Void
 /// 普通无参数回调
 public typealias FWPopupVoidBlock = () -> Void
 
@@ -122,7 +143,9 @@ open class FWPopupView: UIView, UIGestureRecognizerDelegate {
     @objc public var withKeyboard = false
     
     
-    private var popupCompletionBlock: FWPopupCompletionBlock?
+    private var popupDidAppearBlock: FWPopupDidAppearBlock?
+    private var popupDidDisappearBlock: FWPopupDidDisappearBlock?
+    private var popupStateBlock: FWPopupStateBlock?
     
     private var showAnimation: FWPopupBlock?
     
@@ -195,13 +218,28 @@ extension FWPopupView {
     /// 显示
     @objc open func show() {
         
-        self.show(completionBlock: nil)
+        self.show(popupDidAppearBlock: nil)
+    }
+    
+    @objc open func show(popupDidAppearBlock: FWPopupDidAppearBlock? = nil) {
+        
+        if popupDidAppearBlock != nil {
+            self.popupDidAppearBlock = popupDidAppearBlock
+        }
+        self.show(popupStateBlock: nil);
     }
     
     /// 显示
     ///
     /// - Parameter completionBlock: 显示、隐藏回调
-    @objc open func show(completionBlock: FWPopupCompletionBlock? = nil) {
+    @objc open func show(popupStateBlock: FWPopupStateBlock? = nil) {
+        
+        if popupStateBlock != nil {
+            self.popupStateBlock = popupStateBlock
+        }
+        if self.popupStateBlock != nil {
+            self.popupStateBlock!(self, .willAppear)
+        }
         
         // 弹起时设置相关参数，因为隐藏或者销毁时会被重置掉，所以每次弹起时都重新调用
         if self.attachedView != nil && self.vProperty.maskViewColor != nil {
@@ -227,10 +265,6 @@ extension FWPopupView {
             }
         }
         
-        if completionBlock != nil {
-            self.popupCompletionBlock = completionBlock
-        }
-        
         if self.attachedView == nil {
             self.attachedView = FWPopupWindow.sharedInstance.attachView()
         }
@@ -248,19 +282,22 @@ extension FWPopupView {
     /// 隐藏
     @objc open func hide() {
         
-        self.hide(completionBlock: nil)
+        self.hide(popupDidDisappearBlock: nil)
     }
     
     /// 隐藏
     ///
     /// - Parameter completionBlock: 显示、隐藏回调
-    @objc open func hide(completionBlock: FWPopupCompletionBlock? = nil) {
+    @objc open func hide(popupDidDisappearBlock: FWPopupDidDisappearBlock? = nil) {
+        
+        if popupDidDisappearBlock != nil {
+            self.popupDidDisappearBlock = popupDidDisappearBlock
+        }
+        if self.popupStateBlock != nil {
+            self.popupStateBlock!(self, .willDisappear)
+        }
         
         self.attachedView?.fwAnimationDuration = self.vProperty.animationDuration
-        
-        if completionBlock != nil {
-            self.popupCompletionBlock = completionBlock
-        }
         
         if self.attachedView == nil {
             self.attachedView = FWPopupWindow.sharedInstance.attachView()
@@ -313,7 +350,7 @@ extension FWPopupView {
 
 // MARK: - 动画事件
 extension FWPopupView {
-
+    
     private func customShowAnimation() -> FWPopupBlock {
         
         let popupBlock = { [weak self] (popupView: FWPopupView) in
@@ -375,8 +412,11 @@ extension FWPopupView {
                         
                     }, completion: { (finished) in
                         
-                        if strongSelf.popupCompletionBlock != nil {
-                            strongSelf.popupCompletionBlock!(strongSelf, true)
+                        if strongSelf.popupDidAppearBlock != nil {
+                            strongSelf.popupDidAppearBlock!(strongSelf)
+                        }
+                        if strongSelf.popupStateBlock != nil {
+                            strongSelf.popupStateBlock!(strongSelf, .didAppear)
                         }
                         
                     })
@@ -387,8 +427,11 @@ extension FWPopupView {
                         
                     }, completion: { (finished) in
                         
-                        if strongSelf.popupCompletionBlock != nil {
-                            strongSelf.popupCompletionBlock!(strongSelf, true)
+                        if strongSelf.popupDidAppearBlock != nil {
+                            strongSelf.popupDidAppearBlock!(strongSelf)
+                        }
+                        if strongSelf.popupStateBlock != nil {
+                            strongSelf.popupStateBlock!(strongSelf, .didAppear)
                         }
                         
                     })
@@ -468,9 +511,6 @@ extension FWPopupView {
                 if finished {
                     strongSelf.removeFromSuperview()
                 }
-                if strongSelf.popupCompletionBlock != nil {
-                    strongSelf.popupCompletionBlock!(strongSelf, false)
-                }
                 
                 // 还原视图，防止下次动画时出错
                 switch strongSelf.vProperty.popupAnimationType {
@@ -481,6 +521,16 @@ extension FWPopupView {
                     strongSelf.transform = CGAffineTransform.identity
                     break
                 }
+                
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1, execute: {
+                    if strongSelf.popupDidDisappearBlock != nil {
+                        strongSelf.popupDidDisappearBlock!(strongSelf)
+                    }
+                    if strongSelf.popupStateBlock != nil {
+                        strongSelf.popupStateBlock!(strongSelf, .didDisappear)
+                    }
+                })
+                
             })
         }
         

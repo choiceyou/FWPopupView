@@ -13,7 +13,6 @@ class FWDemoViewController: UITableViewController {
     
     var alertImage: FWAlertView!
     
-    
     /// 注意：这边不同的示例可能还附加演示了一些特性（比如：遮罩层是否能够点击、遮罩层的背景颜色等等），有用到时可以参考
     var titleArray = ["Alert - 单个按钮", "Alert - 两个按钮", "Alert - 两个按钮（修改参数）", "Alert - 多个按钮", "Alert - 带输入框", "Alert - 带自定义视图", "Sheet - 少量Item", "Sheet - 大量Item", "Date - 自定义日期选择", "Menu - 自定义菜单", "Custom - 自定义弹窗"]
     
@@ -72,8 +71,9 @@ extension FWDemoViewController {
             })
             // 设置AlertView外部背景色
             alertView.attachedView?.fwMaskViewColor = UIColor(white: 0, alpha: 0.2)
-            alertView.show { (popupView, isShow) in
-                if !isShow {
+            alertView.show { (popupView, popupViewState) in
+                print("当前弹窗状态：\(popupViewState.rawValue)")
+                if popupViewState == .didDisappear {
                     // 隐藏时把背景色改回来（这个非必要，我这边只是一个演示）
                     alertView.attachedView?.fwMaskViewColor = UIColor(white: 0, alpha: 0.5)
                 }

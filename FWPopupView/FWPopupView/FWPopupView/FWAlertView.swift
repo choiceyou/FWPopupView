@@ -338,7 +338,7 @@ extension FWAlertView {
         } else {
             if item.itemClickedBlock != nil {
                 // 弹窗消失后执行回调
-                DispatchQueue.main.asyncAfter(deadline: .now()+self.vProperty.animationDuration) {
+                DispatchQueue.main.asyncAfter(deadline: .now()+self.vProperty.animationDuration+0.1) {
                     item.itemClickedBlock!(self, btn.tag, item.title)
                 }
             }
