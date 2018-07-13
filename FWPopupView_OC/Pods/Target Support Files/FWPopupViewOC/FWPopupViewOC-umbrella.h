@@ -10,6 +10,8 @@
 #endif
 #endif
 
+#import "FWGuideMaskView.h"
+#import "FWPanPopupView.h"
 #import "FWPopupBaseView.h"
 #import "FWPopupWindow.h"
 #import "UIView+PopupView.h"

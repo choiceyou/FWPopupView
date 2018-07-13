@@ -23,10 +23,10 @@ public typealias FWDateViewConfirmBlock = (_ datePicker: UIDatePicker) -> Void
 
 open class FWDateView: FWPopupView {
     
+    @objc public let datePicker = UIDatePicker()
+    
     private var confirmBtn: UIButton?
     private var cancelBtn: UIButton?
-    
-    private let datePicker = UIDatePicker()
     
     private var confirmBlock: FWDateViewConfirmBlock?
     private var cancelBlock: FWPopupVoidBlock?
@@ -65,6 +65,8 @@ extension FWDateView {
         
         self.datePicker.frame = CGRect(x: 0, y: property.btnHeight, width: self.frame.width, height: property.datePickerHeight)
         self.datePicker.backgroundColor = self.backgroundColor
+        // 默认
+        self.datePicker.locale = Locale(identifier: "zh_Hans_CN")
         self.addSubview(self.datePicker)
         
         self.confirmBlock = confirmBlock

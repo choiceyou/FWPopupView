@@ -23,6 +23,7 @@ open class FWSheetView: FWPopupView {
     private var actionItemArray: [FWPopupItem] = []
     
     private var titleLabel: UILabel?
+    private var titleContainerView: UIView?
     
     private var commponenetArray: [UIView] = []
     
@@ -59,6 +60,7 @@ open class FWSheetView: FWPopupView {
         super.init(frame: frame)
         
         self.vProperty = FWSheetViewProperty()
+        self.backgroundColor = self.vProperty.backgroundColor
     }
     
     required public init?(coder aDecoder: NSCoder) {
@@ -69,10 +71,6 @@ open class FWSheetView: FWPopupView {
 extension FWSheetView {
     
     private func setupUI(title: String?, itemTitles: [String], itemBlock: FWPopupItemClickedBlock? = nil, cancenlBlock: FWPopupVoidBlock? = nil, property: FWSheetViewProperty?) {
-        
-        if itemTitles.count == 0 {
-            return
-        }
         
         if property != nil {
             self.vProperty = property!
@@ -108,7 +106,6 @@ extension FWSheetView {
             currentMaxY = self.vProperty.topBottomMargin
             
             self.titleLabel = UILabel(frame: CGRect(x: self.vProperty.letfRigthMargin, y: currentMaxY, width: self.frame.width - self.vProperty.letfRigthMargin * 2, height: CGFloat.greatestFiniteMagnitude))
-            self.addSubview(self.titleLabel!)
             self.titleLabel?.text = title
             self.titleLabel?.textColor = self.vProperty.titleColor
             self.titleLabel?.textAlignment = .center
@@ -120,6 +117,11 @@ extension FWSheetView {
             
             self.titleLabel?.frame = CGRect(x: self.vProperty.letfRigthMargin, y: currentMaxY, width: self.frame.width - self.vProperty.letfRigthMargin * 2, height: self.titleLabel!.frame.height)
             
+            self.titleContainerView = UIView(frame: CGRect(x: 0, y: 0, width: self.frame.width, height: self.titleLabel!.frame.height + self.vProperty.topBottomMargin * 2))
+            self.titleContainerView?.backgroundColor = UIColor.white
+            self.titleContainerView?.addSubview(self.titleLabel!)
+            self.addSubview(self.titleContainerView!)
+            
             currentMaxY = self.titleLabel!.frame.maxY
             
             self.commponenetArray.append(self.titleLabel!)
@@ -128,7 +130,7 @@ extension FWSheetView {
         }
         
         // 开始配置Item
-        let btnContrainerView = UIScrollView(frame: CGRect(x: 0, y: currentMaxY, width: self.frame.width, height: self.vProperty.buttonHeight))
+        let btnContrainerView = UIScrollView(frame: CGRect(x: 0, y: currentMaxY, width: self.frame.width, height: 0))
         btnContrainerView.bounces = false
         btnContrainerView.backgroundColor = UIColor.clear
         self.addSubview(btnContrainerView)
@@ -161,7 +163,7 @@ extension FWSheetView {
                 btnY = self.vProperty.buttonHeight * CGFloat(tmpIndex) + property.cancelBtnMarginTop
                 
                 cancelBtnTopView = UIView(frame: CGRect(x: 0, y: btnY - property.cancelBtnMarginTop, width: self.frame.width, height: property.cancelBtnMarginTop))
-                cancelBtnTopView?.backgroundColor = UIColor(white: 0.1, alpha: 0.1)
+                cancelBtnTopView?.backgroundColor = UIColor.clear
                 self.addSubview(cancelBtnTopView!)
                 
                 cancelBtn = btn
@@ -187,8 +189,10 @@ extension FWSheetView {
             if popupItem.itemBackgroundColor != nil {
                 btn.backgroundColor = popupItem.itemBackgroundColor
             } else {
-                btn.backgroundColor = self.backgroundColor
+                btn.backgroundColor = UIColor.white
             }
+            btn.setBackgroundImage(self.getImageWithColor(color: self.vProperty.itemPressedColor), for: .highlighted)
+            
             // 按钮文字颜色
             if popupItem.itemTitleColor != nil {
                 btn.setTitleColor(popupItem.itemTitleColor, for: .normal)
@@ -206,7 +210,11 @@ extension FWSheetView {
             tmpIndex += 1
         }
         
-        self.frame.size.height = btnContrainerView.frame.maxY + self.vProperty.buttonHeight + property.cancelBtnMarginTop
+        if #available(iOS 11.0, *) {
+            self.frame.size.height = btnContrainerView.frame.maxY + self.vProperty.buttonHeight + property.cancelBtnMarginTop + FWPopupWindow.sharedInstance.safeAreaInsets.bottom
+        } else {
+            self.frame.size.height = btnContrainerView.frame.maxY + self.vProperty.buttonHeight + property.cancelBtnMarginTop
+        }
     }
 }
 
@@ -225,7 +233,10 @@ extension FWSheetView {
         }
         
         if item.itemClickedBlock != nil {
-            item.itemClickedBlock!(self, btn.tag, item.title)
+            // 弹窗消失后执行回调
+            DispatchQueue.main.asyncAfter(deadline: .now()+self.vProperty.animationDuration) {
+                item.itemClickedBlock!(self, btn.tag, item.title)
+            }
         }
     }
 }
@@ -240,5 +251,6 @@ open class FWSheetViewProperty: FWPopupViewProperty {
     public override func reSetParams() {
         super.reSetParams()
         
+        self.backgroundColor = kPV_RGBA(r: 230, g: 230, b: 230, a: 1)
     }
 }

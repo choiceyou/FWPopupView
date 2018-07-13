@@ -2,13 +2,13 @@
 //  FWPopupBaseView.h
 //  FWPopupViewOC
 //
-//  Created by xfg on 2018/5/25.
+//  Created by xfg on 2017/5/25.
 //  Copyright © 2018年 xfg. All rights reserved.
-//
+//  弹窗基类
 
 /** ************************************************
  
- github地址：https://github.com/choiceyou/FWPopupView
+ github地址：https://github.com/choiceyou/FWPopupViewOC
  bug反馈、交流群：670698309
  
  ***************************************************
@@ -79,23 +79,47 @@ typedef NS_ENUM(NSInteger, FWPopupArrowStyle) {
     FWPopupArrowStyleTriangle,
 };
 
+/**
+ 弹窗状态
+
+ - FWPopupStateUnKnow: 不知
+ - FWPopupStateWillAppear: 将要显示
+ - FWPopupStateDidAppear: 已经显示
+ - FWPopupStateWillDisappear: 将要隐藏
+ - FWPopupStateDidDisappear: 已经隐藏
+ */
+typedef NS_ENUM(NSInteger, FWPopupState) {
+    FWPopupStateUnKnow,
+    FWPopupStateWillAppear,
+    FWPopupStateDidAppear,
+    FWPopupStateWillDisappear,
+    FWPopupStateDidDisappear,
+};
+
+
 @class FWPopupBaseView;
 @class FWPopupBaseViewProperty;
 
 /**
- 显示、隐藏回调
+ 弹窗已经显示回调
 
  @param popupBaseView self
  */
-typedef void(^FWPopupBlock)(FWPopupBaseView *popupBaseView);
+typedef void(^FWPopupDidAppearBlock)(FWPopupBaseView *popupBaseView);
 
 /**
- 显示、隐藏完成回调
+ 弹窗已经隐藏回调
 
  @param popupBaseView self
- @param isShow YES：显示 NO：隐藏
  */
-typedef void(^FWPopupCompletionBlock)(FWPopupBaseView *popupBaseView, BOOL isShow);
+typedef void(^FWPopupDidDisappearBlock)(FWPopupBaseView *popupBaseView);
+
+/**
+ 弹窗状态回调，注意：该回调会走N次
+
+ @param popupBaseView self
+ */
+typedef void(^FWPopupStateBlock)(FWPopupBaseView *popupBaseView, FWPopupState popupState);
 
 /**
  普通无参数回调
@@ -106,13 +130,18 @@ typedef void(^FWPopupVoidBlock)(void);
 static NSString *const FWHideAllPopupViewNotification = @"FWHideAllPopupViewNotification";
 
 
-@interface FWPopupBaseView : UIView
+@interface FWPopupBaseView : UIView <UIGestureRecognizerDelegate>
 
 /**
  1、当外部没有传入该参数时，默认为UIWindow的根控制器的视图，即表示弹窗放在FWPopupWindow上；
  2、当外部传入该参数时，该视图为传入的UIView，即表示弹窗放在传入的UIView上；
  */
 @property (nonatomic, strong) UIView                    *attachedView;
+
+/**
+ 弹窗真正的frame
+ */
+@property (nonatomic, assign, readonly) CGRect          realFrame;
 
 /**
  可设置属性
@@ -135,17 +164,54 @@ static NSString *const FWHideAllPopupViewNotification = @"FWHideAllPopupViewNoti
 @property (nonatomic, assign) BOOL                      withKeyboard;
 
 
+/**
+ 显示
+ */
 - (void)show;
 
-- (void)showWithBlock:(FWPopupCompletionBlock)completionBlock;
+/**
+ 弹窗已经显示
 
+ @param didAppearBlock 弹窗已经显示回调
+ */
+- (void)showWithDidAppearBlock:(FWPopupDidAppearBlock)didAppearBlock;
+
+/**
+ 显示：弹窗状态回调，注意：该回调会走N次
+
+ @param stateBlock 弹窗状态回调，注意：该回调会走N次
+ */
+- (void)showWithStateBlock:(FWPopupStateBlock)stateBlock;
+
+/**
+ 隐藏
+ */
 - (void)hide;
 
-- (void)hideWithBlock:(FWPopupCompletionBlock)completionBlock;
+/**
+ 弹窗已经隐藏
+
+ @param didDisappearBlock 弹窗已经隐藏回调
+ */
+- (void)hideWithDidDisappearBlock:(FWPopupDidDisappearBlock)didDisappearBlock;
+
+/**
+ 遮罩层被单击，主要用来给子类重写
+ */
+- (void)clicedMaskView;
+
+/**
+ 获取当前视图AnchorPoint
+
+ @return CGPoint
+ */
+- (CGPoint)obtainAnchorPoint;
 
 @end
 
 
+
+#pragma mark - ======================= 可配置属性 =======================
 
 @interface FWPopupBaseViewProperty: NSObject
 
@@ -259,7 +325,7 @@ static NSString *const FWHideAllPopupViewNotification = @"FWHideAllPopupViewNoti
 @property (nonatomic, strong) UIColor *maskViewColor;
 
 /**
- 0表示NO，1表示YES，YES：用户点击外部遮罩层页面可以消失，注意：该参数在弹窗隐藏后，还原为弹窗弹起时的值
+ 0表示NO，1表示YES，YES：用户点击外部遮罩层页面可以隐藏，注意：该参数在弹窗隐藏后，还原为弹窗弹起时的值
  */
 @property (nonatomic, copy) NSString *touchWildToHide;
 
@@ -269,12 +335,32 @@ static NSString *const FWHideAllPopupViewNotification = @"FWHideAllPopupViewNoti
 @property (nonatomic, assign) NSTimeInterval animationDuration;
 
 /**
- 3D放射动画（当且仅当：popupAnimationType == .scale3D 时有效）
+ 阻尼系数，范围：0.0f~1.0f，数值越小「弹簧」的振动效果越明显。默认：-1，表示没有「弹簧」效果
+ */
+@property (nonatomic, assign) CGFloat usingSpringWithDamping;
+
+/**
+ 初始速率，数值越大一开始移动越快，默认为：5
+ */
+@property (nonatomic, assign) CGFloat initialSpringVelocity;
+
+/**
+ 3D放射动画（当且仅当：popupAnimationStyle == .scale3D 时有效）
  */
 @property (nonatomic, assign) CATransform3D transform3D;
 /**
  2D放射动画
  */
 @property (nonatomic, assign) CGAffineTransform transform;
+
+/**
+ 是否需要让多余部分的遮罩层变为无色（当弹窗没有任何一条边跟遮罩层的任意一条边重合的时候，就可能会把遮罩层分成几部分，此时看上去就不大美观了，因此可以使用该属性把某些部分设置为无色）
+ */
+@property (nonatomic, assign) BOOL shouldClearSpilthMask;
+
+/**
+ 初始化相关属性
+ */
+- (void)setupParams;
 
 @end

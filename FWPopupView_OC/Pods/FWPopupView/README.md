@@ -1,8 +1,10 @@
-# IOS之弹窗 -- Swift4.x/[OC版本](https://github.com/choiceyou/FWPopupViewOC)（注意：OC版本目前只实现了弹窗基类）
+# IOS之弹窗 -- Swift4.x/[OC版本](https://github.com/choiceyou/FWPopupViewOC)
 
 [![Platform](http://img.shields.io/badge/platform-iOS-blue.svg?style=flat)](http://cocoapods.org/?q=FWPopupView)&nbsp;
 ![Language](https://img.shields.io/badge/language-swift-orange.svg?style=flat)&nbsp;
 [![License](http://img.shields.io/badge/license-MIT-green.svg?style=flat)](https://github.com/choiceyou/FWPopupView/blob/master/FWPopupView/LICENSE)
+
+*注意：由于OC类不能继承Swift类，所以弹窗基类分别使用了OC和Swift来实现，同时OC和Swift版本分别实现了几个不同的弹窗效果。两个库可以同时存在一个项目中。*
 
 
 
@@ -133,11 +135,19 @@ FWSheetView *sheetView = [FWSheetView sheetWithTitle: @"标题"
 • v3.0.1 :
   1.FWPopupItemClickedBlock回调增加标题参数（注：由于不想维护多个回调，这边没有考虑兼容旧版回调，所以建议封装使用）；
   2.修复FWSheetView未设置标题时有多余间距的问题；
+  
+• v3.0.2 :
+  1.增加：保证前一次弹窗销毁的处理机制；
+  2.FWDateView开放UIDatePicker，外部可以针对不同需求进行修改；
+  
+• v3.0.3 :
+  1.修复xib加载View方式时，继承弹窗基类FWPopupView崩溃问题；
+  2.FWSheetView适配iPhoneX（在安全区域显示）；
 ```
 
 
 
 ## 结尾语：
 
-- 使用过程中发现bug请issues或（QQ群：670698309）；
+- 使用过程中发现bug请issues（如遇比较急的问题可直接加QQ群：670698309）；
 - 有新的需求欢迎提出；

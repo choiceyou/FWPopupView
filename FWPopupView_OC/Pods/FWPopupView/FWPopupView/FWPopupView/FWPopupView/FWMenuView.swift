@@ -320,7 +320,10 @@ extension FWMenuView {
         self.hide()
         
         if self.popupItemClickedBlock != nil {
-            self.popupItemClickedBlock!(self, indexPath.row, (self.itemTitleArray != nil) ? self.itemTitleArray![indexPath.row] : nil)
+            // 弹窗消失后执行回调
+            DispatchQueue.main.asyncAfter(deadline: .now()+self.vProperty.animationDuration) {
+                self.popupItemClickedBlock!(self, indexPath.row, (self.itemTitleArray != nil) ? self.itemTitleArray![indexPath.row] : nil)
+            }
         }
     }
 }

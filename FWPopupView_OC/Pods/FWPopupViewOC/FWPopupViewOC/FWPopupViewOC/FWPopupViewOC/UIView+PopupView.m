@@ -2,18 +2,9 @@
 //  UIView+PopupView.m
 //  FWPopupViewOC
 //
-//  Created by xfg on 2018/5/25.
+//  Created by xfg on 2017/5/25.
 //  Copyright © 2018年 xfg. All rights reserved.
 //
-
-/** ************************************************
- 
- github地址：https://github.com/choiceyou/FWPopupView
- bug反馈、交流群：670698309
- 
- ***************************************************
- */
-
 
 static const void *dimReferenceCountKey             = &dimReferenceCountKey;
 
@@ -182,12 +173,10 @@ static const void *dimMaskAnimatingKey              = &dimMaskAnimatingKey;
                              if (self == [FWPopupWindow sharedWindow].attachView)
                              {
                                  [FWPopupWindow sharedWindow].hidden = YES;
-                                 [[[UIApplication sharedApplication].delegate window] makeKeyWindow];
                              }
                              else if (self == [FWPopupWindow sharedWindow])
                              {
                                  self.hidden = YES;
-                                 [[[UIApplication sharedApplication].delegate window] makeKeyWindow];
                              }
                          }
                          
