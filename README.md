@@ -5,6 +5,7 @@
 [![License](http://img.shields.io/badge/license-MIT-green.svg?style=flat)](https://github.com/choiceyou/FWPopupView/blob/master/FWPopupView/LICENSE)
 
 *注意：由于OC类不能继承Swift类，所以弹窗基类分别使用了OC和Swift来实现，同时OC和Swift版本分别实现了几个不同的弹窗效果。两个库可以同时存在一个项目中。*
+温馨提示：鉴于方法或者属性可能跟着版本改动，所以建议使用该库时封装一层后再使用！！！
 
 
 
