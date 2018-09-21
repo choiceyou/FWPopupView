@@ -151,6 +151,12 @@ FWSheetView *sheetView = [FWSheetView sheetWithTitle: @"标题"
 • v3.0.6 ：
   1.添加弹窗状态：FWPopupState；
   2.根据状态对应的进行回调，这样子可以根据实际使用来回调；
+  
+• v3.0.7 ：
+  1.FWMenuView新增支持修改背景色等相关属性；
+  
+• v3.0.8 ：
+  1.FWAlertView带输入框输入支持密码安全类型；
 ```
 
 
