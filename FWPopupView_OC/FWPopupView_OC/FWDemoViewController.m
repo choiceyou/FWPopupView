@@ -78,7 +78,7 @@ alpha:1.f]
                 NSLog(@"点击了确定");
             }];
             
-            [alertView showWithCompletionBlock:^(FWPopupView * popupView, BOOL isCompletion) {
+            [alertView showWithPopupStateBlock:^(FWPopupView * popupView, FWPopupViewState popupViewState) {
                 
             }];
         }

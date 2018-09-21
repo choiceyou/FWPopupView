@@ -257,7 +257,7 @@ typedef void(^FWPopupBlock)(FWPopupBaseView *popupBaseView);
             {
                 self.layer.anchorPoint = [self obtainAnchorPoint];
                 self.frame = self.finalFrame;
-                if (self.vProperty.popupAnimationStyle == FWPopupAnimationStyleScale)
+                if (self.vProperty.popupAnimationStyle == FWPopupAnimationStyleScale && [[UIDevice currentDevice].systemVersion doubleValue] >= 11.0)
                 {
                     self.transform = self.vProperty.transform;
                 }

@@ -192,7 +192,7 @@ pod 'FWPopupViewOC'
 • v2.1.6 ：
   1.修复xib加载View方式时，继承弹窗基类FWPopupBaseView崩溃问题；
   
-• v2.1.7 ：
+• v2.1.9 ：
   1.添加弹窗状态：FWPopupState；
   2.根据状态对应的进行回调，这样子可以根据实际使用来回调，废除原：showWithBlock 和 hideWithBlock 方法，新增：showWithDidAppearBlock、showWithStateBlock、hideWithDidDisappearBlock 方法；
 ```
