@@ -11,11 +11,6 @@
 #import "FWCustomDemoVC.h"
 #import "FWMenuViewDemoVC.h"
 
-#define kRGB(r,g,b)          [UIColor colorWithRed:(r)/255.f \
-green:(g)/255.f \
-blue:(b)/255.f \
-alpha:1.f]
-
 @interface FWDemoViewController ()
 
 @property (nonatomic, strong) NSArray       *titleArray;

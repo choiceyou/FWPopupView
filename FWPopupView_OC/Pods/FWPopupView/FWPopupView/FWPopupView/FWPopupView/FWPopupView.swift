@@ -740,7 +740,7 @@ open class FWPopupViewProperty: NSObject {
     /// 控件之间的间距
     @objc open var commponentMargin:CGFloat         = 10
     
-    /// 边框、分割线颜色
+    /// 边框颜色（部分控件分割线也用这个颜色）
     @objc open var splitColor: UIColor              = kPV_RGBA(r: 231, g: 231, b: 231, a: 1)
     /// 边框宽度
     @objc open var splitWidth: CGFloat              = (1/UIScreen.main.scale)

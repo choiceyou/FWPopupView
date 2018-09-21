@@ -19,10 +19,16 @@
 #define kScreenW                [[UIScreen mainScreen] bounds].size.width
 #define kScreenH                [[UIScreen mainScreen] bounds].size.height
 
+#define kRGB(r,g,b)          [UIColor colorWithRed:(r)/255.f \
+green:(g)/255.f \
+blue:(b)/255.f \
+alpha:1.f]
+
 @interface FWMenuViewDemoVC ()
 
 @property (nonatomic, strong) NSArray *titleArray;
 @property (nonatomic, strong) NSArray *imageArray;
+@property (nonatomic, strong) NSArray *imageArray2;
 
 @property (nonatomic, strong) UIButton *centerBtn;
 @property (nonatomic, strong) UIButton *leftBottomBtn;
@@ -40,11 +46,18 @@
     
     self.titleArray = @[@"创建群聊", @"加好友/群", @"扫一扫", @"面对面快传", @"付款", @"拍摄"];
     self.imageArray = @[[UIImage imageNamed:@"right_menu_multichat"],
-                       [UIImage imageNamed:@"right_menu_addFri"],
-                       [UIImage imageNamed:@"right_menu_QR"],
-                       [UIImage imageNamed:@"right_menu_facetoface"],
-                       [UIImage imageNamed:@"right_menu_payMoney"],
-                       [UIImage imageNamed:@"right_menu_sendvideo"]];
+                        [UIImage imageNamed:@"right_menu_addFri"],
+                        [UIImage imageNamed:@"right_menu_QR"],
+                        [UIImage imageNamed:@"right_menu_facetoface"],
+                        [UIImage imageNamed:@"right_menu_payMoney"],
+                        [UIImage imageNamed:@"right_menu_sendvideo"]];
+    
+    self.imageArray2 = @[[UIImage imageNamed:@"right_menu_multichat_white"],
+                         [UIImage imageNamed:@"right_menu_addFri_white"],
+                         [UIImage imageNamed:@"right_menu_QR_white"],
+                         [UIImage imageNamed:@"right_menu_facetoface_white"],
+                         [UIImage imageNamed:@"right_menu_payMoney_white"],
+                         [UIImage imageNamed:@"right_menu_sendvideo_white"]];
     
     UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"mqz_nav_add"] style:UIBarButtonItemStylePlain target:self action:@selector(barBtnAction)];
     barButtonItem.imageInsets = UIEdgeInsetsMake(0, 0, 0, -6);
@@ -75,10 +88,19 @@
     property.popupArrowStyle = FWMenuArrowStyleRound;
     property.touchWildToHide = @"1";
     property.topBottomMargin = 0;
+    property.maskViewColor = [UIColor colorWithWhite:0 alpha:0.2];
     property.popupViewEdgeInsets = UIEdgeInsetsMake(kStatusAndNavBarHeight, 0, 0, 8);
     property.popupArrowVertexScaleX = 1;
+    property.backgroundColor = kRGB(64, 63, 66);
+    property.splitColor = kRGB(64, 63, 66);
+    property.separatorColor = kRGB(91, 91, 93);
+    NSMutableDictionary *textAttrs = [NSMutableDictionary dictionary];
+    textAttrs[NSForegroundColorAttributeName] = [UIColor whiteColor];     // 设置item颜色
+    textAttrs[NSFontAttributeName] = [UIFont systemFontOfSize:15];  // 统一设置item字体大小
+    property.titleTextAttributes = textAttrs;
+    property.separatorInset = UIEdgeInsetsMake(0, 15, 0, 15);
     
-    FWMenuView *menuView = [FWMenuView menuWithItemTitles:self.titleArray itemImageNames:self.imageArray itemBlock:^(FWPopupView *popupView, NSInteger index, NSString *title) {
+    FWMenuView *menuView = [FWMenuView menuWithItemTitles:self.titleArray itemImageNames:self.imageArray2 itemBlock:^(FWPopupView *popupView, NSInteger index, NSString *title) {
         
     } property:property];
     
