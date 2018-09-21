@@ -95,7 +95,7 @@ extension FWDemoViewController {
             vProperty.touchWildToHide = "1"
             // 还有很多参数可设置...
             
-            let alertView = FWAlertView.alert(title: "标题", detail: "描述描述描述描述描述描述描述描述描述描述", inputPlaceholder: nil, keyboardType: .default, customView: nil, items: items, vProperty: vProperty)
+            let alertView = FWAlertView.alert(title: "标题", detail: "描述描述描述描述描述描述描述描述描述描述", inputPlaceholder: nil, keyboardType: .default, isSecureTextEntry: false, customView: nil, items: items, vProperty: vProperty)
             
             alertView.show()
             break
@@ -104,14 +104,14 @@ extension FWDemoViewController {
                          FWPopupItem(title: "确定", itemType: .normal, isCancel: false, canAutoHide: true, itemClickedBlock: block),
                          FWPopupItem(title: "其他", itemType: .normal, isCancel: false, canAutoHide: true, itemClickedBlock: block)]
             
-            let alertView = FWAlertView.alert(title: "标题", detail: "描述描述描述描述描述描述描述描述描述描述", inputPlaceholder: nil, keyboardType: .default, customView: nil, items: items)
+            let alertView = FWAlertView.alert(title: "标题", detail: "描述描述描述描述描述描述描述描述描述描述", inputPlaceholder: nil, keyboardType: .default, isSecureTextEntry: false, customView: nil, items: items)
             alertView.show()
             break
         case 4:
             let items = [FWPopupItem(title: "取消", itemType: .normal, isCancel: true, canAutoHide: true, itemClickedBlock: block),
                          FWPopupItem(title: "确定", itemType: .normal, isCancel: false, canAutoHide: true, itemClickedBlock: block)]
             
-            let alertView = FWAlertView.alert(title: "标题", detail: "带输入框", inputPlaceholder: "请输入...", keyboardType: .default, customView: nil, items: items)
+            let alertView = FWAlertView.alert(title: "标题", detail: "带输入框", inputPlaceholder: "请输入...", keyboardType: .numberPad, isSecureTextEntry: true, customView: nil, items: items)
             alertView.show()
             break
         case 5:
@@ -134,7 +134,7 @@ extension FWDemoViewController {
                 let vProperty = FWAlertViewProperty()
                 vProperty.touchWildToHide = "1"
                 
-                self.alertImage = FWAlertView.alert(title: "标题", detail: "带自定义视图", inputPlaceholder: nil, keyboardType: .default, customView: customImageView, items: items, vProperty: vProperty)
+                self.alertImage = FWAlertView.alert(title: "标题", detail: "带自定义视图", inputPlaceholder: nil, keyboardType: .default, isSecureTextEntry: false, customView: customImageView, items: items, vProperty: vProperty)
             }
             
             self.alertImage.show()
