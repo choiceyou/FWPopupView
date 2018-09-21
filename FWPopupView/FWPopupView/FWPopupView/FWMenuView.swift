@@ -154,12 +154,14 @@ extension FWMenuView {
         
         self.maxItemSize = self.measureMaxSize()
         
-        self.tableView.register(FWMenuViewTableViewCell.self, forCellReuseIdentifier: "cellId")
-        self.tableView.separatorInset = UIEdgeInsets.zero
-        self.tableView.layoutMargins = UIEdgeInsets.zero
-        self.tableView.separatorColor = self.vProperty.splitColor
-        
         let property = self.vProperty as! FWMenuViewProperty
+        
+        self.tableView.register(FWMenuViewTableViewCell.self, forCellReuseIdentifier: "cellId")
+        self.tableView.separatorInset = property.separatorInset
+        self.tableView.layoutMargins = property.separatorInset
+        self.tableView.separatorColor = property.separatorColor
+        self.tableView.backgroundColor = self.backgroundColor
+        self.tableView.bounces = property.bounces
         
         var selfY: CGFloat = 0
         switch property.popupArrowStyle {
@@ -309,9 +311,8 @@ extension FWMenuView {
         cell.setupContent(title: (self.itemTitleArray != nil) ? self.itemTitleArray![indexPath.row] : nil , image: (self.itemImageNameArray != nil) ? self.itemImageNameArray![indexPath.row] : nil, property: self.vProperty as! FWMenuViewProperty)
         if indexPath.row >= self.itemsCount()-1 {
             cell.separatorInset = UIEdgeInsetsMake(0, 0, 0, CGFloat(MAXFLOAT))
-        } else {
-            cell.separatorInset = UIEdgeInsets.zero
         }
+        cell.backgroundColor = self.vProperty.backgroundColor
         return cell
     }
     
@@ -425,6 +426,14 @@ open class FWMenuViewProperty: FWPopupViewProperty {
     @objc public var contentHorizontalAlignment: UIControlContentHorizontalAlignment = .left
     /// 选中风格
     @objc public var selectionStyle: UITableViewCellSelectionStyle = .none
+    
+    /// 分割线颜色
+    @objc public var separatorColor: UIColor = kPV_RGBA(r: 231, g: 231, b: 231, a: 1)
+    /// 分割线偏移量
+    @objc public var separatorInset: UIEdgeInsets = UIEdgeInsets.zero
+    
+    /// 是否开启tableview回弹效果
+    @objc public var bounces: Bool = false
     
     public override func reSetParams() {
         super.reSetParams()
