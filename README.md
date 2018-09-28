@@ -118,8 +118,8 @@ FWSheetView *sheetView = [FWSheetView sheetWithTitle: @"标题"
 
 ```更新记录
 • v2.0.4 ：
-  1.灰色背景默认值由原来的 alpha=0.6 改为 alpha=0.5；
-  2.在原类初始化方法中添加输入框键盘类型参数：UIKeyboardType（鉴于方法可能跟着版本改动，所以建议封装使用）；
+- [x] 支持图形加载完成后用户添加代理事件灰色背景默认值由原来的 alpha=0.6 改为 alpha=0.5；
+- [x] 在原类初始化方法中添加输入框键盘类型参数：UIKeyboardType（鉴于方法可能跟着版本改动，所以建议封装使用）；
   
 • v2.0.5 :
   1.修复弹窗隐藏时未设置原window为keywindow的问题；
