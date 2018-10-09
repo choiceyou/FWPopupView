@@ -1,4 +1,4 @@
-# IOS之弹窗 -- Swift4.x/[OC版本](https://github.com/choiceyou/FWPopupViewOC)
+# IOS之弹窗 -- Swift4.x/[OC版本(只实现了部分功能，建议两个库同时使用)](https://github.com/choiceyou/FWPopupViewOC)
 
 [![Platform](http://img.shields.io/badge/platform-iOS-blue.svg?style=flat)](http://cocoapods.org/?q=FWPopupView)&nbsp;
 ![Language](https://img.shields.io/badge/language-swift-orange.svg?style=flat)&nbsp;
