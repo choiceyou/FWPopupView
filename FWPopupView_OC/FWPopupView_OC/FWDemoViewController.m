@@ -96,7 +96,7 @@
             vProperty.buttonFontSize = 14.0;
             // 还有很多参数可设置...
             
-            FWAlertView *alertView = [FWAlertView alertWithTitle:@"标题" detail:@"描述描述描述描述描述描述描述描述描述描述" inputPlaceholder:nil keyboardType:UIKeyboardTypeDefault customView:nil items:items vProperty:vProperty];
+            FWAlertView *alertView = [FWAlertView alertWithTitle:@"标题" detail:@"描述描述描述描述描述描述描述描述描述描述" inputPlaceholder:nil keyboardType:UIKeyboardTypeDefault isSecureTextEntry:NO customView:nil items:items vProperty:vProperty];
             [alertView show];
         }
             break;
@@ -110,7 +110,7 @@
                                [[FWPopupItem alloc] initWithTitle:@"确定" itemType:FWItemTypeNormal isCancel:NO canAutoHide:YES itemClickedBlock:block],
                                [[FWPopupItem alloc] initWithTitle:@"其他" itemType:FWItemTypeNormal isCancel:NO canAutoHide:YES itemClickedBlock:block]];
             
-            FWAlertView *alertView = [FWAlertView alertWithTitle:@"标题" detail:@"描述描述描述描述描述描述描述描述描述描述" inputPlaceholder:nil keyboardType:UIKeyboardTypeDefault customView:nil items:items];
+            FWAlertView *alertView = [FWAlertView alertWithTitle:@"标题" detail:@"描述描述描述描述描述描述描述描述描述描述" inputPlaceholder:nil keyboardType:UIKeyboardTypeDefault isSecureTextEntry:NO customView:nil items:items];
             [alertView show];
         }
             break;
@@ -122,7 +122,7 @@
             NSArray *items = @[[[FWPopupItem alloc] initWithTitle:@"取消" itemType:FWItemTypeNormal isCancel:YES canAutoHide:YES itemClickedBlock:block],
                                [[FWPopupItem alloc] initWithTitle:@"确定" itemType:FWItemTypeNormal isCancel:NO canAutoHide:YES itemClickedBlock:block]];
             
-            FWAlertView *alertView = [FWAlertView alertWithTitle:@"标题" detail:@"带输入框" inputPlaceholder:@"请输入..." keyboardType:UIKeyboardTypeDefault customView:nil items:items];
+            FWAlertView *alertView = [FWAlertView alertWithTitle:@"标题" detail:@"带输入框" inputPlaceholder:@"请输入..." keyboardType:UIKeyboardTypeDefault isSecureTextEntry:YES customView:nil items:items];
             [alertView show];
         }
             break;
@@ -142,7 +142,7 @@
                                [[FWPopupItem alloc] initWithTitle:@"确定" itemType:FWItemTypeNormal isCancel:NO canAutoHide:NO itemClickedBlock:block]];
             UIImageView *customImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"audio_bgm_4"]];
             
-            self.alertWithImageView = [FWAlertView alertWithTitle:@"标题" detail:@"带输入框" inputPlaceholder:nil keyboardType:UIKeyboardTypeDefault customView:customImageView items:items];
+            self.alertWithImageView = [FWAlertView alertWithTitle:@"标题" detail:@"带输入框" inputPlaceholder:nil keyboardType:UIKeyboardTypeDefault isSecureTextEntry:NO customView:customImageView items:items];
             [self.alertWithImageView show];
         }
             break;
