@@ -33,7 +33,7 @@ open class FWSheetView: FWPopupView {
     ///   - title: 标题
     ///   - itemTitles: 点击项标题
     ///   - itemBlock: 点击回调
-    ///   - cancenlBlock: 取消按钮回调
+    ///   - cancenlBlock: 取消按钮回调（单词拼错了，将错就错吧，哈哈）
     /// - Returns: self
     @objc open class func sheet(title: String?, itemTitles: [String], itemBlock: FWPopupItemClickedBlock? = nil, cancenlBlock: FWPopupVoidBlock? = nil) -> FWSheetView {
         
@@ -51,8 +51,23 @@ open class FWSheetView: FWPopupView {
     /// - Returns: self
     @objc open class func sheet(title: String?, itemTitles: [String], itemBlock: FWPopupItemClickedBlock? = nil, cancenlBlock: FWPopupVoidBlock? = nil, property: FWSheetViewProperty?) -> FWSheetView {
         
+        return self.sheet(title: title, itemTitles: itemTitles, itemBlock: itemBlock, cancelItemTitle: nil, cancenlBlock: cancenlBlock, property: property)
+    }
+    
+    /// 类初始化方法，可设置Sheet相关属性
+    ///
+    /// - Parameters:
+    ///   - title: 标题
+    ///   - itemTitles: 点击项标题
+    ///   - itemBlock: 点击回调
+    ///   - cancelItemTitle: 取消按钮的名称
+    ///   - cancenlBlock: 取消按钮回调
+    ///   - property: FWSheetView的相关属性
+    /// - Returns: self
+    @objc open class func sheet(title: String?, itemTitles: [String], itemBlock: FWPopupItemClickedBlock? = nil, cancelItemTitle: String?, cancenlBlock: FWPopupVoidBlock? = nil, property: FWSheetViewProperty?) -> FWSheetView {
+        
         let sheetView = FWSheetView()
-        sheetView.setupUI(title: title, itemTitles: itemTitles, itemBlock:itemBlock, cancenlBlock: cancenlBlock, property: property)
+        sheetView.setupUI(title: title, itemTitles: itemTitles, itemBlock:itemBlock, cancelItemTitle: cancelItemTitle, cancenlBlock: cancenlBlock, property: property)
         return sheetView
     }
     
@@ -70,7 +85,7 @@ open class FWSheetView: FWPopupView {
 
 extension FWSheetView {
     
-    private func setupUI(title: String?, itemTitles: [String], itemBlock: FWPopupItemClickedBlock? = nil, cancenlBlock: FWPopupVoidBlock? = nil, property: FWSheetViewProperty?) {
+    private func setupUI(title: String?, itemTitles: [String], itemBlock: FWPopupItemClickedBlock? = nil, cancelItemTitle: String?, cancenlBlock: FWPopupVoidBlock? = nil, property: FWSheetViewProperty?) {
         
         if property != nil {
             self.vProperty = property!
@@ -144,7 +159,7 @@ extension FWSheetView {
         }
         
         var tmpIndex = 0
-        self.actionItemArray.append(FWPopupItem(title: "取消", itemType: .normal, isCancel: true, canAutoHide: true, itemClickedBlock: block))
+        self.actionItemArray.append(FWPopupItem(title: (cancelItemTitle != nil) ? cancelItemTitle! : property.cancelItemTitle, itemType: .normal, isCancel: true, canAutoHide: true, itemClickedBlock: block))
         
         var cancelBtnTopView: UIView?
         var cancelBtn: UIButton?
@@ -245,8 +260,9 @@ extension FWSheetView {
 open class FWSheetViewProperty: FWPopupViewProperty {
     
     // 取消按钮距离头部的距离
-    @objc public var cancelBtnMarginTop: CGFloat = 6
-    
+    @objc public var cancelBtnMarginTop: CGFloat    = 6
+    // 取消按钮名称
+    @objc public var cancelItemTitle                = "取消"
     
     public override func reSetParams() {
         super.reSetParams()
