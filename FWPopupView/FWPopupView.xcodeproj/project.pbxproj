@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		49089B94216DA23B00683B2F /* FWRadioButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49089B93216DA23B00683B2F /* FWRadioButton.swift */; };
 		491A970D20AFCD17006E3D70 /* FWMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 491A970C20AFCD17006E3D70 /* FWMenuView.swift */; };
 		493BE226206A322B00E5EF80 /* FWDateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 493BE225206A322B00E5EF80 /* FWDateView.swift */; };
 		49552D3D20B56C24000A1FA6 /* FWCustomPopupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49552D3C20B56C24000A1FA6 /* FWCustomPopupView.swift */; };
@@ -45,6 +46,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		49089B93216DA23B00683B2F /* FWRadioButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FWRadioButton.swift; sourceTree = "<group>"; };
 		491A970C20AFCD17006E3D70 /* FWMenuView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FWMenuView.swift; sourceTree = "<group>"; };
 		493BE225206A322B00E5EF80 /* FWDateView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FWDateView.swift; sourceTree = "<group>"; };
 		49552D3C20B56C24000A1FA6 /* FWCustomPopupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FWCustomPopupView.swift; sourceTree = "<group>"; };
@@ -162,6 +164,7 @@
 				495AC1042068C900002773F9 /* FWSheetView.swift */,
 				491A970C20AFCD17006E3D70 /* FWMenuView.swift */,
 				493BE225206A322B00E5EF80 /* FWDateView.swift */,
+				49089B93216DA23B00683B2F /* FWRadioButton.swift */,
 			);
 			path = FWPopupView;
 			sourceTree = "<group>";
@@ -307,6 +310,7 @@
 				49BB210F2060B86A00E0DE6E /* FWPopupCategory.swift in Sources */,
 				49BB212720623E8100E0DE6E /* FWPopupItem.swift in Sources */,
 				491A970D20AFCD17006E3D70 /* FWMenuView.swift in Sources */,
+				49089B94216DA23B00683B2F /* FWRadioButton.swift in Sources */,
 				49552D3D20B56C24000A1FA6 /* FWCustomPopupView.swift in Sources */,
 				49812DA7205F91F100639DDC /* FWPopupView.swift in Sources */,
 				493BE226206A322B00E5EF80 /* FWDateView.swift in Sources */,

@@ -14,7 +14,7 @@ class FWDemoViewController: UITableViewController {
     var alertImage: FWAlertView!
     
     /// 注意：这边不同的示例可能还附加演示了一些特性（比如：遮罩层是否能够点击、遮罩层的背景颜色等等），有用到时可以参考
-    var titleArray = ["Alert - 单个按钮", "Alert - 两个按钮", "Alert - 两个按钮（修改参数）", "Alert - 多个按钮", "Alert - 带输入框", "Alert - 带自定义视图", "Sheet - 少量Item", "Sheet - 大量Item", "Date - 自定义日期选择", "Menu - 自定义菜单", "Custom - 自定义弹窗"]
+    var titleArray = ["Alert - 单个按钮", "Alert - 两个按钮", "Alert - 两个按钮（修改参数）", "Alert - 多个按钮", "Alert - 带输入框", "Alert - 带自定义视图", "Sheet - 少量Item", "Sheet - 大量Item", "Date - 自定义日期选择", "Menu - 自定义菜单", "Custom - 自定义弹窗", "RadioButton"]
     
     let block: FWPopupItemClickedBlock = { (popupView, index, title) in
         print("AlertView：点击了第\(index)个按钮")
@@ -48,6 +48,11 @@ extension FWDemoViewController {
         cell.textLabel?.numberOfLines = 0
         if indexPath.row == 9 || indexPath.row == 10 {
             cell.accessoryType = .disclosureIndicator
+        } else if indexPath.row == 11 {
+            let property = FWRadioButtonProperty()
+            property.selectedStateColor = UIColor.red
+            property.buttonType = .rectangle
+            cell.accessoryView = FWRadioButton.radio(frame: CGRect(x: 0, y: 0, width: 25, height: 25), property: property)
         } else {
             cell.accessoryType = .none
         }
@@ -179,6 +184,9 @@ extension FWDemoViewController {
             break
         case 10:
             self.navigationController?.pushViewController(FWCustomPopupDemoVC(), animated: true)
+            break
+        case 11:
+            
             break
         default:
             break

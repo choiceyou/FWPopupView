@@ -4,7 +4,7 @@
 //
 //  Created by xfg on 2018/3/19.
 //  Copyright © 2018年 xfg. All rights reserved.
-//
+//  弹窗基类
 
 /** ************************************************
  
@@ -714,7 +714,7 @@ extension FWPopupView {
 }
 
 
-// MARK: - 弹窗的的相关配置属性
+// MARK: - 弹窗的相关配置属性
 open class FWPopupViewProperty: NSObject {
     
     /// 标题字体大小
