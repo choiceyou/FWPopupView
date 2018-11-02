@@ -116,7 +116,7 @@ open class FWCustomSheetView: FWPopupView, UITableViewDelegate, UITableViewDataS
     @objc open class func sheet(headerTitle: String?, itemTitles: [String]?, itemSecondaryTitles: [String]?, itemImages: [UIImage]?, itemBlock: FWPopupItemClickedBlock? = nil, property: FWCustomSheetViewProperty?) -> FWCustomSheetView {
         
         let customSheet = FWCustomSheetView()
-        customSheet.setupUI(headerTitle: headerTitle, itemTitles: itemTitles, itemSecondaryTitles: itemSecondaryTitles, itemImages: itemImages, property: property)
+        customSheet.setupUI(headerTitle: headerTitle, itemTitles: itemTitles, itemSecondaryTitles: itemSecondaryTitles, itemImages: itemImages, itemBlock: itemBlock, property: property)
         return customSheet
     }
     
@@ -360,7 +360,7 @@ open class FWCustomSheetViewProperty: FWPopupViewProperty {
         self.titleTextAttributes = [NSAttributedStringKey.foregroundColor: self.itemNormalColor, NSAttributedStringKey.backgroundColor: UIColor.clear, NSAttributedStringKey.font: UIFont.systemFont(ofSize: self.buttonFontSize)]
         
         let tmpColor = kPV_RGBA(r: 138, g: 146, b: 165, a: 1)
-        self.secondaryTitleTextAttributes = [NSAttributedStringKey.foregroundColor: tmpColor, NSAttributedStringKey.backgroundColor: UIColor.clear, NSAttributedStringKey.font: UIFont.systemFont(ofSize: self.buttonFontSize)]
+        self.secondaryTitleTextAttributes = [NSAttributedStringKey.foregroundColor: tmpColor, NSAttributedStringKey.backgroundColor: UIColor.clear, NSAttributedStringKey.font: UIFont.systemFont(ofSize: 12)]
         
         self.letfRigthMargin = 20
         
