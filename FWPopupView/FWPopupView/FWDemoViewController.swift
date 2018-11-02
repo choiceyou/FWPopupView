@@ -14,11 +14,32 @@ class FWDemoViewController: UITableViewController {
     var alertImage: FWAlertView!
     
     /// 注意：这边不同的示例可能还附加演示了一些特性（比如：遮罩层是否能够点击、遮罩层的背景颜色等等），有用到时可以参考
-    var titleArray = ["Alert - 单个按钮", "Alert - 两个按钮", "Alert - 两个按钮（修改参数）", "Alert - 多个按钮", "Alert - 带输入框", "Alert - 带自定义视图", "Sheet - 少量Item", "Sheet - 大量Item", "Date - 自定义日期选择", "Menu - 自定义菜单", "Custom - 自定义弹窗", "RadioButton"]
+    var titleArray = ["Alert - 单个按钮", "Alert - 两个按钮", "Alert - 两个按钮（修改参数）", "Alert - 多个按钮", "Alert - 带输入框", "Alert - 带自定义视图", "Sheet - 少量Item", "Sheet - 大量Item", "Date - 自定义日期选择", "Menu - 自定义菜单", "Custom - 自定义弹窗", "FWCustomSheetView - 类似Sheet效果", "RadioButton"]
     
     let block: FWPopupItemClickedBlock = { (popupView, index, title) in
         print("AlertView：点击了第\(index)个按钮")
     }
+    
+    lazy var customSheetView: FWCustomSheetView = {
+        
+        let property = FWCustomSheetViewProperty()
+        property.popupViewItemHeight = 60
+        property.secondaryTitleTextAttributes = [NSAttributedStringKey.foregroundColor: kPV_RGBA(r: 138, g: 146, b: 165, a: 1), NSAttributedStringKey.backgroundColor: UIColor.clear, NSAttributedStringKey.font: UIFont.systemFont(ofSize: 12)]
+        property.lastNeedAccessoryView = true
+        
+        let titles = ["eoslinwu1122", "eoslinwusd23", "导入钱包"]
+        let secondaryTitles = ["EOS6sHTCXbm4Gz5WRhKxuuBgVZYttvM9tEdU6ThH6kseMWLYDTk9q", "EOS1sdksbm4Gz5WRhKxuuBgVZYttvM9tEdU6ThH6kseMWLYDTk9q",""]
+        let images = [UIImage(named: "right_menu_multichat"),
+                      UIImage(named: "right_menu_addFri"),
+                      UIImage(named: "right_menu_QR")]
+        
+        let customSheetView = FWCustomSheetView.sheet(headerTitle: "选择一个钱包", itemTitles: titles, itemSecondaryTitles: secondaryTitles, itemImages: images as? [UIImage], itemBlock: { (popupView, index, title) in
+            print("Menu：点击了第\(index)个按钮")
+        }, property: property)
+        
+        return customSheetView
+    }()
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -48,7 +69,7 @@ extension FWDemoViewController {
         cell.textLabel?.numberOfLines = 0
         if indexPath.row == 9 || indexPath.row == 10 {
             cell.accessoryType = .disclosureIndicator
-        } else if indexPath.row == 11 {
+        } else if indexPath.row == 12 {
             let property = FWRadioButtonProperty()
             property.selectedStateColor = UIColor.red
             property.buttonType = .rectangle
@@ -186,7 +207,7 @@ extension FWDemoViewController {
             self.navigationController?.pushViewController(FWCustomPopupDemoVC(), animated: true)
             break
         case 11:
-            
+            self.customSheetView.show()
             break
         default:
             break
