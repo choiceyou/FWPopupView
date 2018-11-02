@@ -15,6 +15,7 @@
 
 @property (nonatomic, strong) NSArray       *titleArray;
 @property (nonatomic, strong) FWAlertView   *alertWithImageView;
+@property (nonatomic, strong) FWCustomSheetView *customSheetView;
 
 @end
 
@@ -26,10 +27,23 @@
     
     self.navigationItem.title = @"FWPopupView";
     
-    self.titleArray = @[@"Alert - 单个按钮", @"Alert - 两个按钮", @"Alert - 两个按钮（修改参数）", @"Alert - 多个按钮", @"Alert - 带输入框", @"Alert - 带自定义视图", @"Sheet - 少量Item", @"Sheet - 大量Item", @"Date - 自定义日期选择", @"Menu - 自定义菜单", @"Custom - 自定义弹窗"];
+    self.titleArray = @[@"Alert - 单个按钮", @"Alert - 两个按钮", @"Alert - 两个按钮（修改参数）", @"Alert - 多个按钮", @"Alert - 带输入框", @"Alert - 带自定义视图", @"Sheet - 少量Item", @"Sheet - 大量Item", @"Date - 自定义日期选择", @"Menu - 自定义菜单", @"Custom - 自定义弹窗", @"CustomSheet - 类似Sheet效果"];
     
     [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"cellId"];
     self.tableView.estimatedRowHeight = 44.0;
+    
+    
+    FWCustomSheetViewProperty *property = [[FWCustomSheetViewProperty alloc] init];
+    property.lastNeedAccessoryView = YES;
+    
+    NSArray *itemTitles = @[@"eoslinwu1122", @"eoslinwusd23", @"导入钱包"];
+    NSArray *itemSecondaryTitles = @[@"EOS6sHTCXbm4Gz5WRhKxuuBgVZYttvM9tEdU6ThH6kseMWLYDTk9q", @"EOS1sdksbm4Gz5WRhKxuuBgVZYttvM9tEdU6ThH6kseMWLYDTk9q", @""];
+    
+    self.customSheetView = [FWCustomSheetView sheetWithHeaderTitle:@"选择一个钱包" itemTitles:itemTitles itemSecondaryTitles:itemSecondaryTitles itemImages:nil itemBlock:^(FWPopupView * popupView, NSInteger index, NSString *title) {
+        
+        NSLog(@"当前选中了：%@", title);
+        
+    } property:property];
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -189,6 +203,11 @@
         case 10:
         {
             [self.navigationController pushViewController:[[FWCustomDemoVC alloc] init] animated:YES];
+        }
+            break;
+        case 11 :
+        {
+            [self.customSheetView show];
         }
             break;
             

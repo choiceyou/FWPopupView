@@ -4,7 +4,7 @@
 //
 //  Created by xfg on 2018/3/19.
 //  Copyright © 2018年 xfg. All rights reserved.
-//
+//  弹窗基类
 
 /** ************************************************
  
@@ -714,7 +714,7 @@ extension FWPopupView {
 }
 
 
-// MARK: - 弹窗的的相关配置属性
+// MARK: - 弹窗的相关配置属性
 open class FWPopupViewProperty: NSObject {
     
     /// 标题字体大小
@@ -733,16 +733,16 @@ open class FWPopupViewProperty: NSObject {
     /// 选中按钮文字颜色
     @objc open var itemPressedColor: UIColor        = kPV_RGBA(r: 240, g: 240, b: 240, a: 1)
     
-    /// 上下间距
+    /// 单个控件中的文字（图片）等与该控件上（下）之前的距离。注意：这个距离指的是单个控件内部哦，不是控件与控件之间
     @objc open var topBottomMargin:CGFloat          = 10
-    /// 左右间距
+    /// 单个控件中的文字（图片）等与该控件左（右）之前的距离。注意：这个距离指的是单个控件内部哦，不是控件与控件之间
     @objc open var letfRigthMargin:CGFloat          = 10
     /// 控件之间的间距
     @objc open var commponentMargin:CGFloat         = 10
     
     /// 边框颜色（部分控件分割线也用这个颜色）
     @objc open var splitColor: UIColor              = kPV_RGBA(r: 231, g: 231, b: 231, a: 1)
-    /// 边框宽度
+    /// 分割线、边框的宽度
     @objc open var splitWidth: CGFloat              = (1/UIScreen.main.scale)
     /// 圆角值
     @objc open var cornerRadius: CGFloat            = 5.0

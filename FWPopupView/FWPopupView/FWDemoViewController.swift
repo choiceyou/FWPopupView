@@ -14,7 +14,7 @@ class FWDemoViewController: UITableViewController {
     var alertImage: FWAlertView!
     
     /// 注意：这边不同的示例可能还附加演示了一些特性（比如：遮罩层是否能够点击、遮罩层的背景颜色等等），有用到时可以参考
-    var titleArray = ["Alert - 单个按钮", "Alert - 两个按钮", "Alert - 两个按钮（修改参数）", "Alert - 多个按钮", "Alert - 带输入框", "Alert - 带自定义视图", "Sheet - 少量Item", "Sheet - 大量Item", "Date - 自定义日期选择", "Menu - 自定义菜单", "Custom - 自定义弹窗", "FWCustomSheetView - 类似Sheet效果", "RadioButton"]
+    var titleArray = ["Alert - 单个按钮", "Alert - 两个按钮", "Alert - 两个按钮（修改参数）", "Alert - 多个按钮", "Alert - 带输入框", "Alert - 带自定义视图", "Sheet - 少量Item", "Sheet - 大量Item", "Date - 自定义日期选择", "Menu - 自定义菜单", "Custom - 自定义弹窗", "CustomSheet - 类似Sheet效果", "RadioButton"]
     
     let block: FWPopupItemClickedBlock = { (popupView, index, title) in
         print("AlertView：点击了第\(index)个按钮")
@@ -34,7 +34,7 @@ class FWDemoViewController: UITableViewController {
                       UIImage(named: "right_menu_QR")]
         
         let customSheetView = FWCustomSheetView.sheet(headerTitle: "选择一个钱包", itemTitles: titles, itemSecondaryTitles: secondaryTitles, itemImages: images as? [UIImage], itemBlock: { (popupView, index, title) in
-            print("Menu：点击了第\(index)个按钮")
+            print("customSheet：点击了第\(index)个按钮")
         }, property: property)
         
         return customSheetView

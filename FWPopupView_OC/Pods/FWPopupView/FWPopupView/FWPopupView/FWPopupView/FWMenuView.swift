@@ -4,7 +4,7 @@
 //
 //  Created by xfg on 2018/5/19.
 //  Copyright © 2018年 xfg. All rights reserved.
-//
+//  仿QQ、微信菜单
 
 /** ************************************************
  
@@ -47,7 +47,9 @@ class FWMenuViewTableViewCell: UITableViewCell {
         
         if title != nil {
             let attributedString = NSAttributedString(string: title!, attributes: property.titleTextAttributes)
+            let selectedAttributedString = NSAttributedString(string: title!, attributes: property.selectedTitleTextAttributes)
             self.itemBtn.setAttributedTitle(attributedString, for: .normal)
+            self.itemBtn.setAttributedTitle(selectedAttributedString, for: .highlighted)
         }
         
         if image != nil && title != nil {
@@ -152,9 +154,12 @@ extension FWMenuView {
         
         self.popupItemClickedBlock = itemBlock
         
-        self.maxItemSize = self.measureMaxSize()
-        
         let property = self.vProperty as! FWMenuViewProperty
+        
+        self.maxItemSize = self.measureMaxSize()
+        if property.popupViewItemHeight > 0 {
+            self.maxItemSize.height = property.popupViewItemHeight
+        }
         
         self.tableView.register(FWMenuViewTableViewCell.self, forCellReuseIdentifier: "cellId")
         self.tableView.separatorInset = property.separatorInset
@@ -309,9 +314,6 @@ extension FWMenuView {
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cellId", for: indexPath) as! FWMenuViewTableViewCell
         cell.setupContent(title: (self.itemTitleArray != nil) ? self.itemTitleArray![indexPath.row] : nil , image: (self.itemImageNameArray != nil) ? self.itemImageNameArray![indexPath.row] : nil, property: self.vProperty as! FWMenuViewProperty)
-        if indexPath.row >= self.itemsCount()-1 {
-            cell.separatorInset = UIEdgeInsetsMake(0, 0, 0, CGFloat(MAXFLOAT))
-        }
         cell.backgroundColor = self.vProperty.backgroundColor
         return cell
     }
@@ -416,6 +418,9 @@ open class FWMenuViewProperty: FWPopupViewProperty {
     
     /// 弹窗大小，如果没有设置，将按照统一的计算方式
     @objc public var popupViewSize = CGSize(width: 0, height: 0)
+    
+    /// 指定行高优先级 > 自动计算的优先级
+    @objc public var popupViewItemHeight: CGFloat = 0
     
     /// 未选中时按钮字体属性
     @objc public var titleTextAttributes: [NSAttributedStringKey: Any]!
