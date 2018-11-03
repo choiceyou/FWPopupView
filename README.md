@@ -115,6 +115,9 @@ FWSheetView *sheetView = [FWSheetView sheetWithTitle: @"标题"
 ![](https://github.com/choiceyou/FWPopupView/blob/master/%E6%95%88%E6%9E%9C/Custom.gif)
 ![](https://github.com/choiceyou/FWPopupView/blob/master/%E6%95%88%E6%9E%9C/Menu.gif)
 
+![](https://github.com/choiceyou/FWPopupView/blob/master/%E6%95%88%E6%9E%9C/IMG_0280.PNG)
+![](https://github.com/choiceyou/FWPopupView/blob/master/%E6%95%88%E6%9E%9C/IMG_0282.PNG)
+
 
 
 ## 更新记录：
@@ -165,6 +168,12 @@ FWSheetView *sheetView = [FWSheetView sheetWithTitle: @"标题"
   
 • v3.0.8 ：
 - [x] FWAlertView带输入框输入支持密码安全类型；
+
+• v3.0.9 ：
+- [x] FWSheetView支持修改“取消”按钮的名称；
+
+• v3.1.1 ：
+- [x] 添加控件：FWCustomSheetView，该控件实现了单选效果；
 
 
 
