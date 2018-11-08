@@ -22,7 +22,7 @@ class FWMenuViewTableViewCell: UITableViewCell {
     
     var itemBtn: UIButton!
     
-    override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
         self.itemBtn = UIButton(type: .custom)
@@ -53,7 +53,7 @@ class FWMenuViewTableViewCell: UITableViewCell {
         }
         
         if image != nil && title != nil {
-            self.itemBtn.titleEdgeInsets = UIEdgeInsetsMake(0, property.commponentMargin, 0, 0)
+            self.itemBtn.titleEdgeInsets = UIEdgeInsets(top: 0, left: property.commponentMargin, bottom: 0, right: 0)
         }
     }
 }
@@ -423,14 +423,14 @@ open class FWMenuViewProperty: FWPopupViewProperty {
     @objc public var popupViewItemHeight: CGFloat = 0
     
     /// 未选中时按钮字体属性
-    @objc public var titleTextAttributes: [NSAttributedStringKey: Any]!
+    @objc public var titleTextAttributes: [NSAttributedString.Key: Any]!
     /// 选中时按钮字体属性
-    @objc public var selectedTitleTextAttributes: [NSAttributedStringKey: Any]!
+    @objc public var selectedTitleTextAttributes: [NSAttributedString.Key: Any]!
     
     /// 内容位置
-    @objc public var contentHorizontalAlignment: UIControlContentHorizontalAlignment = .left
+    @objc public var contentHorizontalAlignment: UIControl.ContentHorizontalAlignment = .left
     /// 选中风格
-    @objc public var selectionStyle: UITableViewCellSelectionStyle = .none
+    @objc public var selectionStyle: UITableViewCell.SelectionStyle = .none
     
     /// 分割线颜色
     @objc public var separatorColor: UIColor = kPV_RGBA(r: 231, g: 231, b: 231, a: 1)
@@ -443,9 +443,9 @@ open class FWMenuViewProperty: FWPopupViewProperty {
     public override func reSetParams() {
         super.reSetParams()
         
-        self.titleTextAttributes = [NSAttributedStringKey.foregroundColor: self.itemNormalColor, NSAttributedStringKey.backgroundColor: UIColor.clear, NSAttributedStringKey.font: UIFont.systemFont(ofSize: self.buttonFontSize)]
+        self.titleTextAttributes = [NSAttributedString.Key.foregroundColor: self.itemNormalColor, NSAttributedString.Key.backgroundColor: UIColor.clear, NSAttributedString.Key.font: UIFont.systemFont(ofSize: self.buttonFontSize)]
         
-        self.selectedTitleTextAttributes = [NSAttributedStringKey.foregroundColor: self.itemNormalColor, NSAttributedStringKey.backgroundColor: UIColor.clear, NSAttributedStringKey.font: UIFont.systemFont(ofSize: self.buttonFontSize)]
+        self.selectedTitleTextAttributes = [NSAttributedString.Key.foregroundColor: self.itemNormalColor, NSAttributedString.Key.backgroundColor: UIColor.clear, NSAttributedString.Key.font: UIFont.systemFont(ofSize: self.buttonFontSize)]
         
         self.letfRigthMargin = 20
         

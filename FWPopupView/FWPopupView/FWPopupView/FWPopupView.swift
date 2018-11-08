@@ -772,7 +772,7 @@ open class FWPopupViewProperty: NSObject {
     @objc open var popupAnimationType: FWPopupAnimationType         = .position
     
     /// 弹窗偏移量
-    @objc open var popupViewEdgeInsets                              = UIEdgeInsetsMake(0, 0, 0, 0)
+    @objc open var popupViewEdgeInsets                              = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
     /// 遮罩层的背景色（也可以使用fwMaskViewColor），注意：该参数在弹窗隐藏后，还原为弹窗弹起时的值
     @objc open var maskViewColor: UIColor?
     /// 为了兼容OC，0表示false，1表示true，为true时：用户点击外部遮罩层页面可以消失，注意：该参数在弹窗隐藏后，还原为弹窗弹起时的值

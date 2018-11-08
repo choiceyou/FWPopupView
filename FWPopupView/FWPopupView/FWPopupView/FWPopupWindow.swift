@@ -41,7 +41,7 @@ open class FWPopupWindow: UIWindow, UIGestureRecognizerDelegate {
         rootVC.view.backgroundColor = UIColor.clear
         self.rootViewController = rootVC
         
-        self.windowLevel = UIWindowLevelStatusBar + 1
+        self.windowLevel = UIWindow.Level.statusBar + 1
         
         let tapGest = UITapGestureRecognizer(target: self, action: #selector(tapGesClick(tap:)))
         //        tapGest.cancelsTouchesInView = false

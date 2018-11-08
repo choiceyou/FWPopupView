@@ -56,7 +56,7 @@ class FWMenuViewDemoVC: UIViewController {
         vProperty.popupAnimationType = .scale
         vProperty.maskViewColor = UIColor(white: 0, alpha: 0.2)
         vProperty.touchWildToHide = "1"
-        vProperty.popupViewEdgeInsets = UIEdgeInsetsMake(kStatusBarHeight + kNavBarHeight, 0, 0, 8)
+        vProperty.popupViewEdgeInsets = UIEdgeInsets(top: kStatusBarHeight + kNavBarHeight, left: 0, bottom: 0, right: 8)
         vProperty.topBottomMargin = 0
         vProperty.animationDuration = 0.3
         vProperty.popupArrowStyle = .round
@@ -64,8 +64,8 @@ class FWMenuViewDemoVC: UIViewController {
         vProperty.backgroundColor = kPV_RGBA(r: 64, g: 63, b: 66, a: 1)
         vProperty.splitColor = kPV_RGBA(r: 64, g: 63, b: 66, a: 1)
         vProperty.separatorColor = kPV_RGBA(r: 91, g: 91, b: 93, a: 1)
-        vProperty.titleTextAttributes = [NSAttributedStringKey.foregroundColor: UIColor.white, NSAttributedStringKey.backgroundColor: UIColor.clear, NSAttributedStringKey.font: UIFont.systemFont(ofSize: 15.0)]
-        vProperty.separatorInset = UIEdgeInsetsMake(0, 15, 0, 15)
+        vProperty.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white, NSAttributedString.Key.backgroundColor: UIColor.clear, NSAttributedString.Key.font: UIFont.systemFont(ofSize: 15.0)]
+        vProperty.separatorInset = UIEdgeInsets(top: 0, left: 15, bottom: 0, right: 15)
         
         let menuView = FWMenuView.menu(itemTitles: titles, itemImageNames: images2 as? [UIImage], itemBlock: { (popupView, index, title) in
             print("Menu：点击了第\(index)个按钮")
@@ -86,7 +86,7 @@ class FWMenuViewDemoVC: UIViewController {
         self.view.backgroundColor = UIColor.white
         
         let buttonItem: UIBarButtonItem = UIBarButtonItem(image: UIImage(named: "mqz_nav_add"), style: .plain, target: self, action: #selector(barBtnAction(_:)))
-        buttonItem.imageInsets = UIEdgeInsetsMake(0, 0, 0, -6)
+        buttonItem.imageInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: -6)
         self.navigationItem.rightBarButtonItem = buttonItem
         
         let btn = UIButton(type: .custom)
@@ -141,7 +141,7 @@ extension FWMenuViewDemoVC {
             property.popupAnimationType = .scale
             property.maskViewColor = UIColor.clear
             property.touchWildToHide = "1"
-            property.popupViewEdgeInsets = UIEdgeInsetsMake(self.centerBtn.frame.maxY + kStatusBarHeight + kNavBarHeight, 0, 0, 0)
+            property.popupViewEdgeInsets = UIEdgeInsets(top: self.centerBtn.frame.maxY + kStatusBarHeight + kNavBarHeight, left: 0, bottom: 0, right: 0)
             property.topBottomMargin = 10
             property.animationDuration = 0.3
             property.popupArrowStyle = .round
@@ -160,7 +160,7 @@ extension FWMenuViewDemoVC {
             property.popupAnimationType = .frame
             property.maskViewColor = UIColor(white: 0, alpha: 0.4)
             property.touchWildToHide = "1"
-            property.popupViewEdgeInsets = UIEdgeInsetsMake(0, 10, UIScreen.main.bounds.height - self.leftBottomBtn.frame.minY - kStatusBarHeight - kNavBarHeight, 0)
+            property.popupViewEdgeInsets = UIEdgeInsets(top: 0, left: 10, bottom: UIScreen.main.bounds.height - self.leftBottomBtn.frame.minY - kStatusBarHeight - kNavBarHeight, right: 0)
             property.topBottomMargin = 10
             property.animationDuration = 0.3
             property.popupArrowStyle = .none
@@ -180,7 +180,7 @@ extension FWMenuViewDemoVC {
             property.popupAnimationType = .scale
             property.maskViewColor = UIColor.clear
             property.touchWildToHide = "1"
-            property.popupViewEdgeInsets = UIEdgeInsetsMake(0, 0, UIScreen.main.bounds.height - self.leftBottomBtn.frame.minY - kStatusBarHeight - kNavBarHeight, 10)
+            property.popupViewEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: UIScreen.main.bounds.height - self.leftBottomBtn.frame.minY - kStatusBarHeight - kNavBarHeight, right: 10)
             property.topBottomMargin = 0
             property.animationDuration = 0.3
             property.popupArrowStyle = .round

@@ -21,10 +21,10 @@ class FWNavigationController: UINavigationController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let textAttrs = [NSAttributedStringKey.foregroundColor: UIColor.white, NSAttributedStringKey.font: UIFont.systemFont(ofSize: navTitleFont)]
+        let textAttrs = [NSAttributedString.Key.foregroundColor: UIColor.white, NSAttributedString.Key.font: UIFont.systemFont(ofSize: navTitleFont)]
         navigationBar.titleTextAttributes = textAttrs
         
-        navigationBar.setBackgroundImage(FWNavigationController.resizableImage(imageName: "header_bg_message", edgeInsets: UIEdgeInsetsMake(0, 0, 0, 0)), for: .default)
+        navigationBar.setBackgroundImage(FWNavigationController.resizableImage(imageName: "header_bg_message", edgeInsets: UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)), for: .default)
         navigationBar.isTranslucent = false
         
         self.extendedLayoutIncludesOpaqueBars = true
@@ -34,7 +34,7 @@ class FWNavigationController: UINavigationController {
     
     override func pushViewController(_ viewController: UIViewController, animated: Bool) {
         
-        if self.childViewControllers.count > 0 {
+        if self.children.count > 0 {
             
             let button = UIButton(type: .custom)
             button.setImage(UIImage(named: "com_arrow_vc_back"), for: .normal)
@@ -79,6 +79,6 @@ extension FWNavigationController {
         let imageW = image!.size.width
         let imageH = image!.size.height
         
-        return image?.resizableImage(withCapInsets: UIEdgeInsetsMake(imageH * edgeInsets.top, imageW * edgeInsets.left, imageH * edgeInsets.bottom, imageW * edgeInsets.right), resizingMode: .stretch)
+        return image?.resizableImage(withCapInsets: UIEdgeInsets(top: imageH * edgeInsets.top, left: imageW * edgeInsets.left, bottom: imageH * edgeInsets.bottom, right: imageW * edgeInsets.right), resizingMode: .stretch)
     }
 }

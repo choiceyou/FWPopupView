@@ -131,7 +131,7 @@ open class FWAlertView: FWPopupView {
     }
     
     deinit {
-        NotificationCenter.default.removeObserver(self, name: .UITextFieldTextDidChange, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UITextField.textDidChangeNotification, object: nil)
     }
 }
 

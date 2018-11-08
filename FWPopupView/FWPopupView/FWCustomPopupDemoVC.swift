@@ -23,7 +23,7 @@ class FWCustomPopupDemoVC: UITableViewController {
         vProperty.popupAnimationType = .frame
         vProperty.maskViewColor = UIColor(white: 0, alpha: 0.5)
         vProperty.touchWildToHide = "1"
-        vProperty.popupViewEdgeInsets = UIEdgeInsetsMake(64, 0, 0, 0)
+        vProperty.popupViewEdgeInsets = UIEdgeInsets(top: 64, left: 0, bottom: 0, right: 0)
         vProperty.animationDuration = 0.2
         customPopupView.vProperty = vProperty
         
@@ -39,7 +39,7 @@ class FWCustomPopupDemoVC: UITableViewController {
         vProperty.popupAnimationType = .frame
         vProperty.maskViewColor = UIColor(white: 0, alpha: 0.5)
         vProperty.touchWildToHide = "1"
-        vProperty.popupViewEdgeInsets = UIEdgeInsetsMake(64, 0, 0, 0)
+        vProperty.popupViewEdgeInsets = UIEdgeInsets(top: 64, left: 0, bottom: 0, right: 0)
         vProperty.animationDuration = 0.2
         customPopupView.vProperty = vProperty
         
@@ -53,7 +53,7 @@ class FWCustomPopupDemoVC: UITableViewController {
         self.navigationItem.title = "自定义弹窗"
         
         self.tableView.estimatedRowHeight = 44.0
-        self.tableView.rowHeight = UITableViewAutomaticDimension
+        self.tableView.rowHeight = UITableView.automaticDimension
         self.tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cellId")
         
     }
@@ -85,7 +85,7 @@ extension FWCustomPopupDemoVC {
             vProperty.popupAnimationType = .scale
             vProperty.maskViewColor = UIColor(white: 0, alpha: 0.3)
             vProperty.touchWildToHide = "1"
-            vProperty.popupViewEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 0)
+            vProperty.popupViewEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
             vProperty.animationDuration = 0.2
             customPopupView.vProperty = vProperty
             
@@ -100,7 +100,7 @@ extension FWCustomPopupDemoVC {
             vProperty.popupAnimationType = .position
             vProperty.maskViewColor = UIColor(white: 0, alpha: 0.5)
             vProperty.touchWildToHide = "1"
-            vProperty.popupViewEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 0)
+            vProperty.popupViewEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
             vProperty.animationDuration = 0.2
             customPopupView.vProperty = vProperty
             
@@ -116,7 +116,7 @@ extension FWCustomPopupDemoVC {
             vProperty.popupAnimationType = .frame
             vProperty.maskViewColor = UIColor(white: 0, alpha: 0.5)
             vProperty.touchWildToHide = "1"
-            vProperty.popupViewEdgeInsets = UIEdgeInsetsMake(64, 0, 0, 0)
+            vProperty.popupViewEdgeInsets = UIEdgeInsets(top: 64, left: 0, bottom: 0, right: 0)
             vProperty.animationDuration = 0.5
             customPopupView.vProperty = vProperty
             
@@ -132,7 +132,7 @@ extension FWCustomPopupDemoVC {
             vProperty.popupAnimationType = .scale
             vProperty.maskViewColor = UIColor(white: 0, alpha: 0.5)
             vProperty.touchWildToHide = "1"
-            vProperty.popupViewEdgeInsets = UIEdgeInsetsMake(64, 0, 0, 0)
+            vProperty.popupViewEdgeInsets = UIEdgeInsets(top: 64, left: 0, bottom: 0, right: 0)
             vProperty.animationDuration = 0.5
             customPopupView.vProperty = vProperty
             
@@ -147,7 +147,7 @@ extension FWCustomPopupDemoVC {
             vProperty.popupAnimationType = .position
             vProperty.maskViewColor = UIColor(white: 0, alpha: 0.5)
             vProperty.touchWildToHide = "1"
-            vProperty.popupViewEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 0)
+            vProperty.popupViewEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
             vProperty.animationDuration = 0.3
             customPopupView.vProperty = vProperty
             
@@ -161,7 +161,7 @@ extension FWCustomPopupDemoVC {
             vProperty.popupAnimationType = .frame
             vProperty.maskViewColor = UIColor(white: 0, alpha: 0.5)
             vProperty.touchWildToHide = "1"
-            vProperty.popupViewEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 0)
+            vProperty.popupViewEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
             vProperty.animationDuration = 0.3
             customPopupView.vProperty = vProperty
             
@@ -175,7 +175,7 @@ extension FWCustomPopupDemoVC {
             vProperty.popupAnimationType = .scale
             vProperty.maskViewColor = UIColor(white: 0, alpha: 0.5)
             vProperty.touchWildToHide = "1"
-            vProperty.popupViewEdgeInsets = UIEdgeInsetsMake(0, 50, 0, 0)
+            vProperty.popupViewEdgeInsets = UIEdgeInsets(top: 0, left: 50, bottom: 0, right: 0)
             vProperty.animationDuration = 0.3
             customPopupView.vProperty = vProperty
             
@@ -190,7 +190,7 @@ extension FWCustomPopupDemoVC {
             vProperty.popupAnimationType = .position
             vProperty.maskViewColor = UIColor(white: 0, alpha: 0.5)
             vProperty.touchWildToHide = "1"
-            vProperty.popupViewEdgeInsets = UIEdgeInsetsMake(0, 0, 10, 0)
+            vProperty.popupViewEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 10, right: 0)
             vProperty.animationDuration = 0.5
             vProperty.usingSpringWithDamping = 0.7
             customPopupView.vProperty = vProperty
@@ -205,7 +205,7 @@ extension FWCustomPopupDemoVC {
             vProperty.popupAnimationType = .frame
             vProperty.maskViewColor = UIColor(white: 0, alpha: 0.5)
             vProperty.touchWildToHide = "1"
-            vProperty.popupViewEdgeInsets = UIEdgeInsetsMake(0, 0, 64, 0)
+            vProperty.popupViewEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 64, right: 0)
             vProperty.animationDuration = 0.5
             customPopupView.vProperty = vProperty
             
@@ -219,7 +219,7 @@ extension FWCustomPopupDemoVC {
             vProperty.popupAnimationType = .scale
             vProperty.maskViewColor = UIColor(white: 0, alpha: 0.5)
             vProperty.touchWildToHide = "1"
-            vProperty.popupViewEdgeInsets = UIEdgeInsetsMake(64, 0, 0, 0)
+            vProperty.popupViewEdgeInsets = UIEdgeInsets(top: 64, left: 0, bottom: 0, right: 0)
             vProperty.animationDuration = 0.5
             customPopupView.vProperty = vProperty
             
@@ -234,7 +234,7 @@ extension FWCustomPopupDemoVC {
             vProperty.popupAnimationType = .position
             vProperty.maskViewColor = UIColor(white: 0, alpha: 0.5)
             vProperty.touchWildToHide = "1"
-            vProperty.popupViewEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 0)
+            vProperty.popupViewEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
             vProperty.animationDuration = 0.3
             customPopupView.vProperty = vProperty
             
@@ -248,7 +248,7 @@ extension FWCustomPopupDemoVC {
             vProperty.popupAnimationType = .frame
             vProperty.maskViewColor = UIColor(white: 0, alpha: 0.5)
             vProperty.touchWildToHide = "1"
-            vProperty.popupViewEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 50)
+            vProperty.popupViewEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 50)
             vProperty.animationDuration = 0.3
             customPopupView.vProperty = vProperty
             
@@ -262,7 +262,7 @@ extension FWCustomPopupDemoVC {
             vProperty.popupAnimationType = .scale
             vProperty.maskViewColor = UIColor(white: 0, alpha: 0.5)
             vProperty.touchWildToHide = "1"
-            vProperty.popupViewEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 0)
+            vProperty.popupViewEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
             vProperty.animationDuration = 0.3
             customPopupView.vProperty = vProperty
             

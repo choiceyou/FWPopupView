@@ -59,7 +59,7 @@ class FWDemoViewController: UITableViewController {
         self.navigationItem.title = "FWPopupView"
         
         self.tableView.estimatedRowHeight = 44.0
-        self.tableView.rowHeight = UITableViewAutomaticDimension
+        self.tableView.rowHeight = UITableView.automaticDimension
         self.tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cellId")
         
         // 设置弹窗外部可点击

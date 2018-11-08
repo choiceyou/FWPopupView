@@ -118,7 +118,7 @@ extension UIView {
             let aa = self as! UIWindow
             aa.makeKeyAndVisible()
         } else {
-            self.bringSubview(toFront: self.fwMaskView)
+            self.bringSubviewToFront(self.fwMaskView)
         }
         
         UIView.animate(withDuration: self.fwAnimationDuration, delay: 0, options: [.curveEaseOut, .beginFromCurrentState], animations: {
