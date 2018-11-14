@@ -155,6 +155,7 @@ extension FWCustomSheetView {
         
         let property = self.vProperty as! FWCustomSheetViewProperty
         var selfSize: CGSize = CGSize(width: UIScreen.main.bounds.width, height: 0)
+        self.currentSelectedIndex = property.selectedIndex
         
         // 绘制头部视图
         if headerTitle != nil {

@@ -24,6 +24,7 @@ class FWDemoViewController: UITableViewController {
         
         let property = FWCustomSheetViewProperty()
         property.popupViewItemHeight = 40
+        property.selectedIndex = 1
         
         let titles = ["EOS", "DICE", "ZKS"]
         
