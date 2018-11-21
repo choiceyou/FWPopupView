@@ -175,10 +175,10 @@
 				49BB212620623E8100E0DE6E /* FWPopupItem.swift */,
 				49BB212420623C4A00E0DE6E /* FWAlertView.swift */,
 				495AC1042068C900002773F9 /* FWSheetView.swift */,
+				4904E177218AE8C50014A6E3 /* FWCustomSheetView.swift */,
 				491A970C20AFCD17006E3D70 /* FWMenuView.swift */,
 				493BE225206A322B00E5EF80 /* FWDateView.swift */,
 				49089B93216DA23B00683B2F /* FWRadioButton.swift */,
-				4904E177218AE8C50014A6E3 /* FWCustomSheetView.swift */,
 			);
 			path = FWPopupView;
 			sourceTree = "<group>";

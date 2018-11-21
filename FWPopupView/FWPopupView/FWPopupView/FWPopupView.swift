@@ -221,6 +221,9 @@ extension FWPopupView {
         self.show(popupDidAppearBlock: nil)
     }
     
+    /// 显示
+    ///
+    /// - Parameter popupDidAppearBlock: 弹窗已经显示回调
     @objc open func show(popupDidAppearBlock: FWPopupDidAppearBlock? = nil) {
         
         if popupDidAppearBlock != nil {
@@ -233,6 +236,17 @@ extension FWPopupView {
     ///
     /// - Parameter completionBlock: 显示、隐藏回调
     @objc open func show(popupStateBlock: FWPopupStateBlock? = nil) {
+        
+        if self.attachedView?.fwReferenceCount == 1 {
+            DispatchQueue.main.asyncAfter(deadline: .now()+self.vProperty.animationDuration+0.1) {
+                self.showNow(popupStateBlock: popupStateBlock)
+            }
+        } else {
+            self.showNow(popupStateBlock: popupStateBlock)
+        }
+    }
+    
+    private func showNow(popupStateBlock: FWPopupStateBlock? = nil) {
         
         if popupStateBlock != nil {
             self.popupStateBlock = popupStateBlock

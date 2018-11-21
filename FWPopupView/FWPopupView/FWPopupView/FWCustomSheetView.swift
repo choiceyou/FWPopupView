@@ -265,10 +265,7 @@ extension FWCustomSheetView {
         self.hide()
         
         if self.popupItemClickedBlock != nil {
-            // 弹窗消失后执行回调
-            DispatchQueue.main.asyncAfter(deadline: .now()+self.vProperty.animationDuration+0.1) {
-                self.popupItemClickedBlock!(self, indexPath.row, (self.itemTitleArray != nil) ? self.itemTitleArray![indexPath.row] : nil)
-            }
+            self.popupItemClickedBlock!(self, indexPath.row, (self.itemTitleArray != nil) ? self.itemTitleArray![indexPath.row] : nil)
         }
         
         let property = self.vProperty as! FWCustomSheetViewProperty
