@@ -36,6 +36,7 @@
     // customSheetView
     FWCustomSheetViewProperty *property = [[FWCustomSheetViewProperty alloc] init];
     property.popupViewItemHeight = 40;
+    property.selectedIndex = 1;
     
     NSArray *itemTitles = @[@"EOS", @"DICE", @"ZKS"];
     

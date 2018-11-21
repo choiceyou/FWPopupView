@@ -1,4 +1,4 @@
-# IOS之弹窗 -- Swift4.x/[OC版本(只实现了部分功能，建议两个库同时使用)](https://github.com/choiceyou/FWPopupViewOC)
+# IOS之弹窗 -- Swift4.0/[OC版本(只实现了部分功能，建议两个库同时使用)](https://github.com/choiceyou/FWPopupViewOC)
 
 [![Platform](http://img.shields.io/badge/platform-iOS-blue.svg?style=flat)](http://cocoapods.org/?q=FWPopupView)&nbsp;
 ![Language](https://img.shields.io/badge/language-swift-orange.svg?style=flat)&nbsp;
@@ -115,6 +115,9 @@ FWSheetView *sheetView = [FWSheetView sheetWithTitle: @"标题"
 ![](https://github.com/choiceyou/FWPopupView/blob/master/%E6%95%88%E6%9E%9C/Custom.gif)
 ![](https://github.com/choiceyou/FWPopupView/blob/master/%E6%95%88%E6%9E%9C/Menu.gif)
 
+![](https://github.com/choiceyou/FWPopupView/blob/master/%E6%95%88%E6%9E%9C/IMG_0218.PNG)
+![](https://github.com/choiceyou/FWPopupView/blob/master/%E6%95%88%E6%9E%9C/IMG_0219.PNG)
+
 
 
 ## 更新记录：
@@ -165,6 +168,12 @@ FWSheetView *sheetView = [FWSheetView sheetWithTitle: @"标题"
   
 • v3.0.8 ：
 - [x] FWAlertView带输入框输入支持密码安全类型；
+
+• v3.0.9 ：
+- [x] FWSheetView支持修改“取消”按钮的名称；
+
+• v3.1.1 ：
+- [x] 添加控件：FWCustomSheetView，该控件实现了单选效果；
 
 
 
