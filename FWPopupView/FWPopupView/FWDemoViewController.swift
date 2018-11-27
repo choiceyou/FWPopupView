@@ -66,6 +66,8 @@ class FWDemoViewController: UITableViewController {
         // 设置弹窗外部可点击
         // FWPopupWindow.sharedInstance.touchWildToHide = true
     }
+    
+    override var preferredStatusBarStyle: UIStatusBarStyle{get { return .lightContent}}
 }
 
 extension FWDemoViewController {
