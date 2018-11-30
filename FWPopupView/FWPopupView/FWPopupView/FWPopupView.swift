@@ -338,7 +338,7 @@ extension FWPopupView {
             (self.attachedView! as! UIScrollView).isScrollEnabled = self.originScrollEnabled!
         }
         if self.originKeyWindow != nil {
-            self.originKeyWindow!.becomeKey()
+            self.originKeyWindow!.makeKey()
         }
     }
     
