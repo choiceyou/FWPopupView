@@ -183,6 +183,10 @@ FWSheetView *sheetView = [FWSheetView sheetWithTitle: @"标题"
 • v3.1.3：
 - [x] 修改回调策略：点击某个按钮后立刻给对应的回调。旧版本代码升级不需要修改代码，也不会有其他影响；
 
+• v3.1.5：
+- [x] 修改FWPopupView弹起时改变了状态栏的颜色问题；
+- [x] 修改FWCustomSheetView复用时产生的bug；
+
 
 
 ## 结尾语：
