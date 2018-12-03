@@ -72,6 +72,9 @@ class FWCustomSheetViewTableViewCell: UITableViewCell {
             
             self.titleLabel.frame = CGRect(x: leftMargin, y: (self.frame.height-titleSize.height)/2, width: self.frame.width-leftMargin-property.letfRigthMargin*2, height: titleSize.height)
             self.titleLabel.attributedText = attributedString
+            
+            // 防止复用产生问题
+            self.secondaryTitleLabel.text = nil
         }
     }
 }
