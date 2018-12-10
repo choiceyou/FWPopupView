@@ -23,7 +23,7 @@
 ```cocoaPods
 use_frameworks!
 pod 'FWPopupView'
-注意：如出现 [!] Unable to find a specification for 'FWPopupView' 错误，可执行 pod repo update 命令。
+注意：如出现 [!] Unable to find a specification for 'FWPopupView' 错误 或 看不到最新版本，可执行 pod repo update 命令更新一下本地pod仓库。
 ```
 
 
