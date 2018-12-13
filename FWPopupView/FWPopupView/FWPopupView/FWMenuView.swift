@@ -121,6 +121,11 @@ open class FWMenuView: FWPopupView, UITableViewDelegate, UITableViewDataSource {
         popupMenu.setupUI(itemTitles: itemTitles, itemImageNames: itemImageNames, itemBlock: itemBlock, property: property)
         return popupMenu
     }
+ 
+    // 刷新弹出菜单背景色
+    open func refresh() {
+        tableView.reloadData()
+    }
     
     public override init(frame: CGRect) {
         super.init(frame: frame)
