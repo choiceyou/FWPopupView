@@ -4,6 +4,10 @@
 ![Language](https://img.shields.io/badge/language-swift-orange.svg?style=flat)&nbsp;
 [![License](http://img.shields.io/badge/license-MIT-green.svg?style=flat)](https://github.com/choiceyou/FWPopupView/blob/master/FWPopupView/LICENSE)
 
+
+
+
+## 使用说明：
 ```注意
 1、弹窗基类分别使用了OC和Swift来实现，同时OC和Swift版本分别实现了几个不同的弹窗效果;
 2、Objective-C类需要继承弹窗基类时必须选择该库的Objective-C版本中的基类；
