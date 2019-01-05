@@ -1,11 +1,18 @@
-# IOS之弹窗 -- Swift4.0/[OC版本(Swift、OC版本别分实现了不同的功能，因此建议两个库同时使用)](https://github.com/choiceyou/FWPopupViewOC)
+# IOS之弹窗 -- Swift4.0/[Objective-C版本(Swift、Objective-C版本别分实现了不同的功能！！！)](https://github.com/choiceyou/FWPopupViewOC)
 
 [![Platform](http://img.shields.io/badge/platform-iOS-blue.svg?style=flat)](http://cocoapods.org/?q=FWPopupView)&nbsp;
 ![Language](https://img.shields.io/badge/language-swift-orange.svg?style=flat)&nbsp;
 [![License](http://img.shields.io/badge/license-MIT-green.svg?style=flat)](https://github.com/choiceyou/FWPopupView/blob/master/FWPopupView/LICENSE)
 
-*注意：由于OC类不能继承Swift类，所以弹窗基类分别使用了OC和Swift来实现，同时OC和Swift版本分别实现了几个不同的弹窗效果。两个库可以同时存在一个项目中。*
 
+
+
+## 使用说明：
+```注意
+1、弹窗基类分别使用了OC和Swift来实现，同时OC和Swift版本分别实现了几个不同的弹窗效果;
+2、Objective-C类需要继承弹窗基类时必须选择该库的Objective-C版本中的基类；
+3、两个库可以同时存在一个项目中，建议两个库同时使用。
+```
 
 
 
