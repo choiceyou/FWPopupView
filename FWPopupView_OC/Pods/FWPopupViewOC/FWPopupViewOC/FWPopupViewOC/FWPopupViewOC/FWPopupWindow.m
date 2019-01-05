@@ -7,6 +7,7 @@
 //
 
 #import "FWPopupWindow.h"
+#import "FWPopupRootController.h"
 
 @implementation FWPopupWindow
 
@@ -17,7 +18,7 @@
     
     dispatch_once(&onceToken, ^{
         window = [[FWPopupWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-        window.rootViewController = [UIViewController new];
+        window.rootViewController = [FWPopupRootController new];
     });
     
     return window;

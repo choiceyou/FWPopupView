@@ -89,7 +89,9 @@ extension FWCustomPopupDemoVC {
             vProperty.animationDuration = 0.2
             customPopupView.vProperty = vProperty
             
-            customPopupView.show()
+            customPopupView.show { (popupView, popupViewState) in
+                print("\(popupViewState.rawValue)")
+            }
             break
             
         case 1:
