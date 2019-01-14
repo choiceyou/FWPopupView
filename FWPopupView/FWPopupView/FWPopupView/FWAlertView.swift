@@ -192,12 +192,14 @@ extension FWAlertView {
             self.detailLabel?.textColor = property.detailColor
             self.detailLabel?.textAlignment = .center
             self.detailLabel?.font = UIFont.boldSystemFont(ofSize: property.detailFontSize)
-            self.detailLabel?.numberOfLines = 5
+            self.detailLabel?.numberOfLines = 0
             self.detailLabel?.backgroundColor = UIColor.clear
             
             self.detailLabel?.sizeToFit()
             
-            self.detailLabel?.frame = CGRect(x: self.vProperty.letfRigthMargin, y: currentMaxY, width: self.frame.width - self.vProperty.letfRigthMargin * 2, height: self.detailLabel!.frame.height)
+            let detailLabelHeight = min(self.detailLabel!.frame.height, UIScreen.main.bounds.height*0.7)
+            
+            self.detailLabel?.frame = CGRect(x: self.vProperty.letfRigthMargin, y: currentMaxY, width: self.frame.width - self.vProperty.letfRigthMargin * 2, height: detailLabelHeight)
             
             currentMaxY = self.detailLabel!.frame.maxY
             
