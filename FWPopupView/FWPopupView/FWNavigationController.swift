@@ -51,12 +51,19 @@ class FWNavigationController: UINavigationController {
             viewController.navigationItem.leftBarButtonItem?.customView?.frame = button.frame
             
             viewController.hidesBottomBarWhenPushed = true
-            
-            // 设置状态栏
-            UIApplication.shared.statusBarStyle = .default
         }
         
         super.pushViewController(viewController, animated: animated)
+    }
+    
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        get {
+            if self.topViewController != nil {
+                return self.topViewController!.preferredStatusBarStyle
+            } else {
+                return .default
+            }
+        }
     }
 }
 

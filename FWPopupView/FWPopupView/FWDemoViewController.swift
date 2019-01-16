@@ -24,6 +24,7 @@ class FWDemoViewController: UITableViewController {
         
         let property = FWCustomSheetViewProperty()
         property.popupViewItemHeight = 40
+        property.selectedIndex = 1
         
         let titles = ["EOS", "DICE", "ZKS"]
         
@@ -65,6 +66,8 @@ class FWDemoViewController: UITableViewController {
         // 设置弹窗外部可点击
         // FWPopupWindow.sharedInstance.touchWildToHide = true
     }
+    
+    override var preferredStatusBarStyle: UIStatusBarStyle{get { return .lightContent}}
 }
 
 extension FWDemoViewController {
@@ -84,8 +87,17 @@ extension FWDemoViewController {
         } else if indexPath.row == 13 {
             let property = FWRadioButtonProperty()
             property.selectedStateColor = UIColor.red
-            property.buttonType = .rectangle
-            cell.accessoryView = FWRadioButton.radio(frame: CGRect(x: 0, y: 0, width: 25, height: 25), property: property)
+            property.animationDuration = 0.2
+            property.isAnimated = true
+            property.isSelected = true
+            property.insideMarginRate = 0.5
+            property.isBorderColorNeedChanged = true
+            property.lineWidth = 3
+            property.radioViewEdgeInsets = UIEdgeInsetsMake(5, 5, 5, 5)
+            let radioButton = FWRadioButton.radio(frame: CGRect(x: 0, y: 0, width: 40, height: 40), buttonType : .circular, property: property, clickedBlock: { (isSelected) in
+                print("FWRadioButtonProperty点击了，是否选中：\(isSelected)")
+            })
+            cell.accessoryView = radioButton
         } else {
             cell.accessoryType = .none
             cell.accessoryView = nil

@@ -72,6 +72,9 @@ class FWCustomSheetViewTableViewCell: UITableViewCell {
             
             self.titleLabel.frame = CGRect(x: leftMargin, y: (self.frame.height-titleSize.height)/2, width: self.frame.width-leftMargin-property.letfRigthMargin*2, height: titleSize.height)
             self.titleLabel.attributedText = attributedString
+            
+            // 防止复用产生问题
+            self.secondaryTitleLabel.text = nil
         }
     }
 }
@@ -155,6 +158,7 @@ extension FWCustomSheetView {
         
         let property = self.vProperty as! FWCustomSheetViewProperty
         var selfSize: CGSize = CGSize(width: UIScreen.main.bounds.width, height: 0)
+        self.currentSelectedIndex = property.selectedIndex
         
         // 绘制头部视图
         if headerTitle != nil {
@@ -264,10 +268,7 @@ extension FWCustomSheetView {
         self.hide()
         
         if self.popupItemClickedBlock != nil {
-            // 弹窗消失后执行回调
-            DispatchQueue.main.asyncAfter(deadline: .now()+self.vProperty.animationDuration+0.1) {
-                self.popupItemClickedBlock!(self, indexPath.row, (self.itemTitleArray != nil) ? self.itemTitleArray![indexPath.row] : nil)
-            }
+            self.popupItemClickedBlock!(self, indexPath.row, (self.itemTitleArray != nil) ? self.itemTitleArray![indexPath.row] : nil)
         }
         
         let property = self.vProperty as! FWCustomSheetViewProperty

@@ -37,7 +37,7 @@ open class FWPopupWindow: UIWindow, UIGestureRecognizerDelegate {
         
         self.frame = UIScreen.main.bounds
         
-        let rootVC = UIViewController()
+        let rootVC = FWPopupRootViewController()
         rootVC.view.backgroundColor = UIColor.clear
         self.rootViewController = rootVC
         

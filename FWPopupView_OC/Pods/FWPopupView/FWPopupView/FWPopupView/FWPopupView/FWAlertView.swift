@@ -26,9 +26,6 @@ open class FWAlertView: FWPopupView {
     @objc public var inputBlock: FWPopupInputBlock?
     
     
-    private var titleStr: String?
-    private var detailStr: String?
-    private var inputPlaceholder: String?
     private var actionItemArray: [FWPopupItem] = []
     
     private var titleLabel: UILabel?
@@ -338,10 +335,7 @@ extension FWAlertView {
             self.inputBlock!(self.inputTF!.text!)
         } else {
             if item.itemClickedBlock != nil {
-                // 弹窗消失后执行回调
-                DispatchQueue.main.asyncAfter(deadline: .now()+self.vProperty.animationDuration+0.1) {
-                    item.itemClickedBlock!(self, btn.tag, item.title)
-                }
+                item.itemClickedBlock!(self, btn.tag, item.title)
             }
         }
     }

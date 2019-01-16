@@ -13,6 +13,7 @@
 #import "FWGuideMaskView.h"
 #import "FWPanPopupView.h"
 #import "FWPopupBaseView.h"
+#import "FWPopupRootController.h"
 #import "FWPopupWindow.h"
 #import "UIView+PopupView.h"
 

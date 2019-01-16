@@ -105,6 +105,8 @@ class FWMenuViewDemoVC: UIViewController {
         rightBottomBtn = self.setupBtn(title: "右下角按钮", frame: CGRect(x: UIScreen.main.bounds.width - 110, y: UIScreen.main.bounds.height * 0.8, width: 100, height: 50), tag: 3) as? UIButton
         self.view.addSubview(rightBottomBtn)
     }
+    
+    override var preferredStatusBarStyle: UIStatusBarStyle{get { return .lightContent}}
 }
 
 extension FWMenuViewDemoVC {

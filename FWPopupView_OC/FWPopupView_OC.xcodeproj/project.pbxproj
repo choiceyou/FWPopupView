@@ -193,7 +193,7 @@
 				495D5E24206A4695008F8545 /* Sources */,
 				495D5E25206A4695008F8545 /* Frameworks */,
 				495D5E26206A4695008F8545 /* Resources */,
-				398CFE7EE706F5CC9CFFD483 /* [CP] Embed Pods Frameworks */,
+				097DF2475BD6A72B3E6CFDEA /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -313,24 +313,28 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		398CFE7EE706F5CC9CFFD483 /* [CP] Embed Pods Frameworks */ = {
+		097DF2475BD6A72B3E6CFDEA /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
+			inputFileListPaths = (
+			);
 			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-FWPopupView_OC/Pods-FWPopupView_OC-frameworks.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-FWPopupView_OC/Pods-FWPopupView_OC-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/FWPopupView/FWPopupView.framework",
 				"${BUILT_PRODUCTS_DIR}/FWPopupViewOC/FWPopupViewOC.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+			);
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FWPopupView.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FWPopupViewOC.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-FWPopupView_OC/Pods-FWPopupView_OC-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-FWPopupView_OC/Pods-FWPopupView_OC-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		6E8E2BFDC3ED6430C4B72F0C /* [CP] Check Pods Manifest.lock */ = {

@@ -11,8 +11,8 @@ import UIKit
 
 /// 类型
 ///
-/// - circular: 圆形，默认
-/// - rectangle: 正方形，可设置圆角值
+/// - circular: 圆形，默认。注意：相同大小的视图，正方形看起来会比圆形大
+/// - rectangle: 正方形，可设置圆角值。注意：相同大小的视图，正方形看起来会比圆形大
 /// - image: 图片类型
 @objc public enum FWRadioButtonType: Int {
     case circular
@@ -20,37 +20,102 @@ import UIKit
     case image
 }
 
+/// 确定回调
+public typealias FWRadioButtonClickedBlock = (_ isSelected: Bool) -> Void
+
+
 open class FWRadioButton : UIView {
     
     @objc public var vProperty : FWRadioButtonProperty!
     
-    private var borderLayer: CAShapeLayer?
-    private var insideLayer: CAShapeLayer?
+    lazy var borderLayer: CAShapeLayer = {
+        
+        let borderLayer = CAShapeLayer()
+        self.layer.addSublayer(borderLayer)
+        borderLayer.lineWidth = self.vProperty.lineWidth
+        borderLayer.fillColor = UIColor.clear.cgColor
+        return borderLayer
+    }()
+    
+    lazy var insideLayer: CAShapeLayer = {
+        
+        let insideLayer = CAShapeLayer()
+        self.layer.addSublayer(insideLayer)
+        insideLayer.lineWidth = 0
+        insideLayer.fillColor = self.vProperty.selectedStateColor.cgColor
+        insideLayer.anchorPoint = CGPoint(x: 0.5, y: 0.5)
+        return insideLayer
+    }()
+    
+    lazy var radioImageView: UIImageView = {
+        
+        let imageView = UIImageView()
+        self.addSubview(imageView)
+        return imageView
+    }()
     
     @objc public var isSelected : Bool = false {
         willSet {
-            if self.vProperty.buttonType == .image {
-                self.drawWithSelection(selected: newValue)
+            self.changeSelection(selected: newValue)
+        }
+    }
+    
+    private var isAnimating : Bool = false {
+        willSet {
+            if newValue == true {
+                self.isUserInteractionEnabled = false
             } else {
-                self.setNeedsDisplay()
+                self.isUserInteractionEnabled = true
             }
         }
     }
     
-    @objc open class func radio(frame: CGRect, property : FWRadioButtonProperty) -> FWRadioButton {
+    private var currentButtonType: FWRadioButtonType = .circular
+    private var clickedBlock: FWRadioButtonClickedBlock?
+    
+    
+    /// 初始化方法
+    ///
+    /// - Parameters:
+    ///   - frame: frame
+    ///   - buttonType: 类型
+    ///   - property: 单选按钮的相关配置属性
+    ///   - clickedBlock: 单击回调
+    /// - Returns: self
+    @objc open class func radio(frame: CGRect, buttonType : FWRadioButtonType, property : FWRadioButtonProperty?, clickedBlock: FWRadioButtonClickedBlock? = nil) -> FWRadioButton {
         
         let radio = FWRadioButton()
-        radio.setupUI(frame: frame, property: property)
+        radio.setupUI(frame: frame, buttonType : buttonType, selectedImage: nil, unSelectedImage: nil, property: property, clickedBlock: clickedBlock)
+        return radio
+    }
+    
+    /// 初始化方法
+    ///
+    /// - Parameters:
+    ///   - frame: frame
+    ///   - selectedImage: 选中图片
+    ///   - unSelectedImage: 未选中的图片
+    ///   - property: 单选按钮的相关配置属性
+    ///   - clickedBlock: 单击回调
+    /// - Returns: self
+    @objc open class func radioImage(frame: CGRect, selectedImage: UIImage?, unSelectedImage: UIImage?, property : FWRadioButtonProperty?, clickedBlock: FWRadioButtonClickedBlock? = nil) -> FWRadioButton {
+        
+        let radio = FWRadioButton()
+        radio.setupUI(frame: frame, buttonType : .image, selectedImage: selectedImage, unSelectedImage: unSelectedImage, property: property, clickedBlock: clickedBlock)
         return radio
     }
 }
 
 extension FWRadioButton {
     
-    private func setupUI(frame: CGRect, property: FWRadioButtonProperty?) {
+    private func setupUI(frame: CGRect, buttonType : FWRadioButtonType, selectedImage: UIImage?, unSelectedImage: UIImage?, property: FWRadioButtonProperty?, clickedBlock: FWRadioButtonClickedBlock? = nil) {
         
         self.frame = frame
         self.backgroundColor = UIColor.clear
+        self.isUserInteractionEnabled = true
+        
+        self.currentButtonType = buttonType
+        self.clickedBlock = clickedBlock
         
         if property != nil {
             self.vProperty = property
@@ -58,9 +123,28 @@ extension FWRadioButton {
             self.vProperty = FWRadioButtonProperty()
         }
         
-        self.isUserInteractionEnabled = true
+        if selectedImage != nil {
+            self.vProperty.selectedImage = selectedImage
+        }
+        if unSelectedImage != nil  {
+            self.vProperty.unSelectedImage = unSelectedImage
+        }
+        
         let tapGest = UITapGestureRecognizer(target: self, action: #selector(tapGesClick(tap:)))
         self.addGestureRecognizer(tapGest)
+        
+        let radioFrame = CGRect(x: self.vProperty.radioViewEdgeInsets.left, y: self.vProperty.radioViewEdgeInsets.top, width: self.frame.width-self.vProperty.radioViewEdgeInsets.left-self.vProperty.radioViewEdgeInsets.right, height: self.frame.height-self.vProperty.radioViewEdgeInsets.top-self.vProperty.radioViewEdgeInsets.bottom)
+        
+        if self.currentButtonType == .image {
+            self.radioImageView.frame = radioFrame
+            self.isSelected = self.vProperty.isSelected
+        } else {
+            self.drawBorder(radioFrame)
+            self.drawInside(radioFrame)
+            if self.vProperty.isSelected == true {
+                self.isSelected = self.vProperty.isSelected
+            }
+        }
     }
     
     /// 点击手势
@@ -68,116 +152,131 @@ extension FWRadioButton {
     /// - Parameter tap: 手势
     @objc private func tapGesClick(tap: UITapGestureRecognizer) {
         
-        self.isSelected = !self.isSelected
+        if self.isAnimating == false {
+            self.isSelected = !self.isSelected
+        }
+        if self.clickedBlock != nil {
+            self.clickedBlock!(self.isSelected)
+        }
     }
     
-    /// 图片类型的切换
+    /// 切换
     ///
     /// - Parameter selected: true：选中
-    private func drawWithSelection(selected: Bool) {
+    private func changeSelection(selected: Bool) {
         
-        if selected {
-            
+        if self.currentButtonType == .image {
+            if self.vProperty.selectedImage != nil && self.vProperty.unSelectedImage != nil {
+                self.radioImageView.image = selected ? self.vProperty.selectedImage : self.vProperty.unSelectedImage
+            } else {
+                let url = Bundle(for: FWCustomSheetView.self).url(forResource: "FWPopupView", withExtension: "bundle")
+                if url != nil {
+                    let imageBundle = Bundle(url: url!)
+                    let path = imageBundle?.path(forResource: selected ? "rb_not_seleted@2x" : "rb_seleted@2x", ofType: "png")
+                    if path != nil {
+                        self.radioImageView.image = UIImage(contentsOfFile: path!)
+                    }
+                }
+            }
         } else {
+            if self.vProperty.isBorderColorNeedChanged {
+                self.borderLayer.strokeColor = selected ? self.vProperty.selectedStateColor.cgColor : self.vProperty.normalStateColor.cgColor
+            }
             
-        }
-    }
-    
-    /// 除图片类型外的绘制过程
-    ///
-    /// - Parameter rect: rect
-    open override func draw(_ rect: CGRect) {
-        
-        if self.borderLayer != nil {
-            self.borderLayer?.removeFromSuperlayer()
-        }
-        if self.insideLayer != nil {
-            self.insideLayer?.removeFromSuperlayer()
-        }
-        
-        self.drawBorder(rect)
-        if self.isSelected {
-            self.drawInside(rect)
-        }
-        
-        if self.vProperty.isAnimated && self.vProperty.animationDuration > 0 {
-            self.isUserInteractionEnabled = false
-            DispatchQueue.main.asyncAfter(deadline: .now()+self.vProperty.animationDuration) {
-                self.isUserInteractionEnabled = true
+            if self.vProperty.isAnimated && self.vProperty.animationDuration > 0 {
+                let scaleValue = NSNumber(value: ((self.isSelected == true) ? 0 : 1))
+                let fromValue = NSNumber(value: ((self.isSelected == true) ? 1 : 0))
+                let animation = CABasicAnimation(keyPath: "transform.scale")
+                animation.fromValue = fromValue
+                animation.toValue = scaleValue
+                animation.duration = self.vProperty.animationDuration
+                animation.fillMode = kCAFillModeForwards
+                animation.isRemovedOnCompletion = false
+                self.insideLayer.add(animation, forKey: selected ? "scale" : "scale2")
+                self.isAnimating = true
+                DispatchQueue.main.asyncAfter(deadline: .now()+self.vProperty.animationDuration) {
+                    self.isAnimating = false
+                }
+            } else {
+                if selected {
+                    self.insideLayer.isHidden = false
+                } else {
+                    self.insideLayer.isHidden = true
+                }
             }
         }
     }
     
-    /// 绘制边框
+    /// 绘制非图片类型的边框
     ///
     /// - Parameter rect: frame
     private func drawBorder(_ rect: CGRect) {
         
         // 边框
-        let center = CGPoint(x: rect.width/2, y: rect.height/2)
         var borderPath : UIBezierPath!
         
-        switch self.vProperty.buttonType {
+        switch self.currentButtonType {
         case .circular:
+            let center = CGPoint(x: rect.width/2, y: rect.height/2)
             borderPath = UIBezierPath(arcCenter: center, radius: rect.width*0.5-self.vProperty.lineWidth, startAngle: 0, endAngle: CGFloat(Double.pi*2), clockwise: true)
             break
         case .rectangle:
-            borderPath = UIBezierPath(rect: CGRect(x: 0, y: 0, width: rect.width-self.vProperty.lineWidth, height: rect.height-self.vProperty.lineWidth))
+            borderPath = UIBezierPath(rect: CGRect(x: 0, y: 0, width: rect.width, height: rect.height))
             break
             
         default: break
             
         }
         
-        self.borderLayer = CAShapeLayer()
-        self.layer.addSublayer(self.borderLayer!)
-        self.borderLayer!.frame = CGRect(x: 0, y: 0, width: rect.width, height: rect.height)
-        self.borderLayer!.path = borderPath.cgPath
-        self.borderLayer!.lineWidth = self.vProperty.lineWidth
-        self.borderLayer!.strokeColor = self.isSelected ? self.vProperty.selectedStateColor.cgColor : self.vProperty.normalStateColor.cgColor
-        self.borderLayer!.fillColor = UIColor.clear.cgColor
+        self.borderLayer.frame = CGRect(x: rect.origin.x, y: rect.origin.y, width: rect.width, height: rect.height)
+        self.borderLayer.strokeColor = self.vProperty.normalStateColor.cgColor
+        self.borderLayer.path = borderPath.cgPath
     }
     
-    /// 绘制内部选中状态
+    /// 绘制非图片类型的内部选中状态
     ///
     /// - Parameter rect: frame
     private func drawInside(_ rect: CGRect) {
         
         // 选中
-        let width = floor((rect.width - self.vProperty.lineWidth*2) * self.vProperty.insideMarginRate)
+        var insideLayerWidthAndHeight: CGFloat = 0.0
+        if self.currentButtonType == .circular {
+            insideLayerWidthAndHeight = ((rect.height - self.vProperty.lineWidth*2) * self.vProperty.insideMarginRate)
+        } else {
+            insideLayerWidthAndHeight = ((rect.height - self.vProperty.lineWidth) * self.vProperty.insideMarginRate)
+        }
+        let insidePathFrame = CGRect(x: 0, y: 0, width: insideLayerWidthAndHeight, height: insideLayerWidthAndHeight)
         
         var insidePath : UIBezierPath!
         
-        switch self.vProperty.buttonType {
+        switch self.currentButtonType {
         case .circular:
-            insidePath = UIBezierPath(ovalIn: CGRect(x: (self.frame.width-width)/2, y: (self.frame.width-width)/2, width: width, height: width))
+            insidePath = UIBezierPath(ovalIn: insidePathFrame)
             break
         case .rectangle:
-            let ipWidth = (rect.width-self.vProperty.lineWidth)*self.vProperty.insideMarginRate
-            let ipHeight = (rect.height-self.vProperty.lineWidth)*self.vProperty.insideMarginRate
-            
-            insidePath = UIBezierPath(rect: CGRect(x: (rect.width-ipWidth-self.vProperty.lineWidth)/2, y: (rect.height-ipHeight-self.vProperty.lineWidth)/2, width: ipWidth, height: ipHeight))
+            insidePath = UIBezierPath(rect: insidePathFrame)
             break
             
         default: break
             
         }
 
-        self.insideLayer = CAShapeLayer()
-        self.layer.addSublayer(self.insideLayer!)
-        self.insideLayer!.frame = CGRect(x: 0, y: 0, width: width, height: width)
-        self.insideLayer!.path = insidePath.cgPath
-        self.insideLayer!.lineWidth = 0
-        self.insideLayer!.fillColor = self.vProperty.selectedStateColor.cgColor
+        self.insideLayer.frame = CGRect(x: rect.origin.x + (rect.width-insideLayerWidthAndHeight)/2, y: rect.origin.y + (rect.height-insideLayerWidthAndHeight)/2, width: insideLayerWidthAndHeight, height: insideLayerWidthAndHeight)
+        self.insideLayer.path = insidePath.cgPath
         
-        let scaleValue = NSNumber(value: ((self.isSelected) ? 1 : 0))
-        if self.isSelected && self.vProperty.isAnimated {
-            let animation = CABasicAnimation(keyPath: "transform.scale")
-            animation.toValue = scaleValue
-            animation.duration = self.vProperty.animationDuration
-            self.insideLayer?.add(animation, forKey: "scale")
+        if !isSelected {
+            if self.vProperty.isAnimated && self.vProperty.animationDuration > 0 {
+                let animation = CABasicAnimation(keyPath: "transform.scale")
+                animation.fromValue = NSNumber(value: 1.0)
+                animation.toValue = NSNumber(value: 0.0)
+                animation.duration = 0.01
+                animation.fillMode = kCAFillModeForwards
+                animation.isRemovedOnCompletion = false
+                self.insideLayer.add(animation, forKey: "tscale")
+            } else {
+                self.insideLayer.isHidden = true
+            }
         }
-        self.insideLayer?.transform = CATransform3DMakeScale(CGFloat(scaleValue.floatValue), CGFloat(scaleValue.floatValue), 0)
     }
 }
 
@@ -186,25 +285,34 @@ extension FWRadioButton {
 // MARK: - 单选按钮的相关配置属性
 open class FWRadioButtonProperty: NSObject {
     
-    /// 未选中时的颜色
-    @objc open var normalStateColor: UIColor        = kPV_RGBA(r: 51, g: 51, b: 51, a: 1)
-    /// 选中时的颜色
-    @objc open var selectedStateColor: UIColor      = kPV_RGBA(r: 51, g: 51, b: 51, a: 1)
-    
-    /// 按钮类型
-    @objc open var buttonType : FWRadioButtonType   = .circular
+    /// 是否默认选中
+    @objc public var isSelected : Bool                  = false
     /// 是否需要动画
-    @objc public var isAnimated : Bool              = true
+    @objc public var isAnimated : Bool                  = true
     /// 动画所需的时间
-    @objc open var animationDuration: TimeInterval  = 0.2
+    @objc open var animationDuration: TimeInterval      = 0.2
+    /// 偏移量。当视图比较小时会出现不好点击的问题，此时可以把视图frame值设置大一些，同时配合该属性，既可以达到想要的效果，也可以增大点击的接触面积
+    @objc open var radioViewEdgeInsets                  = UIEdgeInsetsMake(0, 0, 0, 0)
     
-    /// 圆角值，注意：当 buttonType == .circular 时无效
-    @objc public var radius: CGFloat                = 0
+    
+    // ------------ 以下属性为：buttonType == .circular | .rectangle 时有效 ------------
+    /// 未选中时的颜色
+    @objc open var normalStateColor: UIColor            = kPV_RGBA(r: 51, g: 51, b: 51, a: 1)
+    /// 选中时的颜色
+    @objc open var selectedStateColor: UIColor          = kPV_RGBA(r: 51, g: 51, b: 51, a: 1)
+    /// 边框颜色是否需要跟随选中颜色
+    @objc public var isBorderColorNeedChanged : Bool    = true
     /// 边的宽度
-    @objc public var lineWidth: CGFloat             = 2
-    
+    @objc public var lineWidth: CGFloat                 = 2
     /// 内部选中状态的宽度与内边框的比例
-    @objc public var insideMarginRate: CGFloat      = 0.6
+    @objc public var insideMarginRate: CGFloat          = 0.6
+    
+    
+    // ------------ 以下属性为：buttonType == .image 时有效 ------------
+    /// 选中图片
+    @objc public var selectedImage: UIImage?
+    /// 未选中图片
+    @objc public var unSelectedImage: UIImage?
     
     
     public override init() {
