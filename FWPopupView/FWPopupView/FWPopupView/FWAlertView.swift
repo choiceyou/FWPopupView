@@ -313,6 +313,15 @@ extension FWAlertView {
         
         self.frame.size.height = currentMaxY
     }
+    
+    open override func show(popupStateBlock: FWPopupStateBlock?) {
+        super.show(popupStateBlock: popupStateBlock)
+
+        self.snp.makeConstraints { (make) in
+            make.center.equalTo(self.attachedView!)
+            make.size.equalTo(CGSize(width: self.frame.size.width, height: self.frame.size.height))
+        }
+    }
 }
 
 extension FWAlertView {

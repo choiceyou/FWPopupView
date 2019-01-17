@@ -1,0 +1,12 @@
+# Uncomment the next line to define a global platform for your project
+platform :ios, '8.0'
+
+target 'FWPopupView' do
+  
+  # 布局：https://github.com/SnapKit/SnapKit
+  pod 'SnapKit'
+  
+  # 键盘管理：https://github.com/hackiftekhar/IQKeyboardManager
+  pod 'IQKeyboardManager'
+
+end

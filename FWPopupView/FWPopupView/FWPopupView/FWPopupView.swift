@@ -184,6 +184,8 @@ open class FWPopupView: UIView, UIGestureRecognizerDelegate {
         
         self.originMaskViewColor = self.attachedView?.fwMaskViewColor
         self.originTouchWildToHide = FWPopupWindow.sharedInstance.touchWildToHide
+        self.attachedView?.fwMaskView.addSubview(self)
+        self.isHidden = true
         
         self.showAnimation = self.customShowAnimation()
         self.hideAnimation = self.customHideAnimation()
@@ -374,82 +376,87 @@ extension FWPopupView {
             }
             
             if strongSelf.superview == nil {
-                // 保证前一次弹窗销毁完毕
-                for view in strongSelf.attachedView!.fwMaskView.subviews {
+                strongSelf.attachedView?.fwMaskView.addSubview(strongSelf)
+            }
+            
+            // 保证前一次弹窗销毁完毕
+            for view in strongSelf.attachedView!.fwMaskView.subviews {
+                if view == strongSelf {
+                    view.isHidden = false
+                } else {
                     view.removeFromSuperview()
                 }
-                strongSelf.attachedView?.fwMaskView.addSubview(strongSelf)
+            }
+            
+            strongSelf.setupFrame()
+            
+            switch strongSelf.vProperty.popupAnimationType {
+            case .position: // 位移动画
+                strongSelf.positionAnimationChangeFrame()
+                break
                 
-                strongSelf.setupFrame()
-                
-                switch strongSelf.vProperty.popupAnimationType {
-                case .position: // 位移动画
-                    strongSelf.positionAnimationChangeFrame()
-                    break
-                    
-                case .scale, .scale3D: // 缩放动画/3D缩放动画
-                    strongSelf.layer.anchorPoint = strongSelf.obtainAnchorPoint()
-                    strongSelf.frame = strongSelf.finalFrame
-                    if strongSelf.vProperty.popupAnimationType == .scale {
-                        strongSelf.transform = strongSelf.vProperty.transform
-                    } else {
-                        strongSelf.layer.transform = strongSelf.vProperty.transform3D
-                    }
-                    break
-                    
-                case .frame: // 修改frame值的动画
-                    switch strongSelf.vProperty.popupCustomAlignment {
-                    case .top, .topCenter, .topLeft, .topRight, .center:
-                        strongSelf.frame.size.height = 0
-                        break
-                    case .left, .leftCenter:
-                        strongSelf.frame.size.width = 0
-                        break
-                    case .bottom, .bottomCenter, .bottomLeft, .bottomRight:
-                        strongSelf.frame.origin.y = strongSelf.finalFrame.maxY
-                        strongSelf.frame.size.height = 0
-                        break
-                    case .right, .rightCenter:
-                        strongSelf.frame.origin.x = strongSelf.finalFrame.maxX
-                        strongSelf.frame.size.width = 0
-                        break
-                    }
-                    break
-                }
-                
-                strongSelf.layoutIfNeeded()
-                
-                if strongSelf.vProperty.usingSpringWithDamping >= 0 && strongSelf.vProperty.usingSpringWithDamping <= 1 {
-                    UIView.animate(withDuration: strongSelf.vProperty.animationDuration, delay: 0.0, usingSpringWithDamping: strongSelf.vProperty.usingSpringWithDamping, initialSpringVelocity: strongSelf.vProperty.initialSpringVelocity, options: [.curveEaseOut, .beginFromCurrentState], animations: {
-                        
-                        strongSelf.showAnimationDuration()
-                        
-                    }, completion: { (finished) in
-                        
-                        if strongSelf.popupDidAppearBlock != nil {
-                            strongSelf.popupDidAppearBlock!(strongSelf)
-                        }
-                        if strongSelf.popupStateBlock != nil {
-                            strongSelf.popupStateBlock!(strongSelf, .didAppear)
-                        }
-                        
-                    })
+            case .scale, .scale3D: // 缩放动画/3D缩放动画
+                strongSelf.layer.anchorPoint = strongSelf.obtainAnchorPoint()
+                strongSelf.frame = strongSelf.finalFrame
+                if strongSelf.vProperty.popupAnimationType == .scale {
+                    strongSelf.transform = strongSelf.vProperty.transform
                 } else {
-                    UIView.animate(withDuration: strongSelf.vProperty.animationDuration, delay: 0.0, options: [.curveEaseOut, .beginFromCurrentState], animations: {
-                        
-                        strongSelf.showAnimationDuration()
-                        
-                    }, completion: { (finished) in
-                        
-                        if strongSelf.popupDidAppearBlock != nil {
-                            strongSelf.popupDidAppearBlock!(strongSelf)
-                        }
-                        if strongSelf.popupStateBlock != nil {
-                            strongSelf.popupStateBlock!(strongSelf, .didAppear)
-                        }
-                        
-                    })
+                    strongSelf.layer.transform = strongSelf.vProperty.transform3D
                 }
+                break
+                
+            case .frame: // 修改frame值的动画
+                switch strongSelf.vProperty.popupCustomAlignment {
+                case .top, .topCenter, .topLeft, .topRight, .center:
+                    strongSelf.frame.size.height = 0
+                    break
+                case .left, .leftCenter:
+                    strongSelf.frame.size.width = 0
+                    break
+                case .bottom, .bottomCenter, .bottomLeft, .bottomRight:
+                    strongSelf.frame.origin.y = strongSelf.finalFrame.maxY
+                    strongSelf.frame.size.height = 0
+                    break
+                case .right, .rightCenter:
+                    strongSelf.frame.origin.x = strongSelf.finalFrame.maxX
+                    strongSelf.frame.size.width = 0
+                    break
+                }
+                break
+            }
+            
+            strongSelf.layoutIfNeeded()
+            
+            if strongSelf.vProperty.usingSpringWithDamping >= 0 && strongSelf.vProperty.usingSpringWithDamping <= 1 {
+                UIView.animate(withDuration: strongSelf.vProperty.animationDuration, delay: 0.0, usingSpringWithDamping: strongSelf.vProperty.usingSpringWithDamping, initialSpringVelocity: strongSelf.vProperty.initialSpringVelocity, options: [.curveEaseOut, .beginFromCurrentState], animations: {
+                    
+                    strongSelf.showAnimationDuration()
+                    
+                }, completion: { (finished) in
+                    
+                    if strongSelf.popupDidAppearBlock != nil {
+                        strongSelf.popupDidAppearBlock!(strongSelf)
+                    }
+                    if strongSelf.popupStateBlock != nil {
+                        strongSelf.popupStateBlock!(strongSelf, .didAppear)
+                    }
+                    
+                })
+            } else {
+                UIView.animate(withDuration: strongSelf.vProperty.animationDuration, delay: 0.0, options: [.curveEaseOut, .beginFromCurrentState], animations: {
+                    
+                    strongSelf.showAnimationDuration()
+                    
+                }, completion: { (finished) in
+                    
+                    if strongSelf.popupDidAppearBlock != nil {
+                        strongSelf.popupDidAppearBlock!(strongSelf)
+                    }
+                    if strongSelf.popupStateBlock != nil {
+                        strongSelf.popupStateBlock!(strongSelf, .didAppear)
+                    }
+                    
+                })
             }
         }
         
@@ -523,7 +530,7 @@ extension FWPopupView {
             }, completion: { (finished) in
                 
                 if finished {
-                    strongSelf.removeFromSuperview()
+                    strongSelf.isHidden = true
                 }
                 
                 // 还原视图，防止下次动画时出错

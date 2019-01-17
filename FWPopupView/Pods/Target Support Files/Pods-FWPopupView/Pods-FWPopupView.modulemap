@@ -1,0 +1,6 @@
+module Pods_FWPopupView {
+  umbrella header "Pods-FWPopupView-umbrella.h"
+
+  export *
+  module * { export * }
+}

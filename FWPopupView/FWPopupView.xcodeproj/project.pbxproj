@@ -29,6 +29,7 @@
 		49BB210F2060B86A00E0DE6E /* FWPopupCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49BB210E2060B86A00E0DE6E /* FWPopupCategory.swift */; };
 		49BB212520623C4A00E0DE6E /* FWAlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49BB212420623C4A00E0DE6E /* FWAlertView.swift */; };
 		49BB212720623E8100E0DE6E /* FWPopupItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49BB212620623E8100E0DE6E /* FWPopupItem.swift */; };
+		56B3717CE2F2FC8C487C2BB0 /* libPods-FWPopupView.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5D859FC06A597D0EEFB02CB7 /* libPods-FWPopupView.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,6 +50,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		16EB712AF4359147E48A4A6C /* Pods-FWPopupView.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FWPopupView.release.xcconfig"; path = "Target Support Files/Pods-FWPopupView/Pods-FWPopupView.release.xcconfig"; sourceTree = "<group>"; };
 		4904E177218AE8C50014A6E3 /* FWCustomSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FWCustomSheetView.swift; sourceTree = "<group>"; };
 		49089B93216DA23B00683B2F /* FWRadioButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FWRadioButton.swift; sourceTree = "<group>"; };
 		49118B28218BD77C006E6460 /* FWPopupView.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = FWPopupView.bundle; sourceTree = "<group>"; };
@@ -77,6 +79,10 @@
 		49BB210E2060B86A00E0DE6E /* FWPopupCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FWPopupCategory.swift; sourceTree = "<group>"; };
 		49BB212420623C4A00E0DE6E /* FWAlertView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FWAlertView.swift; sourceTree = "<group>"; };
 		49BB212620623E8100E0DE6E /* FWPopupItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FWPopupItem.swift; sourceTree = "<group>"; };
+		5D859FC06A597D0EEFB02CB7 /* libPods-FWPopupView.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-FWPopupView.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		66EDD6EAA4E9CABA26C955AC /* Pods-FWPopupView.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FWPopupView.debug.xcconfig"; path = "Target Support Files/Pods-FWPopupView/Pods-FWPopupView.debug.xcconfig"; sourceTree = "<group>"; };
+		E68A3B6EB8B1506E0B09A7B8 /* Pods_FWPopupViewUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FWPopupViewUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		FAB7438A54E83AA546D1BB16 /* Pods_FWPopupViewTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FWPopupViewTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -84,6 +90,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				56B3717CE2F2FC8C487C2BB0 /* libPods-FWPopupView.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -104,6 +111,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3CFA26EB7985F6595F22C984 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				FAB7438A54E83AA546D1BB16 /* Pods_FWPopupViewTests.framework */,
+				E68A3B6EB8B1506E0B09A7B8 /* Pods_FWPopupViewUITests.framework */,
+				5D859FC06A597D0EEFB02CB7 /* libPods-FWPopupView.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		49118B27218BD741006E6460 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
@@ -119,6 +136,8 @@
 				49812D8B205F915600639DDC /* FWPopupViewTests */,
 				49812D96205F915600639DDC /* FWPopupViewUITests */,
 				49812D75205F915600639DDC /* Products */,
+				F3DF37B08B601E36F660A46C /* Pods */,
+				3CFA26EB7985F6595F22C984 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -186,6 +205,16 @@
 			path = FWPopupView;
 			sourceTree = "<group>";
 		};
+		F3DF37B08B601E36F660A46C /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				66EDD6EAA4E9CABA26C955AC /* Pods-FWPopupView.debug.xcconfig */,
+				16EB712AF4359147E48A4A6C /* Pods-FWPopupView.release.xcconfig */,
+			);
+			name = Pods;
+			path = Pods;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -193,9 +222,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 49812D9C205F915600639DDC /* Build configuration list for PBXNativeTarget "FWPopupView" */;
 			buildPhases = (
+				6C591D4F0E62436ABB140884 /* [CP] Check Pods Manifest.lock */,
 				49812D70205F915600639DDC /* Sources */,
 				49812D71205F915600639DDC /* Frameworks */,
 				49812D72205F915600639DDC /* Resources */,
+				DA28AEEAC7CF3FD8AD8C2807 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -314,6 +345,53 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		6C591D4F0E62436ABB140884 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-FWPopupView-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		DA28AEEAC7CF3FD8AD8C2807 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-FWPopupView/Pods-FWPopupView-resources.sh",
+				"${PODS_ROOT}/IQKeyboardManager/IQKeyboardManager/Resources/IQKeyboardManager.bundle",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/IQKeyboardManager.bundle",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-FWPopupView/Pods-FWPopupView-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		49812D70205F915600639DDC /* Sources */ = {
@@ -492,6 +570,7 @@
 		};
 		49812D9D205F915600639DDC /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 66EDD6EAA4E9CABA26C955AC /* Pods-FWPopupView.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
@@ -510,6 +589,7 @@
 		};
 		49812D9E205F915600639DDC /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 16EB712AF4359147E48A4A6C /* Pods-FWPopupView.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";

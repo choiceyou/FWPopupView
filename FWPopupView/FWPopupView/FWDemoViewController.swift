@@ -54,6 +54,21 @@ class FWDemoViewController: UITableViewController {
     }()
     
     
+    lazy var sheetView: FWSheetView = {
+        
+        let items = ["Sheet0", "Sheet1", "Sheet2", "Sheet3"]
+        
+        let vProperty = FWSheetViewProperty()
+        vProperty.touchWildToHide = "1"
+        
+        let sheetView = FWSheetView.sheet(title: "测试测试", itemTitles: items, itemBlock: { (popupView, index, title) in
+            print("Sheet：点击了第\(index)个按钮")
+        }, cancenlBlock: {
+            print("点击了取消")
+        }, property: vProperty)
+        return sheetView
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -93,7 +108,7 @@ extension FWDemoViewController {
             property.insideMarginRate = 0.5
             property.isBorderColorNeedChanged = true
             property.lineWidth = 3
-            property.radioViewEdgeInsets = UIEdgeInsetsMake(5, 5, 5, 5)
+            property.radioViewEdgeInsets = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
             let radioButton = FWRadioButton.radio(frame: CGRect(x: 0, y: 0, width: 40, height: 40), buttonType : .circular, property: property, clickedBlock: { (isSelected) in
                 print("FWRadioButtonProperty点击了，是否选中：\(isSelected)")
             })
@@ -191,17 +206,7 @@ extension FWDemoViewController {
             self.alertImage.show()
             break
         case 6:
-            let items = ["Sheet0", "Sheet1", "Sheet2", "Sheet3"]
-            
-            let vProperty = FWSheetViewProperty()
-            vProperty.touchWildToHide = "1"
-            
-            let sheetView = FWSheetView.sheet(title: nil, itemTitles: items, itemBlock: { (popupView, index, title) in
-                print("Sheet：点击了第\(index)个按钮")
-            }, cancenlBlock: {
-                print("点击了取消")
-            }, property: vProperty)
-            sheetView.show()
+            self.sheetView.show()
             break
         case 7:
             let items = ["Sheet0", "Sheet1", "Sheet2", "Sheet3", "Sheet4", "Sheet5", "Sheet6", "Sheet7", "Sheet8", "Sheet9", "Sheet10", "Sheet11", "Sheet12", "Sheet13", "Sheet14"]

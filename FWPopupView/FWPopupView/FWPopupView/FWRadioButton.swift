@@ -190,7 +190,7 @@ extension FWRadioButton {
                 animation.fromValue = fromValue
                 animation.toValue = scaleValue
                 animation.duration = self.vProperty.animationDuration
-                animation.fillMode = kCAFillModeForwards
+                animation.fillMode = CAMediaTimingFillMode.forwards
                 animation.isRemovedOnCompletion = false
                 self.insideLayer.add(animation, forKey: selected ? "scale" : "scale2")
                 self.isAnimating = true
@@ -270,7 +270,7 @@ extension FWRadioButton {
                 animation.fromValue = NSNumber(value: 1.0)
                 animation.toValue = NSNumber(value: 0.0)
                 animation.duration = 0.01
-                animation.fillMode = kCAFillModeForwards
+                animation.fillMode = CAMediaTimingFillMode.forwards
                 animation.isRemovedOnCompletion = false
                 self.insideLayer.add(animation, forKey: "tscale")
             } else {
@@ -292,7 +292,7 @@ open class FWRadioButtonProperty: NSObject {
     /// 动画所需的时间
     @objc open var animationDuration: TimeInterval      = 0.2
     /// 偏移量。当视图比较小时会出现不好点击的问题，此时可以把视图frame值设置大一些，同时配合该属性，既可以达到想要的效果，也可以增大点击的接触面积
-    @objc open var radioViewEdgeInsets                  = UIEdgeInsetsMake(0, 0, 0, 0)
+    @objc open var radioViewEdgeInsets                  = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
     
     
     // ------------ 以下属性为：buttonType == .circular | .rectangle 时有效 ------------
