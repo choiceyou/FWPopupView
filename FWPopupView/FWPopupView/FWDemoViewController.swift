@@ -151,17 +151,17 @@ extension FWDemoViewController {
             alertView.show()
             break
         case 1:
-            let alertView = FWAlertView.alert(title: "标题", detail: "描述描述描述描述描述描述描述描述描述描述", confirmBlock: { (popupView, index, title) in
+            let alertView = FWAlertView.alert(title: "温馨提示", detail: "您确认退出当前账号吗？", confirmBlock: { (popupView, index, title) in
                 print("点击了确定")
             }, cancelBlock: { (popupView, index, title) in
                 print("点击了取消")
             })
-            // 设置AlertView外部背景色
-            alertView.attachedView?.fwMaskViewColor = UIColor(white: 0, alpha: 0.2)
+            // 演示：设置AlertView外部背景色
+            alertView.attachedView?.fwMaskViewColor = UIColor(white: 0, alpha: 0.6)
             alertView.show { (popupView, popupViewState) in
                 print("当前弹窗状态：\(popupViewState.rawValue)")
                 if popupViewState == .didDisappear {
-                    // 隐藏时把背景色改回来（这个非必要，我这边只是一个演示）
+                    // 演示：隐藏时把背景色改回来（这个非必要，我这边只是一个演示）
                     alertView.attachedView?.fwMaskViewColor = UIColor(white: 0, alpha: 0.5)
                 }
             }
@@ -171,7 +171,7 @@ extension FWDemoViewController {
             let items = [FWPopupItem(title: "取消", itemType: .normal, isCancel: true, canAutoHide: true, itemTitleColor: kPV_RGBA(r: 141, g: 151, b: 163, a: 1.0), itemBackgroundColor: nil, itemClickedBlock: block),
                          FWPopupItem(title: "确定", itemType: .normal, isCancel: false, canAutoHide: true, itemTitleColor: kPV_RGBA(r: 29, g: 150, b: 227, a: 1.0), itemBackgroundColor: nil, itemClickedBlock: block)]
             
-            // 主要演示修改参数
+            // 演示：修改参数
             let vProperty = FWAlertViewProperty()
             vProperty.alertViewWidth = max(UIScreen.main.bounds.width * 0.65, 275)
             vProperty.titleFontSize = 17.0
