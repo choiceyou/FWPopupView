@@ -180,7 +180,7 @@ extension FWSheetView {
             btn.snp.makeConstraints { (make) in
                 make.left.right.equalTo(btnContrainerView).inset(UIEdgeInsets(top: 0, left: -self.vProperty.splitWidth, bottom: 0, right: -self.vProperty.splitWidth))
                 make.height.equalTo(property.buttonHeight + property.splitWidth)
-                make.width.equalTo(btnContrainerView)
+                make.width.equalTo(btnContrainerView).offset(property.splitWidth*2)
                 if tmpIndex == 0 {
                     make.top.equalToSuperview()
                     lastBtn = btn;
@@ -219,7 +219,7 @@ extension FWSheetView {
         }
         
         btnContrainerView.snp.makeConstraints { (make) in
-            make.height.equalTo(min(property.buttonHeight * CGFloat(self.actionItemArray.count-1), UIScreen.main.bounds.height*0.6))
+            make.height.equalTo(min(property.buttonHeight * CGFloat(self.actionItemArray.count-1), property.popupViewMaxHeight))
         }
         
         cancelBtn.snp.makeConstraints { (make) in
@@ -234,11 +234,7 @@ extension FWSheetView {
             }
         }
         
-//        if #available(iOS 11.0, *) {
-//            self.frame.size.height = btnContrainerView.frame.maxY + self.vProperty.buttonHeight + property.cancelBtnMarginTop + FWPopupWindow.sharedInstance.safeAreaInsets.bottom
-//        } else {
-//            self.frame.size.height = btnContrainerView.frame.maxY + self.vProperty.buttonHeight + property.cancelBtnMarginTop
-//        }
+        self.setNeedsLayout()
     }
     
     open override func show(popupStateBlock: FWPopupStateBlock?) {

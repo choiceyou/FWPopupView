@@ -153,6 +153,11 @@ extension FWAlertView {
         self.frame.origin.x = (UIScreen.main.bounds.width - property.alertViewWidth) / 2
         self.frame.size.width = CGFloat(property.alertViewWidth)
         
+        self.snp.makeConstraints { (make) in
+            make.center.equalToSuperview()
+            make.width.equalTo(CGFloat(property.alertViewWidth))
+        }
+        
         self.setContentCompressionResistancePriority(.required, for: .horizontal)
         self.setContentCompressionResistancePriority(.fittingSizeLevel, for: .vertical)
         
@@ -167,6 +172,10 @@ extension FWAlertView {
         if title != nil && !title!.isEmpty {
             self.titleLabel = UILabel(frame: CGRect(x: self.vProperty.letfRigthMargin, y: currentMaxY, width: self.frame.width - self.vProperty.letfRigthMargin * 2, height: CGFloat.greatestFiniteMagnitude))
             self.addSubview(self.titleLabel!)
+            self.titleLabel?.snp.makeConstraints({ (make) in
+                make.left.equalToSuperview().offset(self.vProperty.letfRigthMargin)
+                make.right.equalToSuperview().offset(-self.vProperty.letfRigthMargin)
+            })
             self.titleLabel?.text = title
             self.titleLabel?.textColor = self.vProperty.titleColor
             self.titleLabel?.textAlignment = .center

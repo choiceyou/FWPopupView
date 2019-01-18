@@ -377,6 +377,8 @@ extension FWPopupView {
             
             if strongSelf.superview == nil {
                 strongSelf.attachedView?.fwMaskView.addSubview(strongSelf)
+                strongSelf.superview?.layoutIfNeeded()
+                strongSelf.layoutIfNeeded()
             }
             
             // 保证前一次弹窗销毁完毕
@@ -622,8 +624,8 @@ extension FWPopupView {
     }
     
     private func setupFrame() {
+        
         if self.haveSetFrame == false {
-            
             // 设置弹窗的frame
             switch self.vProperty.popupCustomAlignment {
             case .center:
@@ -683,6 +685,9 @@ extension FWPopupView {
                 self.frame.origin.y = self.attachedView!.frame.height - self.frame.height - self.vProperty.popupViewEdgeInsets.bottom
                 break
             }
+            
+            self.superview?.layoutIfNeeded()
+            self.layoutIfNeeded()
             
             self.finalFrame = self.frame
             

@@ -11,8 +11,6 @@ import UIKit
 
 class FWDemoViewController: UITableViewController {
     
-    var alertImage: FWAlertView!
-    
     /// 注意：这边不同的示例可能还附加演示了一些特性（比如：遮罩层是否能够点击、遮罩层的背景颜色等等），有用到时可以参考
     var titleArray = ["Alert - 单个按钮", "Alert - 两个按钮", "Alert - 两个按钮（修改参数）", "Alert - 多个按钮", "Alert - 带输入框", "Alert - 带自定义视图", "Sheet - 少量Item", "Sheet - 大量Item", "Date - 自定义日期选择", "Menu - 自定义菜单", "Custom - 自定义弹窗", "CustomSheet - 类似Sheet效果", "CustomSheet - 类似Sheet效果2", "RadioButton"]
     
@@ -51,6 +49,29 @@ class FWDemoViewController: UITableViewController {
         }, property: property)
         
         return customSheetView
+    }()
+    
+    lazy var alertImage: FWAlertView = {
+        
+        let block2: FWPopupItemClickedBlock = { [weak self] (popupView, index, title) in
+            
+            if index == 1 {
+                // 这边演示了如何手动去调用隐藏
+                self?.alertImage.hide()
+            }
+        }
+        
+        // 注意：此时“确定”按钮是不让按钮自己隐藏的
+        let items = [FWPopupItem(title: "取消", itemType: .normal, isCancel: true, canAutoHide: true, itemClickedBlock: block2),
+                     FWPopupItem(title: "确定", itemType: .normal, isCancel: false, canAutoHide: false, itemClickedBlock: block2)]
+        // 注意：添加自定义的视图，需要设置确定的Frame值
+        let customImageView = UIImageView(image: UIImage(named: "audio_bgm_4"))
+        
+        let vProperty = FWAlertViewProperty()
+        vProperty.touchWildToHide = "1"
+        
+        let alertImage = FWAlertView.alert(title: "标题", detail: "带自定义视图", inputPlaceholder: nil, keyboardType: .default, isSecureTextEntry: false, customView: customImageView, items: items, vProperty: vProperty)
+        return alertImage
     }()
     
     
@@ -181,28 +202,6 @@ extension FWDemoViewController {
             alertView.show()
             break
         case 5:
-            if self.alertImage == nil {
-                
-                let block2: FWPopupItemClickedBlock = { [weak self] (popupView, index, title) in
-                    
-                    if index == 1 {
-                        // 这边演示了如何手动去调用隐藏
-                        self?.alertImage.hide()
-                    }
-                }
-                
-                // 注意：此时“确定”按钮是不让按钮自己隐藏的
-                let items = [FWPopupItem(title: "取消", itemType: .normal, isCancel: true, canAutoHide: true, itemClickedBlock: block2),
-                             FWPopupItem(title: "确定", itemType: .normal, isCancel: false, canAutoHide: false, itemClickedBlock: block2)]
-                // 注意：添加自定义的视图，需要设置确定的Frame值
-                let customImageView = UIImageView(image: UIImage(named: "audio_bgm_4"))
-                
-                let vProperty = FWAlertViewProperty()
-                vProperty.touchWildToHide = "1"
-                
-                self.alertImage = FWAlertView.alert(title: "标题", detail: "带自定义视图", inputPlaceholder: nil, keyboardType: .default, isSecureTextEntry: false, customView: customImageView, items: items, vProperty: vProperty)
-            }
-            
             self.alertImage.show()
             break
         case 6:
