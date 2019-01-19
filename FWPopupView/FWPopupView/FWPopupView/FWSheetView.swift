@@ -102,10 +102,6 @@ extension FWSheetView {
         
         self.clipsToBounds = true
         
-        self.snp.makeConstraints { (make) in
-            make.left.bottom.right.equalToSuperview()
-        }
-        
         self.setContentCompressionResistancePriority(.required, for: .horizontal)
         self.setContentCompressionResistancePriority(.fittingSizeLevel, for: .vertical)
         
@@ -227,22 +223,12 @@ extension FWSheetView {
         }
         
         self.snp.makeConstraints { (make) in
+            make.left.right.equalToSuperview()
             if #available(iOS 11.0, *) {
                 make.bottom.equalTo(cancelBtn.snp.bottom).inset(-FWPopupWindow.sharedInstance.safeAreaInsets.bottom)
             } else {
                 make.bottom.equalTo(cancelBtn.snp.bottom)
             }
-        }
-        
-        self.setNeedsLayout()
-    }
-    
-    open override func show(popupStateBlock: FWPopupStateBlock?) {
-        super.show(popupStateBlock: popupStateBlock)
-        
-        self.snp.makeConstraints { (make) in
-            make.height.equalTo(self.frame.size.height)
-            make.left.bottom.right.equalTo(self.attachedView!)
         }
     }
 }

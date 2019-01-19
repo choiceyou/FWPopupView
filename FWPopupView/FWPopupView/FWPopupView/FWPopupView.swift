@@ -17,6 +17,7 @@
 
 import Foundation
 import UIKit
+import SnapKit
 
 /// 自定义弹窗校准位置，注意：这边设置靠置哪边动画就从哪边出来
 ///
@@ -86,6 +87,17 @@ import UIKit
     case didAppear
     case willDisappear
     case didDisappear
+}
+
+/// 当前约束的状态
+///
+/// - beforeAnimation: 动画之前的约束
+/// - showAnimation: 显示动画的约束
+/// - hideAnimation: 隐藏动画的约束
+private enum FWConstraintsState: Int {
+    case constraintsBeforeAnimation
+    case constraintsShownAnimation
+    case constraintsHiddenAnimation
 }
 
 
@@ -161,10 +173,16 @@ open class FWPopupView: UIView, UIGestureRecognizerDelegate {
     /// 记录弹窗弹起前keywindow
     internal var originKeyWindow: UIWindow?
     
-    /// 当前frame值是否被设置过了
-    private var haveSetFrame: Bool = false
-    /// 弹窗真正的frame
-    private var finalFrame = CGRect(x: 0, y: 0, width: 0, height: 0)
+    /// 弹窗真正的Size
+    private var finalSize = CGSize.zero
+    /// 当前Constraints是否被设置过了
+    private var haveSetConstraints: Bool = false
+    /// 记录当前view展示动画之前真正的ConstraintItem
+    //    private var lastConstraintItem: SnapKit.ConstraintItem!
+    
+    /// 是否重新设置了父视图
+    private var isResetSuperView: Bool = false
+    
     
     public override init(frame: CGRect) {
         super.init(frame: frame)
@@ -378,8 +396,7 @@ extension FWPopupView {
             
             if strongSelf.superview == nil {
                 strongSelf.attachedView?.fwMaskView.addSubview(strongSelf)
-                strongSelf.superview?.layoutIfNeeded()
-                strongSelf.layoutIfNeeded()
+                strongSelf.isResetSuperView = true
             }
             
             // 保证前一次弹窗销毁完毕
@@ -391,16 +408,17 @@ extension FWPopupView {
                 }
             }
             
-            strongSelf.setupFrame()
+            if !strongSelf.haveSetConstraints || strongSelf.isResetSuperView == true {
+                strongSelf.setupConstraints(constraintsState: .constraintsBeforeAnimation)
+            }
             
             switch strongSelf.vProperty.popupAnimationType {
             case .position: // 位移动画
-                strongSelf.positionAnimationChangeFrame()
                 break
                 
             case .scale, .scale3D: // 缩放动画/3D缩放动画
                 strongSelf.layer.anchorPoint = strongSelf.obtainAnchorPoint()
-                strongSelf.frame = strongSelf.finalFrame
+                //                strongSelf.frame = strongSelf.finalFrame
                 if strongSelf.vProperty.popupAnimationType == .scale {
                     strongSelf.transform = strongSelf.vProperty.transform
                 } else {
@@ -409,31 +427,20 @@ extension FWPopupView {
                 break
                 
             case .frame: // 修改frame值的动画
-                switch strongSelf.vProperty.popupCustomAlignment {
-                case .top, .topCenter, .topLeft, .topRight, .center:
-                    strongSelf.frame.size.height = 0
-                    break
-                case .left, .leftCenter:
-                    strongSelf.frame.size.width = 0
-                    break
-                case .bottom, .bottomCenter, .bottomLeft, .bottomRight:
-                    strongSelf.frame.origin.y = strongSelf.finalFrame.maxY
-                    strongSelf.frame.size.height = 0
-                    break
-                case .right, .rightCenter:
-                    strongSelf.frame.origin.x = strongSelf.finalFrame.maxX
-                    strongSelf.frame.size.width = 0
-                    break
-                }
                 break
             }
             
-            strongSelf.layoutIfNeeded()
+            strongSelf.setupConstraints(constraintsState: .constraintsShownAnimation)
             
             if strongSelf.vProperty.usingSpringWithDamping >= 0 && strongSelf.vProperty.usingSpringWithDamping <= 1 {
                 UIView.animate(withDuration: strongSelf.vProperty.animationDuration, delay: 0.0, usingSpringWithDamping: strongSelf.vProperty.usingSpringWithDamping, initialSpringVelocity: strongSelf.vProperty.initialSpringVelocity, options: [.curveEaseOut, .beginFromCurrentState], animations: {
                     
-                    strongSelf.showAnimationDuration()
+                    if strongSelf.vProperty.popupAnimationType == .position {
+                        strongSelf.superview?.layoutIfNeeded()
+                    } else if strongSelf.vProperty.popupAnimationType == .frame {
+                        strongSelf.superview?.layoutIfNeeded()
+                        strongSelf.layoutIfNeeded()
+                    }
                     
                 }, completion: { (finished) in
                     
@@ -448,7 +455,12 @@ extension FWPopupView {
             } else {
                 UIView.animate(withDuration: strongSelf.vProperty.animationDuration, delay: 0.0, options: [.curveEaseOut, .beginFromCurrentState], animations: {
                     
-                    strongSelf.showAnimationDuration()
+                    if strongSelf.vProperty.popupAnimationType == .position {
+                        strongSelf.superview?.layoutIfNeeded()
+                    } else if strongSelf.vProperty.popupAnimationType == .frame {
+                        strongSelf.superview?.layoutIfNeeded()
+                        strongSelf.layoutIfNeeded()
+                    }
                     
                 }, completion: { (finished) in
                     
@@ -466,25 +478,6 @@ extension FWPopupView {
         return popupBlock
     }
     
-    private func showAnimationDuration() {
-        switch self.vProperty.popupAnimationType {
-        case .position: // 位移动画
-            self.frame = self.finalFrame
-            break
-        case .scale: // 缩放动画
-            self.transform = CGAffineTransform.identity
-            break
-        case .scale3D: // 3D缩放动画
-            self.layer.transform = CATransform3DIdentity
-            break
-        case .frame: // 修改frame值的动画
-            self.frame = self.finalFrame
-            break
-        }
-        
-        self.superview?.layoutIfNeeded()
-    }
-    
     private func customHideAnimation() -> FWPopupBlock {
         
         let popupBlock:FWPopupBlock = { [weak self] popupView in
@@ -493,53 +486,37 @@ extension FWPopupView {
                 return
             }
             
-            let finalFrame = strongSelf.frame
+            strongSelf.setupConstraints(constraintsState: .constraintsHiddenAnimation)
             
-            UIView.animate(withDuration: strongSelf.vProperty.animationDuration, delay: 0.0, options: [.curveEaseIn, .beginFromCurrentState], animations: {
+            UIView.animate(withDuration: strongSelf.vProperty.animationDuration, animations: {
+                
+                if strongSelf.vProperty.popupAnimationType == .position {
+                    strongSelf.superview?.layoutIfNeeded()
+                } else if strongSelf.vProperty.popupAnimationType == .frame {
+                    strongSelf.superview?.layoutIfNeeded()
+                    strongSelf.layoutIfNeeded()
+                }
                 
                 switch strongSelf.vProperty.popupAnimationType {
                 case .position: // 位移动画
-                    strongSelf.positionAnimationChangeFrame()
                     break
                     
                 case .scale, .scale3D: // 缩放动画/3D缩放动画
                     strongSelf.layer.anchorPoint = strongSelf.obtainAnchorPoint()
-                    strongSelf.frame = finalFrame
+                    //                    strongSelf.frame = finalFrame
                     strongSelf.transform = strongSelf.vProperty.transform
                     break
                     
                 case .frame: // 修改frame值的动画
-                    switch strongSelf.vProperty.popupCustomAlignment {
-                    case .top, .topCenter, .topLeft, .topRight, .center:
-                        strongSelf.frame.size.height = 0
-                        break
-                    case .left, .leftCenter:
-                        strongSelf.frame.size.width = 0
-                        break
-                    case .bottom, .bottomCenter, .bottomLeft, .bottomRight:
-                        strongSelf.frame.origin.y = finalFrame.maxY
-                        strongSelf.frame.size.height = 0
-                        break
-                    case .right, .rightCenter:
-                        strongSelf.frame.origin.x = finalFrame.maxX
-                        strongSelf.frame.size.width = 0
-                        break
-                    }
+                    
                     break
                 }
                 
-                strongSelf.superview?.layoutIfNeeded()
-                
             }, completion: { (finished) in
-                
-                if finished {
-                    strongSelf.isHidden = true
-                }
                 
                 // 还原视图，防止下次动画时出错
                 switch strongSelf.vProperty.popupAnimationType {
                 case .frame, .position:
-                    strongSelf.frame = strongSelf.finalFrame
                     break
                 case .scale, .scale3D:
                     strongSelf.transform = CGAffineTransform.identity
@@ -559,23 +536,6 @@ extension FWPopupView {
         }
         
         return popupBlock
-    }
-    
-    private func positionAnimationChangeFrame() {
-        switch self.vProperty.popupCustomAlignment {
-        case .top, .topCenter, .topLeft, .topRight, .center:
-            self.frame.origin.y = -(self.frame.origin.y + self.frame.height)
-            break
-        case .left, .leftCenter:
-            self.frame.origin.x = -(self.frame.origin.x + self.frame.width)
-            break
-        case .bottom, .bottomCenter, .bottomLeft, .bottomRight:
-            self.frame.origin.y = self.attachedView!.frame.height
-            break
-        case .right, .rightCenter:
-            self.frame.origin.x = self.attachedView!.frame.width
-            break
-        }
     }
     
     private func obtainAnchorPoint() -> CGPoint {
@@ -624,75 +584,103 @@ extension FWPopupView {
         return CGPoint(x: tmpX, y: tmpY)
     }
     
-    private func setupFrame() {
+    /// 根据不同状态、动画设置视图的不同约束
+    private func setupConstraints(constraintsState: FWConstraintsState) {
         
-        if self.haveSetFrame == false {
-            // 设置弹窗的frame
-            switch self.vProperty.popupCustomAlignment {
-            case .center:
-                self.center = self.attachedView!.center
-                self.frame.origin.x += self.vProperty.popupViewEdgeInsets.left - self.vProperty.popupViewEdgeInsets.right
-                self.frame.origin.y += self.vProperty.popupViewEdgeInsets.top - self.vProperty.popupViewEdgeInsets.bottom
-                break
-                
-            case .top:
-                self.frame.origin.x += self.vProperty.popupViewEdgeInsets.left - self.vProperty.popupViewEdgeInsets.right
-                self.frame.origin.y = self.vProperty.popupViewEdgeInsets.top
-                break
-            case .left:
-                self.frame.origin.x = self.vProperty.popupViewEdgeInsets.left
-                self.frame.origin.y += self.vProperty.popupViewEdgeInsets.top - self.vProperty.popupViewEdgeInsets.bottom
-                break
-            case .bottom:
-                self.frame.origin.x += self.vProperty.popupViewEdgeInsets.left - self.vProperty.popupViewEdgeInsets.right
-                self.frame.origin.y = self.attachedView!.frame.height - self.frame.height - self.vProperty.popupViewEdgeInsets.bottom
-                break
-            case .right:
-                self.frame.origin.x = self.attachedView!.frame.width - self.frame.width - self.vProperty.popupViewEdgeInsets.right
-                self.frame.origin.y += self.vProperty.popupViewEdgeInsets.top - self.vProperty.popupViewEdgeInsets.bottom
-                break
-                
-            case .topCenter:
-                self.frame.origin.x = (self.attachedView!.frame.width - self.frame.width) / 2 + self.vProperty.popupViewEdgeInsets.left - self.vProperty.popupViewEdgeInsets.right
-                self.frame.origin.y = self.vProperty.popupViewEdgeInsets.top
-                break
-            case .leftCenter:
-                self.frame.origin.x = self.vProperty.popupViewEdgeInsets.left
-                self.frame.origin.y = (self.attachedView!.frame.height - self.frame.height) / 2 + self.vProperty.popupViewEdgeInsets.top - self.vProperty.popupViewEdgeInsets.bottom
-                break
-            case .bottomCenter:
-                self.frame.origin.x = (self.attachedView!.frame.width - self.frame.width) / 2 + self.vProperty.popupViewEdgeInsets.left - self.vProperty.popupViewEdgeInsets.right
-                self.frame.origin.y = self.attachedView!.frame.height - self.frame.height - self.vProperty.popupViewEdgeInsets.bottom
-                break
-            case .rightCenter:
-                self.frame.origin.x = self.attachedView!.frame.width - self.frame.width - self.vProperty.popupViewEdgeInsets.right
-                self.frame.origin.y = (self.attachedView!.frame.height - self.frame.height) / 2 + self.vProperty.popupViewEdgeInsets.top - self.vProperty.popupViewEdgeInsets.bottom
-                break
-                
-            case .topLeft:
-                self.frame.origin.x = self.vProperty.popupViewEdgeInsets.left
-                self.frame.origin.y = self.vProperty.popupViewEdgeInsets.top
-                break
-            case .topRight:
-                self.frame.origin.x = self.attachedView!.frame.width - self.frame.width - self.vProperty.popupViewEdgeInsets.right
-                self.frame.origin.y = self.vProperty.popupViewEdgeInsets.top
-                break
-            case .bottomLeft:
-                self.frame.origin.x = self.vProperty.popupViewEdgeInsets.left
-                self.frame.origin.y = self.attachedView!.frame.height - self.frame.height - self.vProperty.popupViewEdgeInsets.bottom
-                break
-            case .bottomRight:
-                self.frame.origin.x = self.attachedView!.frame.width - self.frame.width - self.vProperty.popupViewEdgeInsets.right
-                self.frame.origin.y = self.attachedView!.frame.height - self.frame.height - self.vProperty.popupViewEdgeInsets.bottom
-                break
+        switch self.vProperty.popupCustomAlignment {
+        case .center:
+            self.snp.remakeConstraints { (make) in
+                make.center.equalToSuperview().inset(self.vProperty.popupViewEdgeInsets)
             }
+            break
             
-            self.superview?.layoutIfNeeded()
-            self.layoutIfNeeded()
+        case .top:
+            self.frame.origin.x += self.vProperty.popupViewEdgeInsets.left - self.vProperty.popupViewEdgeInsets.right
+            self.frame.origin.y = self.vProperty.popupViewEdgeInsets.top
+            break
+        case .left:
+            self.frame.origin.x = self.vProperty.popupViewEdgeInsets.left
+            self.frame.origin.y += self.vProperty.popupViewEdgeInsets.top - self.vProperty.popupViewEdgeInsets.bottom
+            break
+        case .bottom:
+            self.frame.origin.x += self.vProperty.popupViewEdgeInsets.left - self.vProperty.popupViewEdgeInsets.right
+            self.frame.origin.y = self.attachedView!.frame.height - self.frame.height - self.vProperty.popupViewEdgeInsets.bottom
+            break
+        case .right:
+            self.frame.origin.x = self.attachedView!.frame.width - self.frame.width - self.vProperty.popupViewEdgeInsets.right
+            self.frame.origin.y += self.vProperty.popupViewEdgeInsets.top - self.vProperty.popupViewEdgeInsets.bottom
+            break
             
-            self.finalFrame = self.frame
+        case .topCenter:
+            self.frame.origin.x = (self.attachedView!.frame.width - self.frame.width) / 2 + self.vProperty.popupViewEdgeInsets.left - self.vProperty.popupViewEdgeInsets.right
+            self.frame.origin.y = self.vProperty.popupViewEdgeInsets.top
+            break
+        case .leftCenter:
+            self.frame.origin.x = self.vProperty.popupViewEdgeInsets.left
+            self.frame.origin.y = (self.attachedView!.frame.height - self.frame.height) / 2 + self.vProperty.popupViewEdgeInsets.top - self.vProperty.popupViewEdgeInsets.bottom
+            break
+        case .bottomCenter:
+            if constraintsState == .constraintsBeforeAnimation {
+                self.haveSetConstraints = true
+                self.layoutIfNeeded()
+                self.finalSize = self.frame.size
+                if self.vProperty.popupAnimationType == .position {
+                    self.snp.remakeConstraints { (make) in
+                        make.centerX.equalToSuperview().offset(self.vProperty.popupViewEdgeInsets.left + self.vProperty.popupViewEdgeInsets.right)
+                        make.bottom.equalToSuperview().offset(self.finalSize.height)
+                        make.size.equalTo(self.finalSize)
+                        let tmpMargin = (self.superview!.frame.size.width-self.finalSize.width)/2
+                        make.left.equalToSuperview().offset(tmpMargin)
+                        make.right.equalToSuperview().offset(-tmpMargin)
+                    }
+                } else if self.vProperty.popupAnimationType == .frame {
+                    self.snp.remakeConstraints { (make) in
+                        make.centerX.equalToSuperview().offset(self.vProperty.popupViewEdgeInsets.left + self.vProperty.popupViewEdgeInsets.right)
+                        make.bottom.equalToSuperview().offset(self.vProperty.popupViewEdgeInsets.top + self.vProperty.popupViewEdgeInsets.bottom)
+                        make.width.equalTo(self.finalSize.width)
+                        make.height.equalTo(0)
+                    }
+                }
+                self.superview?.layoutIfNeeded()
+            } else if constraintsState == .constraintsShownAnimation {
+                self.snp.updateConstraints { (make) in
+                    if self.vProperty.popupAnimationType == .position {
+                        make.bottom.equalToSuperview().offset(self.vProperty.popupViewEdgeInsets.top + self.vProperty.popupViewEdgeInsets.bottom)
+                    } else if self.vProperty.popupAnimationType == .frame {
+                        make.height.equalTo(self.finalSize.height)
+                    }
+                }
+            } else if constraintsState == .constraintsHiddenAnimation {
+                self.snp.updateConstraints { (make) in
+                    if self.vProperty.popupAnimationType == .position {
+                        make.bottom.equalToSuperview().offset(self.finalSize.height)
+                    } else if self.vProperty.popupAnimationType == .frame {
+                        make.height.equalTo(0)
+                    }
+                }
+            }
+            break
+        case .rightCenter:
+            self.frame.origin.x = self.attachedView!.frame.width - self.frame.width - self.vProperty.popupViewEdgeInsets.right
+            self.frame.origin.y = (self.attachedView!.frame.height - self.frame.height) / 2 + self.vProperty.popupViewEdgeInsets.top - self.vProperty.popupViewEdgeInsets.bottom
+            break
             
-            self.haveSetFrame = true
+        case .topLeft:
+            self.frame.origin.x = self.vProperty.popupViewEdgeInsets.left
+            self.frame.origin.y = self.vProperty.popupViewEdgeInsets.top
+            break
+        case .topRight:
+            self.frame.origin.x = self.attachedView!.frame.width - self.frame.width - self.vProperty.popupViewEdgeInsets.right
+            self.frame.origin.y = self.vProperty.popupViewEdgeInsets.top
+            break
+        case .bottomLeft:
+            self.frame.origin.x = self.vProperty.popupViewEdgeInsets.left
+            self.frame.origin.y = self.attachedView!.frame.height - self.frame.height - self.vProperty.popupViewEdgeInsets.bottom
+            break
+        case .bottomRight:
+            self.frame.origin.x = self.attachedView!.frame.width - self.frame.width - self.vProperty.popupViewEdgeInsets.right
+            self.frame.origin.y = self.attachedView!.frame.height - self.frame.height - self.vProperty.popupViewEdgeInsets.bottom
+            break
         }
     }
 }
