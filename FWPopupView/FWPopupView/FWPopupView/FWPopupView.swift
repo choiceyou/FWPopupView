@@ -623,7 +623,9 @@ extension FWPopupView {
             if constraintsState == .constraintsBeforeAnimation {
                 self.haveSetConstraints = true
                 self.layoutIfNeeded()
-                self.finalSize = self.frame.size
+                if self.finalSize.equalTo(CGSize.zero) {
+                    self.finalSize = self.frame.size
+                }
                 if self.vProperty.popupAnimationType == .position {
                     self.snp.remakeConstraints { (make) in
                         make.centerX.equalToSuperview().offset(self.vProperty.popupViewEdgeInsets.left + self.vProperty.popupViewEdgeInsets.right)
@@ -639,6 +641,9 @@ extension FWPopupView {
                         make.bottom.equalToSuperview().offset(self.vProperty.popupViewEdgeInsets.top + self.vProperty.popupViewEdgeInsets.bottom)
                         make.width.equalTo(self.finalSize.width)
                         make.height.equalTo(0)
+                        let tmpMargin = (self.superview!.frame.size.width-self.finalSize.width)/2
+                        make.left.equalToSuperview().offset(tmpMargin)
+                        make.right.equalToSuperview().offset(-tmpMargin)
                     }
                 }
                 self.superview?.layoutIfNeeded()
