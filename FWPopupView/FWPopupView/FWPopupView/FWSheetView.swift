@@ -108,8 +108,7 @@ extension FWSheetView {
         let property = self.vProperty as! FWSheetViewProperty
         
         property.popupCustomAlignment = .bottomCenter
-        property.popupAnimationType = .scale
-        property.animationDuration = 0.5
+        property.popupAnimationType = .position
         
         var lastConstraintItem = self.snp.top
         

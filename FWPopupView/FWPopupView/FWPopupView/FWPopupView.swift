@@ -508,6 +508,9 @@ extension FWPopupView {
         return popupBlock
     }
     
+    /// 获取当前视图的锚点
+    ///
+    /// - Returns: CGPoint
     private func obtainAnchorPoint() -> CGPoint {
         
         if self.vProperty.popupArrowVertexScaleX > 1 {
@@ -516,7 +519,6 @@ extension FWPopupView {
             self.vProperty.popupArrowVertexScaleX = 0
         }
         
-        // 计算anchorPoint
         var tmpX: CGFloat = 0
         var tmpY: CGFloat = 0
         switch self.vProperty.popupCustomAlignment {
@@ -528,8 +530,8 @@ extension FWPopupView {
             if self.vProperty.popupArrowStyle == .none {
                 tmpX = self.vProperty.popupArrowVertexScaleX
             } else {
-                let arrowVertexX = (self.frame.width - self.vProperty.popupArrowSize.width) *  self.vProperty.popupArrowVertexScaleX + self.vProperty.popupArrowSize.width / 2
-                tmpX = arrowVertexX / self.frame.width
+                let arrowVertexX = (self.finalSize.width - self.vProperty.popupArrowSize.width) *  self.vProperty.popupArrowVertexScaleX + self.vProperty.popupArrowSize.width / 2
+                tmpX = arrowVertexX / self.finalSize.width
             }
             tmpY = 0
             break
@@ -545,8 +547,8 @@ extension FWPopupView {
             if self.vProperty.popupArrowStyle == .none {
                 tmpX = self.vProperty.popupArrowVertexScaleX
             } else {
-                let arrowVertexX = (self.frame.width - self.vProperty.popupArrowSize.width) *  self.vProperty.popupArrowVertexScaleX + self.vProperty.popupArrowSize.width / 2
-                tmpX = arrowVertexX / self.frame.width
+                let arrowVertexX = (self.finalSize.width - self.vProperty.popupArrowSize.width) *  self.vProperty.popupArrowVertexScaleX + self.vProperty.popupArrowSize.width / 2
+                tmpX = arrowVertexX / self.finalSize.width
             }
             tmpY = 1
             break
@@ -654,7 +656,7 @@ extension FWPopupView {
                 } else if self.vProperty.popupAnimationType == .scale || self.vProperty.popupAnimationType == .scale3D {
                     self.snp.remakeConstraints { (make) in
                         make.centerX.equalToSuperview().offset(self.vProperty.popupViewEdgeInsets.left + self.vProperty.popupViewEdgeInsets.right)
-                        make.bottom.equalToSuperview().offset(self.vProperty.popupViewEdgeInsets.top + self.vProperty.popupViewEdgeInsets.bottom)
+                        make.bottom.equalToSuperview().offset(self.finalSize.height/2+self.vProperty.popupViewEdgeInsets.top + self.vProperty.popupViewEdgeInsets.bottom) // 设置锚点后会导致约束偏移，因此这边特意做了一个反向偏移
                         make.size.equalTo(self.finalSize)
                     }
                 }
@@ -700,14 +702,14 @@ extension FWPopupView {
         }
         
         if constraintsState == .constraintsBeforeAnimation && (self.vProperty.popupAnimationType == .scale || self.vProperty.popupAnimationType == .scale3D) {
-            self.superview?.layoutIfNeeded()
             self.layoutIfNeeded()
-            self.layer.anchorPoint = self.obtainAnchorPoint()
+            self.superview?.layoutIfNeeded()
             if self.vProperty.popupAnimationType == .scale {
                 self.transform = self.vProperty.transform
             } else {
                 self.layer.transform = self.vProperty.transform3D
             }
+            self.layer.anchorPoint = self.obtainAnchorPoint()
         }
     }
 }
