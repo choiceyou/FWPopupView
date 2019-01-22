@@ -177,8 +177,6 @@ open class FWPopupView: UIView, UIGestureRecognizerDelegate {
     private var finalSize = CGSize.zero
     /// 当前Constraints是否被设置过了
     private var haveSetConstraints: Bool = false
-    /// 记录当前view展示动画之前真正的ConstraintItem
-    //    private var lastConstraintItem: SnapKit.ConstraintItem!
     
     /// 是否重新设置了父视图
     private var isResetSuperView: Bool = false
@@ -412,24 +410,6 @@ extension FWPopupView {
                 strongSelf.setupConstraints(constraintsState: .constraintsBeforeAnimation)
             }
             
-            switch strongSelf.vProperty.popupAnimationType {
-            case .position: // 位移动画
-                break
-                
-            case .scale, .scale3D: // 缩放动画/3D缩放动画
-                strongSelf.layer.anchorPoint = strongSelf.obtainAnchorPoint()
-                //                strongSelf.frame = strongSelf.finalFrame
-                if strongSelf.vProperty.popupAnimationType == .scale {
-                    strongSelf.transform = strongSelf.vProperty.transform
-                } else {
-                    strongSelf.layer.transform = strongSelf.vProperty.transform3D
-                }
-                break
-                
-            case .frame: // 修改frame值的动画
-                break
-            }
-            
             strongSelf.setupConstraints(constraintsState: .constraintsShownAnimation)
             
             if strongSelf.vProperty.usingSpringWithDamping >= 0 && strongSelf.vProperty.usingSpringWithDamping <= 1 {
@@ -440,6 +420,12 @@ extension FWPopupView {
                     } else if strongSelf.vProperty.popupAnimationType == .frame {
                         strongSelf.superview?.layoutIfNeeded()
                         strongSelf.layoutIfNeeded()
+                    } else if strongSelf.vProperty.popupAnimationType == .scale {
+                        strongSelf.superview?.layoutIfNeeded()
+                        strongSelf.transform = CGAffineTransform.identity
+                    } else if strongSelf.vProperty.popupAnimationType == .scale3D {
+                        strongSelf.superview?.layoutIfNeeded()
+                        strongSelf.layer.transform = CATransform3DIdentity
                     }
                     
                 }, completion: { (finished) in
@@ -460,6 +446,12 @@ extension FWPopupView {
                     } else if strongSelf.vProperty.popupAnimationType == .frame {
                         strongSelf.superview?.layoutIfNeeded()
                         strongSelf.layoutIfNeeded()
+                    } else if strongSelf.vProperty.popupAnimationType == .scale {
+                        strongSelf.superview?.layoutIfNeeded()
+                        strongSelf.transform = CGAffineTransform.identity
+                    } else if strongSelf.vProperty.popupAnimationType == .scale3D {
+                        strongSelf.superview?.layoutIfNeeded()
+                        strongSelf.layer.transform = CATransform3DIdentity
                     }
                     
                 }, completion: { (finished) in
@@ -495,33 +487,11 @@ extension FWPopupView {
                 } else if strongSelf.vProperty.popupAnimationType == .frame {
                     strongSelf.superview?.layoutIfNeeded()
                     strongSelf.layoutIfNeeded()
-                }
-                
-                switch strongSelf.vProperty.popupAnimationType {
-                case .position: // 位移动画
-                    break
-                    
-                case .scale, .scale3D: // 缩放动画/3D缩放动画
-                    strongSelf.layer.anchorPoint = strongSelf.obtainAnchorPoint()
-                    //                    strongSelf.frame = finalFrame
+                } else if strongSelf.vProperty.popupAnimationType == .scale || strongSelf.vProperty.popupAnimationType == .scale3D {
                     strongSelf.transform = strongSelf.vProperty.transform
-                    break
-                    
-                case .frame: // 修改frame值的动画
-                    
-                    break
                 }
                 
             }, completion: { (finished) in
-                
-                // 还原视图，防止下次动画时出错
-                switch strongSelf.vProperty.popupAnimationType {
-                case .frame, .position:
-                    break
-                case .scale, .scale3D:
-                    strongSelf.transform = CGAffineTransform.identity
-                    break
-                }
                 
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.1, execute: {
                     if strongSelf.popupDidDisappearBlock != nil {
@@ -587,10 +557,54 @@ extension FWPopupView {
     /// 根据不同状态、动画设置视图的不同约束
     private func setupConstraints(constraintsState: FWConstraintsState) {
         
+        if constraintsState == .constraintsBeforeAnimation {
+            self.layoutIfNeeded()
+            if self.finalSize.equalTo(CGSize.zero) {
+                self.finalSize = self.frame.size
+            }
+        }
+        
         switch self.vProperty.popupCustomAlignment {
         case .center:
-            self.snp.remakeConstraints { (make) in
-                make.center.equalToSuperview().inset(self.vProperty.popupViewEdgeInsets)
+            if constraintsState == .constraintsBeforeAnimation {
+                self.haveSetConstraints = true
+                if self.vProperty.popupAnimationType == .position {
+                    self.snp.remakeConstraints { (make) in
+                        make.centerX.equalToSuperview().offset(self.vProperty.popupViewEdgeInsets.left + self.vProperty.popupViewEdgeInsets.right)
+                        make.centerY.equalToSuperview().offset(-self.finalSize.height/2 - self.superview!.frame.size.height/2)
+                        make.size.equalTo(self.finalSize)
+                    }
+                    self.superview?.layoutIfNeeded()
+                } else if self.vProperty.popupAnimationType == .frame {
+                    self.snp.remakeConstraints { (make) in
+                        make.top.equalToSuperview().offset((self.superview!.frame.size.height-self.finalSize.height)/2 + self.vProperty.popupViewEdgeInsets.top + self.vProperty.popupViewEdgeInsets.bottom)
+                        make.centerX.equalToSuperview().offset(self.vProperty.popupViewEdgeInsets.left + self.vProperty.popupViewEdgeInsets.right)
+                        make.width.equalTo(self.finalSize.width)
+                        make.height.equalTo(0)
+                    }
+                    self.superview?.layoutIfNeeded()
+                } else if self.vProperty.popupAnimationType == .scale || self.vProperty.popupAnimationType == .scale3D {
+                    self.snp.remakeConstraints { (make) in
+                        make.center.equalToSuperview().inset(self.vProperty.popupViewEdgeInsets)
+                        make.size.equalTo(self.finalSize)
+                    }
+                }
+            } else if constraintsState == .constraintsShownAnimation {
+                self.snp.updateConstraints { (make) in
+                    if self.vProperty.popupAnimationType == .position {
+                        make.centerY.equalToSuperview().offset(self.vProperty.popupViewEdgeInsets.top + self.vProperty.popupViewEdgeInsets.bottom)
+                    } else if self.vProperty.popupAnimationType == .frame {
+                        make.height.equalTo(self.finalSize.height)
+                    }
+                }
+            } else if constraintsState == .constraintsHiddenAnimation {
+                self.snp.updateConstraints { (make) in
+                    if self.vProperty.popupAnimationType == .position {
+                        make.centerY.equalToSuperview().offset(-self.finalSize.height/2 - self.superview!.frame.size.height/2)
+                    } else if self.vProperty.popupAnimationType == .frame {
+                        make.height.equalTo(0)
+                    }
+                }
             }
             break
             
@@ -622,31 +636,28 @@ extension FWPopupView {
         case .bottomCenter:
             if constraintsState == .constraintsBeforeAnimation {
                 self.haveSetConstraints = true
-                self.layoutIfNeeded()
-                if self.finalSize.equalTo(CGSize.zero) {
-                    self.finalSize = self.frame.size
-                }
                 if self.vProperty.popupAnimationType == .position {
                     self.snp.remakeConstraints { (make) in
                         make.centerX.equalToSuperview().offset(self.vProperty.popupViewEdgeInsets.left + self.vProperty.popupViewEdgeInsets.right)
                         make.bottom.equalToSuperview().offset(self.finalSize.height)
                         make.size.equalTo(self.finalSize)
-                        let tmpMargin = (self.superview!.frame.size.width-self.finalSize.width)/2
-                        make.left.equalToSuperview().offset(tmpMargin)
-                        make.right.equalToSuperview().offset(-tmpMargin)
                     }
+                    self.superview?.layoutIfNeeded()
                 } else if self.vProperty.popupAnimationType == .frame {
                     self.snp.remakeConstraints { (make) in
                         make.centerX.equalToSuperview().offset(self.vProperty.popupViewEdgeInsets.left + self.vProperty.popupViewEdgeInsets.right)
                         make.bottom.equalToSuperview().offset(self.vProperty.popupViewEdgeInsets.top + self.vProperty.popupViewEdgeInsets.bottom)
                         make.width.equalTo(self.finalSize.width)
                         make.height.equalTo(0)
-                        let tmpMargin = (self.superview!.frame.size.width-self.finalSize.width)/2
-                        make.left.equalToSuperview().offset(tmpMargin)
-                        make.right.equalToSuperview().offset(-tmpMargin)
+                    }
+                    self.superview?.layoutIfNeeded()
+                } else if self.vProperty.popupAnimationType == .scale || self.vProperty.popupAnimationType == .scale3D {
+                    self.snp.remakeConstraints { (make) in
+                        make.centerX.equalToSuperview().offset(self.vProperty.popupViewEdgeInsets.left + self.vProperty.popupViewEdgeInsets.right)
+                        make.bottom.equalToSuperview().offset(self.vProperty.popupViewEdgeInsets.top + self.vProperty.popupViewEdgeInsets.bottom)
+                        make.size.equalTo(self.finalSize)
                     }
                 }
-                self.superview?.layoutIfNeeded()
             } else if constraintsState == .constraintsShownAnimation {
                 self.snp.updateConstraints { (make) in
                     if self.vProperty.popupAnimationType == .position {
@@ -686,6 +697,17 @@ extension FWPopupView {
             self.frame.origin.x = self.attachedView!.frame.width - self.frame.width - self.vProperty.popupViewEdgeInsets.right
             self.frame.origin.y = self.attachedView!.frame.height - self.frame.height - self.vProperty.popupViewEdgeInsets.bottom
             break
+        }
+        
+        if constraintsState == .constraintsBeforeAnimation && (self.vProperty.popupAnimationType == .scale || self.vProperty.popupAnimationType == .scale3D) {
+            self.superview?.layoutIfNeeded()
+            self.layoutIfNeeded()
+            self.layer.anchorPoint = self.obtainAnchorPoint()
+            if self.vProperty.popupAnimationType == .scale {
+                self.transform = self.vProperty.transform
+            } else {
+                self.layer.transform = self.vProperty.transform3D
+            }
         }
     }
 }
