@@ -184,7 +184,7 @@ extension FWMenuView {
         // 箭头方向
         var isUpArrow = true
         switch property.popupCustomAlignment {
-        case .bottom, .bottomLeft, .bottomRight, .bottomCenter:
+        case .bottomLeft, .bottomRight, .bottomCenter:
             isUpArrow = false
             break
         default:
