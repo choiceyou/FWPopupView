@@ -220,7 +220,7 @@ extension FWAlertView {
                 make.top.equalTo(lastConstraintItem).offset((self.commponenetCount != 1) ? (lastTopBottomMargin+property.commponentMargin) : singleCommponenetMargin)
                 make.left.equalToSuperview().offset(self.vProperty.letfRigthMargin)
                 make.right.equalToSuperview().offset(-self.vProperty.letfRigthMargin)
-                make.height.lessThanOrEqualTo(property.popupViewMaxHeight-100)
+                make.height.lessThanOrEqualTo(self.superview!.frame.size.height*property.popupViewMaxHeightRate-100)
             })
             self.detailLabel?.text = detail
             self.detailLabel?.textColor = property.detailColor

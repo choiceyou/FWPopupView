@@ -101,6 +101,7 @@ extension FWSheetView {
         }
         
         self.clipsToBounds = true
+        self.isNotMakeSize = true
         
         self.setContentCompressionResistancePriority(.required, for: .horizontal)
         self.setContentCompressionResistancePriority(.fittingSizeLevel, for: .vertical)
@@ -210,12 +211,13 @@ extension FWSheetView {
             
             tmpIndex += 1
         }
-        lastBtn.snp.makeConstraints { (make) in
-            make.bottom.equalTo(btnContrainerView.snp.bottom).offset(self.vProperty.splitWidth)
-        }
         
         btnContrainerView.snp.makeConstraints { (make) in
-            make.height.equalTo(min(property.buttonHeight * CGFloat(self.actionItemArray.count-1), property.popupViewMaxHeight))
+            make.height.equalTo(property.buttonHeight * CGFloat(self.actionItemArray.count-1))
+            if self.vProperty.popupViewMaxHeightRate > 0 {
+                make.height.lessThanOrEqualTo(self.superview!.snp.height).multipliedBy(self.vProperty.popupViewMaxHeightRate)
+            }
+            make.bottom.equalTo(lastBtn.snp.bottom).offset(-self.vProperty.splitWidth)
         }
         
         cancelBtn.snp.makeConstraints { (make) in

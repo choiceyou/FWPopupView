@@ -196,8 +196,8 @@ extension FWMenuView {
         
         if property.popupViewSize.width > 0 && property.popupViewSize.height > 0 {
             selfSize = property.popupViewSize
-        } else if self.vProperty.popupViewMaxHeight > 0 && self.maxItemSize.height * CGFloat(self.itemsCount()) > self.vProperty.popupViewMaxHeight {
-            selfSize = CGSize(width: self.maxItemSize.width, height: self.vProperty.popupViewMaxHeight)
+        } else if self.vProperty.popupViewMaxHeightRate > 0 && self.maxItemSize.height * CGFloat(self.itemsCount()) > self.vProperty.popupViewMaxHeightRate*self.superview!.frame.size.height {
+            selfSize = CGSize(width: self.maxItemSize.width, height: self.vProperty.popupViewMaxHeightRate*self.superview!.frame.size.height)
         } else {
             selfSize = CGSize(width: self.maxItemSize.width, height: self.maxItemSize.height * CGFloat(self.itemsCount()))
         }
@@ -446,7 +446,7 @@ open class FWMenuViewProperty: FWPopupViewProperty {
         
         self.letfRigthMargin = 20
         
-        self.popupViewMaxHeight = UIScreen.main.bounds.height * CGFloat(0.7)
+        self.popupViewMaxHeightRate = 0.7
     }
 }
 

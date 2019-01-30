@@ -203,8 +203,8 @@ extension FWCustomSheetView {
         self.tableView.backgroundColor = self.backgroundColor
         self.tableView.bounces = property.bounces
         
-        if property.popupViewMaxHeight > 0 && property.popupViewItemHeight * CGFloat(self.itemsCount()) > property.popupViewMaxHeight {
-            selfSize.height = self.vProperty.popupViewMaxHeight
+        if property.popupViewMaxHeightRate > 0 && property.popupViewItemHeight * CGFloat(self.itemsCount()) > property.popupViewMaxHeightRate*self.superview!.frame.size.height  {
+            selfSize.height = property.popupViewMaxHeightRate*self.superview!.frame.size.height
         } else if property.popupViewMinHeight > 0 && property.popupViewItemHeight * CGFloat(self.itemsCount()) < property.popupViewMinHeight {
             selfSize.height = property.popupViewMinHeight
         } else {
@@ -365,7 +365,7 @@ open class FWCustomSheetViewProperty: FWPopupViewProperty {
         
         self.letfRigthMargin = 20
         
-        self.popupViewMaxHeight = UIScreen.main.bounds.height * CGFloat(0.7)
+        self.popupViewMaxHeightRate = 0.7
         
         self.touchWildToHide = "1"
     }

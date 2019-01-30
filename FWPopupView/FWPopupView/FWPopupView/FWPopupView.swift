@@ -101,7 +101,10 @@ public typealias FWPopupDidDisappearBlock = (_ popupView: FWPopupView) -> Void
 public typealias FWPopupStateBlock = (_ popupView: FWPopupView, _ popupViewState: FWPopupViewState) -> Void
 
 /// 弹窗显示、隐藏回调，内部回调，该回调不对外
-public typealias FWPopupBlock = (_ popupView: FWPopupView) -> Void
+public typealias FWPopupShowBlock = (_ popupView: FWPopupView) -> Void
+/// 弹窗显示、隐藏回调，内部回调，该回调不对外
+public typealias FWPopupHideBlock = (_ popupView: FWPopupView, _ hideWithRemove: Bool) -> Void
+
 /// 普通无参数回调
 public typealias FWPopupVoidBlock = () -> Void
 
@@ -152,9 +155,9 @@ open class FWPopupView: UIView, UIGestureRecognizerDelegate {
     private var popupDidDisappearBlock: FWPopupDidDisappearBlock?
     private var popupStateBlock: FWPopupStateBlock?
     
-    private var showAnimation: FWPopupBlock?
+    private var showAnimation: FWPopupShowBlock?
     
-    private var hideAnimation: FWPopupBlock?
+    private var hideAnimation: FWPopupHideBlock?
     
     /// 记录遮罩层设置前的颜色
     internal var originMaskViewColor: UIColor!
@@ -164,6 +167,8 @@ open class FWPopupView: UIView, UIGestureRecognizerDelegate {
     internal var originScrollEnabled: Bool?
     /// 记录弹窗弹起前keywindow
     internal var originKeyWindow: UIWindow?
+    /// 是否不需要设置Size
+    internal var isNotMakeSize: Bool = false
     
     /// 弹窗真正的Size
     private var finalSize = CGSize.zero
@@ -304,16 +309,27 @@ extension FWPopupView {
         }
     }
     
-    /// 隐藏
+    /// 隐藏，从父视图中移除
     @objc open func hide() {
         
         self.hide(popupDidDisappearBlock: nil)
     }
     
-    /// 隐藏
+    /// 隐藏，从父视图中移除同时回调
     ///
     /// - Parameter completionBlock: 显示、隐藏回调
     @objc open func hide(popupDidDisappearBlock: FWPopupDidDisappearBlock? = nil) {
+        
+        self.hideNow(popupDidDisappearBlock: popupDidDisappearBlock, isRemove: true)
+    }
+    
+    /// 隐藏，父视图中不移除当前视图
+    @objc open func hideWithNotRemove() {
+        
+        self.hideNow(popupDidDisappearBlock: nil, isRemove: false)
+    }
+    
+    private func hideNow(popupDidDisappearBlock: FWPopupDidDisappearBlock? = nil, isRemove: Bool) {
         
         if popupDidDisappearBlock != nil {
             self.popupDidDisappearBlock = popupDidDisappearBlock
@@ -335,7 +351,7 @@ extension FWPopupView {
         
         let hideAnimation = self.hideAnimation
         if hideAnimation != nil {
-            hideAnimation!(self)
+            hideAnimation!(self, isRemove)
         }
         
         if self.tapGest != nil && self.attachedView != nil {
@@ -376,7 +392,7 @@ extension FWPopupView {
 // MARK: - 动画事件
 extension FWPopupView {
     
-    private func customShowAnimation() -> FWPopupBlock {
+    private func customShowAnimation() -> FWPopupShowBlock {
         
         let popupBlock = { [weak self] (popupView: FWPopupView) in
             
@@ -393,8 +409,6 @@ extension FWPopupView {
             for view in strongSelf.attachedView!.fwMaskView.subviews {
                 if view == strongSelf {
                     view.isHidden = false
-                } else {
-                    view.removeFromSuperview()
                 }
             }
             
@@ -458,9 +472,9 @@ extension FWPopupView {
         return popupBlock
     }
     
-    private func customHideAnimation() -> FWPopupBlock {
+    private func customHideAnimation() -> FWPopupHideBlock {
         
-        let popupBlock:FWPopupBlock = { [weak self] popupView in
+        let popupBlock: FWPopupHideBlock = { [weak self] popupView, isRemove in
             
             guard let strongSelf = self else {
                 return
@@ -480,6 +494,12 @@ extension FWPopupView {
                 }
                 
             }, completion: { (finished) in
+                
+                if isRemove == true {
+                    strongSelf.removeFromSuperview()
+                } else {
+                    strongSelf.isHidden = true
+                }
                 
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.1, execute: {
                     if strongSelf.popupDidDisappearBlock != nil {
@@ -512,10 +532,14 @@ extension FWPopupView {
                 if self.isResetSuperView == true {
                     self.isResetSuperView = false
                     self.snp.remakeConstraints { (make) in
+                        make.size.equalTo(self.finalSize)
                         self.constraintsBeforeAnimationPosition(make: make, myAlignment: myAlignment)
                     }
                 } else {
                     self.snp.makeConstraints { (make) in
+                        if self.isNotMakeSize == false {
+                            make.size.equalTo(self.finalSize)
+                        }
                         self.constraintsBeforeAnimationPosition(make: make, myAlignment: myAlignment)
                     }
                 }
@@ -536,10 +560,14 @@ extension FWPopupView {
                 if self.isResetSuperView == true {
                     self.isResetSuperView = false
                     self.snp.remakeConstraints { (make) in
+                        make.size.equalTo(self.finalSize)
                         self.constraintsBeforeAnimationScale(make: make, myAlignment: myAlignment)
                     }
                 } else {
                     self.snp.makeConstraints { (make) in
+                        if self.isNotMakeSize == false {
+                            make.size.equalTo(self.finalSize)
+                        }
                         self.constraintsBeforeAnimationScale(make: make, myAlignment: myAlignment)
                     }
                 }
@@ -648,7 +676,6 @@ extension FWPopupView {
     ///   - make: ConstraintMaker
     ///   - myAlignment: 自定义弹窗校准位置
     private func constraintsBeforeAnimationPosition(make: ConstraintMaker, myAlignment: FWPopupCustomAlignment) {
-        make.size.equalTo(self.finalSize)
         if myAlignment == .center {
             make.centerX.equalToSuperview().offset(self.vProperty.popupViewEdgeInsets.left - self.vProperty.popupViewEdgeInsets.right)
             make.centerY.equalToSuperview().offset(-self.finalSize.height/2 - self.superview!.frame.size.height/2)
@@ -739,7 +766,6 @@ extension FWPopupView {
     ///   - make: ConstraintMaker
     ///   - myAlignment: 自定义弹窗校准位置
     private func constraintsBeforeAnimationScale(make: ConstraintMaker, myAlignment: FWPopupCustomAlignment) {
-        make.size.equalTo(self.finalSize)
         let anchorPoint = self.obtainAnchorPoint()
         self.layer.anchorPoint = anchorPoint
         if myAlignment == .center {
@@ -907,8 +933,8 @@ open class FWPopupViewProperty: NSObject {
     
     /// 弹窗的背景色（注意：这边指的是弹窗而不是遮罩层，遮罩层背景色的设置是：fwMaskViewColor）
     @objc open var backgroundColor: UIColor?
-    /// 弹窗的最大高度，0：表示不限制
-    @objc open var popupViewMaxHeight: CGFloat      = UIScreen.main.bounds.height * CGFloat(0.6)
+    /// 弹窗的最大高度占遮罩层高度的比例，0：表示不限制
+    @objc open var popupViewMaxHeightRate: CGFloat  = 0.6
     
     /// 弹窗箭头的样式
     @objc open var popupArrowStyle                  = FWMenuArrowStyle.none

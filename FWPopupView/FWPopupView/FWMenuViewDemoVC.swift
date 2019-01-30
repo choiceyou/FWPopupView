@@ -96,14 +96,28 @@ class FWMenuViewDemoVC: UIViewController {
         btn.tag = 0
         self.navigationItem.titleView = btn
         
-        centerBtn = self.setupBtn(title: "中间按钮", frame: CGRect(x: (UIScreen.main.bounds.width - 100)/2, y: UIScreen.main.bounds.height * 0.25, width: 100, height: 50), tag: 1) as? UIButton
+        centerBtn = self.setupBtn(title: "中间按钮", tag: 1) as? UIButton
         self.view.addSubview(centerBtn)
+        centerBtn.snp.makeConstraints { (make) in
+            make.center.equalToSuperview().inset(UIEdgeInsets(top: -100, left: 0, bottom: 0, right: 0))
+            make.size.equalTo(CGSize(width: 100, height: 50))
+        }
         
-        leftBottomBtn = self.setupBtn(title: "左下角按钮", frame: CGRect(x: 10, y: UIScreen.main.bounds.height * 0.8, width: 100, height: 50), tag: 2) as? UIButton
+        leftBottomBtn = self.setupBtn(title: "左下角按钮", tag: 2) as? UIButton
         self.view.addSubview(leftBottomBtn)
+        leftBottomBtn.snp.makeConstraints { (make) in
+            make.left.equalToSuperview().offset(20)
+            make.bottom.equalToSuperview().offset(-20)
+            make.size.equalTo(CGSize(width: 100, height: 50))
+        }
         
-        rightBottomBtn = self.setupBtn(title: "右下角按钮", frame: CGRect(x: UIScreen.main.bounds.width - 110, y: UIScreen.main.bounds.height * 0.8, width: 100, height: 50), tag: 3) as? UIButton
+        rightBottomBtn = self.setupBtn(title: "右下角按钮", tag: 3) as? UIButton
         self.view.addSubview(rightBottomBtn)
+        rightBottomBtn.snp.makeConstraints { (make) in
+            make.right.equalToSuperview().offset(-20)
+            make.bottom.equalToSuperview().offset(-20)
+            make.size.equalTo(CGSize(width: 100, height: 50))
+        }
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle{get { return .lightContent}}
@@ -111,10 +125,9 @@ class FWMenuViewDemoVC: UIViewController {
 
 extension FWMenuViewDemoVC {
     
-    func setupBtn(title: String, frame: CGRect, tag: Int) -> UIView {
+    func setupBtn(title: String, tag: Int) -> UIView {
         
         let btn = UIButton(type: .custom)
-        btn.frame = frame
         btn.setTitle(title, for: .normal)
         btn.setTitleColor(UIColor.white, for: .normal)
         btn.titleLabel?.font = UIFont.systemFont(ofSize: 15.0)
@@ -162,7 +175,7 @@ extension FWMenuViewDemoVC {
             property.popupAnimationType = .frame
             property.maskViewColor = UIColor(white: 0, alpha: 0.4)
             property.touchWildToHide = "1"
-            property.popupViewEdgeInsets = UIEdgeInsets(top: 0, left: 10, bottom: UIScreen.main.bounds.height - self.leftBottomBtn.frame.minY - kStatusBarHeight - kNavBarHeight, right: 0)
+            property.popupViewEdgeInsets = UIEdgeInsets(top: 0, left: 20, bottom: UIScreen.main.bounds.height - self.leftBottomBtn.frame.minY - kStatusBarHeight - kNavBarHeight, right: 0)
             property.topBottomMargin = 10
             property.animationDuration = 0.3
             property.popupArrowStyle = .none
