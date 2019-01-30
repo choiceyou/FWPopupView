@@ -12,7 +12,7 @@ import UIKit
 class FWDemoViewController: UITableViewController {
     
     /// 注意：这边不同的示例可能还附加演示了一些特性（比如：遮罩层是否能够点击、遮罩层的背景颜色等等），有用到时可以参考
-    var titleArray = ["Alert - 单个按钮", "Alert - 两个按钮", "Alert - 两个按钮（修改参数）", "Alert - 多个按钮", "Alert - 带输入框", "Alert - 带自定义视图", "Sheet - 少量Item", "Sheet - 大量Item", "Date - 自定义日期选择", "Menu - 自定义菜单", "Custom - 自定义弹窗", "CustomSheet - 类似Sheet效果", "CustomSheet - 类似Sheet效果2", "RadioButton"]
+    var titleArray = ["Alert - 单个按钮", "Alert - 两个按钮", "Alert - 两个按钮（修改参数）", "Alert - 多个按钮", "Alert - 带输入框", "Alert - 带自定义视图", "Sheet - 少量Item", "Sheet - 标题+少量Item", "Sheet - 大量Item", "Date - 自定义日期选择", "Menu - 自定义菜单", "Custom - 自定义弹窗", "CustomSheet - 类似Sheet效果", "CustomSheet - 类似Sheet效果2", "RadioButton"]
     
     let block: FWPopupItemClickedBlock = { (popupView, index, title) in
         print("AlertView：点击了第\(index)个按钮")
@@ -75,21 +75,6 @@ class FWDemoViewController: UITableViewController {
     }()
     
     
-    lazy var sheetView: FWSheetView = {
-        
-        let items = ["Sheet0", "Sheet1", "Sheet2", "Sheet3"]
-        
-        let vProperty = FWSheetViewProperty()
-        vProperty.touchWildToHide = "1"
-        
-        let sheetView = FWSheetView.sheet(title: "测试测试", itemTitles: items, itemBlock: { (popupView, index, title) in
-            print("Sheet：点击了第\(index)个按钮")
-        }, cancenlBlock: {
-            print("点击了取消")
-        }, property: vProperty)
-        return sheetView
-    }()
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -118,9 +103,9 @@ extension FWDemoViewController {
         let cell = UITableViewCell(style: .default, reuseIdentifier: "cellId")
         cell.textLabel?.text = titleArray[indexPath.row]
         cell.textLabel?.numberOfLines = 0
-        if indexPath.row == 9 || indexPath.row == 10 {
+        if indexPath.row == 10 || indexPath.row == 11 {
             cell.accessoryType = .disclosureIndicator
-        } else if indexPath.row == 13 {
+        } else if indexPath.row == 14 {
             let property = FWRadioButtonProperty()
             property.selectedStateColor = UIColor.red
             property.animationDuration = 0.2
@@ -205,9 +190,34 @@ extension FWDemoViewController {
             self.alertImage.show()
             break
         case 6:
-            self.sheetView.show()
+            let items = ["Sheet0", "Sheet1", "Sheet2", "Sheet3"]
+            
+            let vProperty = FWSheetViewProperty()
+            vProperty.touchWildToHide = "1"
+            
+            let sheetView = FWSheetView.sheet(title: "", itemTitles: items, itemBlock: { (popupView, index, title) in
+                print("Sheet：点击了第\(index)个按钮")
+            }, cancenlBlock: {
+                print("点击了取消")
+            }, property: vProperty)
+            sheetView.show()
             break
         case 7:
+            let items = ["确定"]
+            
+            let vProperty = FWSheetViewProperty()
+            vProperty.touchWildToHide = "1"
+            vProperty.titleColor = UIColor.lightGray
+            vProperty.titleFontSize = 15.0
+            
+            let sheetView = FWSheetView.sheet(title: "你们知道微信中为什么经常使用这种提示，而不使用Alert加两个按钮的那种提示吗？", itemTitles: items, itemBlock: { (popupView, index, title) in
+                print("Sheet：点击了第\(index)个按钮")
+            }, cancenlBlock: {
+                print("点击了取消")
+            }, property: vProperty)
+            sheetView.show()
+            break
+        case 8:
             let items = ["Sheet0", "Sheet1", "Sheet2", "Sheet3", "Sheet4", "Sheet5", "Sheet6", "Sheet7", "Sheet8", "Sheet9", "Sheet10", "Sheet11", "Sheet12", "Sheet13", "Sheet14"]
             
             let sheetView = FWSheetView.sheet(title: "标题", itemTitles: items, itemBlock: { (popupView, index, title) in
@@ -217,7 +227,7 @@ extension FWDemoViewController {
             })
             sheetView.show()
             break
-        case 8:
+        case 9:
             let dateView = FWDateView.date(confirmBlock: { (datePicker) in
                 print("当前选定时间：\(datePicker.date)")
             }, cancelBlock: {
@@ -229,16 +239,16 @@ extension FWDemoViewController {
             dateView.datePicker.calendar = Calendar.current
             dateView.show()
             break
-        case 9:
+        case 10:
             self.navigationController?.pushViewController(FWMenuViewDemoVC(), animated: true)
             break
-        case 10:
+        case 11:
             self.navigationController?.pushViewController(FWCustomPopupDemoVC(), animated: true)
             break
-        case 11:
+        case 12:
             self.customSheetView.show()
             break
-        case 12:
+        case 13:
             self.customSheetView2.show()
             break
         default:
