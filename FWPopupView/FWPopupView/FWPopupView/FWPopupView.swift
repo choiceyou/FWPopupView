@@ -167,7 +167,7 @@ open class FWPopupView: UIView, UIGestureRecognizerDelegate {
     internal var originScrollEnabled: Bool?
     /// 记录弹窗弹起前keywindow
     internal var originKeyWindow: UIWindow?
-    /// 是否不需要设置Size
+    /// 是否不需要设置Size（当前基类使用SnapKit，如果子类不希望该父类重置他的size，可以传入true）
     internal var isNotMakeSize: Bool = false
     
     /// 弹窗真正的Size
