@@ -253,10 +253,14 @@ extension FWPopupView {
     /// - Parameter completionBlock: 显示、隐藏回调
     @objc open func show(popupStateBlock: FWPopupStateBlock? = nil) {
         
-        if self.attachedView?.fwReferenceCount == 1 {
-            DispatchQueue.main.asyncAfter(deadline: .now()+self.vProperty.animationDuration+0.1) {
-                self.showNow(popupStateBlock: popupStateBlock)
-            }
+        if self.superview == nil {
+            self.attachedView?.fwMaskView.addSubview(self)
+            self.isResetSuperView = true
+        }
+        
+        if self.attachedView?.fwBackgroundAnimating == true {
+            FWPopupWindow.sharedInstance.willShowingViews.append(self)
+            self.popupStateBlock = popupStateBlock
         } else {
             self.showNow(popupStateBlock: popupStateBlock)
         }
@@ -343,7 +347,9 @@ extension FWPopupView {
         if self.attachedView == nil {
             self.attachedView = FWPopupWindow.sharedInstance.attachView()
         }
-        self.attachedView?.hideFwBackground()
+        if FWPopupWindow.sharedInstance.hiddenViews.isEmpty && FWPopupWindow.sharedInstance.willShowingViews.isEmpty && self.attachedView?.fwBackgroundAnimating == false {
+            self.attachedView?.hideFwBackground()
+        }
         
         if self.withKeyboard {
             self.hideKeyboard()
@@ -392,6 +398,9 @@ extension FWPopupView {
 // MARK: - 动画事件
 extension FWPopupView {
     
+    /// 显示动画
+    ///
+    /// - Returns: FWPopupShowBlock
     private func customShowAnimation() -> FWPopupShowBlock {
         
         let popupBlock = { [weak self] (popupView: FWPopupView) in
@@ -400,17 +409,18 @@ extension FWPopupView {
                 return
             }
             
-            if strongSelf.superview == nil {
-                strongSelf.attachedView?.fwMaskView.addSubview(strongSelf)
-                strongSelf.isResetSuperView = true
-            }
-            
             // 保证前一次弹窗销毁完毕
+            var tmpHiddenViews: [UIView] = []
             for view in strongSelf.attachedView!.fwMaskView.subviews {
                 if view == strongSelf {
                     view.isHidden = false
+                } else {
+                    view.isHidden = true
+                    tmpHiddenViews.append(view)
                 }
             }
+            FWPopupWindow.sharedInstance.hiddenViews.removeAll()
+            FWPopupWindow.sharedInstance.hiddenViews.append(contentsOf: tmpHiddenViews)
             
             if !strongSelf.haveSetConstraints || strongSelf.isResetSuperView == true {
                 strongSelf.setupConstraints(constraintsState: .constraintsBeforeAnimation)
@@ -434,12 +444,7 @@ extension FWPopupView {
                     
                 }, completion: { (finished) in
                     
-                    if strongSelf.popupDidAppearBlock != nil {
-                        strongSelf.popupDidAppearBlock!(strongSelf)
-                    }
-                    if strongSelf.popupStateBlock != nil {
-                        strongSelf.popupStateBlock!(strongSelf, .didAppear)
-                    }
+                    strongSelf.showAnimationFinished()
                     
                 })
             } else {
@@ -458,12 +463,7 @@ extension FWPopupView {
                     
                 }, completion: { (finished) in
                     
-                    if strongSelf.popupDidAppearBlock != nil {
-                        strongSelf.popupDidAppearBlock!(strongSelf)
-                    }
-                    if strongSelf.popupStateBlock != nil {
-                        strongSelf.popupStateBlock!(strongSelf, .didAppear)
-                    }
+                    strongSelf.showAnimationFinished()
                     
                 })
             }
@@ -472,6 +472,26 @@ extension FWPopupView {
         return popupBlock
     }
     
+    /// 显示动画完成后的操作
+    private func showAnimationFinished() {
+        
+        if self.popupDidAppearBlock != nil {
+            self.popupDidAppearBlock!(self)
+        }
+        if self.popupStateBlock != nil {
+            self.popupStateBlock!(self, .didAppear)
+        }
+        
+        if FWPopupWindow.sharedInstance.willShowingViews.count > 0 {
+            let willShowingView: FWPopupView = FWPopupWindow.sharedInstance.willShowingViews.last as! FWPopupView
+            willShowingView.showNow(popupStateBlock: willShowingView.popupStateBlock)
+            FWPopupWindow.sharedInstance.willShowingViews.removeLast()
+        }
+    }
+    
+    /// 隐藏动画
+    ///
+    /// - Returns: FWPopupHideBlock
     private func customHideAnimation() -> FWPopupHideBlock {
         
         let popupBlock: FWPopupHideBlock = { [weak self] popupView, isRemove in
@@ -497,11 +517,24 @@ extension FWPopupView {
                 
                 if isRemove == true {
                     strongSelf.removeFromSuperview()
+                    if let index = FWPopupWindow.sharedInstance.hiddenViews.index(of: strongSelf) {
+                        FWPopupWindow.sharedInstance.hiddenViews.remove(at: index)
+                    }
                 } else {
                     strongSelf.isHidden = true
                 }
                 
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1, execute: {
+                DispatchQueue.main.asyncAfter(deadline: .now()+0.001, execute: {
+                    if FWPopupWindow.sharedInstance.willShowingViews.count > 0 {
+                        let willShowingView: FWPopupView = FWPopupWindow.sharedInstance.willShowingViews.last as! FWPopupView
+                        willShowingView.showNow(popupStateBlock: willShowingView.popupStateBlock)
+                        FWPopupWindow.sharedInstance.willShowingViews.removeLast()
+                    } else if !FWPopupWindow.sharedInstance.hiddenViews.isEmpty {
+                        let showView = FWPopupWindow.sharedInstance.hiddenViews.last!
+                        showView.isHidden = false
+                        FWPopupWindow.sharedInstance.hiddenViews.removeLast()
+                    }
+                    
                     if strongSelf.popupDidDisappearBlock != nil {
                         strongSelf.popupDidDisappearBlock!(strongSelf)
                     }
@@ -956,7 +989,7 @@ open class FWPopupViewProperty: NSObject {
     @objc open var popupAnimationType: FWPopupAnimationType         = .position
     
     /// 弹窗偏移量
-    @objc open var popupViewEdgeInsets                              = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+    @objc open var popupViewEdgeInsets                              = UIEdgeInsets.zero
     /// 遮罩层的背景色（也可以使用fwMaskViewColor），注意：该参数在弹窗隐藏后，还原为弹窗弹起时的值
     @objc open var maskViewColor: UIColor?
     /// 为了兼容OC，0表示false，1表示true，为true时：用户点击外部遮罩层页面可以消失，注意：该参数在弹窗隐藏后，还原为弹窗弹起时的值
@@ -972,7 +1005,7 @@ open class FWPopupViewProperty: NSObject {
     /// 3D放射动画（当且仅当：popupAnimationType == .scale3D 时有效）
     @objc open var transform3D: CATransform3D                       = CATransform3DMakeScale(1.2, 1.2, 1.0)
     /// 2D放射动画
-    @objc open var transform: CGAffineTransform                     = CGAffineTransform(scaleX: 0.01, y: 0.01)
+    @objc open var transform: CGAffineTransform                     = CGAffineTransform(scaleX: 0.001, y: 0.001)
     
     
     public override init() {

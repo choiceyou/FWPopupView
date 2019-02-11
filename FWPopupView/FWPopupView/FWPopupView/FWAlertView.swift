@@ -349,14 +349,6 @@ extension FWAlertView {
             make.bottom.equalTo(btnContrainerView.snp.bottom)
         }
     }
-    
-    open override func show(popupStateBlock: FWPopupStateBlock?) {
-        super.show(popupStateBlock: popupStateBlock)
-
-        self.snp.makeConstraints { (make) in
-            make.center.equalTo(self.attachedView!)
-        }
-    }
 }
 
 extension FWAlertView {

@@ -74,6 +74,23 @@ class FWDemoViewController: UITableViewController {
         return alertImage
     }()
     
+    lazy var sheetView: FWSheetView = {
+       
+        let items = ["确定"]
+        
+        let vProperty = FWSheetViewProperty()
+        vProperty.touchWildToHide = "1"
+        vProperty.titleColor = UIColor.lightGray
+        vProperty.titleFontSize = 15.0
+        
+        let sheetView = FWSheetView.sheet(title: "你们知道微信中为什么经常使用这种提示，而不使用Alert加两个按钮的那种提示吗？", itemTitles: items, itemBlock: { (popupView, index, title) in
+            print("Sheet：点击了第\(index)个按钮")
+        }, cancenlBlock: {
+            print("点击了取消")
+        }, property: vProperty)
+        return sheetView
+    }()
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -203,19 +220,7 @@ extension FWDemoViewController {
             sheetView.show()
             break
         case 7:
-            let items = ["确定"]
-            
-            let vProperty = FWSheetViewProperty()
-            vProperty.touchWildToHide = "1"
-            vProperty.titleColor = UIColor.lightGray
-            vProperty.titleFontSize = 15.0
-            
-            let sheetView = FWSheetView.sheet(title: "你们知道微信中为什么经常使用这种提示，而不使用Alert加两个按钮的那种提示吗？", itemTitles: items, itemBlock: { (popupView, index, title) in
-                print("Sheet：点击了第\(index)个按钮")
-            }, cancenlBlock: {
-                print("点击了取消")
-            }, property: vProperty)
-            sheetView.show()
+            self.sheetView.show()
             break
         case 8:
             let items = ["Sheet0", "Sheet1", "Sheet2", "Sheet3", "Sheet4", "Sheet5", "Sheet6", "Sheet7", "Sheet8", "Sheet9", "Sheet10", "Sheet11", "Sheet12", "Sheet13", "Sheet14"]

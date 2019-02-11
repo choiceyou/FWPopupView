@@ -32,6 +32,12 @@ open class FWPopupWindow: UIWindow, UIGestureRecognizerDelegate {
     // 默认false，当为true时：用户拖动外部遮罩层页面可以消失
     @objc open var panWildToHide: Bool = false
     
+    /// 被隐藏的视图队列（A视图正在显示，接着B视图显示，此时就把A视图隐藏同时放入该队列）
+    open var hiddenViews: [UIView] = []
+    /// 将要展示的视图队列（A视图的显示或者隐藏动画正在进行中时，此时如果B视图要显示，则把B视图放入该队列，等动画结束从该队列中拿出来显示）
+    open var willShowingViews: [UIView] = []
+    
+    
     public override init(frame: CGRect) {
         super.init(frame: frame)
         
