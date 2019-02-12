@@ -158,15 +158,7 @@ extension FWDemoViewController {
             }, cancelBlock: { (popupView, index, title) in
                 print("点击了取消")
             })
-            // 演示：设置AlertView外部背景色
-            alertView.attachedView?.fwMaskViewColor = UIColor(white: 0, alpha: 0.6)
-            alertView.show { (popupView, popupViewState) in
-                print("当前弹窗状态：\(popupViewState.rawValue)")
-                if popupViewState == .didDisappear {
-                    // 演示：隐藏时把背景色改回来（这个非必要，我这边只是一个演示）
-                    alertView.attachedView?.fwMaskViewColor = UIColor(white: 0, alpha: 0.5)
-                }
-            }
+            alertView.show()
             break
         case 2:
             // 注意：此时“确定”按钮是不让按钮自己隐藏的
@@ -185,8 +177,12 @@ extension FWDemoViewController {
             // 还有很多参数可设置...
             
             let alertView = FWAlertView.alert(title: "标题", detail: "描述描述描述描述描述描述描述描述描述描述", inputPlaceholder: nil, keyboardType: .default, isSecureTextEntry: false, customView: nil, items: items, vProperty: vProperty)
-            
-            alertView.show()
+            alertView.show { (popupView, popupViewState) in
+                print("当前弹窗状态：\(popupViewState.rawValue)")
+                if popupViewState == .didDisappear {
+                    print("当前弹窗已经隐藏")
+                }
+            }
             break
         case 3:
             let items = [FWPopupItem(title: "取消", itemType: .normal, isCancel: true, canAutoHide: true, itemClickedBlock: block),
