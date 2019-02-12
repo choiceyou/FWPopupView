@@ -69,7 +69,7 @@ extension FWPopupWindow {
         
         if self.touchWildToHide && !self.fwBackgroundAnimating {
             for view: UIView in (self.attachView()?.fwMaskView.subviews)! {
-                if view.isKind(of: FWPopupView.self) {
+                if view.isKind(of: FWPopupView.self) && !self.hiddenViews.contains(view) {
                     let popupView = view as! FWPopupView
                     popupView.hide()
                 }

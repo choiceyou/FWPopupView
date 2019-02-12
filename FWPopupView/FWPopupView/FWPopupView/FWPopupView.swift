@@ -280,8 +280,10 @@ extension FWPopupView {
             self.attachedView?.fwMaskViewColor = self.vProperty.maskViewColor!
         }
         self.originKeyWindow = UIApplication.shared.keyWindow;
-        if self.vProperty.touchWildToHide != nil && !self.vProperty.touchWildToHide!.isEmpty {
-            FWPopupWindow.sharedInstance.touchWildToHide = (Int(self.vProperty.touchWildToHide!) == 1) ? true : false
+        if self.vProperty.touchWildToHide != nil && !self.vProperty.touchWildToHide!.isEmpty && Int(self.vProperty.touchWildToHide!) == 1 {
+            FWPopupWindow.sharedInstance.touchWildToHide = true
+        } else {
+            FWPopupWindow.sharedInstance.touchWildToHide = false
         }
         self.attachedView?.fwAnimationDuration = self.vProperty.animationDuration
         
@@ -342,11 +344,20 @@ extension FWPopupView {
             self.popupStateBlock!(self, .willDisappear)
         }
         
-        self.attachedView?.fwAnimationDuration = self.vProperty.animationDuration
-        
         if self.attachedView == nil {
             self.attachedView = FWPopupWindow.sharedInstance.attachView()
         }
+        
+        self.attachedView?.fwAnimationDuration = self.vProperty.animationDuration
+        
+        for tmpView: UIView in FWPopupWindow.sharedInstance.hiddenViews {
+            if tmpView == self {
+                if let index = FWPopupWindow.sharedInstance.hiddenViews.index(of: tmpView) {
+                    FWPopupWindow.sharedInstance.hiddenViews.remove(at: index)
+                }
+            }
+        }
+        
         if FWPopupWindow.sharedInstance.hiddenViews.isEmpty && FWPopupWindow.sharedInstance.willShowingViews.isEmpty && self.attachedView?.fwBackgroundAnimating == false {
             self.attachedView?.hideFwBackground()
         }
@@ -520,19 +531,23 @@ extension FWPopupView {
                     if let index = FWPopupWindow.sharedInstance.hiddenViews.index(of: strongSelf) {
                         FWPopupWindow.sharedInstance.hiddenViews.remove(at: index)
                     }
-                } else {
-                    strongSelf.isHidden = true
                 }
+                strongSelf.isHidden = true
                 
-                DispatchQueue.main.asyncAfter(deadline: .now()+0.001, execute: {
+                DispatchQueue.main.asyncAfter(deadline: .now()+0.0001, execute: {
                     if FWPopupWindow.sharedInstance.willShowingViews.count > 0 {
                         let willShowingView: FWPopupView = FWPopupWindow.sharedInstance.willShowingViews.last as! FWPopupView
                         willShowingView.showNow(popupStateBlock: willShowingView.popupStateBlock)
                         FWPopupWindow.sharedInstance.willShowingViews.removeLast()
                     } else if !FWPopupWindow.sharedInstance.hiddenViews.isEmpty {
-                        let showView = FWPopupWindow.sharedInstance.hiddenViews.last!
+                        let showView: FWPopupView = FWPopupWindow.sharedInstance.hiddenViews.last as! FWPopupView
                         showView.isHidden = false
                         FWPopupWindow.sharedInstance.hiddenViews.removeLast()
+                        if showView.vProperty.touchWildToHide != nil && !showView.vProperty.touchWildToHide!.isEmpty && Int(showView.vProperty.touchWildToHide!) == 1 {
+                            FWPopupWindow.sharedInstance.touchWildToHide = true
+                        } else {
+                            FWPopupWindow.sharedInstance.touchWildToHide = false
+                        }
                     }
                     
                     if strongSelf.popupDidDisappearBlock != nil {
