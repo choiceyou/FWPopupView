@@ -19,8 +19,6 @@
 		49812D78205F915600639DDC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49812D77205F915600639DDC /* AppDelegate.swift */; };
 		49812D7F205F915600639DDC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 49812D7E205F915600639DDC /* Assets.xcassets */; };
 		49812D82205F915600639DDC /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 49812D80205F915600639DDC /* LaunchScreen.storyboard */; };
-		49812D8D205F915600639DDC /* FWPopupViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49812D8C205F915600639DDC /* FWPopupViewTests.swift */; };
-		49812D98205F915600639DDC /* FWPopupViewUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49812D97205F915600639DDC /* FWPopupViewUITests.swift */; };
 		49812DA7205F91F100639DDC /* FWPopupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49812DA6205F91F100639DDC /* FWPopupView.swift */; };
 		49812DA9205F94CF00639DDC /* FWPopupWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49812DA8205F94CF00639DDC /* FWPopupWindow.swift */; };
 		49A7307D20B6AF8A002A989C /* FWMenuViewDemoVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49A7307C20B6AF8A002A989C /* FWMenuViewDemoVC.swift */; };
@@ -29,18 +27,20 @@
 		49BB210F2060B86A00E0DE6E /* FWPopupCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49BB210E2060B86A00E0DE6E /* FWPopupCategory.swift */; };
 		49BB212520623C4A00E0DE6E /* FWAlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49BB212420623C4A00E0DE6E /* FWAlertView.swift */; };
 		49BB212720623E8100E0DE6E /* FWPopupItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49BB212620623E8100E0DE6E /* FWPopupItem.swift */; };
+		49F7A85D2214106B002267FD /* FWPopupViewUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49F7A85C2214106B002267FD /* FWPopupViewUITests.swift */; };
+		49F7A88C221411B5002267FD /* FWPopupViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49F7A88B221411B5002267FD /* FWPopupViewTests.swift */; };
 		56B3717CE2F2FC8C487C2BB0 /* libPods-FWPopupView.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5D859FC06A597D0EEFB02CB7 /* libPods-FWPopupView.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		49812D89205F915600639DDC /* PBXContainerItemProxy */ = {
+		49F7A85F2214106B002267FD /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 49812D6C205F915600639DDC /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 49812D73205F915600639DDC;
 			remoteInfo = FWPopupView;
 		};
-		49812D94205F915600639DDC /* PBXContainerItemProxy */ = {
+		49F7A88E221411B5002267FD /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 49812D6C205F915600639DDC /* Project object */;
 			proxyType = 1;
@@ -65,12 +65,6 @@
 		49812D7E205F915600639DDC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		49812D81205F915600639DDC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		49812D83205F915600639DDC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		49812D88205F915600639DDC /* FWPopupViewTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FWPopupViewTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		49812D8C205F915600639DDC /* FWPopupViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FWPopupViewTests.swift; sourceTree = "<group>"; };
-		49812D8E205F915600639DDC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		49812D93205F915600639DDC /* FWPopupViewUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FWPopupViewUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		49812D97205F915600639DDC /* FWPopupViewUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FWPopupViewUITests.swift; sourceTree = "<group>"; };
-		49812D99205F915600639DDC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		49812DA6205F91F100639DDC /* FWPopupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FWPopupView.swift; sourceTree = "<group>"; };
 		49812DA8205F94CF00639DDC /* FWPopupWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FWPopupWindow.swift; sourceTree = "<group>"; };
 		49A7307C20B6AF8A002A989C /* FWMenuViewDemoVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FWMenuViewDemoVC.swift; sourceTree = "<group>"; };
@@ -79,6 +73,12 @@
 		49BB210E2060B86A00E0DE6E /* FWPopupCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FWPopupCategory.swift; sourceTree = "<group>"; };
 		49BB212420623C4A00E0DE6E /* FWAlertView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FWAlertView.swift; sourceTree = "<group>"; };
 		49BB212620623E8100E0DE6E /* FWPopupItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FWPopupItem.swift; sourceTree = "<group>"; };
+		49F7A85A2214106B002267FD /* FWPopupViewUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FWPopupViewUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		49F7A85C2214106B002267FD /* FWPopupViewUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FWPopupViewUITests.swift; sourceTree = "<group>"; };
+		49F7A85E2214106B002267FD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		49F7A889221411B5002267FD /* FWPopupViewTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FWPopupViewTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		49F7A88B221411B5002267FD /* FWPopupViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FWPopupViewTests.swift; sourceTree = "<group>"; };
+		49F7A88D221411B5002267FD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5D859FC06A597D0EEFB02CB7 /* libPods-FWPopupView.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-FWPopupView.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		66EDD6EAA4E9CABA26C955AC /* Pods-FWPopupView.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FWPopupView.debug.xcconfig"; path = "Target Support Files/Pods-FWPopupView/Pods-FWPopupView.debug.xcconfig"; sourceTree = "<group>"; };
 		E68A3B6EB8B1506E0B09A7B8 /* Pods_FWPopupViewUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FWPopupViewUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -94,14 +94,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		49812D85205F915600639DDC /* Frameworks */ = {
+		49F7A8572214106B002267FD /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		49812D90205F915600639DDC /* Frameworks */ = {
+		49F7A886221411B5002267FD /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -133,8 +133,8 @@
 			isa = PBXGroup;
 			children = (
 				49812D76205F915600639DDC /* FWPopupView */,
-				49812D8B205F915600639DDC /* FWPopupViewTests */,
-				49812D96205F915600639DDC /* FWPopupViewUITests */,
+				49F7A88A221411B5002267FD /* FWPopupViewTests */,
+				49F7A85B2214106B002267FD /* FWPopupViewUITests */,
 				49812D75205F915600639DDC /* Products */,
 				F3DF37B08B601E36F660A46C /* Pods */,
 				3CFA26EB7985F6595F22C984 /* Frameworks */,
@@ -145,8 +145,8 @@
 			isa = PBXGroup;
 			children = (
 				49812D74205F915600639DDC /* FWPopupView.app */,
-				49812D88205F915600639DDC /* FWPopupViewTests.xctest */,
-				49812D93205F915600639DDC /* FWPopupViewUITests.xctest */,
+				49F7A85A2214106B002267FD /* FWPopupViewUITests.xctest */,
+				49F7A889221411B5002267FD /* FWPopupViewTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -168,24 +168,6 @@
 			path = FWPopupView;
 			sourceTree = "<group>";
 		};
-		49812D8B205F915600639DDC /* FWPopupViewTests */ = {
-			isa = PBXGroup;
-			children = (
-				49812D8C205F915600639DDC /* FWPopupViewTests.swift */,
-				49812D8E205F915600639DDC /* Info.plist */,
-			);
-			path = FWPopupViewTests;
-			sourceTree = "<group>";
-		};
-		49812D96205F915600639DDC /* FWPopupViewUITests */ = {
-			isa = PBXGroup;
-			children = (
-				49812D97205F915600639DDC /* FWPopupViewUITests.swift */,
-				49812D99205F915600639DDC /* Info.plist */,
-			);
-			path = FWPopupViewUITests;
-			sourceTree = "<group>";
-		};
 		49812DA5205F916F00639DDC /* FWPopupView */ = {
 			isa = PBXGroup;
 			children = (
@@ -205,13 +187,30 @@
 			path = FWPopupView;
 			sourceTree = "<group>";
 		};
+		49F7A85B2214106B002267FD /* FWPopupViewUITests */ = {
+			isa = PBXGroup;
+			children = (
+				49F7A85C2214106B002267FD /* FWPopupViewUITests.swift */,
+				49F7A85E2214106B002267FD /* Info.plist */,
+			);
+			path = FWPopupViewUITests;
+			sourceTree = "<group>";
+		};
+		49F7A88A221411B5002267FD /* FWPopupViewTests */ = {
+			isa = PBXGroup;
+			children = (
+				49F7A88B221411B5002267FD /* FWPopupViewTests.swift */,
+				49F7A88D221411B5002267FD /* Info.plist */,
+			);
+			path = FWPopupViewTests;
+			sourceTree = "<group>";
+		};
 		F3DF37B08B601E36F660A46C /* Pods */ = {
 			isa = PBXGroup;
 			children = (
 				66EDD6EAA4E9CABA26C955AC /* Pods-FWPopupView.debug.xcconfig */,
 				16EB712AF4359147E48A4A6C /* Pods-FWPopupView.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -237,41 +236,41 @@
 			productReference = 49812D74205F915600639DDC /* FWPopupView.app */;
 			productType = "com.apple.product-type.application";
 		};
-		49812D87205F915600639DDC /* FWPopupViewTests */ = {
+		49F7A8592214106B002267FD /* FWPopupViewUITests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 49812D9F205F915600639DDC /* Build configuration list for PBXNativeTarget "FWPopupViewTests" */;
+			buildConfigurationList = 49F7A8612214106B002267FD /* Build configuration list for PBXNativeTarget "FWPopupViewUITests" */;
 			buildPhases = (
-				49812D84205F915600639DDC /* Sources */,
-				49812D85205F915600639DDC /* Frameworks */,
-				49812D86205F915600639DDC /* Resources */,
+				49F7A8562214106B002267FD /* Sources */,
+				49F7A8572214106B002267FD /* Frameworks */,
+				49F7A8582214106B002267FD /* Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				49812D8A205F915600639DDC /* PBXTargetDependency */,
-			);
-			name = FWPopupViewTests;
-			productName = FWPopupViewTests;
-			productReference = 49812D88205F915600639DDC /* FWPopupViewTests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
-		};
-		49812D92205F915600639DDC /* FWPopupViewUITests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 49812DA2205F915600639DDC /* Build configuration list for PBXNativeTarget "FWPopupViewUITests" */;
-			buildPhases = (
-				49812D8F205F915600639DDC /* Sources */,
-				49812D90205F915600639DDC /* Frameworks */,
-				49812D91205F915600639DDC /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				49812D95205F915600639DDC /* PBXTargetDependency */,
+				49F7A8602214106B002267FD /* PBXTargetDependency */,
 			);
 			name = FWPopupViewUITests;
 			productName = FWPopupViewUITests;
-			productReference = 49812D93205F915600639DDC /* FWPopupViewUITests.xctest */;
+			productReference = 49F7A85A2214106B002267FD /* FWPopupViewUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+		49F7A888221411B5002267FD /* FWPopupViewTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 49F7A890221411B5002267FD /* Build configuration list for PBXNativeTarget "FWPopupViewTests" */;
+			buildPhases = (
+				49F7A885221411B5002267FD /* Sources */,
+				49F7A886221411B5002267FD /* Frameworks */,
+				49F7A887221411B5002267FD /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				49F7A88F221411B5002267FD /* PBXTargetDependency */,
+			);
+			name = FWPopupViewTests;
+			productName = FWPopupViewTests;
+			productReference = 49F7A889221411B5002267FD /* FWPopupViewTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
 
@@ -279,7 +278,7 @@
 		49812D6C205F915600639DDC /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 0910;
+				LastSwiftUpdateCheck = 1000;
 				LastUpgradeCheck = 0910;
 				ORGANIZATIONNAME = xfg;
 				TargetAttributes = {
@@ -287,13 +286,13 @@
 						CreatedOnToolsVersion = 9.1;
 						ProvisioningStyle = Automatic;
 					};
-					49812D87205F915600639DDC = {
-						CreatedOnToolsVersion = 9.1;
+					49F7A8592214106B002267FD = {
+						CreatedOnToolsVersion = 10.0;
 						ProvisioningStyle = Automatic;
 						TestTargetID = 49812D73205F915600639DDC;
 					};
-					49812D92205F915600639DDC = {
-						CreatedOnToolsVersion = 9.1;
+					49F7A888221411B5002267FD = {
+						CreatedOnToolsVersion = 10.0;
 						ProvisioningStyle = Automatic;
 						TestTargetID = 49812D73205F915600639DDC;
 					};
@@ -313,8 +312,8 @@
 			projectRoot = "";
 			targets = (
 				49812D73205F915600639DDC /* FWPopupView */,
-				49812D87205F915600639DDC /* FWPopupViewTests */,
-				49812D92205F915600639DDC /* FWPopupViewUITests */,
+				49F7A888221411B5002267FD /* FWPopupViewTests */,
+				49F7A8592214106B002267FD /* FWPopupViewUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -330,14 +329,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		49812D86205F915600639DDC /* Resources */ = {
+		49F7A8582214106B002267FD /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		49812D91205F915600639DDC /* Resources */ = {
+		49F7A887221411B5002267FD /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -418,34 +417,34 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		49812D84205F915600639DDC /* Sources */ = {
+		49F7A8562214106B002267FD /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				49812D8D205F915600639DDC /* FWPopupViewTests.swift in Sources */,
+				49F7A85D2214106B002267FD /* FWPopupViewUITests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		49812D8F205F915600639DDC /* Sources */ = {
+		49F7A885221411B5002267FD /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				49812D98205F915600639DDC /* FWPopupViewUITests.swift in Sources */,
+				49F7A88C221411B5002267FD /* FWPopupViewTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		49812D8A205F915600639DDC /* PBXTargetDependency */ = {
+		49F7A8602214106B002267FD /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 49812D73205F915600639DDC /* FWPopupView */;
-			targetProxy = 49812D89205F915600639DDC /* PBXContainerItemProxy */;
+			targetProxy = 49F7A85F2214106B002267FD /* PBXContainerItemProxy */;
 		};
-		49812D95205F915600639DDC /* PBXTargetDependency */ = {
+		49F7A88F221411B5002267FD /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 49812D73205F915600639DDC /* FWPopupView */;
-			targetProxy = 49812D94205F915600639DDC /* PBXContainerItemProxy */;
+			targetProxy = 49F7A88E221411B5002267FD /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -606,65 +605,89 @@
 			};
 			name = Release;
 		};
-		49812DA0205F915600639DDC /* Debug */ = {
+		49F7A8622214106B002267FD /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 66EDD6EAA4E9CABA26C955AC /* Pods-FWPopupView.debug.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CODE_SIGN_STYLE = Automatic;
-				INFOPLIST_FILE = FWPopupViewTests/Info.plist;
+				DEVELOPMENT_TEAM = D3WDRKDVER;
+				INFOPLIST_FILE = FWPopupViewUITests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.xfg.FWPopupViewTests;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.xfg2.FWPopupViewUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/FWPopupView.app/FWPopupView";
+				TEST_TARGET_NAME = FWPopupView;
 			};
 			name = Debug;
 		};
-		49812DA1205F915600639DDC /* Release */ = {
+		49F7A8632214106B002267FD /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CODE_SIGN_STYLE = Automatic;
-				INFOPLIST_FILE = FWPopupViewTests/Info.plist;
+				DEVELOPMENT_TEAM = D3WDRKDVER;
+				INFOPLIST_FILE = FWPopupViewUITests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.xfg.FWPopupViewTests;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.xfg2.FWPopupViewUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/FWPopupView.app/FWPopupView";
+				TEST_TARGET_NAME = FWPopupView;
 			};
 			name = Release;
 		};
-		49812DA3205F915600639DDC /* Debug */ = {
+		49F7A891221411B5002267FD /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 66EDD6EAA4E9CABA26C955AC /* Pods-FWPopupView.debug.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CODE_SIGN_STYLE = Automatic;
-				INFOPLIST_FILE = FWPopupViewUITests/Info.plist;
+				DEVELOPMENT_TEAM = D3WDRKDVER;
+				INFOPLIST_FILE = FWPopupViewTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.xfg.FWPopupViewUITests;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.xfg.FWPopupViewTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = FWPopupView;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/FWPopupView.app/FWPopupView";
 			};
 			name = Debug;
 		};
-		49812DA4205F915600639DDC /* Release */ = {
+		49F7A892221411B5002267FD /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CODE_SIGN_STYLE = Automatic;
-				INFOPLIST_FILE = FWPopupViewUITests/Info.plist;
+				DEVELOPMENT_TEAM = D3WDRKDVER;
+				INFOPLIST_FILE = FWPopupViewTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.xfg.FWPopupViewUITests;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.xfg.FWPopupViewTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = FWPopupView;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/FWPopupView.app/FWPopupView";
 			};
 			name = Release;
 		};
@@ -689,20 +712,20 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		49812D9F205F915600639DDC /* Build configuration list for PBXNativeTarget "FWPopupViewTests" */ = {
+		49F7A8612214106B002267FD /* Build configuration list for PBXNativeTarget "FWPopupViewUITests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				49812DA0205F915600639DDC /* Debug */,
-				49812DA1205F915600639DDC /* Release */,
+				49F7A8622214106B002267FD /* Debug */,
+				49F7A8632214106B002267FD /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		49812DA2205F915600639DDC /* Build configuration list for PBXNativeTarget "FWPopupViewUITests" */ = {
+		49F7A890221411B5002267FD /* Build configuration list for PBXNativeTarget "FWPopupViewTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				49812DA3205F915600639DDC /* Debug */,
-				49812DA4205F915600639DDC /* Release */,
+				49F7A891221411B5002267FD /* Debug */,
+				49F7A892221411B5002267FD /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
