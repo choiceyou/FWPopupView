@@ -12,7 +12,7 @@ import UIKit
 class FWDemoViewController: UITableViewController {
     
     /// 注意：这边不同的示例可能还附加演示了一些特性（比如：遮罩层是否能够点击、遮罩层的背景颜色等等），有用到时可以参考
-    var titleArray = ["Alert - 单个按钮", "Alert - 两个按钮", "Alert - 两个按钮（修改参数）", "Alert - 多个按钮", "Alert - 带输入框", "Alert - 带自定义视图", "Sheet - 少量Item", "Sheet - 标题+少量Item", "Sheet - 大量Item", "Date - 自定义日期选择", "Menu - 自定义菜单", "Custom - 自定义弹窗", "CustomSheet - 类似Sheet效果", "CustomSheet - 类似Sheet效果2", "RadioButton"]
+    var titleArray = ["Alert - 单个按钮", "Alert - 两个按钮", "Alert - 两个按钮（修改参数）", "Alert - 多个按钮", "Alert - 带输入框", "Alert - 带自定义视图", "Sheet - 少量Item", "Sheet - 标题+少量Item", "Sheet - 大量Item", "Date - 自定义日期选择", "Menu - 自定义菜单", "Custom - 自定义弹窗", "CustomSheet - 类似Sheet效果", "CustomSheet - 类似Sheet效果2", "同时显示两个弹窗", "RadioButton"]
     
     let block: FWPopupItemClickedBlock = { (popupView, index, title) in
         print("AlertView：点击了第\(index)个按钮")
@@ -122,7 +122,7 @@ extension FWDemoViewController {
         cell.textLabel?.numberOfLines = 0
         if indexPath.row == 10 || indexPath.row == 11 {
             cell.accessoryType = .disclosureIndicator
-        } else if indexPath.row == 14 {
+        } else if indexPath.row == 15 {
             let property = FWRadioButtonProperty()
             property.selectedStateColor = UIColor.red
             property.animationDuration = 0.2
@@ -185,9 +185,16 @@ extension FWDemoViewController {
             }
             break
         case 3:
-            let items = [FWPopupItem(title: "取消", itemType: .normal, isCancel: true, canAutoHide: true, itemClickedBlock: block),
-                         FWPopupItem(title: "确定", itemType: .normal, isCancel: false, canAutoHide: true, itemClickedBlock: block),
-                         FWPopupItem(title: "其他", itemType: .normal, isCancel: false, canAutoHide: true, itemClickedBlock: block)]
+            let myBlock: FWPopupItemClickedBlock = { [weak self] (popupView, index, title) in
+                print("AlertView：点击了第\(index)个按钮")
+                if index == 2 {
+                    self?.sheetView.show()
+                }
+            }
+            
+            let items = [FWPopupItem(title: "取消", itemType: .normal, isCancel: true, canAutoHide: true, itemClickedBlock: myBlock),
+                         FWPopupItem(title: "确定", itemType: .normal, isCancel: false, canAutoHide: true, itemClickedBlock: myBlock),
+                         FWPopupItem(title: "弹出Sheet", itemType: .normal, isCancel: false, canAutoHide: true, itemClickedBlock: myBlock)]
             
             let alertView = FWAlertView.alert(title: "标题", detail: "描述描述描述描述描述描述描述描述描述描述", inputPlaceholder: nil, keyboardType: .default, isSecureTextEntry: false, customView: nil, items: items)
             alertView.show()
@@ -251,6 +258,22 @@ extension FWDemoViewController {
             break
         case 13:
             self.customSheetView2.show()
+            break
+        case 14:
+            let alertView = FWAlertView.alert(title: "标题", detail: "描述描述描述描述") { (popupView, index, title) in
+                print("点击了确定")
+            }
+            alertView.show()
+            
+            let items = ["Sheet0", "Sheet1", "Sheet2", "Sheet3"]
+            let vProperty = FWSheetViewProperty()
+            vProperty.touchWildToHide = "1"
+            let sheetView = FWSheetView.sheet(title: "", itemTitles: items, itemBlock: { (popupView, index, title) in
+                print("Sheet：点击了第\(index)个按钮")
+            }, cancenlBlock: {
+                print("点击了取消")
+            }, property: vProperty)
+            sheetView.show()
             break
         default:
             break
