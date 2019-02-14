@@ -1,4 +1,4 @@
-# IOS之弹窗 -- Swift4.0/[Objective-C版本(Swift、Objective-C版本别分实现了不同的功能！！！)](https://github.com/choiceyou/FWPopupViewOC)
+# IOS之弹窗 -- Swift4.2/[Objective-C版本(Swift、Objective-C版本别分实现了不同的功能！！！)](https://github.com/choiceyou/FWPopupViewOC)
 
 [![Platform](http://img.shields.io/badge/platform-iOS-blue.svg?style=flat)](http://cocoapods.org/?q=FWPopupView)&nbsp;
 ![Language](https://img.shields.io/badge/language-swift-orange.svg?style=flat)&nbsp;
@@ -194,6 +194,11 @@ FWSheetView *sheetView = [FWSheetView sheetWithTitle: @"标题"
 - [x] 修改FWPopupView弹起时改变了状态栏的颜色问题；
 - [x] 修改FWCustomSheetView复用时产生的bug；
 
+• v4.0.0（大版本）:
+- [x] 使用SnapKit库重构了弹窗基类及部分弹窗视图；
+- [x] 支持横竖屏切换；
+- [x] 支持多个弹窗存在（详细请查看：同时显示两个弹窗的演示）；
+- [x] 升级到Swift4.2；
 
 
 ## 结尾语：
