@@ -242,9 +242,7 @@ extension FWPopupView {
     /// - Parameter popupDidAppearBlock: 弹窗已经显示回调
     @objc open func show(popupDidAppearBlock: FWPopupDidAppearBlock? = nil) {
         
-        if popupDidAppearBlock != nil {
-            self.popupDidAppearBlock = popupDidAppearBlock
-        }
+        self.popupDidAppearBlock = popupDidAppearBlock
         self.show(popupStateBlock: nil);
     }
     
@@ -258,19 +256,17 @@ extension FWPopupView {
             self.isResetSuperView = true
         }
         
+        self.popupStateBlock = popupStateBlock
+        
         if self.attachedView?.fwBackgroundAnimating == true {
             FWPopupWindow.sharedInstance.willShowingViews.append(self)
-            self.popupStateBlock = popupStateBlock
         } else {
-            self.showNow(popupStateBlock: popupStateBlock)
+            self.showNow()
         }
     }
     
-    private func showNow(popupStateBlock: FWPopupStateBlock? = nil) {
+    private func showNow() {
         
-        if popupStateBlock != nil {
-            self.popupStateBlock = popupStateBlock
-        }
         if self.popupStateBlock != nil {
             self.popupStateBlock!(self, .willAppear)
         }
@@ -326,20 +322,18 @@ extension FWPopupView {
     /// - Parameter completionBlock: 显示、隐藏回调
     @objc open func hide(popupDidDisappearBlock: FWPopupDidDisappearBlock? = nil) {
         
-        self.hideNow(popupDidDisappearBlock: popupDidDisappearBlock, isRemove: true)
+        self.popupDidDisappearBlock = popupDidDisappearBlock
+        self.hideNow(isRemove: true)
     }
     
-    /// 隐藏，父视图中不移除当前视图
+    /// 隐藏，父视图中不移除当前视图（如果使用这个隐藏方法，不需要使用的时候可以手动把该弹窗从父视图中移除，否则可能会造成内存泄漏）
     @objc open func hideWithNotRemove() {
         
-        self.hideNow(popupDidDisappearBlock: nil, isRemove: false)
+        self.hideNow(isRemove: false)
     }
     
-    private func hideNow(popupDidDisappearBlock: FWPopupDidDisappearBlock? = nil, isRemove: Bool) {
+    private func hideNow(isRemove: Bool) {
         
-        if popupDidDisappearBlock != nil {
-            self.popupDidDisappearBlock = popupDidDisappearBlock
-        }
         if self.popupStateBlock != nil {
             self.popupStateBlock!(self, .willDisappear)
         }
@@ -439,19 +433,12 @@ extension FWPopupView {
             
             strongSelf.setupConstraints(constraintsState: .constraintsShownAnimation)
             
+            strongSelf.attachedView?.fwBackgroundAnimating = true
+            
             if strongSelf.vProperty.usingSpringWithDamping >= 0 && strongSelf.vProperty.usingSpringWithDamping <= 1 {
                 UIView.animate(withDuration: strongSelf.vProperty.animationDuration, delay: 0.0, usingSpringWithDamping: strongSelf.vProperty.usingSpringWithDamping, initialSpringVelocity: strongSelf.vProperty.initialSpringVelocity, options: [.curveEaseOut, .beginFromCurrentState], animations: {
                     
-                    if strongSelf.vProperty.popupAnimationType == .position {
-                        strongSelf.superview?.layoutIfNeeded()
-                    } else if strongSelf.vProperty.popupAnimationType == .frame {
-                        strongSelf.superview?.layoutIfNeeded()
-                        strongSelf.layoutIfNeeded()
-                    } else if strongSelf.vProperty.popupAnimationType == .scale {
-                        strongSelf.transform = CGAffineTransform.identity
-                    } else if strongSelf.vProperty.popupAnimationType == .scale3D {
-                        strongSelf.layer.transform = CATransform3DIdentity
-                    }
+                    strongSelf.showAnimationDuration()
                     
                 }, completion: { (finished) in
                     
@@ -461,16 +448,7 @@ extension FWPopupView {
             } else {
                 UIView.animate(withDuration: strongSelf.vProperty.animationDuration, delay: 0.0, options: [.curveEaseOut, .beginFromCurrentState], animations: {
                     
-                    if strongSelf.vProperty.popupAnimationType == .position {
-                        strongSelf.superview?.layoutIfNeeded()
-                    } else if strongSelf.vProperty.popupAnimationType == .frame {
-                        strongSelf.superview?.layoutIfNeeded()
-                        strongSelf.layoutIfNeeded()
-                    } else if strongSelf.vProperty.popupAnimationType == .scale {
-                        strongSelf.transform = CGAffineTransform.identity
-                    } else if strongSelf.vProperty.popupAnimationType == .scale3D {
-                        strongSelf.layer.transform = CATransform3DIdentity
-                    }
+                    strongSelf.showAnimationDuration()
                     
                 }, completion: { (finished) in
                     
@@ -481,6 +459,21 @@ extension FWPopupView {
         }
         
         return popupBlock
+    }
+    
+    /// 显示动画的操作
+    private func showAnimationDuration() {
+        
+        if self.vProperty.popupAnimationType == .position {
+            self.superview?.layoutIfNeeded()
+        } else if self.vProperty.popupAnimationType == .frame {
+            self.superview?.layoutIfNeeded()
+            self.layoutIfNeeded()
+        } else if self.vProperty.popupAnimationType == .scale {
+            self.transform = CGAffineTransform.identity
+        } else if self.vProperty.popupAnimationType == .scale3D {
+            self.layer.transform = CATransform3DIdentity
+        }
     }
     
     /// 显示动画完成后的操作
@@ -495,8 +488,10 @@ extension FWPopupView {
         
         if FWPopupWindow.sharedInstance.willShowingViews.count > 0 {
             let willShowingView: FWPopupView = FWPopupWindow.sharedInstance.willShowingViews.last as! FWPopupView
-            willShowingView.showNow(popupStateBlock: willShowingView.popupStateBlock)
+            willShowingView.showNow()
             FWPopupWindow.sharedInstance.willShowingViews.removeLast()
+        } else {
+            self.attachedView?.fwBackgroundAnimating = false
         }
     }
     
@@ -512,6 +507,8 @@ extension FWPopupView {
             }
             
             strongSelf.setupConstraints(constraintsState: .constraintsHiddenAnimation)
+            
+            strongSelf.attachedView?.fwBackgroundAnimating = true
             
             UIView.animate(withDuration: strongSelf.vProperty.animationDuration, animations: {
                 
@@ -537,7 +534,7 @@ extension FWPopupView {
                 DispatchQueue.main.asyncAfter(deadline: .now()+0.0001, execute: {
                     if FWPopupWindow.sharedInstance.willShowingViews.count > 0 {
                         let willShowingView: FWPopupView = FWPopupWindow.sharedInstance.willShowingViews.last as! FWPopupView
-                        willShowingView.showNow(popupStateBlock: willShowingView.popupStateBlock)
+                        willShowingView.showNow()
                         FWPopupWindow.sharedInstance.willShowingViews.removeLast()
                     } else if !FWPopupWindow.sharedInstance.hiddenViews.isEmpty {
                         let showView: FWPopupView = FWPopupWindow.sharedInstance.hiddenViews.last as! FWPopupView
@@ -558,6 +555,8 @@ extension FWPopupView {
                     }
                 })
                 
+                strongSelf.attachedView?.fwBackgroundAnimating = false
+                
             })
         }
         
@@ -565,9 +564,12 @@ extension FWPopupView {
     }
     
     /// 根据不同状态、动画设置视图的不同约束
+    ///
+    /// - Parameter constraintsState: FWConstraintsState
     private func setupConstraints(constraintsState: FWConstraintsState) {
         
         let myAlignment: FWPopupCustomAlignment = self.vProperty.popupCustomAlignment
+        let edgeInsets = self.vProperty.popupViewEdgeInsets
         
         if constraintsState == .constraintsBeforeAnimation {
             self.layoutIfNeeded()
@@ -631,23 +633,23 @@ extension FWPopupView {
             self.snp.updateConstraints { (make) in
                 if self.vProperty.popupAnimationType == .position {
                     if myAlignment == .center {
-                        make.centerY.equalToSuperview().offset(self.vProperty.popupViewEdgeInsets.top - self.vProperty.popupViewEdgeInsets.bottom)
+                        make.centerY.equalToSuperview().offset(edgeInsets.top - edgeInsets.bottom)
                     } else if myAlignment == .topCenter {
-                        make.top.equalToSuperview().offset(self.vProperty.popupViewEdgeInsets.top - self.vProperty.popupViewEdgeInsets.bottom)
+                        make.top.equalToSuperview().offset(edgeInsets.top - edgeInsets.bottom)
                     } else if myAlignment == .leftCenter {
-                        make.left.equalToSuperview().offset(self.vProperty.popupViewEdgeInsets.left - self.vProperty.popupViewEdgeInsets.right)
+                        make.left.equalToSuperview().offset(edgeInsets.left - edgeInsets.right)
                     } else if myAlignment == .bottomCenter {
-                        make.bottom.equalToSuperview().offset(self.vProperty.popupViewEdgeInsets.top - self.vProperty.popupViewEdgeInsets.bottom)
+                        make.bottom.equalToSuperview().offset(edgeInsets.top - edgeInsets.bottom)
                     } else if myAlignment == .rightCenter {
-                        make.right.equalToSuperview().offset(self.vProperty.popupViewEdgeInsets.left - self.vProperty.popupViewEdgeInsets.right)
+                        make.right.equalToSuperview().offset(edgeInsets.left - edgeInsets.right)
                     } else if myAlignment == .topLeft {
-                        make.top.equalToSuperview().offset(self.vProperty.popupViewEdgeInsets.top - self.vProperty.popupViewEdgeInsets.bottom)
+                        make.top.equalToSuperview().offset(edgeInsets.top - edgeInsets.bottom)
                     } else if myAlignment == .topRight {
-                        make.top.equalToSuperview().offset(self.vProperty.popupViewEdgeInsets.top - self.vProperty.popupViewEdgeInsets.bottom)
+                        make.top.equalToSuperview().offset(edgeInsets.top - edgeInsets.bottom)
                     } else if myAlignment == .bottomLeft {
-                        make.bottom.equalToSuperview().offset(self.vProperty.popupViewEdgeInsets.top - self.vProperty.popupViewEdgeInsets.bottom)
+                        make.bottom.equalToSuperview().offset(edgeInsets.top - edgeInsets.bottom)
                     } else if myAlignment == .bottomRight {
-                        make.bottom.equalToSuperview().offset(self.vProperty.popupViewEdgeInsets.top - self.vProperty.popupViewEdgeInsets.bottom)
+                        make.bottom.equalToSuperview().offset(edgeInsets.top - edgeInsets.bottom)
                     }
                 } else if self.vProperty.popupAnimationType == .frame {
                     if myAlignment == .center {
@@ -724,32 +726,35 @@ extension FWPopupView {
     ///   - make: ConstraintMaker
     ///   - myAlignment: 自定义弹窗校准位置
     private func constraintsBeforeAnimationPosition(make: ConstraintMaker, myAlignment: FWPopupCustomAlignment) {
+        
+        let edgeInsets = self.vProperty.popupViewEdgeInsets
+        
         if myAlignment == .center {
-            make.centerX.equalToSuperview().offset(self.vProperty.popupViewEdgeInsets.left - self.vProperty.popupViewEdgeInsets.right)
+            make.centerX.equalToSuperview().offset(edgeInsets.left - edgeInsets.right)
             make.centerY.equalToSuperview().offset(-self.finalSize.height/2 - self.superview!.frame.size.height/2)
         } else if myAlignment == .topCenter {
-            make.centerX.equalToSuperview().offset(self.vProperty.popupViewEdgeInsets.left - self.vProperty.popupViewEdgeInsets.right)
+            make.centerX.equalToSuperview().offset(edgeInsets.left - edgeInsets.right)
             make.top.equalToSuperview().offset(-self.finalSize.height)
         } else if myAlignment == .leftCenter {
-            make.centerY.equalToSuperview().offset(self.vProperty.popupViewEdgeInsets.top - self.vProperty.popupViewEdgeInsets.bottom)
+            make.centerY.equalToSuperview().offset(edgeInsets.top - edgeInsets.bottom)
             make.left.equalToSuperview().offset(-self.finalSize.width)
         } else if myAlignment == .bottomCenter {
-            make.centerX.equalToSuperview().offset(self.vProperty.popupViewEdgeInsets.left - self.vProperty.popupViewEdgeInsets.right)
+            make.centerX.equalToSuperview().offset(edgeInsets.left - edgeInsets.right)
             make.bottom.equalToSuperview().offset(self.finalSize.height)
         } else if myAlignment == .rightCenter {
-            make.centerY.equalToSuperview().offset(self.vProperty.popupViewEdgeInsets.top - self.vProperty.popupViewEdgeInsets.bottom)
+            make.centerY.equalToSuperview().offset(edgeInsets.top - edgeInsets.bottom)
             make.right.equalToSuperview().offset(self.finalSize.width)
         } else if myAlignment == .topLeft {
-            make.left.equalToSuperview().offset(self.vProperty.popupViewEdgeInsets.left - self.vProperty.popupViewEdgeInsets.right)
+            make.left.equalToSuperview().offset(edgeInsets.left - edgeInsets.right)
             make.top.equalToSuperview().offset(-self.finalSize.height)
         } else if myAlignment == .topRight {
-            make.right.equalToSuperview().offset(self.vProperty.popupViewEdgeInsets.left - self.vProperty.popupViewEdgeInsets.right)
+            make.right.equalToSuperview().offset(edgeInsets.left - edgeInsets.right)
             make.top.equalToSuperview().offset(-self.finalSize.height)
         } else if myAlignment == .bottomLeft {
-            make.left.equalToSuperview().offset(self.vProperty.popupViewEdgeInsets.left - self.vProperty.popupViewEdgeInsets.right)
+            make.left.equalToSuperview().offset(edgeInsets.left - edgeInsets.right)
             make.bottom.equalToSuperview().offset(self.finalSize.height)
         } else if myAlignment == .bottomRight {
-            make.right.equalToSuperview().offset(self.vProperty.popupViewEdgeInsets.left - self.vProperty.popupViewEdgeInsets.right)
+            make.right.equalToSuperview().offset(edgeInsets.left - edgeInsets.right)
             make.bottom.equalToSuperview().offset(self.finalSize.height)
         }
     }
@@ -760,49 +765,52 @@ extension FWPopupView {
     ///   - make: ConstraintMaker
     ///   - myAlignment: 自定义弹窗校准位置
     private func constraintsBeforeAnimationFrame(make: ConstraintMaker, myAlignment: FWPopupCustomAlignment) {
+        
+        let edgeInsets = self.vProperty.popupViewEdgeInsets
+        
         if myAlignment == .center {
-            make.top.equalToSuperview().offset((self.superview!.frame.size.height-self.finalSize.height)/2 + self.vProperty.popupViewEdgeInsets.top - self.vProperty.popupViewEdgeInsets.bottom)
-            make.centerX.equalToSuperview().offset(self.vProperty.popupViewEdgeInsets.left + self.vProperty.popupViewEdgeInsets.right)
+            make.top.equalToSuperview().offset((self.superview!.frame.size.height-self.finalSize.height)/2 + edgeInsets.top - edgeInsets.bottom)
+            make.centerX.equalToSuperview().offset(edgeInsets.left - edgeInsets.right)
             make.width.equalTo(self.finalSize.width)
             make.height.equalTo(0)
         } else if myAlignment == .topCenter {
-            make.centerX.equalToSuperview().offset(self.vProperty.popupViewEdgeInsets.left - self.vProperty.popupViewEdgeInsets.right)
-            make.top.equalToSuperview().offset(self.vProperty.popupViewEdgeInsets.top - self.vProperty.popupViewEdgeInsets.bottom)
+            make.centerX.equalToSuperview().offset(edgeInsets.left - edgeInsets.right)
+            make.top.equalToSuperview().offset(edgeInsets.top - edgeInsets.bottom)
             make.width.equalTo(self.finalSize.width)
             make.height.equalTo(0)
         } else if myAlignment == .leftCenter {
-            make.centerY.equalToSuperview().offset(self.vProperty.popupViewEdgeInsets.top - self.vProperty.popupViewEdgeInsets.bottom)
-            make.left.equalToSuperview().offset(self.vProperty.popupViewEdgeInsets.left - self.vProperty.popupViewEdgeInsets.right)
+            make.centerY.equalToSuperview().offset(edgeInsets.top - edgeInsets.bottom)
+            make.left.equalToSuperview().offset(edgeInsets.left - edgeInsets.right)
             make.width.equalTo(0)
             make.height.equalTo(self.finalSize.height)
         } else if myAlignment == .bottomCenter {
-            make.centerX.equalToSuperview().offset(self.vProperty.popupViewEdgeInsets.left - self.vProperty.popupViewEdgeInsets.right)
-            make.bottom.equalToSuperview().offset(self.vProperty.popupViewEdgeInsets.top - self.vProperty.popupViewEdgeInsets.bottom)
+            make.centerX.equalToSuperview().offset(edgeInsets.left - edgeInsets.right)
+            make.bottom.equalToSuperview().offset(edgeInsets.top - edgeInsets.bottom)
             make.width.equalTo(self.finalSize.width)
             make.height.equalTo(0)
         } else if myAlignment == .rightCenter {
-            make.centerY.equalToSuperview().offset(self.vProperty.popupViewEdgeInsets.top - self.vProperty.popupViewEdgeInsets.bottom)
-            make.right.equalToSuperview().offset(self.vProperty.popupViewEdgeInsets.left - self.vProperty.popupViewEdgeInsets.right)
+            make.centerY.equalToSuperview().offset(edgeInsets.top - edgeInsets.bottom)
+            make.right.equalToSuperview().offset(edgeInsets.left - edgeInsets.right)
             make.width.equalTo(0)
             make.height.equalTo(self.finalSize.height)
         } else if myAlignment == .topLeft {
-            make.left.equalToSuperview().offset(self.vProperty.popupViewEdgeInsets.left - self.vProperty.popupViewEdgeInsets.right)
-            make.top.equalToSuperview().offset(self.vProperty.popupViewEdgeInsets.top - self.vProperty.popupViewEdgeInsets.bottom)
+            make.left.equalToSuperview().offset(edgeInsets.left - edgeInsets.right)
+            make.top.equalToSuperview().offset(edgeInsets.top - edgeInsets.bottom)
             make.width.equalTo(self.finalSize.width)
             make.height.equalTo(0)
         } else if myAlignment == .topRight {
-            make.right.equalToSuperview().offset(self.vProperty.popupViewEdgeInsets.left - self.vProperty.popupViewEdgeInsets.right)
-            make.top.equalToSuperview().offset(self.vProperty.popupViewEdgeInsets.top - self.vProperty.popupViewEdgeInsets.bottom)
+            make.right.equalToSuperview().offset(edgeInsets.left - edgeInsets.right)
+            make.top.equalToSuperview().offset(edgeInsets.top - edgeInsets.bottom)
             make.width.equalTo(self.finalSize.width)
             make.height.equalTo(0)
         } else if myAlignment == .bottomLeft {
-            make.left.equalToSuperview().offset(self.vProperty.popupViewEdgeInsets.left - self.vProperty.popupViewEdgeInsets.right)
-            make.bottom.equalToSuperview().offset(self.vProperty.popupViewEdgeInsets.top - self.vProperty.popupViewEdgeInsets.bottom)
+            make.left.equalToSuperview().offset(edgeInsets.left - edgeInsets.right)
+            make.bottom.equalToSuperview().offset(edgeInsets.top - edgeInsets.bottom)
             make.width.equalTo(self.finalSize.width)
             make.height.equalTo(0)
         } else if myAlignment == .bottomRight {
-            make.right.equalToSuperview().offset(self.vProperty.popupViewEdgeInsets.left - self.vProperty.popupViewEdgeInsets.right)
-            make.bottom.equalToSuperview().offset(self.vProperty.popupViewEdgeInsets.top - self.vProperty.popupViewEdgeInsets.bottom)
+            make.right.equalToSuperview().offset(edgeInsets.left - edgeInsets.right)
+            make.bottom.equalToSuperview().offset(edgeInsets.top - edgeInsets.bottom)
             make.width.equalTo(self.finalSize.width)
             make.height.equalTo(0)
         }
@@ -814,42 +822,44 @@ extension FWPopupView {
     ///   - make: ConstraintMaker
     ///   - myAlignment: 自定义弹窗校准位置
     private func constraintsBeforeAnimationScale(make: ConstraintMaker, myAlignment: FWPopupCustomAlignment) {
+        
+        let edgeInsets = self.vProperty.popupViewEdgeInsets
         let anchorPoint = self.obtainAnchorPoint()
         self.layer.anchorPoint = anchorPoint
         if myAlignment == .center {
-            make.center.equalToSuperview().inset(self.vProperty.popupViewEdgeInsets)
+            make.center.equalToSuperview().inset(edgeInsets)
         } else if myAlignment == .topCenter {
             // 设置锚点后会导致约束偏移，因此这边特意做了一个反向偏移
-            make.centerX.equalToSuperview().offset(-self.finalSize.width*(0.5-anchorPoint.x) + self.vProperty.popupViewEdgeInsets.left - self.vProperty.popupViewEdgeInsets.right)
-            make.top.equalToSuperview().offset(-self.finalSize.height*(1-anchorPoint.y)/2 + self.vProperty.popupViewEdgeInsets.top - self.vProperty.popupViewEdgeInsets.bottom)
+            make.centerX.equalToSuperview().offset(-self.finalSize.width*(0.5-anchorPoint.x) + edgeInsets.left - edgeInsets.right)
+            make.top.equalToSuperview().offset(-self.finalSize.height*(1-anchorPoint.y)/2 + edgeInsets.top - edgeInsets.bottom)
         } else if myAlignment == .leftCenter {
             // 设置锚点后会导致约束偏移，因此这边特意做了一个反向偏移
-            make.centerY.equalToSuperview().offset(-self.finalSize.height*(0.5-anchorPoint.y) + self.vProperty.popupViewEdgeInsets.top - self.vProperty.popupViewEdgeInsets.bottom)
-            make.left.equalToSuperview().offset(-self.finalSize.width/2 + self.finalSize.width*anchorPoint.x + self.vProperty.popupViewEdgeInsets.left - self.vProperty.popupViewEdgeInsets.right)
+            make.centerY.equalToSuperview().offset(-self.finalSize.height*(0.5-anchorPoint.y) + edgeInsets.top - edgeInsets.bottom)
+            make.left.equalToSuperview().offset(-self.finalSize.width/2 + self.finalSize.width*anchorPoint.x + edgeInsets.left - edgeInsets.right)
         } else if myAlignment == .bottomCenter {
             // 设置锚点后会导致约束偏移，因此这边特意做了一个反向偏移
-            make.centerX.equalToSuperview().offset(self.vProperty.popupViewEdgeInsets.left + self.vProperty.popupViewEdgeInsets.right)
-            make.bottom.equalToSuperview().offset(self.finalSize.height*(anchorPoint.y-0.5) + self.vProperty.popupViewEdgeInsets.top - self.vProperty.popupViewEdgeInsets.bottom)
+            make.centerX.equalToSuperview().offset(edgeInsets.left - edgeInsets.right)
+            make.bottom.equalToSuperview().offset(self.finalSize.height*(anchorPoint.y-0.5) + edgeInsets.top - edgeInsets.bottom)
         } else if myAlignment == .rightCenter {
             // 设置锚点后会导致约束偏移，因此这边特意做了一个反向偏移
-            make.centerY.equalToSuperview().offset(-self.finalSize.height*(0.5-anchorPoint.y) + self.vProperty.popupViewEdgeInsets.top - self.vProperty.popupViewEdgeInsets.bottom)
-            make.right.equalToSuperview().offset(self.finalSize.width/2 - self.finalSize.width*(1-anchorPoint.x) + self.vProperty.popupViewEdgeInsets.left - self.vProperty.popupViewEdgeInsets.right)
+            make.centerY.equalToSuperview().offset(-self.finalSize.height*(0.5-anchorPoint.y) + edgeInsets.top - edgeInsets.bottom)
+            make.right.equalToSuperview().offset(self.finalSize.width/2 - self.finalSize.width*(1-anchorPoint.x) + edgeInsets.left - edgeInsets.right)
         } else if myAlignment == .topLeft {
             // 设置锚点后会导致约束偏移，因此这边特意做了一个反向偏移
-            make.left.equalToSuperview().offset(-self.finalSize.width/2 + self.finalSize.width*anchorPoint.x + self.vProperty.popupViewEdgeInsets.left - self.vProperty.popupViewEdgeInsets.right)
-            make.top.equalToSuperview().offset(-self.finalSize.height*(1-anchorPoint.y)/2 + self.vProperty.popupViewEdgeInsets.top - self.vProperty.popupViewEdgeInsets.bottom)
+            make.left.equalToSuperview().offset(-self.finalSize.width/2 + self.finalSize.width*anchorPoint.x + edgeInsets.left - edgeInsets.right)
+            make.top.equalToSuperview().offset(-self.finalSize.height*(1-anchorPoint.y)/2 + edgeInsets.top - edgeInsets.bottom)
         } else if myAlignment == .topRight {
             // 设置锚点后会导致约束偏移，因此这边特意做了一个反向偏移
-            make.right.equalToSuperview().offset(self.finalSize.width/2 - self.finalSize.width*(1-anchorPoint.x) + self.vProperty.popupViewEdgeInsets.left - self.vProperty.popupViewEdgeInsets.right)
-            make.top.equalToSuperview().offset(-self.finalSize.height*(1-anchorPoint.y)/2 + self.vProperty.popupViewEdgeInsets.top - self.vProperty.popupViewEdgeInsets.bottom)
+            make.right.equalToSuperview().offset(self.finalSize.width/2 - self.finalSize.width*(1-anchorPoint.x) + edgeInsets.left - edgeInsets.right)
+            make.top.equalToSuperview().offset(-self.finalSize.height*(1-anchorPoint.y)/2 + edgeInsets.top - edgeInsets.bottom)
         } else if myAlignment == .bottomLeft {
             // 设置锚点后会导致约束偏移，因此这边特意做了一个反向偏移
-            make.left.equalToSuperview().offset(-self.finalSize.width/2 + self.finalSize.width*anchorPoint.x + self.vProperty.popupViewEdgeInsets.left - self.vProperty.popupViewEdgeInsets.right)
-            make.bottom.equalToSuperview().offset(self.finalSize.height*(anchorPoint.y-0.5) + self.vProperty.popupViewEdgeInsets.top - self.vProperty.popupViewEdgeInsets.bottom)
+            make.left.equalToSuperview().offset(-self.finalSize.width/2 + self.finalSize.width*anchorPoint.x + edgeInsets.left - edgeInsets.right)
+            make.bottom.equalToSuperview().offset(self.finalSize.height*(anchorPoint.y-0.5) + edgeInsets.top - edgeInsets.bottom)
         } else if myAlignment == .bottomRight {
             // 设置锚点后会导致约束偏移，因此这边特意做了一个反向偏移
-            make.right.equalToSuperview().offset(self.finalSize.width/2 - self.finalSize.width*(1-anchorPoint.x) + self.vProperty.popupViewEdgeInsets.left - self.vProperty.popupViewEdgeInsets.right)
-            make.bottom.equalToSuperview().offset(self.finalSize.height*(anchorPoint.y-0.5) + self.vProperty.popupViewEdgeInsets.top - self.vProperty.popupViewEdgeInsets.bottom)
+            make.right.equalToSuperview().offset(self.finalSize.width/2 - self.finalSize.width*(1-anchorPoint.x) + edgeInsets.left - edgeInsets.right)
+            make.bottom.equalToSuperview().offset(self.finalSize.height*(anchorPoint.y-0.5) + edgeInsets.top - edgeInsets.bottom)
         }
     }
     

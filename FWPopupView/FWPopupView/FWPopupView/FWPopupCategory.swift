@@ -112,7 +112,6 @@ extension UIView {
             return
         }
         self.fwMaskView.isHidden = false
-        self.fwBackgroundAnimating = true
         
         if self == FWPopupWindow.sharedInstance.attachView() {
             FWPopupWindow.sharedInstance.isHidden = false
@@ -131,10 +130,6 @@ extension UIView {
             
         }) { (finished) in
             
-            if finished {
-                self.fwBackgroundAnimating = false
-            }
-            
         }
     }
     
@@ -144,7 +139,6 @@ extension UIView {
         if self.fwReferenceCount > 1 {
             return
         }
-        self.fwBackgroundAnimating = true
         
         UIView.animate(withDuration: self.fwAnimationDuration, delay: 0, options: [.curveEaseIn, .beginFromCurrentState], animations: {
             
@@ -153,8 +147,6 @@ extension UIView {
         }) { (finished) in
             
             if finished {
-                self.fwBackgroundAnimating = false
-                
                 if self == FWPopupWindow.sharedInstance.attachView() {
                     FWPopupWindow.sharedInstance.isHidden = true
                 } else if self.isKind(of: UIWindow.self) {
