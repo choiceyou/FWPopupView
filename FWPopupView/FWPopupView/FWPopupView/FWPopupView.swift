@@ -487,9 +487,9 @@ extension FWPopupView {
         }
         
         if FWPopupWindow.sharedInstance.willShowingViews.count > 0 {
-            let willShowingView: FWPopupView = FWPopupWindow.sharedInstance.willShowingViews.last as! FWPopupView
+            let willShowingView: FWPopupView = FWPopupWindow.sharedInstance.willShowingViews.first as! FWPopupView
             willShowingView.showNow()
-            FWPopupWindow.sharedInstance.willShowingViews.removeLast()
+            FWPopupWindow.sharedInstance.willShowingViews.removeFirst()
         } else {
             self.attachedView?.fwBackgroundAnimating = false
         }
