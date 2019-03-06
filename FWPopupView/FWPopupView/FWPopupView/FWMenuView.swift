@@ -20,15 +20,20 @@ import UIKit
 
 class FWMenuViewTableViewCell: UITableViewCell {
     
-    var itemBtn: UIButton!
+    var iconImgView: UIImageView!
+    var titleLabel: UILabel!
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
-        self.itemBtn = UIButton(type: .custom)
-        self.itemBtn.backgroundColor = UIColor.clear
-        self.itemBtn.isUserInteractionEnabled = false
-        self.contentView.addSubview(self.itemBtn)
+        self.iconImgView = UIImageView()
+        self.iconImgView.contentMode = .center
+        self.iconImgView.backgroundColor = UIColor.clear
+        self.contentView.addSubview(self.iconImgView)
+        
+        self.titleLabel = UILabel()
+        self.titleLabel.backgroundColor = UIColor.clear
+        self.contentView.addSubview(self.titleLabel)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -36,24 +41,33 @@ class FWMenuViewTableViewCell: UITableViewCell {
     }
     
     func setupContent(title: String?, image: UIImage?, property: FWMenuViewProperty) {
-        self.itemBtn.frame = CGRect(x: property.letfRigthMargin, y: property.topBottomMargin, width: self.frame.width - property.letfRigthMargin * 2, height: self.frame.height - property.topBottomMargin * 2)
         
-        self.itemBtn.contentHorizontalAlignment = property.contentHorizontalAlignment
         self.selectionStyle = property.selectionStyle
         
         if image != nil {
-            self.itemBtn.setImage(image!, for: .normal)
+            self.iconImgView.isHidden = false
+            self.iconImgView.image = image;
+            self.iconImgView.snp.makeConstraints { (make) in
+                make.left.equalToSuperview().offset(property.letfRigthMargin)
+                make.top.equalToSuperview().offset(property.topBottomMargin)
+                make.bottom.equalToSuperview().offset(-property.topBottomMargin)
+            }
+        } else {
+            self.iconImgView.isHidden = true
         }
         
         if title != nil {
             let attributedString = NSAttributedString(string: title!, attributes: property.titleTextAttributes)
-            let selectedAttributedString = NSAttributedString(string: title!, attributes: property.selectedTitleTextAttributes)
-            self.itemBtn.setAttributedTitle(attributedString, for: .normal)
-            self.itemBtn.setAttributedTitle(selectedAttributedString, for: .highlighted)
-        }
-        
-        if image != nil && title != nil {
-            self.itemBtn.titleEdgeInsets = UIEdgeInsets(top: 0, left: property.commponentMargin, bottom: 0, right: 0)
+            self.titleLabel.attributedText = attributedString;
+            self.titleLabel.snp.makeConstraints { (make) in
+                if image != nil {
+                    make.left.equalTo(self.iconImgView.snp.right).offset(property.commponentMargin)
+                } else {
+                    make.left.equalToSuperview().offset(property.commponentMargin*2)
+                }
+                make.top.equalToSuperview().offset(property.topBottomMargin)
+                make.bottom.equalToSuperview().offset(-property.topBottomMargin)
+            }
         }
     }
 }
