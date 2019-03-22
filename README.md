@@ -30,7 +30,14 @@
 ```cocoaPods
 use_frameworks!
 pod 'FWPopupView'
-注意：如出现 [!] Unable to find a specification for 'FWPopupView' 错误 或 看不到最新版本，可执行 pod repo update 命令更新一下本地pod仓库。
+注意：
+1、如出现 [!] Unable to find a specification for 'FWPopupView' 错误 或 看不到最新的版本，
+  可执行 pod repo update 命令更新一下本地pod仓库。
+2、use_frameworks! 的使用：
+（1）纯OC项目中，通过cocoapods导入OC库时，一般都不使用use_frameworks!
+（2）纯swift项目中，通过cocoapods导入swift库时，必须使用use_frameworks!
+（3）只要是通过cocoapods导入swift库时，都必须使用use_frameworks!
+（4）使用动态链接库dynamic frameworks时，必须使用use_frameworks!
 ```
 
 
