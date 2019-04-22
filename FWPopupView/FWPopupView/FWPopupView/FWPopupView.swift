@@ -178,6 +178,15 @@ open class FWPopupView: UIView, UIGestureRecognizerDelegate {
     /// 是否重新设置了父视图
     private var isResetSuperView: Bool = false
     
+    /// 记录当前弹窗状态
+    private var currentPopupViewState: FWPopupViewState = .unKnow {
+        willSet {
+            if self.popupStateBlock != nil {
+                self.popupStateBlock!(self, newValue)
+            }
+        }
+    }
+    
     
     public override init(frame: CGRect) {
         super.init(frame: frame)
@@ -267,9 +276,10 @@ extension FWPopupView {
     
     private func showNow() {
         
-        if self.popupStateBlock != nil {
-            self.popupStateBlock!(self, .willAppear)
+        if self.currentPopupViewState == .willAppear || self.currentPopupViewState == .didAppear {
+            return
         }
+        self.currentPopupViewState = .willAppear
         
         // 弹起时设置相关参数，因为隐藏或者销毁时会被重置掉，所以每次弹起时都重新调用
         if self.attachedView != nil && self.vProperty.maskViewColor != nil {
@@ -334,9 +344,10 @@ extension FWPopupView {
     
     private func hideNow(isRemove: Bool) {
         
-        if self.popupStateBlock != nil {
-            self.popupStateBlock!(self, .willDisappear)
+        if self.currentPopupViewState == .willDisappear || self.currentPopupViewState == .didDisappear {
+            return
         }
+        self.currentPopupViewState = .willDisappear
         
         if self.attachedView == nil {
             self.attachedView = FWPopupWindow.sharedInstance.attachView()
@@ -482,9 +493,7 @@ extension FWPopupView {
         if self.popupDidAppearBlock != nil {
             self.popupDidAppearBlock!(self)
         }
-        if self.popupStateBlock != nil {
-            self.popupStateBlock!(self, .didAppear)
-        }
+        self.currentPopupViewState = .didAppear
         
         if FWPopupWindow.sharedInstance.willShowingViews.count > 0 {
             let willShowingView: FWPopupView = FWPopupWindow.sharedInstance.willShowingViews.first as! FWPopupView
@@ -550,9 +559,7 @@ extension FWPopupView {
                     if strongSelf.popupDidDisappearBlock != nil {
                         strongSelf.popupDidDisappearBlock!(strongSelf)
                     }
-                    if strongSelf.popupStateBlock != nil {
-                        strongSelf.popupStateBlock!(strongSelf, .didDisappear)
-                    }
+                    strongSelf.currentPopupViewState = .didDisappear
                 })
                 
                 strongSelf.attachedView?.fwBackgroundAnimating = false

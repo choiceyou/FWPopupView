@@ -146,12 +146,10 @@ extension UIView {
             
         }) { (finished) in
             
-            if finished {
-                if self == FWPopupWindow.sharedInstance.attachView() {
-                    FWPopupWindow.sharedInstance.isHidden = true
-                } else if self.isKind(of: UIWindow.self) {
-                    self.isHidden = true
-                }
+            if self == FWPopupWindow.sharedInstance.attachView() {
+                FWPopupWindow.sharedInstance.isHidden = true
+            } else if self.isKind(of: UIWindow.self) {
+                self.isHidden = true
             }
             
             self.fwReferenceCount -= 1
