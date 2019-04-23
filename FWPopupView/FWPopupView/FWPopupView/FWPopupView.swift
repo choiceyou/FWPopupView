@@ -428,11 +428,13 @@ extension FWPopupView {
             // 保证前一次弹窗销毁完毕
             var tmpHiddenViews: [UIView] = []
             for view in strongSelf.attachedView!.fwMaskView.subviews {
-                if view == strongSelf {
-                    view.isHidden = false
-                } else {
-                    view.isHidden = true
-                    tmpHiddenViews.append(view)
+                if view.isKind(of: FWPopupView.self) {
+                    if view == strongSelf {
+                        view.isHidden = false
+                    } else if (view as! FWPopupView).currentPopupViewState != .unKnow {
+                        view.isHidden = true
+                        tmpHiddenViews.append(view)
+                    }
                 }
             }
             FWPopupWindow.sharedInstance.hiddenViews.removeAll()
