@@ -16,7 +16,7 @@ class FWCustomSheetViewTableViewCell: UITableViewCell {
     var secondaryTitleLabel: UILabel!
     var line: CALayer!
     
-    override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
         self.imgView = UIImageView()
@@ -203,8 +203,8 @@ extension FWCustomSheetView {
         self.tableView.backgroundColor = self.backgroundColor
         self.tableView.bounces = property.bounces
         
-        if property.popupViewMaxHeight > 0 && property.popupViewItemHeight * CGFloat(self.itemsCount()) > property.popupViewMaxHeight {
-            selfSize.height = self.vProperty.popupViewMaxHeight
+        if property.popupViewMaxHeightRate > 0 && property.popupViewItemHeight * CGFloat(self.itemsCount()) > property.popupViewMaxHeightRate*self.superview!.frame.size.height  {
+            selfSize.height = property.popupViewMaxHeightRate*self.superview!.frame.size.height
         } else if property.popupViewMinHeight > 0 && property.popupViewItemHeight * CGFloat(self.itemsCount()) < property.popupViewMinHeight {
             selfSize.height = property.popupViewMinHeight
         } else {
@@ -336,14 +336,14 @@ open class FWCustomSheetViewProperty: FWPopupViewProperty {
     @objc public var choiceImage: UIImage?
     
     /// 标题字体属性
-    @objc public var titleTextAttributes: [NSAttributedStringKey: Any]!
+    @objc public var titleTextAttributes: [NSAttributedString.Key: Any]!
     /// 副标题字体属性
-    @objc public var secondaryTitleTextAttributes: [NSAttributedStringKey: Any]!
+    @objc public var secondaryTitleTextAttributes: [NSAttributedString.Key: Any]!
     
     /// 内容位置
-    @objc public var contentHorizontalAlignment: UIControlContentHorizontalAlignment = .left
+    @objc public var contentHorizontalAlignment: UIControl.ContentHorizontalAlignment = .left
     /// 选中风格
-    @objc public var selectionStyle: UITableViewCellSelectionStyle = .none
+    @objc public var selectionStyle: UITableViewCell.SelectionStyle = .none
     
     /// 分割线颜色
     @objc public var separatorColor: UIColor = kPV_RGBA(r: 231, g: 231, b: 231, a: 1)
@@ -358,14 +358,14 @@ open class FWCustomSheetViewProperty: FWPopupViewProperty {
         
         self.buttonFontSize = 15
         
-        self.titleTextAttributes = [NSAttributedStringKey.foregroundColor: self.itemNormalColor, NSAttributedStringKey.backgroundColor: UIColor.clear, NSAttributedStringKey.font: UIFont.systemFont(ofSize: self.buttonFontSize)]
+        self.titleTextAttributes = [NSAttributedString.Key.foregroundColor: self.itemNormalColor, NSAttributedString.Key.backgroundColor: UIColor.clear, NSAttributedString.Key.font: UIFont.systemFont(ofSize: self.buttonFontSize)]
         
         let tmpColor = kPV_RGBA(r: 138, g: 146, b: 165, a: 1)
-        self.secondaryTitleTextAttributes = [NSAttributedStringKey.foregroundColor: tmpColor, NSAttributedStringKey.backgroundColor: UIColor.clear, NSAttributedStringKey.font: UIFont.systemFont(ofSize: 12)]
+        self.secondaryTitleTextAttributes = [NSAttributedString.Key.foregroundColor: tmpColor, NSAttributedString.Key.backgroundColor: UIColor.clear, NSAttributedString.Key.font: UIFont.systemFont(ofSize: 12)]
         
         self.letfRigthMargin = 20
         
-        self.popupViewMaxHeight = UIScreen.main.bounds.height * CGFloat(0.7)
+        self.popupViewMaxHeightRate = 0.7
         
         self.touchWildToHide = "1"
     }

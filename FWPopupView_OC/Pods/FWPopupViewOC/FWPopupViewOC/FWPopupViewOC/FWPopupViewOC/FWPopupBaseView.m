@@ -9,13 +9,35 @@
 #import "FWPopupBaseView.h"
 #import "FWPopupWindow.h"
 #import <QuartzCore/QuartzCore.h>
+#import "Masonry.h"
 
 /**
- 弹窗显示、隐藏回调，内部回调，该回调不对外
+ 弹窗显示回调，内部回调，该回调不对外
  
  @param popupBaseView self
  */
-typedef void(^FWPopupBlock)(FWPopupBaseView *popupBaseView);
+typedef void(^FWPopupShowBlock)(FWPopupBaseView *popupBaseView);
+
+/**
+ 弹窗隐藏回调，内部回调，该回调不对外
+ 
+ @param popupBaseView self
+ @param hideWithRemove 是否从父视图中移除当前视图
+ */
+typedef void(^FWPopupHideBlock)(FWPopupBaseView *popupBaseView, BOOL hideWithRemove);
+
+/**
+ 当前约束的状态
+ 
+ - FWConstraintsStatesBeforeAnimation: 动画之前的约束
+ - FWConstraintsStatesShownAnimation: 显示动画的约束
+ - FWConstraintsStatesHiddenAnimation: 隐藏动画的约束
+ */
+typedef NS_ENUM(NSInteger, FWConstraintsStates) {
+    FWConstraintsStatesBeforeAnimation,
+    FWConstraintsStatesShownAnimation,
+    FWConstraintsStatesHiddenAnimation,
+};
 
 
 @interface FWPopupBaseView()
@@ -23,12 +45,23 @@ typedef void(^FWPopupBlock)(FWPopupBaseView *popupBaseView);
 @property (nonatomic, copy) FWPopupDidAppearBlock popupDidAppearBlock;
 @property (nonatomic, copy) FWPopupDidDisappearBlock popupDidDisappearBlock;
 @property (nonatomic, copy) FWPopupStateBlock popupStateBlock;
-@property (nonatomic, copy) FWPopupBlock showAnimation;
-@property (nonatomic, copy) FWPopupBlock hideAnimation;
+@property (nonatomic, copy) FWPopupShowBlock showAnimation;
+@property (nonatomic, copy) FWPopupHideBlock hideAnimation;
+@property (nonatomic, assign) FWPopupState  currentPopupState;
+
 /**
- 弹窗真正的frame
+ 弹窗真正的Size
  */
 @property (nonatomic, assign) CGRect finalFrame;
+/**
+ 当前Constraints是否被设置过了
+ */
+@property (nonatomic, assign) BOOL haveSetConstraints;
+/**
+ 是否重新设置了父视图
+ */
+@property (nonatomic, assign) BOOL isResetSuperView;
+
 /**
  记录遮罩层设置前的颜色
  */
@@ -81,14 +114,27 @@ typedef void(^FWPopupBlock)(FWPopupBaseView *popupBaseView);
     [self setupParams];
 }
 
+- (instancetype)initWithConstraints
+{
+    self = [super init];
+    if (self) {
+        [self setupParams];
+        [self.attachedView.dimMaskView addSubview:self];
+        self.hidden = YES;
+        [[FWPopupWindow sharedWindow].needConstraintsViews addObject:self];
+    }
+    return self;
+}
+
 - (void)setupParams
 {
     self.backgroundColor = [UIColor whiteColor];
     
-    _attachedView = [FWPopupWindow sharedWindow].attachView;
+    self.attachedView = [FWPopupWindow sharedWindow].attachView;
     
     _originMaskViewColor = self.attachedView.dimMaskViewColor;
     _originTouchWildToHide = [FWPopupWindow sharedWindow].touchWildToHide;
+    self.hidden = YES;
     
     self.showAnimation = [self showCustomAnimation];
     self.hideAnimation = [self hideCustomAnimation];
@@ -114,9 +160,7 @@ typedef void(^FWPopupBlock)(FWPopupBaseView *popupBaseView);
  */
 - (void)showWithDidAppearBlock:(FWPopupDidAppearBlock)didAppearBlock
 {
-    if (didAppearBlock != nil) {
-        self.popupDidAppearBlock = didAppearBlock;
-    }
+    self.popupDidAppearBlock = didAppearBlock;
     [self showWithStateBlock:nil];
 }
 
@@ -127,22 +171,39 @@ typedef void(^FWPopupBlock)(FWPopupBaseView *popupBaseView);
  */
 - (void)showWithStateBlock:(FWPopupStateBlock)stateBlock
 {
-    if (stateBlock != nil) {
-        self.popupStateBlock = stateBlock;
-        self.popupStateBlock(self, FWPopupStateWillAppear);
-    }
-    
     if (self.attachedView == nil) {
         self.attachedView = FWPopupWindow.sharedWindow.attachView;
     }
+    if (self.superview == nil) {
+        [self.attachedView.dimMaskView addSubview:self];
+        self.isResetSuperView = YES;
+    }
+    
+    self.popupStateBlock = stateBlock;
+    
+    if (self.attachedView.dimMaskAnimating) {
+        [[FWPopupWindow sharedWindow].willShowingViews addObject:self];
+    } else {
+        [self showNow];
+    }
+}
+
+- (void)showNow
+{
+    if (self.currentPopupState == FWPopupStateWillAppear || self.currentPopupState == FWPopupStateDidAppear) {
+        return;
+    }
+    self.currentPopupState = FWPopupStateWillAppear;
     
     self.originKeyWindow = [[UIApplication sharedApplication] keyWindow];
     
     if (self.vProperty.maskViewColor != nil) {
         self.attachedView.dimMaskViewColor = self.vProperty.maskViewColor;
     }
-    if (self.vProperty.touchWildToHide != nil && ![self.vProperty.touchWildToHide isEqualToString:@""]) {
-        [FWPopupWindow sharedWindow].touchWildToHide = ([self.vProperty.touchWildToHide integerValue] == 1) ? YES : NO;
+    if (self.vProperty.touchWildToHide != nil && ![self.vProperty.touchWildToHide isEqualToString:@""] && [self.vProperty.touchWildToHide integerValue] == 1) {
+        [FWPopupWindow sharedWindow].touchWildToHide = YES;
+    } else {
+        [FWPopupWindow sharedWindow].touchWildToHide = NO;
     }
     self.attachedView.dimMaskAnimationDuration = self.vProperty.animationDuration;
     
@@ -162,7 +223,7 @@ typedef void(^FWPopupBlock)(FWPopupBaseView *popupBaseView);
     
     [self.attachedView showDimMask];
     
-    FWPopupBlock showBlock = self.showAnimation;
+    FWPopupShowBlock showBlock = self.showAnimation;
     showBlock(self);
     
     if (self.withKeyboard) {
@@ -185,23 +246,30 @@ typedef void(^FWPopupBlock)(FWPopupBaseView *popupBaseView);
  */
 - (void)hideWithDidDisappearBlock:(FWPopupDidDisappearBlock)didDisappearBlock
 {
-    if (didDisappearBlock != nil) {
-        self.popupDidDisappearBlock = didDisappearBlock;
+    self.popupDidDisappearBlock = didDisappearBlock;
+    
+    [self hideNow:YES];
+}
+
+- (void)hideNow:(BOOL)isRemove
+{
+    if (self.currentPopupState == FWPopupStateWillDisappear || self.currentPopupState == FWPopupStateDidDisappear) {
+        return;
     }
-    if (self.popupStateBlock != nil) {
-        self.popupStateBlock(self, FWPopupStateWillDisappear);
-    }
+    self.currentPopupState = FWPopupStateWillDisappear;
     
     self.attachedView.dimMaskAnimationDuration = self.vProperty.animationDuration;
     
-    [self.attachedView hideDimMask];
+    if ([FWPopupWindow sharedWindow].hiddenViews.count == 0 && [FWPopupWindow sharedWindow].willShowingViews.count == 0 && !self.attachedView.dimMaskAnimating) {
+        [self.attachedView hideDimMask];
+    }
     
     if (self.withKeyboard) {
         [self hideKeyboard];
     }
     
-    FWPopupBlock hideBlock = self.hideAnimation;
-    hideBlock(self);
+    FWPopupHideBlock hideBlock = self.hideAnimation;
+    hideBlock(self, isRemove);
     
     if (self.tapGest != nil) {
         self.tapGest.enabled = false;
@@ -231,113 +299,82 @@ typedef void(^FWPopupBlock)(FWPopupBaseView *popupBaseView);
 
 #pragma mark - ----------------------- 显示、隐藏动画 -----------------------
 
-- (FWPopupBlock)showCustomAnimation
+/**
+ 显示动画
+ 
+ @return FWPopupShowBlock
+ */
+- (FWPopupShowBlock)showCustomAnimation
 {
     FWPWeakify(self)
-    FWPopupBlock popupBlock = ^(FWPopupBaseView *popupBaseView) {
+    FWPopupShowBlock popupBlock = ^(FWPopupBaseView *popupBaseView) {
         
         FWPStrongify(self)
         
-        if (self.superview == nil)
+        // 保证前一次弹窗销毁完毕
+        NSMutableArray *tmpHiddenViews = [NSMutableArray array];
+        for (UIView *view in self.attachedView.dimMaskView.subviews) {
+            if ([view isKindOfClass:[FWPopupBaseView class]]) {
+                FWPopupBaseView *tmpView = (FWPopupBaseView *)view;
+                if (view == self) {
+                    view.hidden = NO;
+                } else if (![[FWPopupWindow sharedWindow].needConstraintsViews containsObject:view] && tmpView.currentPopupState != FWPopupStateUnKnow) {
+                    view.hidden = YES;
+                    [tmpHiddenViews addObject:view];
+                }
+            }
+        }
+        [[FWPopupWindow sharedWindow].hiddenViews removeAllObjects];
+        [[FWPopupWindow sharedWindow].hiddenViews addObjectsFromArray:tmpHiddenViews];
+        
+        if (!self.haveSetConstraints || self.isResetSuperView) {
+            [self setupConstraints:FWConstraintsStatesBeforeAnimation];
+        }
+        
+        [self setupConstraints:FWConstraintsStatesShownAnimation];
+        
+        self.attachedView.dimMaskAnimating = YES;
+        
+        if (self.vProperty.usingSpringWithDamping >= 0 && self.vProperty.usingSpringWithDamping <= 1)
         {
-            // 保证前一次弹窗销毁完毕
-            for (UIView *view in self.attachedView.dimMaskView.subviews)
-            {
-                [view removeFromSuperview];
-            }
-            [self.attachedView.dimMaskView addSubview:self];
-            
-            [self setupFrame];
-            
-            if (self.vProperty.popupAnimationStyle == FWPopupAnimationStylePosition) // 位移动画
-            {
-                [self positionAnimationChangeFrame];
-            }
-            else if (self.vProperty.popupAnimationStyle == FWPopupAnimationStyleScale || self.vProperty.popupAnimationStyle == FWPopupAnimationStyleScale3D) // 缩放动画/3D缩放动画
-            {
-                self.layer.anchorPoint = [self obtainAnchorPoint];
-                self.frame = self.finalFrame;
-                if (self.vProperty.popupAnimationStyle == FWPopupAnimationStyleScale && [[UIDevice currentDevice].systemVersion doubleValue] >= 11.0)
-                {
-                    self.transform = self.vProperty.transform;
-                }
-                else
-                {
-                    self.layer.transform = self.vProperty.transform3D;
-                }
-            }
-            else if (self.vProperty.popupAnimationStyle == FWPopupAnimationStyleFrame) // 修改frame值的动画
-            {
-                CGRect tmpFrame = self.frame;
+            [UIView animateWithDuration:self.vProperty.animationDuration delay:0.0 usingSpringWithDamping:self.vProperty.usingSpringWithDamping initialSpringVelocity:self.vProperty.initialSpringVelocity options:(UIViewAnimationOptionCurveLinear | UIViewAnimationOptionBeginFromCurrentState) animations:^{
                 
-                FWPopupAlignment alignment = self.vProperty.popupAlignment;
-                if (alignment == FWPopupAlignmentTop || alignment == FWPopupAlignmentTopCenter || alignment == FWPopupAlignmentTopLeft || alignment == FWPopupAlignmentTopRight || alignment == FWPopupAlignmentCenter)
-                {
-                    tmpFrame.size.height = 0;
-                }
-                else if (alignment == FWPopupAlignmentLeft || alignment == FWPopupAlignmentLeftCenter)
-                {
-                    tmpFrame.size.width = 0;
-                }
-                else if (alignment == FWPopupAlignmentBottom || alignment == FWPopupAlignmentBottomCenter || alignment == FWPopupAlignmentBottomLeft || alignment == FWPopupAlignmentBottomRight)
-                {
-                    tmpFrame.origin.y = CGRectGetMaxY(self.finalFrame);
-                    tmpFrame.size.height = 0;
-                }
-                else if (alignment == FWPopupAlignmentRight || alignment == FWPopupAlignmentRightCenter)
-                {
-                    tmpFrame.origin.x = CGRectGetMaxX(self.finalFrame);
-                    tmpFrame.size.width = 0;
-                }
-                self.frame = tmpFrame;
-            }
-            
-            [self layoutIfNeeded];
-            
-            if (self.vProperty.usingSpringWithDamping >= 0 && self.vProperty.usingSpringWithDamping <= 1)
-            {
-                [UIView animateWithDuration:self.vProperty.animationDuration delay:0.0 usingSpringWithDamping:self.vProperty.usingSpringWithDamping initialSpringVelocity:self.vProperty.initialSpringVelocity options:(UIViewAnimationOptionCurveLinear | UIViewAnimationOptionBeginFromCurrentState) animations:^{
-                    
-                    [self showAnimationDuration];
-                    
-                } completion:^(BOOL finished) {
-                    
-                    if (self.popupDidAppearBlock != nil) {
-                        self.popupDidAppearBlock(self);
-                    }
-                    if (self.popupStateBlock != nil) {
-                        self.popupStateBlock(self, FWPopupStateDidAppear);
-                    }
-                    
-                }];
-            }
-            else
-            {
-                [UIView animateWithDuration:self.vProperty.animationDuration delay:0.0 options:(UIViewAnimationOptionCurveLinear | UIViewAnimationOptionBeginFromCurrentState) animations:^{
-                    
-                    [self showAnimationDuration];
-                    
-                } completion:^(BOOL finished) {
-                    
-                    if (self.popupDidAppearBlock != nil) {
-                        self.popupDidAppearBlock(self);
-                    }
-                    if (self.popupStateBlock != nil) {
-                        self.popupStateBlock(self, FWPopupStateDidAppear);
-                    }
-                    
-                }];
-            }
+                [self showAnimationDuration];
+                
+            } completion:^(BOOL finished) {
+                
+                [self showAnimationFinished];
+                
+            }];
+        }
+        else
+        {
+            [UIView animateWithDuration:self.vProperty.animationDuration delay:0.0 options:(UIViewAnimationOptionCurveLinear | UIViewAnimationOptionBeginFromCurrentState) animations:^{
+                
+                [self showAnimationDuration];
+                
+            } completion:^(BOOL finished) {
+                
+                [self showAnimationFinished];
+                
+            }];
         }
     };
     return popupBlock;
 }
 
+/**
+ 显示动画的操作
+ */
 - (void)showAnimationDuration
 {
     switch (self.vProperty.popupAnimationStyle) {
         case FWPopupAnimationStylePosition:
-            self.frame = self.finalFrame;
+            [self.superview layoutIfNeeded];
+            break;
+        case FWPopupAnimationStyleFrame:
+            [self.superview layoutIfNeeded];
+            [self layoutIfNeeded];
             break;
         case FWPopupAnimationStyleScale:
             self.transform = CGAffineTransformIdentity;
@@ -346,128 +383,441 @@ typedef void(^FWPopupBlock)(FWPopupBaseView *popupBaseView);
             self.layer.transform = CATransform3DIdentity;
             break;
         default:
-            self.frame = self.finalFrame;
             break;
     }
     
-    [self.superview layoutIfNeeded];
+    self.finalFrame = self.frame;
+    [self setupSpilthMask];
 }
 
-- (FWPopupBlock)hideCustomAnimation
+/**
+ 显示动画完成后的操作
+ */
+- (void)showAnimationFinished
+{
+    if (self.popupDidAppearBlock != nil) {
+        self.popupDidAppearBlock(self);
+    }
+    self.currentPopupState = FWPopupStateDidAppear;
+    
+    if ([FWPopupWindow sharedWindow].willShowingViews.count > 0) {
+        FWPopupBaseView *willShowingView = [FWPopupWindow sharedWindow].willShowingViews.firstObject;
+        [willShowingView showNow];
+        [[FWPopupWindow sharedWindow].willShowingViews removeObjectAtIndex:0];
+    } else {
+        self.attachedView.dimMaskAnimating = NO;
+    }
+}
+
+/**
+ 隐藏动画
+ 
+ @return FWPopupHideBlock
+ */
+- (FWPopupHideBlock)hideCustomAnimation
 {
     FWPWeakify(self)
-    FWPopupBlock popupBlock = ^(FWPopupBaseView *popupBaseView){
+    FWPopupHideBlock popupBlock = ^(FWPopupBaseView *popupBaseView, BOOL hideWithRemove){
         
         FWPStrongify(self)
+        
+        [self setupConstraints:FWConstraintsStatesHiddenAnimation];
+        
+        self.attachedView.dimMaskAnimating = YES;
+        
         [UIView animateWithDuration:self.vProperty.animationDuration delay:0.0 options:(UIViewAnimationOptionCurveLinear | UIViewAnimationOptionBeginFromCurrentState) animations:^{
             
-            if (self.vProperty.popupAnimationStyle == FWPopupAnimationStylePosition) // 位移动画
-            {
-                [self positionAnimationChangeFrame];
+            switch (self.vProperty.popupAnimationStyle) {
+                case FWPopupAnimationStylePosition:
+                    [self.superview layoutIfNeeded];
+                    break;
+                case FWPopupAnimationStyleFrame:
+                    [self.superview layoutIfNeeded];
+                    [self layoutIfNeeded];
+                    break;
+                case FWPopupAnimationStyleScale:
+                    self.transform = self.vProperty.transform;
+                    break;
+                case FWPopupAnimationStyleScale3D:
+                    self.transform = self.vProperty.transform;
+                    break;
+                default:
+                    break;
             }
-            else if (self.vProperty.popupAnimationStyle == FWPopupAnimationStyleScale || self.vProperty.popupAnimationStyle == FWPopupAnimationStyleScale3D) // 缩放动画/3D缩放动画
-            {
-                self.layer.anchorPoint = [self obtainAnchorPoint];
-                self.frame = self.finalFrame;
-                self.transform = self.vProperty.transform;
-            }
-            else if (self.vProperty.popupAnimationStyle == FWPopupAnimationStyleFrame) // 修改frame值的动画
-            {
-                CGRect tmpFrame = self.frame;
-                FWPopupAlignment alignment = self.vProperty.popupAlignment;
-                if (alignment == FWPopupAlignmentTop || alignment == FWPopupAlignmentTopCenter || alignment == FWPopupAlignmentTopLeft || alignment == FWPopupAlignmentTopRight || alignment == FWPopupAlignmentCenter)
-                {
-                    tmpFrame.size.height = 0;
-                }
-                else if (alignment == FWPopupAlignmentLeft || alignment == FWPopupAlignmentLeftCenter)
-                {
-                    tmpFrame.size.width = 0;
-                }
-                else if (alignment == FWPopupAlignmentBottom || alignment == FWPopupAlignmentBottomCenter || alignment == FWPopupAlignmentBottomLeft || alignment == FWPopupAlignmentBottomRight)
-                {
-                    tmpFrame.origin.y = CGRectGetMaxY(self.finalFrame);
-                    tmpFrame.size.height = 0;
-                }
-                else if (alignment == FWPopupAlignmentRight || alignment == FWPopupAlignmentRightCenter)
-                {
-                    tmpFrame.origin.x = CGRectGetMaxX(self.finalFrame);
-                    tmpFrame.size.width = 0;
-                }
-                self.frame = tmpFrame;
-            }
-            
-            [self.superview layoutIfNeeded];
             
         } completion:^(BOOL finished) {
             
-            if (finished) {
+            self.hidden = YES;
+            if (hideWithRemove) {
                 [self removeFromSuperview];
+                if ([[FWPopupWindow sharedWindow].hiddenViews containsObject:self]) {
+                    [[FWPopupWindow sharedWindow].hiddenViews removeObject:self];
+                }
             }
             
-            // 还原视图，防止下次动画时出错
-            switch (self.vProperty.popupAnimationStyle) {
-                case FWPopupAnimationStyleFrame:
-                {
-                    self.frame = self.finalFrame;
-                }
-                    break;
-                case FWPopupAnimationStylePosition:
-                {
-                    self.frame = self.finalFrame;
-                }
-                    break;
-                default:
-                {
-                    self.transform = CGAffineTransformIdentity;
-                }
-                    break;
-            }
-            if (self.vProperty.shouldClearSpilthMask) {
-                UIBezierPath *path = [UIBezierPath bezierPathWithRect:self.attachedView.bounds];
-                CAShapeLayer *maskLayer = [CAShapeLayer layer];
-                maskLayer.frame = self.attachedView.bounds;
-                maskLayer.path = path.CGPath;
-                self.attachedView.layer.mask = maskLayer;
-            }
-            
-            // 确保销毁完成后再回调
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.0001 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                
                 if (self.popupDidDisappearBlock != nil) {
                     self.popupDidDisappearBlock(self);
                 }
-                if (self.popupStateBlock != nil) {
-                    self.popupStateBlock(self, FWPopupStateDidDisappear);
+                self.currentPopupState = FWPopupStateDidDisappear;
+                
+                FWPopupBaseView *nextShowView = nil;
+                if ([FWPopupWindow sharedWindow].willShowingViews.count > 0) {
+                    nextShowView = [FWPopupWindow sharedWindow].willShowingViews.lastObject;
+                    [nextShowView showNow];
+                    [[FWPopupWindow sharedWindow].willShowingViews removeLastObject];
+                } else if ([FWPopupWindow sharedWindow].hiddenViews.count > 0) {
+                    nextShowView = [FWPopupWindow sharedWindow].hiddenViews.lastObject;
+                    nextShowView.hidden = NO;
+                    [[FWPopupWindow sharedWindow].hiddenViews removeLastObject];
+                    if (self.vProperty.touchWildToHide != nil && ![self.vProperty.touchWildToHide isEqualToString:@""] && [self.vProperty.touchWildToHide integerValue] == 1) {
+                        [FWPopupWindow sharedWindow].touchWildToHide = YES;
+                    } else {
+                        [FWPopupWindow sharedWindow].touchWildToHide = NO;
+                    }
+                } else {
+                    [[FWPopupWindow sharedWindow].needConstraintsViews removeAllObjects];
                 }
+                
+                if (self.vProperty.shouldClearSpilthMask || [FWPopupWindow sharedWindow].shouldResetDimMaskView) {
+                    if (nextShowView != nil) {
+                        [FWPopupWindow sharedWindow].shouldResetDimMaskView = YES;
+                        UIBezierPath *path = [UIBezierPath bezierPathWithRect:self.attachedView.bounds];
+                        CAShapeLayer *maskLayer = [CAShapeLayer layer];
+                        maskLayer.frame = self.attachedView.bounds;
+                        maskLayer.path = path.CGPath;
+                        self.attachedView.dimMaskView.layer.mask = maskLayer;
+                    } else {
+                        [self.attachedView resetDimMaskView];
+                        [FWPopupWindow sharedWindow].shouldResetDimMaskView = NO;
+                    }
+                }
+                
             });
             
+            self.attachedView.dimMaskAnimating = NO;
         }];
     };
     return popupBlock;
 }
 
-- (void)positionAnimationChangeFrame
+/**
+ 根据不同状态、动画设置视图的不同约束
+ 
+ @param constraintsStates FWConstraintsStates
+ */
+- (void)setupConstraints:(FWConstraintsStates)constraintsStates
 {
-    CGRect tmpFrame = self.frame;
-    FWPopupAlignment alignment = self.vProperty.popupAlignment;
-    if (alignment == FWPopupAlignmentTop || alignment == FWPopupAlignmentTopCenter || alignment == FWPopupAlignmentTopLeft || alignment == FWPopupAlignmentTopRight || alignment == FWPopupAlignmentCenter)
-    {
-        tmpFrame.origin.y = -(self.frame.origin.y + self.frame.size.height);
+    FWPopupAlignment myAlignment = self.vProperty.popupAlignment;
+    UIEdgeInsets edgeInsets = self.vProperty.popupEdgeInsets;
+    
+    if (constraintsStates == FWConstraintsStatesBeforeAnimation) {
+        
+        [self layoutIfNeeded];
+        if (self.finalFrame.size.width == 0 && self.finalFrame.size.height == 0) {
+            CGRect tmpFrame = self.finalFrame;
+            tmpFrame.size.width = self.frame.size.width;
+            tmpFrame.size.height = self.frame.size.height;
+            self.finalFrame = tmpFrame;
+        }
+        
+        self.haveSetConstraints = YES;
+        
+        if (self.vProperty.popupAnimationStyle == FWPopupAnimationStylePosition) {
+            if (self.isResetSuperView) {
+                self.isResetSuperView = NO;
+                [self mas_remakeConstraints:^(MASConstraintMaker *make) {
+                    make.size.mas_equalTo(self.finalFrame.size);
+                    [self constraintsBeforeAnimationPosition:make myAlignment:myAlignment];
+                }];
+            } else {
+                [self mas_makeConstraints:^(MASConstraintMaker *make) {
+                    if (!self.isNotMakeFrame) {
+                        make.size.mas_equalTo(self.finalFrame.size);
+                    }
+                    [self constraintsBeforeAnimationPosition:make myAlignment:myAlignment];
+                }];
+            }
+            [self.superview layoutIfNeeded];
+        } else if (self.vProperty.popupAnimationStyle == FWPopupAnimationStyleFrame) {
+            if (self.isResetSuperView) {
+                self.isResetSuperView = NO;
+                [self mas_remakeConstraints:^(MASConstraintMaker *make) {
+                    [self constraintsBeforeAnimationFrame:make myAlignment:myAlignment];
+                }];
+            } else {
+                [self mas_makeConstraints:^(MASConstraintMaker *make) {
+                    [self constraintsBeforeAnimationFrame:make myAlignment:myAlignment];
+                }];
+            }
+            [self.superview layoutIfNeeded];
+        } else if (self.vProperty.popupAnimationStyle == FWPopupAnimationStyleScale || self.vProperty.popupAnimationStyle == FWPopupAnimationStyleScale3D) {
+            if (self.isResetSuperView) {
+                self.isResetSuperView = NO;
+                [self mas_remakeConstraints:^(MASConstraintMaker *make) {
+                    make.size.mas_equalTo(self.finalFrame.size);
+                    [self constraintsBeforeAnimationScale:make myAlignment:myAlignment];
+                }];
+            } else {
+                [self mas_makeConstraints:^(MASConstraintMaker *make) {
+                    if (!self.isNotMakeFrame) {
+                        make.size.mas_equalTo(self.finalFrame.size);
+                    }
+                    [self constraintsBeforeAnimationScale:make myAlignment:myAlignment];
+                }];
+            }
+            [self layoutIfNeeded];
+            [self.superview layoutIfNeeded];
+            if (self.vProperty.popupAnimationStyle == FWPopupAnimationStyleScale) {
+                self.transform = self.vProperty.transform;
+            } else {
+                self.layer.transform = self.vProperty.transform3D;
+            }
+        }
+    } else if (constraintsStates == FWConstraintsStatesShownAnimation) {
+        [self mas_updateConstraints:^(MASConstraintMaker *make) {
+            if (self.vProperty.popupAnimationStyle == FWPopupAnimationStylePosition) {
+                if (myAlignment == FWPopupAlignmentCenter) {
+                    make.centerY.equalTo(self.superview).offset(edgeInsets.top - edgeInsets.bottom);
+                } else if (myAlignment == FWPopupAlignmentTopCenter) {
+                    make.top.equalTo(self.superview).offset(edgeInsets.top - edgeInsets.bottom);
+                } else if (myAlignment == FWPopupAlignmentLeftCenter) {
+                    make.left.equalTo(self.superview).offset(edgeInsets.left - edgeInsets.right);
+                } else if (myAlignment == FWPopupAlignmentBottomCenter) {
+                    make.bottom.equalTo(self.superview).offset(edgeInsets.top - edgeInsets.bottom);
+                } else if (myAlignment == FWPopupAlignmentRightCenter) {
+                    make.right.equalTo(self.superview).offset(edgeInsets.left - edgeInsets.right);
+                } else if (myAlignment == FWPopupAlignmentTopLeft) {
+                    make.top.equalTo(self.superview).offset(edgeInsets.top - edgeInsets.bottom);
+                } else if (myAlignment == FWPopupAlignmentTopRight) {
+                    make.top.equalTo(self.superview).offset(edgeInsets.top - edgeInsets.bottom);
+                } else if (myAlignment == FWPopupAlignmentBottomLeft) {
+                    make.bottom.equalTo(self.superview).offset(edgeInsets.top - edgeInsets.bottom);
+                } else if (myAlignment == FWPopupAlignmentBottomRight) {
+                    make.bottom.equalTo(self.superview).offset(edgeInsets.top - edgeInsets.bottom);
+                }
+            } else if (self.vProperty.popupAnimationStyle == FWPopupAnimationStyleFrame) {
+                if (myAlignment == FWPopupAlignmentCenter) {
+                    make.height.mas_equalTo(self.finalFrame.size.height);
+                } else if (myAlignment == FWPopupAlignmentTopCenter) {
+                    make.height.mas_equalTo(self.finalFrame.size.height);
+                } else if (myAlignment == FWPopupAlignmentLeftCenter) {
+                    make.width.mas_equalTo(self.finalFrame.size.width);
+                } else if (myAlignment == FWPopupAlignmentBottomCenter) {
+                    make.height.mas_equalTo(self.finalFrame.size.height);
+                } else if (myAlignment == FWPopupAlignmentRightCenter) {
+                    make.width.mas_equalTo(self.finalFrame.size.width);
+                } else if (myAlignment == FWPopupAlignmentTopLeft) {
+                    make.height.mas_equalTo(self.finalFrame.size.height);
+                } else if (myAlignment == FWPopupAlignmentTopRight) {
+                    make.height.mas_equalTo(self.finalFrame.size.height);
+                } else if (myAlignment == FWPopupAlignmentBottomLeft) {
+                    make.height.mas_equalTo(self.finalFrame.size.height);
+                } else if (myAlignment == FWPopupAlignmentBottomRight) {
+                    make.height.mas_equalTo(self.finalFrame.size.height);
+                }
+            }
+        }];
+    } else if (constraintsStates == FWConstraintsStatesHiddenAnimation) {
+        [self mas_updateConstraints:^(MASConstraintMaker *make) {
+            if (self.vProperty.popupAnimationStyle == FWPopupAnimationStylePosition) {
+                if (myAlignment == FWPopupAlignmentCenter) {
+                    make.centerY.equalTo(self.superview).offset(-self.finalFrame.size.height/2 - self.superview.frame.size.height/2);
+                } else if (myAlignment == FWPopupAlignmentTopCenter) {
+                    make.top.equalTo(self.superview).offset(-self.finalFrame.size.height);
+                } else if (myAlignment == FWPopupAlignmentLeftCenter) {
+                    make.left.equalTo(self.superview).offset(-self.finalFrame.size.width);
+                } else if (myAlignment == FWPopupAlignmentBottomCenter) {
+                    make.bottom.equalTo(self.superview).offset(self.finalFrame.size.height);
+                } else if (myAlignment == FWPopupAlignmentRightCenter) {
+                    make.right.equalTo(self.superview).offset(self.finalFrame.size.width);
+                } else if (myAlignment == FWPopupAlignmentTopLeft) {
+                    make.top.equalTo(self.superview).offset(-self.finalFrame.size.height);
+                } else if (myAlignment == FWPopupAlignmentTopRight) {
+                    make.top.equalTo(self.superview).offset(-self.finalFrame.size.height);
+                } else if (myAlignment == FWPopupAlignmentBottomLeft) {
+                    make.bottom.equalTo(self.superview).offset(self.finalFrame.size.height);
+                } else if (myAlignment == FWPopupAlignmentBottomRight) {
+                    make.bottom.equalTo(self.superview).offset(self.finalFrame.size.height);
+                }
+            } else if (self.vProperty.popupAnimationStyle == FWPopupAnimationStyleFrame) {
+                if (myAlignment == FWPopupAlignmentCenter) {
+                    make.height.mas_equalTo(0);
+                } else if (myAlignment == FWPopupAlignmentTopCenter) {
+                    make.height.mas_equalTo(0);
+                } else if (myAlignment == FWPopupAlignmentLeftCenter) {
+                    make.width.mas_equalTo(0);
+                } else if (myAlignment == FWPopupAlignmentBottomCenter) {
+                    make.height.mas_equalTo(0);
+                } else if (myAlignment == FWPopupAlignmentRightCenter) {
+                    make.width.mas_equalTo(0);
+                } else if (myAlignment == FWPopupAlignmentTopLeft) {
+                    make.height.mas_equalTo(0);
+                } else if (myAlignment == FWPopupAlignmentTopRight) {
+                    make.height.mas_equalTo(0);
+                } else if (myAlignment == FWPopupAlignmentBottomLeft) {
+                    make.height.mas_equalTo(0);
+                } else if (myAlignment == FWPopupAlignmentBottomRight) {
+                    make.height.mas_equalTo(0);
+                }
+            }
+        }];
     }
-    else if (alignment == FWPopupAlignmentLeft || alignment == FWPopupAlignmentLeftCenter)
-    {
-        tmpFrame.origin.x = -(self.frame.origin.x + self.frame.size.width);
-    }
-    else if (alignment == FWPopupAlignmentBottom || alignment == FWPopupAlignmentBottomCenter || alignment == FWPopupAlignmentBottomLeft || alignment == FWPopupAlignmentBottomRight)
-    {
-        tmpFrame.origin.y = self.attachedView.frame.size.height;
-    }
-    else if (alignment == FWPopupAlignmentRight || alignment == FWPopupAlignmentRightCenter)
-    {
-        tmpFrame.origin.x = self.attachedView.frame.size.width;
-    }
-    self.frame = tmpFrame;
 }
 
+/**
+ 位移动画展示前的约束
+ 
+ @param make MASConstraintMaker
+ @param myAlignment 自定义弹窗校准位置
+ */
+- (void)constraintsBeforeAnimationPosition:(MASConstraintMaker *)make myAlignment:(FWPopupAlignment)myAlignment
+{
+    UIEdgeInsets edgeInsets = self.vProperty.popupEdgeInsets;
+    
+    if (myAlignment == FWPopupAlignmentCenter) {
+        make.centerX.equalTo(self.superview).offset(edgeInsets.left - edgeInsets.right);
+        make.centerY.equalTo(self.superview).offset(-self.finalFrame.size.height/2 - self.superview.frame.size.height/2);
+    } else if (myAlignment == FWPopupAlignmentTopCenter) {
+        make.centerX.equalTo(self.superview).offset(edgeInsets.left - edgeInsets.right);
+        make.top.equalTo(self.superview).offset(-self.finalFrame.size.height);
+    } else if (myAlignment == FWPopupAlignmentLeftCenter) {
+        make.centerY.equalTo(self.superview).offset(edgeInsets.top - edgeInsets.bottom);
+        make.left.equalTo(self.superview).offset(-self.finalFrame.size.width);
+    } else if (myAlignment == FWPopupAlignmentBottomCenter) {
+        make.centerX.equalTo(self.superview).offset(edgeInsets.left - edgeInsets.right);
+        make.bottom.equalTo(self.superview).offset(self.finalFrame.size.height);
+    } else if (myAlignment == FWPopupAlignmentRightCenter) {
+        make.centerY.equalTo(self.superview).offset(edgeInsets.top - edgeInsets.bottom);
+        make.right.equalTo(self.superview).offset(self.finalFrame.size.width);
+    } else if (myAlignment == FWPopupAlignmentTopLeft) {
+        make.left.equalTo(self.superview).offset(edgeInsets.left - edgeInsets.right);
+        make.top.equalTo(self.superview).offset(-self.finalFrame.size.height);
+    } else if (myAlignment == FWPopupAlignmentTopRight) {
+        make.right.equalTo(self.superview).offset(edgeInsets.left - edgeInsets.right);
+        make.top.equalTo(self.superview).offset(-self.finalFrame.size.height);
+    } else if (myAlignment == FWPopupAlignmentBottomLeft) {
+        make.left.equalTo(self.superview).offset(edgeInsets.left - edgeInsets.right);
+        make.bottom.equalTo(self.superview).offset(self.finalFrame.size.height);
+    } else if (myAlignment == FWPopupAlignmentBottomRight) {
+        make.right.equalTo(self.superview).offset(edgeInsets.left - edgeInsets.right);
+        make.bottom.equalTo(self.superview).offset(self.finalFrame.size.height);
+    }
+}
+
+/**
+ 修改frame值动画展示前的约束
+ 
+ @param make MASConstraintMaker
+ @param myAlignment 自定义弹窗校准位置
+ */
+- (void)constraintsBeforeAnimationFrame:(MASConstraintMaker *)make myAlignment:(FWPopupAlignment)myAlignment
+{
+    UIEdgeInsets edgeInsets = self.vProperty.popupEdgeInsets;
+    
+    if (myAlignment == FWPopupAlignmentCenter) {
+        make.top.equalTo(self.superview).offset((self.superview.frame.size.height-self.finalFrame.size.height)/2 + edgeInsets.top - edgeInsets.bottom);
+        make.centerX.equalTo(self.superview).offset(edgeInsets.left - edgeInsets.right);
+        make.width.mas_equalTo(self.finalFrame.size.width);
+        make.height.mas_equalTo(0);
+    } else if (myAlignment == FWPopupAlignmentTopCenter) {
+        make.centerX.equalTo(self.superview).offset(edgeInsets.left - edgeInsets.right);
+        make.top.equalTo(self.superview).offset(edgeInsets.top - edgeInsets.bottom);
+        make.width.mas_equalTo(self.finalFrame.size.width);
+        make.height.mas_equalTo(0);
+    } else if (myAlignment == FWPopupAlignmentLeftCenter) {
+        make.centerY.equalTo(self.superview).offset(edgeInsets.top - edgeInsets.bottom);
+        make.left.equalTo(self.superview).offset(edgeInsets.left - edgeInsets.right);
+        make.width.mas_equalTo(0);
+        make.height.mas_equalTo(self.finalFrame.size.height);
+    } else if (myAlignment == FWPopupAlignmentBottomCenter) {
+        make.centerX.equalTo(self.superview).offset(edgeInsets.left - edgeInsets.right);
+        make.bottom.equalTo(self.superview).offset(edgeInsets.top - edgeInsets.bottom);
+        make.width.mas_equalTo(self.finalFrame.size.width);
+        make.height.mas_equalTo(0);
+    } else if (myAlignment == FWPopupAlignmentRightCenter) {
+        make.centerY.equalTo(self.superview).offset(edgeInsets.top - edgeInsets.bottom);
+        make.right.equalTo(self.superview).offset(edgeInsets.left - edgeInsets.right);
+        make.width.mas_equalTo(0);
+        make.height.mas_equalTo(self.finalFrame.size.height);
+    } else if (myAlignment == FWPopupAlignmentTopLeft) {
+        make.left.equalTo(self.superview).offset(edgeInsets.left - edgeInsets.right);
+        make.top.equalTo(self.superview).offset(edgeInsets.top - edgeInsets.bottom);
+        make.width.mas_equalTo(self.finalFrame.size.width);
+        make.height.mas_equalTo(0);
+    } else if (myAlignment == FWPopupAlignmentTopRight) {
+        make.right.equalTo(self.superview).offset(edgeInsets.left - edgeInsets.right);
+        make.top.equalTo(self.superview).offset(edgeInsets.top - edgeInsets.bottom);
+        make.width.mas_equalTo(self.finalFrame.size.width);
+        make.height.mas_equalTo(0);
+    } else if (myAlignment == FWPopupAlignmentBottomLeft) {
+        make.left.equalTo(self.superview).offset(edgeInsets.left - edgeInsets.right);
+        make.bottom.equalTo(self.superview).offset(edgeInsets.top - edgeInsets.bottom);
+        make.width.mas_equalTo(self.finalFrame.size.width);
+        make.height.mas_equalTo(0);
+    } else if (myAlignment == FWPopupAlignmentBottomRight) {
+        make.right.equalTo(self.superview).offset(edgeInsets.left - edgeInsets.right);
+        make.bottom.equalTo(self.superview).offset(edgeInsets.top - edgeInsets.bottom);
+        make.width.mas_equalTo(self.finalFrame.size.width);
+        make.height.mas_equalTo(0);
+    }
+}
+
+/**
+ 缩放动画展示前的约束
+ 
+ @param make MASConstraintMaker
+ @param myAlignment 自定义弹窗校准位置
+ */
+- (void)constraintsBeforeAnimationScale:(MASConstraintMaker *)make myAlignment:(FWPopupAlignment)myAlignment
+{
+    UIEdgeInsets edgeInsets = self.vProperty.popupEdgeInsets;
+    CGPoint anchorPoint = [self obtainAnchorPoint];
+    self.layer.anchorPoint = anchorPoint;
+    
+    if (myAlignment == FWPopupAlignmentCenter) {
+        make.center.equalTo(self.superview).insets(edgeInsets);
+    } else if (myAlignment == FWPopupAlignmentTopCenter) {
+        // 设置锚点后会导致约束偏移，因此这边特意做了一个反向偏移
+        make.centerX.equalTo(self.superview).offset(-self.finalFrame.size.width*(0.5-anchorPoint.x) + edgeInsets.left - edgeInsets.right);
+        make.top.equalTo(self.superview).offset(-self.finalFrame.size.height*(1-anchorPoint.y)/2 + edgeInsets.top - edgeInsets.bottom);
+    } else if (myAlignment == FWPopupAlignmentLeftCenter) {
+        // 设置锚点后会导致约束偏移，因此这边特意做了一个反向偏移
+        make.centerY.equalTo(self.superview).offset(-self.finalFrame.size.height*(0.5-anchorPoint.y) + edgeInsets.top - edgeInsets.bottom);
+        make.left.equalTo(self.superview).offset(-self.finalFrame.size.width/2 + self.finalFrame.size.width*anchorPoint.x + edgeInsets.left - edgeInsets.right);
+    } else if (myAlignment == FWPopupAlignmentBottomCenter) {
+        // 设置锚点后会导致约束偏移，因此这边特意做了一个反向偏移
+        make.centerX.equalTo(self.superview).offset(edgeInsets.left - edgeInsets.right);
+        make.bottom.equalTo(self.superview).offset(self.finalFrame.size.height*(anchorPoint.y-0.5) + edgeInsets.top - edgeInsets.bottom);
+    } else if (myAlignment == FWPopupAlignmentRightCenter) {
+        // 设置锚点后会导致约束偏移，因此这边特意做了一个反向偏移
+        make.centerY.equalTo(self.superview).offset(-self.finalFrame.size.height*(0.5-anchorPoint.y) + edgeInsets.top - edgeInsets.bottom);
+        make.right.equalTo(self.superview).offset(self.finalFrame.size.width/2 - self.finalFrame.size.width*(1-anchorPoint.x) + edgeInsets.left - edgeInsets.right);
+    } else if (myAlignment == FWPopupAlignmentTopLeft) {
+        // 设置锚点后会导致约束偏移，因此这边特意做了一个反向偏移
+        make.left.equalTo(self.superview).offset(-self.finalFrame.size.width/2 + self.finalFrame.size.width*anchorPoint.x + edgeInsets.left - edgeInsets.right);
+        make.top.equalTo(self.superview).offset(-self.finalFrame.size.height*(1-anchorPoint.y)/2 + edgeInsets.top - edgeInsets.bottom);
+    } else if (myAlignment == FWPopupAlignmentTopRight) {
+        // 设置锚点后会导致约束偏移，因此这边特意做了一个反向偏移
+        make.right.equalTo(self.superview).offset(self.finalFrame.size.width/2 - self.finalFrame.size.width*(1-anchorPoint.x) + edgeInsets.left - edgeInsets.right);
+        make.top.equalTo(self.superview).offset(-self.finalFrame.size.height*(1-anchorPoint.y)/2 + edgeInsets.top - edgeInsets.bottom);
+    } else if (myAlignment == FWPopupAlignmentBottomLeft) {
+        // 设置锚点后会导致约束偏移，因此这边特意做了一个反向偏移
+        make.left.equalTo(self.superview).offset(-self.finalFrame.size.width/2 + self.finalFrame.size.width*anchorPoint.x + edgeInsets.left - edgeInsets.right);
+        make.bottom.equalTo(self.superview).offset(self.finalFrame.size.height*(anchorPoint.y-0.5) + edgeInsets.top - edgeInsets.bottom);
+    } else if (myAlignment == FWPopupAlignmentBottomRight) {
+        // 设置锚点后会导致约束偏移，因此这边特意做了一个反向偏移
+        make.right.equalTo(self.superview).offset(self.finalFrame.size.width/2 - self.finalFrame.size.width*(1-anchorPoint.x) + edgeInsets.left - edgeInsets.right);
+        make.bottom.equalTo(self.superview).offset(self.finalFrame.size.height*(anchorPoint.y-0.5) + edgeInsets.top - edgeInsets.bottom);
+    }
+}
+
+/**
+ 获取当前视图的锚点
+ 
+ @return CGPoint
+ */
 - (CGPoint)obtainAnchorPoint
 {
     CGFloat tmpX = 0.0;
@@ -479,7 +829,7 @@ typedef void(^FWPopupBlock)(FWPopupBaseView *popupBaseView);
         tmpX = 0.5;
         tmpY = 0.5;
     }
-    else if (alignment == FWPopupAlignmentTop || alignment == FWPopupAlignmentTopLeft || alignment == FWPopupAlignmentTopCenter || alignment == FWPopupAlignmentTopRight)
+    else if (alignment == FWPopupAlignmentTopLeft || alignment == FWPopupAlignmentTopCenter || alignment == FWPopupAlignmentTopRight)
     {
         if (self.vProperty.popupArrowStyle == FWPopupArrowStyleNone) {
             tmpX = self.vProperty.popupArrowVertexScaleX;
@@ -489,12 +839,12 @@ typedef void(^FWPopupBlock)(FWPopupBaseView *popupBaseView);
         }
         tmpY = 0;
     }
-    else if (alignment == FWPopupAlignmentLeft || alignment == FWPopupAlignmentLeftCenter)
+    else if (alignment == FWPopupAlignmentLeftCenter)
     {
         tmpX = 0;
         tmpY = 0.5;
     }
-    else if (alignment == FWPopupAlignmentBottom || alignment == FWPopupAlignmentBottomLeft || alignment == FWPopupAlignmentBottomCenter || alignment == FWPopupAlignmentBottomRight)
+    else if (alignment == FWPopupAlignmentBottomLeft || alignment == FWPopupAlignmentBottomCenter || alignment == FWPopupAlignmentBottomRight)
     {
         if (self.vProperty.popupArrowStyle == FWPopupArrowStyleNone) {
             tmpX = self.vProperty.popupArrowVertexScaleX;
@@ -504,7 +854,7 @@ typedef void(^FWPopupBlock)(FWPopupBaseView *popupBaseView);
         }
         tmpY = 1;
     }
-    else if (alignment == FWPopupAlignmentRight || alignment == FWPopupAlignmentRightCenter)
+    else if (alignment == FWPopupAlignmentRightCenter)
     {
         tmpX = 1;
         tmpY = 0.5;
@@ -513,107 +863,29 @@ typedef void(^FWPopupBlock)(FWPopupBaseView *popupBaseView);
 }
 
 /**
- 设置弹窗最终需要展示的frame
- */
-- (void)setupFrame
-{
-    if (!self.haveSetFrame)
-    {
-        self.haveSetFrame = YES;
-        
-        CGRect tmpFrame = self.frame;
-        switch (self.vProperty.popupAlignment)
-        {
-            case FWPopupAlignmentCenter:
-                tmpFrame.origin.x += (CGRectGetWidth(self.attachedView.frame) - CGRectGetWidth(self.frame)) / 2 + self.vProperty.popupEdgeInsets.left - self.vProperty.popupEdgeInsets.right;
-                tmpFrame.origin.y += (CGRectGetHeight(self.attachedView.frame) - CGRectGetHeight(self.frame)) / 2 +self.vProperty.popupEdgeInsets.top - self.vProperty.popupEdgeInsets.bottom;
-                break;
-                
-            case FWPopupAlignmentTop:
-                tmpFrame.origin.x += self.vProperty.popupEdgeInsets.left - self.vProperty.popupEdgeInsets.right;
-                tmpFrame.origin.y = self.vProperty.popupEdgeInsets.top;
-                break;
-            case FWPopupAlignmentLeft:
-                tmpFrame.origin.x = self.vProperty.popupEdgeInsets.left;
-                tmpFrame.origin.y += self.vProperty.popupEdgeInsets.top - self.vProperty.popupEdgeInsets.bottom;
-                break;
-            case FWPopupAlignmentBottom:
-                tmpFrame.origin.x += self.vProperty.popupEdgeInsets.left - self.vProperty.popupEdgeInsets.right;
-                tmpFrame.origin.y = self.attachedView.frame.size.height - self.frame.size.height - self.vProperty.popupEdgeInsets.bottom;
-                break;
-            case FWPopupAlignmentRight:
-                tmpFrame.origin.x = self.attachedView.frame.size.width - self.frame.size.width - self.vProperty.popupEdgeInsets.right;
-                tmpFrame.origin.y += self.vProperty.popupEdgeInsets.top - self.vProperty.popupEdgeInsets.bottom;
-                break;
-                
-            case FWPopupAlignmentTopCenter:
-                tmpFrame.origin.x = (self.attachedView.frame.size.width - self.frame.size.width)/2 + self.vProperty.popupEdgeInsets.left - self.vProperty.popupEdgeInsets.right;
-                tmpFrame.origin.y = self.vProperty.popupEdgeInsets.top;
-                break;
-            case FWPopupAlignmentLeftCenter:
-                tmpFrame.origin.x = self.vProperty.popupEdgeInsets.left;
-                tmpFrame.origin.y = (self.attachedView.frame.size.height - self.frame.size.height)/2 + self.vProperty.popupEdgeInsets.top - self.vProperty.popupEdgeInsets.bottom;
-                break;
-            case FWPopupAlignmentBottomCenter:
-                tmpFrame.origin.x = (self.attachedView.frame.size.width - self.frame.size.width)/2 + self.vProperty.popupEdgeInsets.left - self.vProperty.popupEdgeInsets.right;
-                tmpFrame.origin.y = self.attachedView.frame.size.height - self.frame.size.height - self.vProperty.popupEdgeInsets.bottom;
-                break;
-            case FWPopupAlignmentRightCenter:
-                tmpFrame.origin.x = self.attachedView.frame.size.width - self.frame.size.width - self.vProperty.popupEdgeInsets.right;
-                tmpFrame.origin.y = (self.attachedView.frame.size.height - self.frame.size.height)/2 + self.vProperty.popupEdgeInsets.top - self.vProperty.popupEdgeInsets.bottom;
-                break;
-                
-            case FWPopupAlignmentTopLeft:
-                tmpFrame.origin.x = self.vProperty.popupEdgeInsets.left;
-                tmpFrame.origin.y = self.vProperty.popupEdgeInsets.top;
-                break;
-            case FWPopupAlignmentTopRight:
-                tmpFrame.origin.x = self.attachedView.frame.size.width - self.frame.size.width - self.vProperty.popupEdgeInsets.right;
-                tmpFrame.origin.y = self.vProperty.popupEdgeInsets.top;
-                break;
-            case FWPopupAlignmentBottomLeft:
-                tmpFrame.origin.x = self.vProperty.popupEdgeInsets.left;
-                tmpFrame.origin.y = self.attachedView.frame.size.height - self.frame.size.height - self.vProperty.popupEdgeInsets.bottom;
-                break;
-            case FWPopupAlignmentBottomRight:
-                tmpFrame.origin.x = self.attachedView.frame.size.width - self.frame.size.width - self.vProperty.popupEdgeInsets.right;
-                tmpFrame.origin.y = self.attachedView.frame.size.height - self.frame.size.height - self.vProperty.popupEdgeInsets.bottom;
-                break;
-                
-            default:
-                break;
-        }
-        self.frame = tmpFrame;
-        self.finalFrame = tmpFrame;
-    }
-    
-    [self setupSpilthMask];
-}
-
-/**
  处理多余部分的遮罩层
  */
 - (void)setupSpilthMask
 {
-    CGRect spilthMaskFrame = CGRectMake(0, 0, 0, 0);
-    
     if (!self.vProperty.shouldClearSpilthMask) {
         return;
     }
     
-    if (self.vProperty.popupAlignment == FWPopupAlignmentTop || self.vProperty.popupAlignment == FWPopupAlignmentTopCenter || self.vProperty.popupAlignment == FWPopupAlignmentTopLeft || self.vProperty.popupAlignment == FWPopupAlignmentTopRight)
+    CGRect spilthMaskFrame = CGRectZero;
+    
+    if (self.vProperty.popupAlignment == FWPopupAlignmentTopCenter || self.vProperty.popupAlignment == FWPopupAlignmentTopLeft || self.vProperty.popupAlignment == FWPopupAlignmentTopRight)
     {
         spilthMaskFrame = CGRectMake(0, 0, self.attachedView.frame.size.width, self.finalFrame.origin.y);
     }
-    else if (self.vProperty.popupAlignment == FWPopupAlignmentLeft || self.vProperty.popupAlignment == FWPopupAlignmentLeftCenter)
+    else if (self.vProperty.popupAlignment == FWPopupAlignmentLeftCenter)
     {
         spilthMaskFrame = CGRectMake(0, 0, self.finalFrame.origin.x, self.attachedView.frame.size.height);
     }
-    else if (self.vProperty.popupAlignment == FWPopupAlignmentBottom || self.vProperty.popupAlignment == FWPopupAlignmentBottomCenter || self.vProperty.popupAlignment == FWPopupAlignmentBottomLeft || self.vProperty.popupAlignment == FWPopupAlignmentBottomRight)
+    else if (self.vProperty.popupAlignment == FWPopupAlignmentBottomCenter || self.vProperty.popupAlignment == FWPopupAlignmentBottomLeft || self.vProperty.popupAlignment == FWPopupAlignmentBottomRight)
     {
         spilthMaskFrame = CGRectMake(0, CGRectGetMaxY(self.finalFrame), self.attachedView.frame.size.width, self.attachedView.frame.size.height - CGRectGetMaxY(self.finalFrame));
     }
-    else if (self.vProperty.popupAlignment == FWPopupAlignmentRight || self.vProperty.popupAlignment == FWPopupAlignmentRightCenter)
+    else if (self.vProperty.popupAlignment == FWPopupAlignmentRightCenter)
     {
         spilthMaskFrame = CGRectMake(self.attachedView.frame.size.width - CGRectGetMaxX(self.finalFrame), 0, self.attachedView.frame.size.width - CGRectGetMaxX(self.finalFrame), self.attachedView.frame.size.height);
     }
@@ -631,7 +903,7 @@ typedef void(^FWPopupBlock)(FWPopupBaseView *popupBaseView);
         maskLayer.path = toPath.CGPath;
         maskLayer.fillRule = kCAFillRuleEvenOdd;
         
-        self.attachedView.layer.mask = maskLayer;
+        self.attachedView.dimMaskView.layer.mask = maskLayer;
     }
 }
 
@@ -694,6 +966,10 @@ typedef void(^FWPopupBlock)(FWPopupBaseView *popupBaseView);
         UIScrollView *view = (UIScrollView *)attachedView;
         self.originScrollEnabled = view.scrollEnabled;
     }
+    
+    if (attachedView != [FWPopupWindow sharedWindow].attachView) {
+        [_attachedView.dimMaskView addSubview:self];
+    }
 }
 
 - (BOOL)visible
@@ -704,6 +980,15 @@ typedef void(^FWPopupBlock)(FWPopupBaseView *popupBaseView);
 - (CGRect)realFrame
 {
     return self.finalFrame;
+}
+
+- (void)setCurrentPopupState:(FWPopupState)currentPopupState
+{
+    _currentPopupState = currentPopupState;
+    
+    if (self.popupStateBlock != nil) {
+        self.popupStateBlock(self, currentPopupState);
+    }
 }
 
 @end

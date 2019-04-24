@@ -1,6 +1,10 @@
 PODS:
-  - FWPopupView (3.1.5)
-  - FWPopupViewOC (2.2.1)
+  - FWPopupView (4.0.3):
+    - SnapKit
+  - FWPopupViewOC (3.0.1):
+    - Masonry
+  - Masonry (1.1.0)
+  - SnapKit (4.2.0)
 
 DEPENDENCIES:
   - FWPopupView
@@ -10,11 +14,15 @@ SPEC REPOS:
   https://github.com/cocoapods/specs.git:
     - FWPopupView
     - FWPopupViewOC
+    - Masonry
+    - SnapKit
 
 SPEC CHECKSUMS:
-  FWPopupView: fa2942c0e54abb659cdd686cac6155b5cad8eb70
-  FWPopupViewOC: f8f5ae05948eefd4d96d1669d45a845e130f1e74
+  FWPopupView: 3f6073a7aadc55cd34fbd30a1a96591d060c05d7
+  FWPopupViewOC: 4df2c4313694496ec9959a2c521261f6567791df
+  Masonry: 678fab65091a9290e40e2832a55e7ab731aad201
+  SnapKit: fe8a619752f3f27075cc9a90244d75c6c3f27e2a
 
 PODFILE CHECKSUM: 6968cb2557f9826d6d3c12c7b532b393220ed875
 
-COCOAPODS: 1.6.0.beta.2
+COCOAPODS: 1.6.1

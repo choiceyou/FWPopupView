@@ -1,11 +1,18 @@
-# IOS之弹窗 -- Swift4.0/[OC版本(Swift、OC版本别分实现了不同的功能，因此建议两个库同时使用)](https://github.com/choiceyou/FWPopupViewOC)
+# IOS之弹窗 -- Swift4.2/[Objective-C版本(Swift、Objective-C版本别分实现了不同的功能！！！)](https://github.com/choiceyou/FWPopupViewOC)
 
 [![Platform](http://img.shields.io/badge/platform-iOS-blue.svg?style=flat)](http://cocoapods.org/?q=FWPopupView)&nbsp;
 ![Language](https://img.shields.io/badge/language-swift-orange.svg?style=flat)&nbsp;
 [![License](http://img.shields.io/badge/license-MIT-green.svg?style=flat)](https://github.com/choiceyou/FWPopupView/blob/master/FWPopupView/LICENSE)
 
-*注意：由于OC类不能继承Swift类，所以弹窗基类分别使用了OC和Swift来实现，同时OC和Swift版本分别实现了几个不同的弹窗效果。两个库可以同时存在一个项目中。*
 
+
+
+## 使用说明：
+```注意
+1、弹窗基类分别使用了OC和Swift来实现，同时OC和Swift版本分别实现了几个不同的弹窗效果;
+2、Objective-C类需要继承弹窗基类时必须选择该库的Objective-C版本中的基类；
+3、两个库可以同时存在一个项目中，建议两个库同时使用。
+```
 
 
 
@@ -23,7 +30,14 @@
 ```cocoaPods
 use_frameworks!
 pod 'FWPopupView'
-注意：如出现 [!] Unable to find a specification for 'FWPopupView' 错误，可执行 pod repo update 命令。
+注意：
+1、如出现 [!] Unable to find a specification for 'FWPopupView' 错误 或 看不到最新的版本，
+  可执行 pod repo update 命令更新一下本地pod仓库。
+2、use_frameworks! 的使用：
+（1）纯OC项目中，通过cocoapods导入OC库时，一般都不使用use_frameworks!
+（2）纯swift项目中，通过cocoapods导入swift库时，必须使用use_frameworks!
+（3）只要是通过cocoapods导入swift库时，都必须使用use_frameworks!
+（4）使用动态链接库dynamic frameworks时，必须使用use_frameworks!
 ```
 
 
@@ -183,6 +197,15 @@ FWSheetView *sheetView = [FWSheetView sheetWithTitle: @"标题"
 • v3.1.3：
 - [x] 修改回调策略：点击某个按钮后立刻给对应的回调。旧版本代码升级不需要修改代码，也不会有其他影响；
 
+• v3.1.5：
+- [x] 修改FWPopupView弹起时改变了状态栏的颜色问题；
+- [x] 修改FWCustomSheetView复用时产生的bug；
+
+• v4.0.0（大版本）:
+- [x] 使用SnapKit库重构了弹窗基类及部分弹窗视图；
+- [x] 支持横竖屏切换；
+- [x] 支持多个弹窗存在（详细请查看：同时显示两个弹窗的演示）；
+- [x] 升级到Swift4.2；
 
 
 ## 结尾语：

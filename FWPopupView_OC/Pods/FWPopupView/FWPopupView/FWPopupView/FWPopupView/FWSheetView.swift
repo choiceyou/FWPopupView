@@ -101,10 +101,7 @@ extension FWSheetView {
         }
         
         self.clipsToBounds = true
-        
-        self.frame.origin.x = 0
-        self.frame.origin.y = 100
-        self.frame.size.width = UIScreen.main.bounds.width
+        self.isNotMakeSize = true
         
         self.setContentCompressionResistancePriority(.required, for: .horizontal)
         self.setContentCompressionResistancePriority(.fittingSizeLevel, for: .vertical)
@@ -114,43 +111,43 @@ extension FWSheetView {
         property.popupCustomAlignment = .bottomCenter
         property.popupAnimationType = .position
         
-        var currentMaxY:CGFloat = 0
+        var lastConstraintItem = self.snp.top
         
         if title != nil && !title!.isEmpty {
             
-            currentMaxY = self.vProperty.topBottomMargin
+            self.titleContainerView = UIView()
+            self.addSubview(self.titleContainerView!)
+            self.titleContainerView?.snp.makeConstraints({ (make) in
+                make.top.left.right.equalTo(self)
+            })
+            self.titleContainerView?.backgroundColor = UIColor.white
             
-            self.titleLabel = UILabel(frame: CGRect(x: self.vProperty.letfRigthMargin, y: currentMaxY, width: self.frame.width - self.vProperty.letfRigthMargin * 2, height: CGFloat.greatestFiniteMagnitude))
+            self.titleLabel = UILabel()
+            self.titleContainerView?.addSubview(self.titleLabel!)
+            self.titleLabel?.snp.makeConstraints({ (make) in
+                make.edges.equalToSuperview().inset(UIEdgeInsets(top: round(self.vProperty.topBottomMargin*1.5), left: self.vProperty.letfRigthMargin, bottom: round(self.vProperty.topBottomMargin*1.5), right: self.vProperty.letfRigthMargin))
+            })
             self.titleLabel?.text = title
             self.titleLabel?.textColor = self.vProperty.titleColor
             self.titleLabel?.textAlignment = .center
             self.titleLabel?.font = UIFont.boldSystemFont(ofSize: self.vProperty.titleFontSize)
-            self.titleLabel?.numberOfLines = 5
+            self.titleLabel?.numberOfLines = 10
             self.titleLabel?.backgroundColor = UIColor.clear
-            
-            self.titleLabel?.sizeToFit()
-            
-            self.titleLabel?.frame = CGRect(x: self.vProperty.letfRigthMargin, y: currentMaxY, width: self.frame.width - self.vProperty.letfRigthMargin * 2, height: self.titleLabel!.frame.height)
-            
-            self.titleContainerView = UIView(frame: CGRect(x: 0, y: 0, width: self.frame.width, height: self.titleLabel!.frame.height + self.vProperty.topBottomMargin * 2))
-            self.titleContainerView?.backgroundColor = UIColor.white
-            self.titleContainerView?.addSubview(self.titleLabel!)
-            self.addSubview(self.titleContainerView!)
-            
-            currentMaxY = self.titleLabel!.frame.maxY
             
             self.commponenetArray.append(self.titleLabel!)
             
-            currentMaxY += self.vProperty.topBottomMargin
+            lastConstraintItem = self.titleContainerView!.snp.bottom
         }
         
         // 开始配置Item
-        let btnContrainerView = UIScrollView(frame: CGRect(x: 0, y: currentMaxY, width: self.frame.width, height: 0))
+        let btnContrainerView = UIScrollView()
+        self.addSubview(btnContrainerView)
         btnContrainerView.bounces = false
         btnContrainerView.backgroundColor = UIColor.clear
-        self.addSubview(btnContrainerView)
-        
-        currentMaxY = btnContrainerView.frame.maxY
+        btnContrainerView.snp.makeConstraints { (make) in
+            make.top.equalTo(lastConstraintItem)
+            make.left.right.equalTo(self)
+        }
         
         let block: FWPopupItemClickedBlock = { (popupView, index, title) in
             if cancenlBlock != nil {
@@ -158,45 +155,35 @@ extension FWSheetView {
             }
         }
         
-        var tmpIndex = 0
         self.actionItemArray.append(FWPopupItem(title: (cancelItemTitle != nil) ? cancelItemTitle! : property.cancelItemTitle, itemType: .normal, isCancel: true, canAutoHide: true, itemClickedBlock: block))
         
-        var cancelBtnTopView: UIView?
-        var cancelBtn: UIButton?
+        var tmpIndex = 0
+        var lastBtn: UIButton!
+        var cancelBtn: UIButton!
         
         for popupItem: FWPopupItem in self.actionItemArray {
             
             let btn = UIButton(type: .custom)
+            if tmpIndex == self.actionItemArray.count - 1 {
+                self.addSubview(btn)
+                cancelBtn = btn
+            } else {
+                btnContrainerView.addSubview(btn)
+            }
+            
             btn.addTarget(self, action: #selector(btnAction(_:)), for: .touchUpInside)
             btn.tag = tmpIndex
             
-            var btnY: CGFloat = 0.0
-            if tmpIndex < self.actionItemArray.count - 1 {
-                btnY = self.vProperty.buttonHeight * CGFloat(tmpIndex)
-                btnContrainerView.addSubview(btn)
-            } else {
-                btnY = self.vProperty.buttonHeight * CGFloat(tmpIndex) + property.cancelBtnMarginTop
-                
-                cancelBtnTopView = UIView(frame: CGRect(x: 0, y: btnY - property.cancelBtnMarginTop, width: self.frame.width, height: property.cancelBtnMarginTop))
-                cancelBtnTopView?.backgroundColor = UIColor.clear
-                self.addSubview(cancelBtnTopView!)
-                
-                cancelBtn = btn
-                self.addSubview(cancelBtn!)
-            }
-            btn.frame = CGRect(x: -self.vProperty.splitWidth, y: btnY, width: btnContrainerView.frame.width + self.vProperty.splitWidth * 2, height: property.buttonHeight + property.splitWidth)
-            
-            if tmpIndex > 0 {
-                currentMaxY += btn.frame.height
-                if tmpIndex == self.actionItemArray.count - 1 {
-                    if btn.frame.minY - property.cancelBtnMarginTop <= property.popupViewMaxHeight {
-                        btnContrainerView.frame.size.height = btn.frame.minY - property.cancelBtnMarginTop
-                    } else {
-                        btnContrainerView.frame.size.height = self.vProperty.popupViewMaxHeight
-                        btnContrainerView.contentSize = CGSize(width: self.frame.width, height: btn.frame.minY - property.cancelBtnMarginTop)
-                    }
-                    cancelBtnTopView?.frame.origin.y = btnContrainerView.frame.maxY
-                    cancelBtn?.frame.origin.y = cancelBtnTopView!.frame.maxY
+            btn.snp.makeConstraints { (make) in
+                make.left.right.equalTo(btnContrainerView).inset(UIEdgeInsets(top: 0, left: -self.vProperty.splitWidth, bottom: 0, right: -self.vProperty.splitWidth))
+                make.height.equalTo(property.buttonHeight + property.splitWidth)
+                make.width.equalTo(btnContrainerView).offset(property.splitWidth*2)
+                if tmpIndex == 0 {
+                    make.top.equalToSuperview()
+                    lastBtn = btn;
+                } else if tmpIndex > 0 && tmpIndex < self.actionItemArray.count - 1 {
+                    make.top.equalTo(lastBtn.snp.bottom).offset(-self.vProperty.splitWidth)
+                    lastBtn = btn;
                 }
             }
             
@@ -225,10 +212,25 @@ extension FWSheetView {
             tmpIndex += 1
         }
         
-        if #available(iOS 11.0, *) {
-            self.frame.size.height = btnContrainerView.frame.maxY + self.vProperty.buttonHeight + property.cancelBtnMarginTop + FWPopupWindow.sharedInstance.safeAreaInsets.bottom
-        } else {
-            self.frame.size.height = btnContrainerView.frame.maxY + self.vProperty.buttonHeight + property.cancelBtnMarginTop
+        btnContrainerView.snp.makeConstraints { (make) in
+            make.height.equalTo(property.buttonHeight * CGFloat(self.actionItemArray.count-1))
+            if self.vProperty.popupViewMaxHeightRate > 0 {
+                make.height.lessThanOrEqualTo(self.superview!.snp.height).multipliedBy(self.vProperty.popupViewMaxHeightRate)
+            }
+            make.bottom.equalTo(lastBtn.snp.bottom).offset(-self.vProperty.splitWidth)
+        }
+        
+        cancelBtn.snp.makeConstraints { (make) in
+            make.top.equalTo(btnContrainerView.snp.bottom).offset(property.cancelBtnMarginTop)
+        }
+        
+        self.snp.makeConstraints { (make) in
+            make.left.right.equalToSuperview()
+            if #available(iOS 11.0, *) {
+                make.bottom.equalTo(cancelBtn.snp.bottom).inset(-FWPopupWindow.sharedInstance.safeAreaInsets.bottom)
+            } else {
+                make.bottom.equalTo(cancelBtn.snp.bottom)
+            }
         }
     }
 }

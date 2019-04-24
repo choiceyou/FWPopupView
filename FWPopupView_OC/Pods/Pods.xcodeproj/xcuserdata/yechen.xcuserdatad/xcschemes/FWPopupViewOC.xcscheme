@@ -14,10 +14,10 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "5ADC4BC412C4482476CE5ABF658E5291"
+               BlueprintIdentifier = "3E430144BF1247E9900D02D5899C1B76"
+               BuildableName = "FWPopupViewOC.framework"
                BlueprintName = "FWPopupViewOC"
-               ReferencedContainer = "container:Pods.xcodeproj"
-               BuildableName = "FWPopupViewOC.framework">
+               ReferencedContainer = "container:Pods.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>

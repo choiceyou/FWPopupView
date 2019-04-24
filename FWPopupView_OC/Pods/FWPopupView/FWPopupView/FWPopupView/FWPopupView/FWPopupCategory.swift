@@ -17,6 +17,7 @@
 
 import Foundation
 import UIKit
+import SnapKit
 
 let fwReferenceCountKey: UnsafeRawPointer! = UnsafeRawPointer.init(bitPattern: "fwReferenceCountKey".hashValue)
 
@@ -90,6 +91,9 @@ extension UIView {
         if tmpView == nil {
             tmpView = UIView(frame: self.bounds)
             self.addSubview(tmpView!)
+            tmpView?.snp.makeConstraints({ (make) in
+                make.top.left.bottom.right.equalTo(self)
+            })
             
             tmpView?.alpha = 0.0
             tmpView?.layer.zPosition = CGFloat(MAXFLOAT)
@@ -108,7 +112,6 @@ extension UIView {
             return
         }
         self.fwMaskView.isHidden = false
-        self.fwBackgroundAnimating = true
         
         if self == FWPopupWindow.sharedInstance.attachView() {
             FWPopupWindow.sharedInstance.isHidden = false
@@ -118,7 +121,7 @@ extension UIView {
             let aa = self as! UIWindow
             aa.makeKeyAndVisible()
         } else {
-            self.bringSubview(toFront: self.fwMaskView)
+            self.bringSubviewToFront(self.fwMaskView)
         }
         
         UIView.animate(withDuration: self.fwAnimationDuration, delay: 0, options: [.curveEaseOut, .beginFromCurrentState], animations: {
@@ -126,10 +129,6 @@ extension UIView {
             self.fwMaskView.alpha = 1.0
             
         }) { (finished) in
-            
-            if finished {
-                self.fwBackgroundAnimating = false
-            }
             
         }
     }
@@ -140,7 +139,6 @@ extension UIView {
         if self.fwReferenceCount > 1 {
             return
         }
-        self.fwBackgroundAnimating = true
         
         UIView.animate(withDuration: self.fwAnimationDuration, delay: 0, options: [.curveEaseIn, .beginFromCurrentState], animations: {
             
@@ -148,14 +146,10 @@ extension UIView {
             
         }) { (finished) in
             
-            if finished {
-                self.fwBackgroundAnimating = false
-                
-                if self == FWPopupWindow.sharedInstance.attachView() {
-                    FWPopupWindow.sharedInstance.isHidden = true
-                } else if self.isKind(of: UIWindow.self) {
-                    self.isHidden = true
-                }
+            if self == FWPopupWindow.sharedInstance.attachView() {
+                FWPopupWindow.sharedInstance.isHidden = true
+            } else if self.isKind(of: UIWindow.self) {
+                self.isHidden = true
             }
             
             self.fwReferenceCount -= 1

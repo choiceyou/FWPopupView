@@ -45,4 +45,22 @@ alpha:(a)]
  */
 @property (nonatomic, assign) BOOL      panWildToHide;
 
+/**
+ 被隐藏的视图队列（A视图正在显示，接着B视图显示，此时就把A视图隐藏同时放入该队列）
+ */
+@property (nonatomic, strong) NSMutableArray *hiddenViews;
+/**
+ 将要展示的视图队列（A视图的显示或者隐藏动画正在进行中时，此时如果B视图要显示，则把B视图放入该队列，等动画结束从该队列中拿出来显示）
+ */
+@property (nonatomic, strong) NSMutableArray *willShowingViews;
+/**
+ 需要提前设置约束的视图（这些视图不一定会马上展示，但是因为要设置约束，因此要提前设置父视图）
+ */
+@property (nonatomic, strong) NSMutableArray *needConstraintsViews;
+
+/**
+ 是否需要重置DimMaskView
+ */
+@property (nonatomic, assign) BOOL shouldResetDimMaskView;
+
 @end

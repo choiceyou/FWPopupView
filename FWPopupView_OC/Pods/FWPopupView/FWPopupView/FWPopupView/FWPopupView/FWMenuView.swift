@@ -20,15 +20,20 @@ import UIKit
 
 class FWMenuViewTableViewCell: UITableViewCell {
     
-    var itemBtn: UIButton!
+    var iconImgView: UIImageView!
+    var titleLabel: UILabel!
     
-    override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
-        self.itemBtn = UIButton(type: .custom)
-        self.itemBtn.backgroundColor = UIColor.clear
-        self.itemBtn.isUserInteractionEnabled = false
-        self.contentView.addSubview(self.itemBtn)
+        self.iconImgView = UIImageView()
+        self.iconImgView.contentMode = .center
+        self.iconImgView.backgroundColor = UIColor.clear
+        self.contentView.addSubview(self.iconImgView)
+        
+        self.titleLabel = UILabel()
+        self.titleLabel.backgroundColor = UIColor.clear
+        self.contentView.addSubview(self.titleLabel)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -36,24 +41,33 @@ class FWMenuViewTableViewCell: UITableViewCell {
     }
     
     func setupContent(title: String?, image: UIImage?, property: FWMenuViewProperty) {
-        self.itemBtn.frame = CGRect(x: property.letfRigthMargin, y: property.topBottomMargin, width: self.frame.width - property.letfRigthMargin * 2, height: self.frame.height - property.topBottomMargin * 2)
         
-        self.itemBtn.contentHorizontalAlignment = property.contentHorizontalAlignment
         self.selectionStyle = property.selectionStyle
         
         if image != nil {
-            self.itemBtn.setImage(image!, for: .normal)
+            self.iconImgView.isHidden = false
+            self.iconImgView.image = image;
+            self.iconImgView.snp.makeConstraints { (make) in
+                make.left.equalToSuperview().offset(property.letfRigthMargin)
+                make.top.equalToSuperview().offset(property.topBottomMargin)
+                make.bottom.equalToSuperview().offset(-property.topBottomMargin)
+            }
+        } else {
+            self.iconImgView.isHidden = true
         }
         
         if title != nil {
             let attributedString = NSAttributedString(string: title!, attributes: property.titleTextAttributes)
-            let selectedAttributedString = NSAttributedString(string: title!, attributes: property.selectedTitleTextAttributes)
-            self.itemBtn.setAttributedTitle(attributedString, for: .normal)
-            self.itemBtn.setAttributedTitle(selectedAttributedString, for: .highlighted)
-        }
-        
-        if image != nil && title != nil {
-            self.itemBtn.titleEdgeInsets = UIEdgeInsetsMake(0, property.commponentMargin, 0, 0)
+            self.titleLabel.attributedText = attributedString;
+            self.titleLabel.snp.makeConstraints { (make) in
+                if image != nil {
+                    make.left.equalTo(self.iconImgView.snp.right).offset(property.commponentMargin)
+                } else {
+                    make.left.equalToSuperview().offset(property.commponentMargin*2)
+                }
+                make.top.equalToSuperview().offset(property.topBottomMargin)
+                make.bottom.equalToSuperview().offset(-property.topBottomMargin)
+            }
         }
     }
 }
@@ -184,7 +198,7 @@ extension FWMenuView {
         // 箭头方向
         var isUpArrow = true
         switch property.popupCustomAlignment {
-        case .bottom, .bottomLeft, .bottomRight, .bottomCenter:
+        case .bottomLeft, .bottomRight, .bottomCenter:
             isUpArrow = false
             break
         default:
@@ -196,8 +210,8 @@ extension FWMenuView {
         
         if property.popupViewSize.width > 0 && property.popupViewSize.height > 0 {
             selfSize = property.popupViewSize
-        } else if self.vProperty.popupViewMaxHeight > 0 && self.maxItemSize.height * CGFloat(self.itemsCount()) > self.vProperty.popupViewMaxHeight {
-            selfSize = CGSize(width: self.maxItemSize.width, height: self.vProperty.popupViewMaxHeight)
+        } else if self.vProperty.popupViewMaxHeightRate > 0 && self.maxItemSize.height * CGFloat(self.itemsCount()) > self.vProperty.popupViewMaxHeightRate*self.superview!.frame.size.height {
+            selfSize = CGSize(width: self.maxItemSize.width, height: self.vProperty.popupViewMaxHeightRate*self.superview!.frame.size.height)
         } else {
             selfSize = CGSize(width: self.maxItemSize.width, height: self.maxItemSize.height * CGFloat(self.itemsCount()))
         }
@@ -420,14 +434,14 @@ open class FWMenuViewProperty: FWPopupViewProperty {
     @objc public var popupViewItemHeight: CGFloat = 0
     
     /// 未选中时按钮字体属性
-    @objc public var titleTextAttributes: [NSAttributedStringKey: Any]!
+    @objc public var titleTextAttributes: [NSAttributedString.Key: Any]!
     /// 选中时按钮字体属性
-    @objc public var selectedTitleTextAttributes: [NSAttributedStringKey: Any]!
+    @objc public var selectedTitleTextAttributes: [NSAttributedString.Key: Any]!
     
     /// 内容位置
-    @objc public var contentHorizontalAlignment: UIControlContentHorizontalAlignment = .left
+    @objc public var contentHorizontalAlignment: UIControl.ContentHorizontalAlignment = .left
     /// 选中风格
-    @objc public var selectionStyle: UITableViewCellSelectionStyle = .none
+    @objc public var selectionStyle: UITableViewCell.SelectionStyle = .none
     
     /// 分割线颜色
     @objc public var separatorColor: UIColor = kPV_RGBA(r: 231, g: 231, b: 231, a: 1)
@@ -440,13 +454,13 @@ open class FWMenuViewProperty: FWPopupViewProperty {
     public override func reSetParams() {
         super.reSetParams()
         
-        self.titleTextAttributes = [NSAttributedStringKey.foregroundColor: self.itemNormalColor, NSAttributedStringKey.backgroundColor: UIColor.clear, NSAttributedStringKey.font: UIFont.systemFont(ofSize: self.buttonFontSize)]
+        self.titleTextAttributes = [NSAttributedString.Key.foregroundColor: self.itemNormalColor, NSAttributedString.Key.backgroundColor: UIColor.clear, NSAttributedString.Key.font: UIFont.systemFont(ofSize: self.buttonFontSize)]
         
-        self.selectedTitleTextAttributes = [NSAttributedStringKey.foregroundColor: self.itemNormalColor, NSAttributedStringKey.backgroundColor: UIColor.clear, NSAttributedStringKey.font: UIFont.systemFont(ofSize: self.buttonFontSize)]
+        self.selectedTitleTextAttributes = [NSAttributedString.Key.foregroundColor: self.itemNormalColor, NSAttributedString.Key.backgroundColor: UIColor.clear, NSAttributedString.Key.font: UIFont.systemFont(ofSize: self.buttonFontSize)]
         
         self.letfRigthMargin = 20
         
-        self.popupViewMaxHeight = UIScreen.main.bounds.height * CGFloat(0.7)
+        self.popupViewMaxHeightRate = 0.7
     }
 }
 

@@ -49,11 +49,11 @@
 
 - (void)tapGestureAction:(UIGestureRecognizer *)gesture
 {
-    if (!self.dimMaskAnimating)
+    if (!self.attachView.dimMaskAnimating)
     {
         for (UIView *v in [self attachView].dimMaskView.subviews)
         {
-            if ([v isKindOfClass:[FWPopupBaseView class]])
+            if ([v isKindOfClass:[FWPopupBaseView class]] && ![self.hiddenViews containsObject:v])
             {
                 FWPopupBaseView *popupView = (FWPopupBaseView *)v;
                 [popupView clicedMaskView];
@@ -81,6 +81,30 @@
 - (UIView *)attachView
 {
     return self.rootViewController.view;
+}
+
+- (NSMutableArray *)hiddenViews
+{
+    if (!_hiddenViews) {
+        _hiddenViews = [NSMutableArray array];
+    }
+    return _hiddenViews;
+}
+
+- (NSMutableArray *)willShowingViews
+{
+    if (!_willShowingViews) {
+        _willShowingViews = [NSMutableArray array];
+    }
+    return _willShowingViews;
+}
+
+- (NSMutableArray *)needConstraintsViews
+{
+    if (_needConstraintsViews) {
+        _needConstraintsViews = [NSMutableArray array];
+    }
+    return _needConstraintsViews;
 }
 
 @end

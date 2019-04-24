@@ -178,34 +178,36 @@ pod 'FWPopupViewOC'
 
 ## 更新记录：
 
-```更新记录
-• v2.1.0 ：
-  1.弹窗基类（FWPopupBaseView）中增加让多余部分的遮罩层变为无色属性：shouldClearSpilthMask；
-  2.新增新手引导弹窗：FWGuideMaskView；
+• v2.1.0：
+- [x] 弹窗基类（FWPopupBaseView）中增加让多余部分的遮罩层变为无色属性：shouldClearSpilthMask；
+- [x] 新增新手引导弹窗：FWGuideMaskView；
   
-• v2.1.1 ：
-  1.新增拖动关闭的弹窗基类：FWPanPopupView；
+• v2.1.1：
+- [x] 新增拖动关闭的弹窗基类：FWPanPopupView；
   
-• v2.1.2 ：
-  1.修复点击非遮罩层视图会显示的问题；
+• v2.1.2：
+- [x] 修复点击非遮罩层视图会显示的问题；
   
-• v2.1.3 ：
-  1.修复弹窗为成员变量时，再次调起弹窗后位置发生变化的问题；
+• v2.1.3：
+- [x] 修复弹窗为成员变量时，再次调起弹窗后位置发生变化的问题；
   
-• v2.1.4 ：
-  1.增加：保证前一次弹窗销毁的处理机制；
+• v2.1.4：
+- [x] 增加：保证前一次弹窗销毁的处理机制；
   
-• v2.1.5 ：
-  1.修复弹窗消失时内存泄漏问题；
+• v2.1.5：
+- [x] 修复弹窗消失时内存泄漏问题；
   
-• v2.1.6 ：
-  1.修复xib加载View方式时，继承弹窗基类FWPopupBaseView崩溃问题；
+• v2.1.6：
+- [x] 修复xib加载View方式时，继承弹窗基类FWPopupBaseView崩溃问题；
   
-• v2.1.9 ：
-  1.添加弹窗状态：FWPopupState；
-  2.根据状态对应的进行回调，这样子可以根据实际使用来回调，废除原：showWithBlock 和 hideWithBlock 方法，新增：showWithDidAppearBlock、showWithStateBlock、hideWithDidDisappearBlock 方法；
-```
+• v2.1.9：
+- [x] 添加弹窗状态：FWPopupState；
+- [x] 根据状态对应的进行回调，这样子可以根据实际使用来回调，废除原：showWithBlock 和 hideWithBlock 方法，新增：showWithDidAppearBlock、showWithStateBlock、hideWithDidDisappearBlock 方法；
 
+• v3.0.0（大版本）：
+- [x] 使用Masonry库重构了弹窗基类及部分弹窗视图；
+- [x] 支持横竖屏切换（注意：shouldClearSpilthMask属性为YES时不支持横竖屏切换，会出现视图显示的问题）；
+- [x] 支持多个弹窗存在（详细请查看：同时显示两个弹窗的演示）；
 
 
 ## 结尾语：

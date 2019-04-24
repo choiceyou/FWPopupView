@@ -64,11 +64,11 @@
         self.panGestureDirection = 0;
     }
     
-    if (self.viewShowedDirection == FWPopupAlignmentLeft || self.viewShowedDirection == FWPopupAlignmentRight)  // 向左、右拖动
+    if (self.viewShowedDirection == FWPopupAlignmentLeftCenter || self.viewShowedDirection == FWPopupAlignmentRightCenter)  // 向左、右拖动
     {
         [self handleLeftRightPan:gesture];
     }
-    else if (self.viewShowedDirection == FWPopupAlignmentTop || self.viewShowedDirection == FWPopupAlignmentBottom)  // 向上、下拖动
+    else if (self.viewShowedDirection == FWPopupAlignmentTopCenter || self.viewShowedDirection == FWPopupAlignmentBottomCenter)  // 向上、下拖动
     {
         [self handleTopBottomPan:gesture];
     }
@@ -81,18 +81,18 @@
     CGPoint translatedPoint = originTranslatedPoint;
     if (translatedPoint.x < 0) // 拖动方向：向左
     {
-        self.panGestureDirection = FWPopupAlignmentLeft;
+        self.panGestureDirection = FWPopupAlignmentLeftCenter;
     }
     else // 拖动方向：向右
     {
-        self.panGestureDirection = FWPopupAlignmentRight;
+        self.panGestureDirection = FWPopupAlignmentRightCenter;
     }
     
     translatedPoint = CGPointMake(self.panGestureOrigin.x + translatedPoint.x, self.panGestureOrigin.y + translatedPoint.y);
     
-    if (self.viewShowedDirection == FWPopupAlignmentLeft)  // 视图弹窗方向：向左的情况
+    if (self.viewShowedDirection == FWPopupAlignmentLeftCenter)  // 视图弹窗方向：向左的情况
     {
-        if (self.panGestureDirection == FWPopupAlignmentLeft)
+        if (self.panGestureDirection == FWPopupAlignmentLeftCenter)
         {
             translatedPoint.x = MAX(translatedPoint.x, (self.panGestureOrigin.x-self.realFrame.size.width));
         }
@@ -103,7 +103,7 @@
     }
     else // 视图弹窗方向：向右的情况
     {
-        if (self.panGestureDirection == FWPopupAlignmentLeft)
+        if (self.panGestureDirection == FWPopupAlignmentLeftCenter)
         {
             translatedPoint.x = MAX(translatedPoint.x, self.panGestureOrigin.x);
         }
@@ -148,7 +148,7 @@
         {
             CGRect tmpFrame = self.frame;
             tmpFrame.size.width = self.realFrame.size.width - fabs(self.panGestureOrigin.x - translatedPoint.x);
-            if (self.viewShowedDirection == FWPopupAlignmentRight)  // 视图弹窗方向：向右的情况
+            if (self.viewShowedDirection == FWPopupAlignmentRightCenter)  // 视图弹窗方向：向右的情况
             {
                 tmpFrame.origin.x =  self.realFrame.origin.x + (translatedPoint.x - self.panGestureOrigin.x);
             }
@@ -170,18 +170,18 @@
     CGPoint translatedPoint = originTranslatedPoint;
     if (translatedPoint.y < 0) // 拖动方向：向上
     {
-        self.panGestureDirection = FWPopupAlignmentTop;
+        self.panGestureDirection = FWPopupAlignmentTopCenter;
     }
     else // 拖动方向：向下
     {
-        self.panGestureDirection = FWPopupAlignmentBottom;
+        self.panGestureDirection = FWPopupAlignmentBottomCenter;
     }
     
     translatedPoint = CGPointMake(self.panGestureOrigin.x + translatedPoint.x, self.panGestureOrigin.y + translatedPoint.y);
     
-    if (self.viewShowedDirection == FWPopupAlignmentTop)  // 视图弹窗方向：向上的情况
+    if (self.viewShowedDirection == FWPopupAlignmentTopCenter)  // 视图弹窗方向：向上的情况
     {
-        if (self.panGestureDirection == FWPopupAlignmentTop)
+        if (self.panGestureDirection == FWPopupAlignmentTopCenter)
         {
             translatedPoint.y = MAX(translatedPoint.y, (self.panGestureOrigin.y-self.realFrame.size.height));
         }
@@ -192,7 +192,7 @@
     }
     else // 视图弹窗方向：向下的情况
     {
-        if (self.panGestureDirection == FWPopupAlignmentTop)
+        if (self.panGestureDirection == FWPopupAlignmentTopCenter)
         {
             translatedPoint.y = MAX(translatedPoint.y, self.panGestureOrigin.y);
         }
@@ -237,7 +237,7 @@
         {
             CGRect tmpFrame = self.frame;
             tmpFrame.size.height = self.realFrame.size.height - fabs(self.panGestureOrigin.y - translatedPoint.y);
-            if (self.viewShowedDirection == FWPopupAlignmentBottom)  // 视图弹窗方向：向下的情况
+            if (self.viewShowedDirection == FWPopupAlignmentBottomCenter)  // 视图弹窗方向：向下的情况
             {
                 tmpFrame.origin.y =  self.realFrame.origin.y + (translatedPoint.y - self.panGestureOrigin.y);
             }
@@ -259,21 +259,21 @@
 {
     FWPopupAlignment alignment = self.vProperty.popupAlignment;
     FWPopupAlignment tmpAlignment;
-    if (alignment == FWPopupAlignmentTop || alignment == FWPopupAlignmentTopCenter || alignment == FWPopupAlignmentTopLeft || alignment == FWPopupAlignmentTopRight || alignment == FWPopupAlignmentCenter)
+    if (alignment == FWPopupAlignmentTopCenter || alignment == FWPopupAlignmentTopLeft || alignment == FWPopupAlignmentTopRight || alignment == FWPopupAlignmentCenter)
     {
-        tmpAlignment = FWPopupAlignmentTop;
+        tmpAlignment = FWPopupAlignmentTopCenter;
     }
-    else if (alignment == FWPopupAlignmentLeft || alignment == FWPopupAlignmentLeftCenter)
+    else if (alignment == FWPopupAlignmentLeftCenter)
     {
-        tmpAlignment = FWPopupAlignmentLeft;
+        tmpAlignment = FWPopupAlignmentLeftCenter;
     }
-    else if (alignment == FWPopupAlignmentBottom || alignment == FWPopupAlignmentBottomCenter || alignment == FWPopupAlignmentBottomLeft || alignment == FWPopupAlignmentBottomRight)
+    else if (alignment == FWPopupAlignmentBottomCenter || alignment == FWPopupAlignmentBottomLeft || alignment == FWPopupAlignmentBottomRight)
     {
-        tmpAlignment = FWPopupAlignmentBottom;
+        tmpAlignment = FWPopupAlignmentBottomCenter;
     }
     else
     {
-        tmpAlignment = FWPopupAlignmentRight;
+        tmpAlignment = FWPopupAlignmentRightCenter;
     }
     return tmpAlignment;
 }

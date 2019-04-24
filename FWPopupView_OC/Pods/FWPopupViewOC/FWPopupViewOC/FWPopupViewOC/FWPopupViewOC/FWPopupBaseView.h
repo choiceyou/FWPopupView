@@ -22,10 +22,6 @@
  自定义弹窗校准位置，注意：这边设置靠置哪边动画就从哪边出来
 
  - FWPopupAlignmentCenter: 中间，默认值
- - FWPopupAlignmentTop: 上
- - FWPopupAlignmentLeft: 左
- - FWPopupAlignmentBottom: 下
- - FWPopupAlignmentRight: 右
  - FWPopupAlignmentTopCenter: 上中
  - FWPopupAlignmentLeftCenter: 左中
  - FWPopupAlignmentBottomCenter: 下中
@@ -37,10 +33,6 @@
  */
 typedef NS_ENUM(NSInteger, FWPopupAlignment) {
     FWPopupAlignmentCenter,
-    FWPopupAlignmentTop,
-    FWPopupAlignmentLeft,
-    FWPopupAlignmentBottom,
-    FWPopupAlignmentRight,
     FWPopupAlignmentTopCenter,
     FWPopupAlignmentLeftCenter,
     FWPopupAlignmentBottomCenter,
@@ -163,6 +155,11 @@ static NSString *const FWHideAllPopupViewNotification = @"FWHideAllPopupViewNoti
  */
 @property (nonatomic, assign) BOOL                      withKeyboard;
 
+/**
+ 是否不需要设置Frame（当前基类使用Masonry，如果子类不希望该父类重置他的Frame，可以传入true）
+ */
+@property (nonatomic, assign) BOOL                      isNotMakeFrame;
+
 
 /**
  显示
@@ -206,6 +203,16 @@ static NSString *const FWHideAllPopupViewNotification = @"FWHideAllPopupViewNoti
  @return CGPoint
  */
 - (CGPoint)obtainAnchorPoint;
+
+/**
+ 如要初始化视图后要设置当前视图的约束，必须要使用该方法，因为这个方法会提前将当前视图加入父视图，使用该方法有以下几个注意点：
+ 1、使用该方法不支持更换父视图，即不支持修改：attachedView；
+ 2、使用该方法不建议把当前视图设置为成员变量，因为调用隐藏方法时会把当前视图从父视图中移除，调用显示方法后会重新添加到父视图，此时约束就会丢失相对于父视图的那部分；
+ 3、有些约束可能会影响到某些动画的效果。
+
+ @return self
+ */
+- (instancetype)initWithConstraints;
 
 @end
 
@@ -354,7 +361,7 @@ static NSString *const FWHideAllPopupViewNotification = @"FWHideAllPopupViewNoti
 @property (nonatomic, assign) CGAffineTransform transform;
 
 /**
- 是否需要让多余部分的遮罩层变为无色（当弹窗没有任何一条边跟遮罩层的任意一条边重合的时候，就可能会把遮罩层分成几部分，此时看上去就不大美观了，因此可以使用该属性把某些部分设置为无色）
+ 是否需要让多余部分的遮罩层变为无色（当弹窗没有任何一条边跟遮罩层的任意一条边重合的时候，就可能会把遮罩层分成几部分，此时看上去就不大美观了，因此可以使用该属性把某些部分设置为无色）。注意：使用该属性后不支持横竖屏切换，会出现视图显示的问题
  */
 @property (nonatomic, assign) BOOL shouldClearSpilthMask;
 
