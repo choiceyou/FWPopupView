@@ -12,7 +12,7 @@ import UIKit
 class FWCustomPopupDemoVC: UITableViewController {
     
     /// 注意：这边不同的示例可能还附加演示了一些特性（比如：遮罩层是否能够点击、遮罩层的背景颜色等等），有用到时可以参考
-    var titleArray = ["center - scale", "topCenter - position", "topCenter - frame", "topCenter - scale", "leftCenter - position", "leftCenter - frame", "leftCenter - scale", "bottomCenter - position", "bottomCenter - frame", "bottomCenter - scale", "rightCenter - position", "rightCenter - frame", "rightCenter - scale"]
+    var titleArray = ["1、center - scale", "2、topCenter - position", "3、topCenter - frame", "4、topCenter - scale", "5、leftCenter - position", "6、leftCenter - frame", "7、leftCenter - scale", "8、bottomCenter - position", "9、bottomCenter - frame", "10、bottomCenter - scale", "11、rightCenter - position", "12、rightCenter - frame", "13、rightCenter - scale"]
     
     lazy var customPopupView1: FWCustomPopupView = {
         
