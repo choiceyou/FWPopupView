@@ -82,6 +82,11 @@ class FWCustomSheetViewTableViewCell: UITableViewCell {
 
 open class FWCustomSheetView: FWPopupView, UITableViewDelegate, UITableViewDataSource {
     
+    /// 当前选中下标
+    @objc open var currentSelectedIndex: Int = 0
+    /// 上一次选中的下标
+    private var lastTimeSelectedIndex: Int = 0
+    
     /// 外部传入的标题数组
     private var itemTitleArray: [String]?
     /// 外部传入的副标题数组
@@ -91,8 +96,6 @@ open class FWCustomSheetView: FWPopupView, UITableViewDelegate, UITableViewDataS
     
     /// 头部视图
     private var headerView: UIView?
-    /// 当前选中下标
-    private var currentSelectedIndex: Int = 0
     
     /// 保存点击回调
     private var popupItemClickedBlock: FWPopupItemClickedBlock?
@@ -159,6 +162,7 @@ extension FWCustomSheetView {
         let property = self.vProperty as! FWCustomSheetViewProperty
         var selfSize: CGSize = CGSize(width: UIScreen.main.bounds.width, height: 0)
         self.currentSelectedIndex = property.selectedIndex
+        self.lastTimeSelectedIndex = property.selectedIndex
         
         // 绘制头部视图
         if headerTitle != nil {
@@ -267,20 +271,33 @@ extension FWCustomSheetView {
         
         self.hide()
         
-        if self.popupItemClickedBlock != nil {
-            self.popupItemClickedBlock!(self, indexPath.row, (self.itemTitleArray != nil) ? self.itemTitleArray![indexPath.row] : nil)
-        }
-        
         let property = self.vProperty as! FWCustomSheetViewProperty
         if !(property.lastNeedAccessoryView == true && indexPath.row == (self.itemsCount()-1)) {
+            self.lastTimeSelectedIndex = self.currentSelectedIndex
             self.currentSelectedIndex = indexPath.row
         }
         
         self.tableView.reloadData()
+        
+        if self.popupItemClickedBlock != nil {
+            self.popupItemClickedBlock!(self, indexPath.row, (self.itemTitleArray != nil) ? self.itemTitleArray![indexPath.row] : nil)
+        }
     }
 }
 
 extension FWCustomSheetView {
+    
+    /// 更改当前选中的下标
+    ///
+    /// - Parameter backToLastChoice: true：回到上一次选择的下标 false：-1，表示没有选中的了
+    @objc open func changeSelectedIndex(backToLastChoice: Bool) {
+        if backToLastChoice {
+            self.currentSelectedIndex = self.lastTimeSelectedIndex
+        } else {
+            self.currentSelectedIndex = -1
+        }
+        self.tableView.reloadData()
+    }
     
     /// 计算总计行数
     ///
@@ -324,7 +341,7 @@ open class FWCustomSheetViewProperty: FWPopupViewProperty {
     /// 头部视图高度
     @objc public var headerViewHeight: CGFloat = 40
     
-    /// 默认选中下标
+    /// 默认选中下标，如果传入小于0或者大于当前数据源的数值，则不会有对应的行选中，如：传入-1则表示当前表格中没有默认选中的
     @objc public var selectedIndex: NSInteger = 0
     
     /// 最后一项是否需要AccessoryView

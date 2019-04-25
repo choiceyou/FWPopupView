@@ -87,7 +87,7 @@ open class FWAlertView: FWPopupView {
     ///   - items: 点击按钮项
     ///   - customView: 自定义UI
     /// - Returns: self
-    @objc open class func alert(title: String, detail: String, inputPlaceholder: String?, keyboardType: UIKeyboardType, isSecureTextEntry: Bool, customView: UIView?, items: [FWPopupItem]) -> FWAlertView {
+    @objc open class func alert(title: String?, detail: String?, inputPlaceholder: String?, keyboardType: UIKeyboardType, isSecureTextEntry: Bool, customView: UIView?, items: [FWPopupItem]) -> FWAlertView {
         
         return self.alert(title: title, detail: detail, inputPlaceholder: inputPlaceholder, keyboardType: keyboardType, isSecureTextEntry: isSecureTextEntry, customView: customView, items: items, vProperty: nil)
     }
