@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+import IQKeyboardManagerSwift
 
 class FWDemoViewController: UITableViewController {
     
@@ -123,6 +124,10 @@ class FWDemoViewController: UITableViewController {
         
         // 设置弹窗外部可点击
         // FWPopupWindow.sharedInstance.touchWildToHide = true
+        
+        IQKeyboardManager.shared.enable = true
+        IQKeyboardManager.shared.enableAutoToolbar = true
+        IQKeyboardManager.shared.keyboardDistanceFromTextField = 60
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle{get { return .lightContent}}

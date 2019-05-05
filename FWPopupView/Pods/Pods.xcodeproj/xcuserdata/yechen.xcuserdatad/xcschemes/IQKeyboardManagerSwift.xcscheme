@@ -14,9 +14,9 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "19DD61F9DF28AFDD47C444ACEA661FF8"
-               BuildableName = "libPods-FWPopupView.a"
-               BlueprintName = "Pods-FWPopupView"
+               BlueprintIdentifier = "E7714405065051AE067CB2B2F216FA80"
+               BuildableName = "libIQKeyboardManagerSwift.a"
+               BlueprintName = "IQKeyboardManagerSwift"
                ReferencedContainer = "container:Pods.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>

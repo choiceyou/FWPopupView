@@ -6,7 +6,7 @@ target 'FWPopupView' do
   # 布局：https://github.com/SnapKit/SnapKit
   pod 'SnapKit'
   
-  # 键盘管理：https://github.com/hackiftekhar/IQKeyboardManager
-  pod 'IQKeyboardManager'
+  # IQKeyboardManagerSwift：https://github.com/hackiftekhar/IQKeyboardManager
+  pod 'IQKeyboardManagerSwift'
 
 end
