@@ -73,12 +73,16 @@ import SnapKit
 /// - didAppear: 已经显示
 /// - willDisappear: 将要隐藏
 /// - didDisappear: 已经隐藏
+/// - didAppearButCovered: 已经显示，但是被其他弹窗遮盖住了（实际上当前状态下弹窗是不可见）
+/// - didAppearAgain: 已经显示，其上面遮盖的弹窗消失了（实际上当前状态与FWPopupStateDidAppear状态相同）
 @objc public enum FWPopupViewState: Int {
     case unKnow
     case willAppear
     case didAppear
     case willDisappear
     case didDisappear
+    case didAppearButCovered
+    case didAppearAgain
 }
 
 /// 当前约束的状态
@@ -276,7 +280,7 @@ extension FWPopupView {
     
     private func showNow() {
         
-        if self.currentPopupViewState == .willAppear || self.currentPopupViewState == .didAppear {
+        if self.currentPopupViewState == .willAppear || self.currentPopupViewState == .didAppear || self.currentPopupViewState == .didAppearButCovered || self.currentPopupViewState == .didAppearAgain {
             return
         }
         self.currentPopupViewState = .willAppear
@@ -433,6 +437,7 @@ extension FWPopupView {
                         view.isHidden = false
                     } else if (view as! FWPopupView).currentPopupViewState != .unKnow {
                         view.isHidden = true
+                        (view as! FWPopupView).currentPopupViewState = .didAppearButCovered
                         tmpHiddenViews.append(view)
                     }
                 }
@@ -550,6 +555,7 @@ extension FWPopupView {
                     } else if !FWPopupWindow.sharedInstance.hiddenViews.isEmpty {
                         let showView: FWPopupView = FWPopupWindow.sharedInstance.hiddenViews.last as! FWPopupView
                         showView.isHidden = false
+                        showView.currentPopupViewState = .didAppearAgain
                         FWPopupWindow.sharedInstance.hiddenViews.removeLast()
                         if showView.vProperty.touchWildToHide != nil && !showView.vProperty.touchWildToHide!.isEmpty && Int(showView.vProperty.touchWildToHide!) == 1 {
                             FWPopupWindow.sharedInstance.touchWildToHide = true
@@ -558,10 +564,10 @@ extension FWPopupView {
                         }
                     }
                     
+                    strongSelf.currentPopupViewState = .didDisappear
                     if strongSelf.popupDidDisappearBlock != nil {
                         strongSelf.popupDidDisappearBlock!(strongSelf)
                     }
-                    strongSelf.currentPopupViewState = .didDisappear
                 })
                 
                 strongSelf.attachedView?.fwBackgroundAnimating = false
@@ -923,6 +929,30 @@ extension FWPopupView {
 
 // MARK: - 其他
 extension FWPopupView {
+    
+    /// 重置视图size
+    ///
+    /// - Parameters:
+    ///   - size: 新的size
+    ///   - isImmediateEffect: 是否立即生效，当 currentPopupState==FWPopupStateDidAppear 时有效，此时弹窗会重新显示，此时相应的回调也会重新走
+    @objc open func resetSize(size: CGSize, isImmediateEffect: Bool) {
+        
+        self.finalSize = size
+        if isImmediateEffect && self.currentPopupViewState == .didAppear {
+            self.hide { [weak self] (popupView) in
+                guard let strongSelf = self else {
+                    return
+                }
+                if strongSelf.popupDidAppearBlock != nil {
+                    strongSelf.show(popupDidAppearBlock: strongSelf.popupDidAppearBlock)
+                } else if strongSelf.popupStateBlock != nil {
+                    strongSelf.show(popupStateBlock: strongSelf.popupStateBlock)
+                } else {
+                    strongSelf.show()
+                }
+            }
+        }
+    }
     
     /// 点击隐藏
     ///

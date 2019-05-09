@@ -276,7 +276,9 @@ extension FWDemoViewController {
             let alertView = FWAlertView.alert(title: "标题", detail: "描述描述描述描述") { (popupView, index, title) in
                 print("点击了确定")
             }
-            alertView.show()
+            alertView.show { (popupView, popupViewState) in
+                print("当前alertView状态：\(popupViewState.rawValue)")
+            }
             
             let items = ["Sheet0", "Sheet1", "Sheet2", "Sheet3"]
             let vProperty = FWSheetViewProperty()
