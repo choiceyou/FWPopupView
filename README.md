@@ -220,6 +220,11 @@ FWSheetView *sheetView = [FWSheetView sheetWithTitle: @"标题"
 - [x] 添加两种弹窗状态：didAppearButCovered、didAppearAgain；
 - [x] 新增 titleFont、buttonFont、detailFont 属性；
 
+• v4.0.5:
+- [x] FWAlertView、FWSheetView、FWDateView 中相关字体默认改为不加粗，即boldSystemFont 改为systemFont；
+- [x] FWPopupItem中新增itemTitleFont，该属性优先权大于全局变量，如需使用该变量可使用：初始化方法3；
+
+
 
 ## 结尾语：
 
