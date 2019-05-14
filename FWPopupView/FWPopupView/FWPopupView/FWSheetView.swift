@@ -130,7 +130,7 @@ extension FWSheetView {
             self.titleLabel?.text = title
             self.titleLabel?.textColor = self.vProperty.titleColor
             self.titleLabel?.textAlignment = .center
-            self.titleLabel?.font = (self.vProperty.titleFont != nil) ? self.vProperty.titleFont! : UIFont.boldSystemFont(ofSize: self.vProperty.titleFontSize)
+            self.titleLabel?.font = (self.vProperty.titleFont != nil) ? self.vProperty.titleFont! : UIFont.systemFont(ofSize: self.vProperty.titleFontSize)
             self.titleLabel?.numberOfLines = 10
             self.titleLabel?.backgroundColor = UIColor.clear
             
@@ -202,12 +202,18 @@ extension FWSheetView {
                 btn.setTitleColor(popupItem.highlight ? self.vProperty.itemHighlightColor : self.vProperty.itemNormalColor, for: .normal)
             }
             
+            // 按钮文字大小
+            if popupItem.itemTitleFont != nil {
+                btn.titleLabel?.font = popupItem.itemTitleFont
+            } else {
+                btn.titleLabel?.font = (self.vProperty.buttonFont != nil) ? self.vProperty.buttonFont! : UIFont.systemFont(ofSize: self.vProperty.buttonFontSize)
+            }
+            
             btn.setTitle(popupItem.title, for: .normal)
             btn.layer.borderWidth = self.vProperty.splitWidth
             btn.layer.borderColor = self.vProperty.splitColor.cgColor
             btn.setBackgroundImage(self.getImageWithColor(color: btn.backgroundColor!), for: .normal)
             btn.setBackgroundImage(self.getImageWithColor(color: self.vProperty.itemPressedColor), for: .highlighted)
-            btn.titleLabel?.font = (self.vProperty.buttonFont != nil) ? self.vProperty.buttonFont! : UIFont.boldSystemFont(ofSize: self.vProperty.buttonFontSize)
             
             tmpIndex += 1
         }
