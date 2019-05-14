@@ -20,7 +20,8 @@
 ```温馨提示
 1、同一窗口内目前只支持弹窗一个弹窗，如果需要同时展示两个弹窗，建议与系统或者其他自定义弹窗配合使用；
 2、如需两个弹窗接连使用，请保证第一个弹窗完全消失再调用第二个弹窗；
-3、鉴于方法或者属性可能跟着版本改动，因此强烈建议使用该库时封装一层后再使用！！！
+3、鉴于方法或者属性可能跟着版本改动，因此强烈建议使用该库时封装一层后再使用；
+4、如需在弹窗上展示SVProgressHUD，可设置：[SVProgressHUD setMaxSupportedWindowLevel:UIWindowLevelStatusBar+1]；
 ```
 
 
@@ -206,6 +207,18 @@ FWSheetView *sheetView = [FWSheetView sheetWithTitle: @"标题"
 - [x] 支持横竖屏切换；
 - [x] 支持多个弹窗存在（详细请查看：同时显示两个弹窗的演示）；
 - [x] 升级到Swift4.2；
+
+• v4.0.2:
+- [x] 解决app进入后台时隐藏弹窗可能出现界面卡死问题；
+- [x] 解决多次调用显示、隐藏的安全判断（会导致约束出错问题）；
+
+• v4.0.3:
+- [x] 增加hiddenViews添加视图的条件判断，解决某些视图已经创建了，但还未显示过一次依然会加入hiddenViews的问题；
+
+• v4.0.4:
+- [x] 支持重新设置弹窗视图size；
+- [x] 添加两种弹窗状态：didAppearButCovered、didAppearAgain；
+- [x] 新增 titleFont、buttonFont、detailFont 属性；
 
 
 ## 结尾语：

@@ -1,5 +1,5 @@
 PODS:
-  - FWPopupView (4.0.3):
+  - FWPopupView (4.0.5):
     - SnapKit
   - FWPopupViewOC (3.0.1):
     - Masonry
@@ -18,7 +18,7 @@ SPEC REPOS:
     - SnapKit
 
 SPEC CHECKSUMS:
-  FWPopupView: 3f6073a7aadc55cd34fbd30a1a96591d060c05d7
+  FWPopupView: 0444d6bcb569072d09565ab818589a280f9f0c6a
   FWPopupViewOC: 4df2c4313694496ec9959a2c521261f6567791df
   Masonry: 678fab65091a9290e40e2832a55e7ab731aad201
   SnapKit: fe8a619752f3f27075cc9a90244d75c6c3f27e2a

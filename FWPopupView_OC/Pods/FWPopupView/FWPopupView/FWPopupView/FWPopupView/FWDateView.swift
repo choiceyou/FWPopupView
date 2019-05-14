@@ -87,7 +87,7 @@ extension FWDateView {
         btn.setTitle(title, for: .normal)
         btn.setTitleColor(property.btnTitleColor, for: .normal)
         btn.backgroundColor = self.backgroundColor
-        btn.titleLabel?.font = UIFont.boldSystemFont(ofSize: property.btnTitleFont)
+        btn.titleLabel?.font = UIFont.systemFont(ofSize: property.btnTitleFont)
         return btn
     }
     
