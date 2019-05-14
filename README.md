@@ -215,6 +215,11 @@ FWSheetView *sheetView = [FWSheetView sheetWithTitle: @"标题"
 • v4.0.3:
 - [x] 增加hiddenViews添加视图的条件判断，解决某些视图已经创建了，但还未显示过一次依然会加入hiddenViews的问题；
 
+• v4.0.4:
+- [x] 支持重新设置弹窗视图size；
+- [x] 添加两种弹窗状态：didAppearButCovered、didAppearAgain；
+- [x] 新增 titleFont、buttonFont、detailFont 属性；
+
 
 ## 结尾语：
 
