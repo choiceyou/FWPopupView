@@ -1000,11 +1000,15 @@ open class FWPopupViewProperty: NSObject {
     
     /// 标题字体大小
     @objc open var titleFontSize: CGFloat           = 18.0
+    /// 标题字体，设置该值后titleFontSize无效
+    @objc open var titleFont: UIFont?
     /// 标题文字颜色
     @objc open var titleColor: UIColor              = kPV_RGBA(r: 51, g: 51, b: 51, a: 1)
     
     /// 按钮字体大小
     @objc open var buttonFontSize: CGFloat          = 17.0
+    /// 按钮字体，设置该值后buttonFontSize无效
+    @objc open var buttonFont: UIFont?
     /// 按钮高度
     @objc open var buttonHeight: CGFloat            = 48.0
     /// 普通按钮文字颜色

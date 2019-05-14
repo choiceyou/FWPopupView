@@ -205,7 +205,7 @@ extension FWAlertView {
             self.titleLabel?.text = title
             self.titleLabel?.textColor = self.vProperty.titleColor
             self.titleLabel?.textAlignment = .center
-            self.titleLabel?.font = UIFont.boldSystemFont(ofSize: self.vProperty.titleFontSize)
+            self.titleLabel?.font = (self.vProperty.titleFont != nil) ? self.vProperty.titleFont! : UIFont.boldSystemFont(ofSize: self.vProperty.titleFontSize)
             self.titleLabel?.numberOfLines = 5
             self.titleLabel?.backgroundColor = UIColor.clear
             
@@ -225,7 +225,7 @@ extension FWAlertView {
             self.detailLabel?.text = detail
             self.detailLabel?.textColor = property.detailColor
             self.detailLabel?.textAlignment = .center
-            self.detailLabel?.font = UIFont.boldSystemFont(ofSize: property.detailFontSize)
+            self.detailLabel?.font = (property.detailFont != nil) ? property.detailFont! : UIFont.boldSystemFont(ofSize: property.detailFontSize)
             self.detailLabel?.numberOfLines = 0
             self.detailLabel?.backgroundColor = UIColor.clear
             
@@ -337,7 +337,7 @@ extension FWAlertView {
             btn.layer.borderColor = self.vProperty.splitColor.cgColor
             btn.setBackgroundImage(self.getImageWithColor(color: btn.backgroundColor!), for: .normal)
             btn.setBackgroundImage(self.getImageWithColor(color: self.vProperty.itemPressedColor), for: .highlighted)
-            btn.titleLabel?.font = UIFont.boldSystemFont(ofSize: self.vProperty.buttonFontSize)
+            btn.titleLabel?.font = (self.vProperty.buttonFont != nil) ? self.vProperty.buttonFont! : UIFont.boldSystemFont(ofSize: self.vProperty.buttonFontSize)
             
             tmpIndex += 1
         }
@@ -390,6 +390,8 @@ open class FWAlertViewProperty: FWPopupViewProperty {
     
     // 描述字体大小
     @objc open var detailFontSize: CGFloat      = 14.0
+    // 描述字体，设置该值后detailFontSize无效
+    @objc open var detailFont: UIFont?
     // 描述文字颜色
     @objc open var detailColor: UIColor         = kPV_RGBA(r: 51, g: 51, b: 51, a: 1)
     

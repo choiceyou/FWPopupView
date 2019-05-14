@@ -130,7 +130,7 @@ extension FWSheetView {
             self.titleLabel?.text = title
             self.titleLabel?.textColor = self.vProperty.titleColor
             self.titleLabel?.textAlignment = .center
-            self.titleLabel?.font = UIFont.boldSystemFont(ofSize: self.vProperty.titleFontSize)
+            self.titleLabel?.font = (self.vProperty.titleFont != nil) ? self.vProperty.titleFont! : UIFont.boldSystemFont(ofSize: self.vProperty.titleFontSize)
             self.titleLabel?.numberOfLines = 10
             self.titleLabel?.backgroundColor = UIColor.clear
             
@@ -207,7 +207,7 @@ extension FWSheetView {
             btn.layer.borderColor = self.vProperty.splitColor.cgColor
             btn.setBackgroundImage(self.getImageWithColor(color: btn.backgroundColor!), for: .normal)
             btn.setBackgroundImage(self.getImageWithColor(color: self.vProperty.itemPressedColor), for: .highlighted)
-            btn.titleLabel?.font = UIFont.boldSystemFont(ofSize: self.vProperty.buttonFontSize)
+            btn.titleLabel?.font = (self.vProperty.buttonFont != nil) ? self.vProperty.buttonFont! : UIFont.boldSystemFont(ofSize: self.vProperty.buttonFontSize)
             
             tmpIndex += 1
         }
