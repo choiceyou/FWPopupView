@@ -71,7 +71,7 @@ extension FWPopupWindow {
             for view in (self.attachView()?.fwMaskView.subviews)! {
                 if view.isKind(of: FWPopupView.self) && !self.hiddenViews.contains(view) {
                     let popupView = view as! FWPopupView
-                    if popupView.currentPopupViewState != .unKnow {
+                    if popupView.currentPopupViewState == .didAppear {
                         popupView.hide()
                     }
                 }
