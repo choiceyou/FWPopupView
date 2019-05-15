@@ -28,7 +28,7 @@
     
     self.navigationItem.title = @"FWPopupView";
     
-    self.titleArray = @[@"Alert - 单个按钮", @"Alert - 两个按钮", @"Alert - 两个按钮（修改参数）", @"Alert - 多个按钮", @"Alert - 带输入框", @"Alert - 带自定义视图", @"Sheet - 少量Item", @"Sheet - 大量Item", @"Date - 自定义日期选择", @"Menu - 自定义菜单", @"Custom - 自定义弹窗", @"CustomSheet - 类似Sheet效果", @"CustomSheet - 类似Sheet效果2"];
+    self.titleArray = @[@"0、Alert - 单个按钮", @"1、Alert - 两个按钮", @"2、Alert - 两个按钮（修改参数）", @"3、Alert - 多个按钮", @"4、Alert - 带输入框", @"5、Alert - 带自定义视图", @"6、Sheet - 少量Item", @"7、Sheet - 大量Item", @"8、Date - 自定义日期选择", @"9、Menu - 自定义菜单", @"10、Custom - 自定义弹窗", @"11、CustomSheet - 类似Sheet效果", @"12、CustomSheet - 类似Sheet效果2"];
     
     [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"cellId"];
     self.tableView.estimatedRowHeight = 44.0;
