@@ -82,7 +82,7 @@ open class FWRadioButton : UIView {
     private var clickedBlock: FWRadioButtonClickedBlock?
     
     
-    /// 初始化方法，不显示标题
+    /// 初始化方法1：不显示标题
     ///
     /// - Parameters:
     ///   - frame: frame
@@ -97,7 +97,7 @@ open class FWRadioButton : UIView {
         return radio
     }
     
-    /// 初始化方法，可设置标题，可传入图片
+    /// 初始化方法2：可设置标题，可传入图片
     ///
     /// - Parameters:
     ///   - frame: frame

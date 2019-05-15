@@ -229,6 +229,7 @@ extension FWDemoViewController {
             
             let vProperty = FWSheetViewProperty()
             vProperty.touchWildToHide = "1"
+            vProperty.cancelItemTitleColor = UIColor.red
             
             let sheetView = FWSheetView.sheet(title: "", itemTitles: items, itemBlock: { (popupView, index, title) in
                 print("Sheet：点击了第\(index)个按钮")

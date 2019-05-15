@@ -98,7 +98,7 @@ open class FWMenuView: FWPopupView, UITableViewDelegate, UITableViewDataSource {
         return tableView
     }()
     
-    /// 类初始化方法
+    /// 类初始化方法1
     ///
     /// - Parameters:
     ///   - itemTitles: 标题
@@ -109,7 +109,7 @@ open class FWMenuView: FWPopupView, UITableViewDelegate, UITableViewDataSource {
         return self.menu(itemTitles: itemTitles, itemImageNames: nil, itemBlock: itemBlock, property: nil)
     }
     
-    /// 类初始化方法
+    /// 类初始化方法2
     ///
     /// - Parameters:
     ///   - itemTitles: 标题
@@ -121,7 +121,7 @@ open class FWMenuView: FWPopupView, UITableViewDelegate, UITableViewDataSource {
         return self.menu(itemTitles: itemTitles, itemImageNames: nil, itemBlock: itemBlock, property: property)
     }
     
-    /// 类初始化方法
+    /// 类初始化方法3
     ///
     /// - Parameters:
     ///   - itemTitles: 标题
