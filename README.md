@@ -224,6 +224,10 @@ FWSheetView *sheetView = [FWSheetView sheetWithTitle: @"标题"
 - [x] FWAlertView、FWSheetView、FWDateView 中相关字体默认改为不加粗，即boldSystemFont 改为systemFont；
 - [x] FWPopupItem中新增itemTitleFont，该属性优先权大于全局变量，如需使用该变量可使用：初始化方法3；
 
+• v4.0.6:
+- [x] 解决某个类中同时存在两个非懒加载方式的弹窗成员变量，前一个点击外部隐藏时会影响另外一个弹窗显示的问题；
+- [x] FWSheetView：FWSheetViewProperty可设置取消按钮的字体颜色、大小以及背景颜色；
+
 
 
 ## 结尾语：
