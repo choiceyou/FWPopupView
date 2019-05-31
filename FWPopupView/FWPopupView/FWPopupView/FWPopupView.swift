@@ -938,7 +938,7 @@ extension FWPopupView {
     @objc open func resetSize(size: CGSize, isImmediateEffect: Bool) {
         
         self.finalSize = size
-        if isImmediateEffect && self.currentPopupViewState == .didAppear {
+        if isImmediateEffect && (self.currentPopupViewState == .didAppear || self.currentPopupViewState == .didAppearAgain) {
             self.hide { [weak self] (popupView) in
                 guard let strongSelf = self else {
                     return
