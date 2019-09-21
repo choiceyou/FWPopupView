@@ -24,8 +24,13 @@ public func kPV_RGBA (r:CGFloat, g:CGFloat, b:CGFloat, a:CGFloat) -> UIColor {
 
 open class FWPopupWindow: UIWindow, UIGestureRecognizerDelegate {
     
-    /// 单例
-    @objc public static let sharedInstance = FWPopupWindow()
+    /// 单例模式
+    @objc public class var sharedInstance: FWPopupWindow {
+        struct Static {
+            static let kbManager = FWPopupWindow(frame: UIScreen.main.bounds)
+        }
+        return Static.kbManager
+    }
     
     // 默认false，当为true时：用户点击外部遮罩层页面可以消失
     @objc open var touchWildToHide: Bool = false
@@ -40,8 +45,6 @@ open class FWPopupWindow: UIWindow, UIGestureRecognizerDelegate {
     
     public override init(frame: CGRect) {
         super.init(frame: frame)
-        
-        self.frame = UIScreen.main.bounds
         
         let rootVC = FWPopupRootViewController()
         rootVC.view.backgroundColor = UIColor.clear
