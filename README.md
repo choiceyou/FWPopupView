@@ -228,6 +228,9 @@ FWSheetView *sheetView = [FWSheetView sheetWithTitle: @"标题"
 - [x] 解决某个类中同时存在两个非懒加载方式的弹窗成员变量，前一个点击外部隐藏时会影响另外一个弹窗显示的问题；
 - [x] FWSheetView：FWSheetViewProperty可设置取消按钮的字体颜色、大小以及背景颜色；
 
+• v4.0.8:
+- [x] 解决xcode11中FWPopupWindow单例初始化问题；
+- [x] 其它细节优化；
 
 
 ## 结尾语：
