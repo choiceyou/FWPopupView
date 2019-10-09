@@ -317,7 +317,7 @@ extension FWDemoViewController {
             let items = [FWPopupItem(title: "取消", itemType: .normal, isCancel: true, canAutoHide: true, itemClickedBlock: block),
                          FWPopupItem(title: "确定", itemType: .normal, isCancel: false, canAutoHide: false, itemClickedBlock: block)]
             
-            let alertView = FWAlertView.alert(title: "温馨提示", detail: "是否记住当前状态？", inputPlaceholder: nil, keyboardType: .default, isSecureTextEntry: false, customView: radioButton, items: items);
+            let alertView = FWAlertView.alert(title: "温馨提示", detail: "是否记住当前状态？", inputPlaceholder: nil, keyboardType: .default, isSecureTextEntry: false, customView: radioButton, items: items)
             alertView.show()
             break
         default:

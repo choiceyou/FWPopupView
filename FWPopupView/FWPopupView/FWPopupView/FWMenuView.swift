@@ -46,26 +46,28 @@ class FWMenuViewTableViewCell: UITableViewCell {
         
         if image != nil {
             self.iconImgView.isHidden = false
-            self.iconImgView.image = image;
+            self.iconImgView.image = image
             self.iconImgView.snp.makeConstraints { (make) in
                 make.left.equalToSuperview().offset(property.letfRigthMargin)
                 make.top.equalToSuperview().offset(property.topBottomMargin)
                 make.bottom.equalToSuperview().offset(-property.topBottomMargin)
+                make.size.equalTo(image!.size)
             }
         } else {
             self.iconImgView.isHidden = true
         }
         
         if title != nil {
-            self.titleLabel.textAlignment = property.textAlignment;
+            self.titleLabel.textAlignment = property.textAlignment
             let attributedString = NSAttributedString(string: title!, attributes: property.titleTextAttributes)
-            self.titleLabel.attributedText = attributedString;
+            self.titleLabel.attributedText = attributedString
             self.titleLabel.snp.makeConstraints { (make) in
                 if image != nil {
                     make.left.equalTo(self.iconImgView.snp.right).offset(property.commponentMargin)
                 } else {
-                    make.left.equalToSuperview().offset(property.commponentMargin*2)
+                    make.left.equalToSuperview().offset(property.letfRigthMargin)
                 }
+                make.right.equalToSuperview().offset(-property.letfRigthMargin)
                 make.top.equalToSuperview().offset(property.topBottomMargin)
                 make.bottom.equalToSuperview().offset(-property.topBottomMargin)
             }
@@ -436,8 +438,6 @@ open class FWMenuViewProperty: FWPopupViewProperty {
     
     /// 未选中时按钮字体属性
     @objc public var titleTextAttributes: [NSAttributedString.Key: Any]!
-    /// 选中时按钮字体属性
-    @objc public var selectedTitleTextAttributes: [NSAttributedString.Key: Any]!
     /// 文字位置
     @objc public var textAlignment : NSTextAlignment = .left
     
@@ -458,8 +458,6 @@ open class FWMenuViewProperty: FWPopupViewProperty {
         super.reSetParams()
         
         self.titleTextAttributes = [NSAttributedString.Key.foregroundColor: self.itemNormalColor, NSAttributedString.Key.backgroundColor: UIColor.clear, NSAttributedString.Key.font: UIFont.systemFont(ofSize: self.buttonFontSize)]
-        
-        self.selectedTitleTextAttributes = [NSAttributedString.Key.foregroundColor: self.itemNormalColor, NSAttributedString.Key.backgroundColor: UIColor.clear, NSAttributedString.Key.font: UIFont.systemFont(ofSize: self.buttonFontSize)]
         
         self.letfRigthMargin = 20
         

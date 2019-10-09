@@ -65,6 +65,7 @@ class FWMenuViewDemoVC: UIViewController {
         vProperty.splitColor = kPV_RGBA(r: 64, g: 63, b: 66, a: 1)
         vProperty.separatorColor = kPV_RGBA(r: 91, g: 91, b: 93, a: 1)
         vProperty.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white, NSAttributedString.Key.backgroundColor: UIColor.clear, NSAttributedString.Key.font: UIFont.systemFont(ofSize: 15.0)]
+        vProperty.textAlignment = .left
         vProperty.separatorInset = UIEdgeInsets(top: 0, left: 15, bottom: 0, right: 15)
         
         let menuView = FWMenuView.menu(itemTitles: titles, itemImageNames: images2 as? [UIImage], itemBlock: { (popupView, index, title) in
@@ -181,6 +182,7 @@ extension FWMenuViewDemoVC {
             property.popupArrowStyle = .none
             property.popupArrowVertexScaleX = 0.5
             property.cornerRadius = 0
+            property.textAlignment = .center
             
             let titles = ["Menu0", "Menu1", "Menu2", "Menu3", "Menu4", "Menu5", "Menu6", "Menu7", "Menu8", "Menu9", "Menu10", "Menu11", "Menu12", "Menu13", "Menu14", "Menu15", "Menu16"]
             let menuView = FWMenuView.menu(itemTitles: titles, itemImageNames: nil, itemBlock: { (popupView, index, title) in

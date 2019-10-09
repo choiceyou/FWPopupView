@@ -11,7 +11,19 @@ import UIKit
 
 class FWPopupRootViewController: UIViewController {
     
-    override var preferredStatusBarStyle: UIStatusBarStyle{get { return UIApplication.shared.statusBarStyle}}
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        if #available(iOS 13.0, *) {
+            return UIApplication.shared.keyWindow?.windowScene?.statusBarManager?.statusBarStyle ?? UIApplication.shared.statusBarStyle
+        } else {
+            return UIApplication.shared.statusBarStyle
+        }
+    }
     
-    override var prefersStatusBarHidden: Bool{get {return UIApplication.shared.isStatusBarHidden}}
+    override var prefersStatusBarHidden: Bool {
+        if #available(iOS 13.0, *) {
+            return UIApplication.shared.keyWindow?.windowScene?.statusBarManager?.isStatusBarHidden ?? UIApplication.shared.isStatusBarHidden
+        } else {
+            return UIApplication.shared.isStatusBarHidden
+        }
+    }
 }

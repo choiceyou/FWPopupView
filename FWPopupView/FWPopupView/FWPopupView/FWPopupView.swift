@@ -256,7 +256,7 @@ extension FWPopupView {
     @objc open func show(popupDidAppearBlock: FWPopupDidAppearBlock? = nil) {
         
         self.popupDidAppearBlock = popupDidAppearBlock
-        self.show(popupStateBlock: nil);
+        self.show(popupStateBlock: nil)
     }
     
     /// 显示
@@ -289,7 +289,7 @@ extension FWPopupView {
         if self.attachedView != nil && self.vProperty.maskViewColor != nil {
             self.attachedView?.fwMaskViewColor = self.vProperty.maskViewColor!
         }
-        self.originKeyWindow = UIApplication.shared.keyWindow;
+        self.originKeyWindow = UIApplication.shared.keyWindow
         if self.vProperty.touchWildToHide != nil && !self.vProperty.touchWildToHide!.isEmpty && Int(self.vProperty.touchWildToHide!) == 1 {
             FWPopupWindow.sharedInstance.touchWildToHide = true
         } else {

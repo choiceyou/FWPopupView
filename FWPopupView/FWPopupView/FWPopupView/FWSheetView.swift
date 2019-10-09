@@ -180,10 +180,10 @@ extension FWSheetView {
                 make.width.equalTo(btnContrainerView).offset(property.splitWidth*2)
                 if tmpIndex == 0 {
                     make.top.equalToSuperview()
-                    lastBtn = btn;
+                    lastBtn = btn
                 } else if tmpIndex > 0 && tmpIndex < self.actionItemArray.count - 1 {
                     make.top.equalTo(lastBtn.snp.bottom).offset(-self.vProperty.splitWidth)
-                    lastBtn = btn;
+                    lastBtn = btn
                 }
             }
             // 按钮标题
