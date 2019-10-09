@@ -47,7 +47,6 @@ typedef NS_ENUM(NSInteger, FWConstraintsStates) {
 @property (nonatomic, copy) FWPopupStateBlock popupStateBlock;
 @property (nonatomic, copy) FWPopupShowBlock showAnimation;
 @property (nonatomic, copy) FWPopupHideBlock hideAnimation;
-@property (nonatomic, assign) FWPopupState  currentPopupState;
 
 /**
  弹窗真正的Size
@@ -106,6 +105,25 @@ typedef NS_ENUM(NSInteger, FWConstraintsStates) {
         [self setupParams];
     }
     return self;
+}
+
+- (void)resetSize:(CGSize)size isImmediateEffect:(BOOL)isImmediateEffect
+{
+    self.finalFrame = CGRectMake(0, 0, size.width, size.height);
+    
+    if (isImmediateEffect && (self.currentPopupState == FWPopupStateDidAppear || self.currentPopupState == FWPopupStateDidAppearAgain)) {
+        FWPWeakify(self)
+        [self hideWithDidDisappearBlock:^(FWPopupBaseView *popupBaseView) {
+            FWPStrongify(self)
+            if (self.popupDidAppearBlock != nil) {
+                [self showWithDidAppearBlock:self.popupDidAppearBlock];
+            } else if (self.popupStateBlock != nil) {
+                [self showWithStateBlock:self.popupStateBlock];
+            } else {
+                [self show];
+            }
+        }];
+    }
 }
 
 - (void)awakeFromNib
@@ -190,9 +208,10 @@ typedef NS_ENUM(NSInteger, FWConstraintsStates) {
 
 - (void)showNow
 {
-    if (self.currentPopupState == FWPopupStateWillAppear || self.currentPopupState == FWPopupStateDidAppear) {
+    if (self.currentPopupState == FWPopupStateWillAppear || self.currentPopupState == FWPopupStateDidAppear || self.currentPopupState == FWPopupStateDidAppearButCovered || self.currentPopupState == FWPopupStateDidAppearAgain) {
         return;
     }
+    
     self.currentPopupState = FWPopupStateWillAppear;
     
     self.originKeyWindow = [[UIApplication sharedApplication] keyWindow];
@@ -317,9 +336,10 @@ typedef NS_ENUM(NSInteger, FWConstraintsStates) {
             if ([view isKindOfClass:[FWPopupBaseView class]]) {
                 FWPopupBaseView *tmpView = (FWPopupBaseView *)view;
                 if (view == self) {
-                    view.hidden = NO;
+                    tmpView.hidden = NO;
                 } else if (![[FWPopupWindow sharedWindow].needConstraintsViews containsObject:view] && tmpView.currentPopupState != FWPopupStateUnKnow) {
-                    view.hidden = YES;
+                    tmpView.hidden = YES;
+                    tmpView.currentPopupState = FWPopupStateDidAppearButCovered;
                     [tmpHiddenViews addObject:view];
                 }
             }
@@ -457,10 +477,10 @@ typedef NS_ENUM(NSInteger, FWConstraintsStates) {
             
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.0001 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                 
+                self.currentPopupState = FWPopupStateDidDisappear;
                 if (self.popupDidDisappearBlock != nil) {
                     self.popupDidDisappearBlock(self);
                 }
-                self.currentPopupState = FWPopupStateDidDisappear;
                 
                 FWPopupBaseView *nextShowView = nil;
                 if ([FWPopupWindow sharedWindow].willShowingViews.count > 0) {
@@ -470,6 +490,7 @@ typedef NS_ENUM(NSInteger, FWConstraintsStates) {
                 } else if ([FWPopupWindow sharedWindow].hiddenViews.count > 0) {
                     nextShowView = [FWPopupWindow sharedWindow].hiddenViews.lastObject;
                     nextShowView.hidden = NO;
+                    nextShowView.currentPopupState = FWPopupStateDidAppearAgain;
                     [[FWPopupWindow sharedWindow].hiddenViews removeLastObject];
                     if (self.vProperty.touchWildToHide != nil && ![self.vProperty.touchWildToHide isEqualToString:@""] && [self.vProperty.touchWildToHide integerValue] == 1) {
                         [FWPopupWindow sharedWindow].touchWildToHide = YES;
@@ -912,7 +933,7 @@ typedef NS_ENUM(NSInteger, FWConstraintsStates) {
 
 - (void)tapGestureAction:(UIGestureRecognizer *)gesture
 {
-    [self clicedMaskView];
+    [self clickedMaskView];
     
     if ([FWPopupWindow sharedWindow].touchWildToHide && !self.dimMaskAnimating)
     {
@@ -932,7 +953,7 @@ typedef NS_ENUM(NSInteger, FWConstraintsStates) {
     return touch.view == self.attachedView.dimMaskView;
 }
 
-- (void)clicedMaskView
+- (void)clickedMaskView
 {
     // 供子类重写
 }
@@ -1063,3 +1084,4 @@ typedef NS_ENUM(NSInteger, FWConstraintsStates) {
 }
 
 @end
+

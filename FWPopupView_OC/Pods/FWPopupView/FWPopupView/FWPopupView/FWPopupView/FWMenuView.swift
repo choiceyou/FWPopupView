@@ -57,6 +57,7 @@ class FWMenuViewTableViewCell: UITableViewCell {
         }
         
         if title != nil {
+            self.titleLabel.textAlignment = property.textAlignment;
             let attributedString = NSAttributedString(string: title!, attributes: property.titleTextAttributes)
             self.titleLabel.attributedText = attributedString;
             self.titleLabel.snp.makeConstraints { (make) in
@@ -98,7 +99,7 @@ open class FWMenuView: FWPopupView, UITableViewDelegate, UITableViewDataSource {
         return tableView
     }()
     
-    /// 类初始化方法
+    /// 类初始化方法1
     ///
     /// - Parameters:
     ///   - itemTitles: 标题
@@ -109,7 +110,7 @@ open class FWMenuView: FWPopupView, UITableViewDelegate, UITableViewDataSource {
         return self.menu(itemTitles: itemTitles, itemImageNames: nil, itemBlock: itemBlock, property: nil)
     }
     
-    /// 类初始化方法
+    /// 类初始化方法2
     ///
     /// - Parameters:
     ///   - itemTitles: 标题
@@ -121,7 +122,7 @@ open class FWMenuView: FWPopupView, UITableViewDelegate, UITableViewDataSource {
         return self.menu(itemTitles: itemTitles, itemImageNames: nil, itemBlock: itemBlock, property: property)
     }
     
-    /// 类初始化方法
+    /// 类初始化方法3
     ///
     /// - Parameters:
     ///   - itemTitles: 标题
@@ -437,6 +438,8 @@ open class FWMenuViewProperty: FWPopupViewProperty {
     @objc public var titleTextAttributes: [NSAttributedString.Key: Any]!
     /// 选中时按钮字体属性
     @objc public var selectedTitleTextAttributes: [NSAttributedString.Key: Any]!
+    /// 文字位置
+    @objc public var textAlignment : NSTextAlignment = .left
     
     /// 内容位置
     @objc public var contentHorizontalAlignment: UIControl.ContentHorizontalAlignment = .left

@@ -10,7 +10,8 @@
 ```cocoaPods
 1、同一窗口内目前只支持弹窗一个弹窗，如果需要同时展示两个弹窗，建议与系统或者其他自定义弹窗配合使用；
 2、如需两个弹窗接连使用，请保证第一个弹窗完全消失再调用第二个弹窗；
-3、鉴于方法或者属性可能跟着版本改动，因此强烈建议使用该库时封装一层后再使用！！！
+3、鉴于方法或者属性可能跟着版本改动，因此强烈建议使用该库时封装一层后再使用；
+4、如需在弹窗上展示SVProgressHUD，可设置：[SVProgressHUD setMaxSupportedWindowLevel:UIWindowLevelStatusBar+1]；
 ```
 
 
@@ -174,6 +175,9 @@ pod 'FWPopupViewOC'
 ![](https://github.com/choiceyou/FWPopupViewOC/blob/master/%E6%95%88%E6%9E%9C/%E6%95%88%E6%9E%9C3.gif)
 ![](https://github.com/choiceyou/FWPopupViewOC/blob/master/%E6%95%88%E6%9E%9C/%E6%95%88%E6%9E%9C2.gif)
 ![](https://github.com/choiceyou/FWPopupViewOC/blob/master/%E6%95%88%E6%9E%9C/IMG_0724.PNG)
+![](https://github.com/choiceyou/FWPopupViewOC/blob/master/%E6%95%88%E6%9E%9C/IMG_01.png)
+![](https://github.com/choiceyou/FWPopupViewOC/blob/master/%E6%95%88%E6%9E%9C/IMG_02.png)
+
 
 
 ## 更新记录：
@@ -208,6 +212,16 @@ pod 'FWPopupViewOC'
 - [x] 使用Masonry库重构了弹窗基类及部分弹窗视图；
 - [x] 支持横竖屏切换（注意：shouldClearSpilthMask属性为YES时不支持横竖屏切换，会出现视图显示的问题）；
 - [x] 支持多个弹窗存在（详细请查看：同时显示两个弹窗的演示）；
+
+• v3.0.1:
+- [x] 解决app进入后台时隐藏弹窗可能出现界面卡死问题；
+- [x] 解决多次调用显示、隐藏的安全判断（会导致约束出错问题）；
+- [x] 增加hiddenViews添加视图的条件判断，解决某些视图已经创建了，但还未显示过一次依然会加入hiddenViews的问题；
+
+• v3.0.3:
+- [x] 支持重新设置弹窗视图size；
+- [x] 添加两种弹窗状态：FWPopupStateDidAppearButCovered、FWPopupStateDidAppearAgain；
+
 
 
 ## 结尾语：

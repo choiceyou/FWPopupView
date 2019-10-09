@@ -36,7 +36,7 @@ open class FWAlertView: FWPopupView {
     private var commponenetCount: Int = 0
     
     
-    /// 单个按钮的弹窗
+    /// 类初始化方法1：单个按钮的弹窗
     ///
     /// - Parameters:
     ///   - title: 标题
@@ -49,7 +49,7 @@ open class FWAlertView: FWPopupView {
         return self.alert(title: title, detail: detail, inputPlaceholder: nil, keyboardType: .default, isSecureTextEntry: false, customView: nil, items: items, vProperty: nil)
     }
     
-    /// 两个按钮的弹窗
+    /// 类初始化方法2：两个按钮的弹窗
     ///
     /// - Parameters:
     ///   - title: 标题
@@ -65,7 +65,7 @@ open class FWAlertView: FWPopupView {
         return self.alert(title: title, detail: detail, inputPlaceholder: nil, keyboardType: .default, isSecureTextEntry: false, customView: nil, items: items, vProperty: nil)
     }
     
-    /// 可带输入框的弹窗
+    /// 类初始化方法3：可带输入框的弹窗
     ///
     /// - Parameters:
     ///   - title: 标题
@@ -78,7 +78,7 @@ open class FWAlertView: FWPopupView {
         return self.alert(title: title, detail: detail, inputPlaceholder: inputPlaceholder, keyboardType: keyboardType, isSecureTextEntry: isSecureTextEntry, customView: nil, items: items, vProperty: nil)
     }
     
-    /// 可带输入框、自定义视图的弹窗
+    /// 类初始化方法4：可带输入框、自定义视图的弹窗
     ///
     /// - Parameters:
     ///   - title: 标题
@@ -92,7 +92,7 @@ open class FWAlertView: FWPopupView {
         return self.alert(title: title, detail: detail, inputPlaceholder: inputPlaceholder, keyboardType: keyboardType, isSecureTextEntry: isSecureTextEntry, customView: customView, items: items, vProperty: nil)
     }
     
-    /// 可带输入框、自定义视图的弹窗，可设置Alert相关属性
+    /// 类初始化方法5：可带输入框、自定义视图的弹窗，可设置Alert相关属性
     ///
     /// - Parameters:
     ///   - title: 标题

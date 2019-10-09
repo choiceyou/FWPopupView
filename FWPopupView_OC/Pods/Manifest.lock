@@ -1,7 +1,7 @@
 PODS:
-  - FWPopupView (4.0.5):
+  - FWPopupView (4.0.8):
     - SnapKit
-  - FWPopupViewOC (3.0.1):
+  - FWPopupViewOC (3.0.5):
     - Masonry
   - Masonry (1.1.0)
   - SnapKit (4.2.0)
@@ -18,11 +18,11 @@ SPEC REPOS:
     - SnapKit
 
 SPEC CHECKSUMS:
-  FWPopupView: 0444d6bcb569072d09565ab818589a280f9f0c6a
-  FWPopupViewOC: 4df2c4313694496ec9959a2c521261f6567791df
+  FWPopupView: 8357f7ab0185e1dcaaf888fbc8ee81ab8dccab72
+  FWPopupViewOC: 2fb8f73cf215d453348feafdf002f2b395979c5e
   Masonry: 678fab65091a9290e40e2832a55e7ab731aad201
   SnapKit: fe8a619752f3f27075cc9a90244d75c6c3f27e2a
 
 PODFILE CHECKSUM: 6968cb2557f9826d6d3c12c7b532b393220ed875
 
-COCOAPODS: 1.6.1
+COCOAPODS: 1.7.5

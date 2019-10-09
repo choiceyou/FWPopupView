@@ -79,9 +79,9 @@
 /**
  重写父类：遮罩层被单击
  */
-- (void)clicedMaskView
+- (void)clickedMaskView
 {
-    [super clicedMaskView];
+    [super clickedMaskView];
     
     if (self.currentIndex < self.totalCount-1)
     {

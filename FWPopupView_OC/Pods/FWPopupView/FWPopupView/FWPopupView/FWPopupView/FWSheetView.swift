@@ -27,7 +27,7 @@ open class FWSheetView: FWPopupView {
     
     private var commponenetArray: [UIView] = []
     
-    /// 类初始化方法
+    /// 类初始化方法1
     ///
     /// - Parameters:
     ///   - title: 标题
@@ -40,7 +40,7 @@ open class FWSheetView: FWPopupView {
         return self.sheet(title: title, itemTitles: itemTitles, itemBlock: itemBlock, cancenlBlock: cancenlBlock, property: nil)
     }
     
-    /// 类初始化方法，可设置Sheet相关属性
+    /// 类初始化方法2：可设置Sheet相关属性
     ///
     /// - Parameters:
     ///   - title: 标题
@@ -54,7 +54,7 @@ open class FWSheetView: FWPopupView {
         return self.sheet(title: title, itemTitles: itemTitles, itemBlock: itemBlock, cancelItemTitle: nil, cancenlBlock: cancenlBlock, property: property)
     }
     
-    /// 类初始化方法，可设置Sheet相关属性
+    /// 类初始化方法3：可设置Sheet相关属性
     ///
     /// - Parameters:
     ///   - title: 标题
@@ -155,7 +155,7 @@ extension FWSheetView {
             }
         }
         
-        self.actionItemArray.append(FWPopupItem(title: (cancelItemTitle != nil) ? cancelItemTitle! : property.cancelItemTitle, itemType: .normal, isCancel: true, canAutoHide: true, itemClickedBlock: block))
+        self.actionItemArray.append(FWPopupItem(title: (cancelItemTitle != nil) ? cancelItemTitle! : property.cancelItemTitle, itemType: .normal, isCancel: true, canAutoHide: true, itemTitleColor: property.cancelItemTitleColor, itemTitleFont: property.cancelItemTitleFont, itemBackgroundColor: property.cancelItemBackgroundColor, itemClickedBlock: block))
         
         var tmpIndex = 0
         var lastBtn: UIButton!
@@ -186,34 +186,31 @@ extension FWSheetView {
                     lastBtn = btn;
                 }
             }
-            
-            // 按钮背景颜色
-            if popupItem.itemBackgroundColor != nil {
-                btn.backgroundColor = popupItem.itemBackgroundColor
-            } else {
-                btn.backgroundColor = UIColor.white
-            }
-            btn.setBackgroundImage(self.getImageWithColor(color: self.vProperty.itemPressedColor), for: .highlighted)
-            
-            // 按钮文字颜色
+            // 按钮标题
+            btn.setTitle(popupItem.title, for: .normal)
+            // 按钮标题字体颜色
             if popupItem.itemTitleColor != nil {
                 btn.setTitleColor(popupItem.itemTitleColor, for: .normal)
             } else {
                 btn.setTitleColor(popupItem.highlight ? self.vProperty.itemHighlightColor : self.vProperty.itemNormalColor, for: .normal)
             }
-            
-            // 按钮文字大小
+            // 按钮标题字体大小
             if popupItem.itemTitleFont != nil {
                 btn.titleLabel?.font = popupItem.itemTitleFont
             } else {
                 btn.titleLabel?.font = (self.vProperty.buttonFont != nil) ? self.vProperty.buttonFont! : UIFont.systemFont(ofSize: self.vProperty.buttonFontSize)
             }
+            // 按钮背景颜色
+            if popupItem.itemBackgroundColor != nil {
+                btn.setBackgroundImage(self.getImageWithColor(color: popupItem.itemBackgroundColor!), for: .normal)
+            } else {
+                btn.setBackgroundImage(self.getImageWithColor(color: UIColor.white), for: .normal)
+            }
+            // 按钮选中高亮颜色
+            btn.setBackgroundImage(self.getImageWithColor(color: self.vProperty.itemPressedColor), for: .highlighted)
             
-            btn.setTitle(popupItem.title, for: .normal)
             btn.layer.borderWidth = self.vProperty.splitWidth
             btn.layer.borderColor = self.vProperty.splitColor.cgColor
-            btn.setBackgroundImage(self.getImageWithColor(color: btn.backgroundColor!), for: .normal)
-            btn.setBackgroundImage(self.getImageWithColor(color: self.vProperty.itemPressedColor), for: .highlighted)
             
             tmpIndex += 1
         }
@@ -268,6 +265,12 @@ open class FWSheetViewProperty: FWPopupViewProperty {
     @objc public var cancelBtnMarginTop: CGFloat    = 6
     // 取消按钮名称
     @objc public var cancelItemTitle                = "取消"
+    // 取消按钮字体颜色
+    @objc public var cancelItemTitleColor: UIColor?
+    // 取消按钮字体大小
+    @objc public var cancelItemTitleFont: UIFont?
+    // 取消按钮背景颜色
+    @objc public var cancelItemBackgroundColor: UIColor?
     
     public override func reSetParams() {
         super.reSetParams()

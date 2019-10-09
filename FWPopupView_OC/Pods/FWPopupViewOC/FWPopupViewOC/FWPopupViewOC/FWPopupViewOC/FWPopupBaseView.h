@@ -74,11 +74,13 @@ typedef NS_ENUM(NSInteger, FWPopupArrowStyle) {
 /**
  弹窗状态
 
- - FWPopupStateUnKnow: 不知
+ - FWPopupStateUnKnow: 未知
  - FWPopupStateWillAppear: 将要显示
  - FWPopupStateDidAppear: 已经显示
  - FWPopupStateWillDisappear: 将要隐藏
  - FWPopupStateDidDisappear: 已经隐藏
+ - FWPopupStateDidAppearButCovered: 已经显示，但是被其他弹窗遮盖住了（实际上当前状态下弹窗是不可见）
+ - FWPopupStateDidAppearAgain: 已经显示，其上面遮盖的弹窗消失了（实际上当前状态与FWPopupStateDidAppear状态相同）
  */
 typedef NS_ENUM(NSInteger, FWPopupState) {
     FWPopupStateUnKnow,
@@ -86,6 +88,8 @@ typedef NS_ENUM(NSInteger, FWPopupState) {
     FWPopupStateDidAppear,
     FWPopupStateWillDisappear,
     FWPopupStateDidDisappear,
+    FWPopupStateDidAppearButCovered,
+    FWPopupStateDidAppearAgain,
 };
 
 
@@ -160,6 +164,11 @@ static NSString *const FWHideAllPopupViewNotification = @"FWHideAllPopupViewNoti
  */
 @property (nonatomic, assign) BOOL                      isNotMakeFrame;
 
+/**
+ 当前弹窗状态
+ */
+@property (nonatomic, assign) FWPopupState              currentPopupState;
+
 
 /**
  显示
@@ -195,7 +204,7 @@ static NSString *const FWHideAllPopupViewNotification = @"FWHideAllPopupViewNoti
 /**
  遮罩层被单击，主要用来给子类重写
  */
-- (void)clicedMaskView;
+- (void)clickedMaskView;
 
 /**
  获取当前视图AnchorPoint
@@ -213,6 +222,14 @@ static NSString *const FWHideAllPopupViewNotification = @"FWHideAllPopupViewNoti
  @return self
  */
 - (instancetype)initWithConstraints;
+
+/**
+ 重置视图size
+
+ @param size 新的size
+ @param isImmediateEffect 是否立即生效，当 currentPopupState==FWPopupStateDidAppear 时有效，此时弹窗会重新显示，此时相应的回调也会重新走
+ */
+- (void)resetSize:(CGSize)size isImmediateEffect:(BOOL)isImmediateEffect;
 
 @end
 

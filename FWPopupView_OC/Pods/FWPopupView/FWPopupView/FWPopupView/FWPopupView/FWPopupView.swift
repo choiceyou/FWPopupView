@@ -183,7 +183,7 @@ open class FWPopupView: UIView, UIGestureRecognizerDelegate {
     private var isResetSuperView: Bool = false
     
     /// 记录当前弹窗状态
-    private var currentPopupViewState: FWPopupViewState = .unKnow {
+    public var currentPopupViewState: FWPopupViewState = .unKnow {
         willSet {
             if self.popupStateBlock != nil {
                 self.popupStateBlock!(self, newValue)
@@ -938,7 +938,7 @@ extension FWPopupView {
     @objc open func resetSize(size: CGSize, isImmediateEffect: Bool) {
         
         self.finalSize = size
-        if isImmediateEffect && self.currentPopupViewState == .didAppear {
+        if isImmediateEffect && (self.currentPopupViewState == .didAppear || self.currentPopupViewState == .didAppearAgain) {
             self.hide { [weak self] (popupView) in
                 guard let strongSelf = self else {
                     return

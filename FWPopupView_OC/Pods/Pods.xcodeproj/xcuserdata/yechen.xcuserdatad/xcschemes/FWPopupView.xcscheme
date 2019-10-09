@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "0930"
+   LastUpgradeVersion = "1100"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -14,7 +14,7 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "3CB00258F3C5DDEAC6B4FC9DEE25090F"
+               BlueprintIdentifier = "DC336A0F2A093C7CF09D9310DA0DC029"
                BuildableName = "FWPopupView.framework"
                BlueprintName = "FWPopupView"
                ReferencedContainer = "container:Pods.xcodeproj">
