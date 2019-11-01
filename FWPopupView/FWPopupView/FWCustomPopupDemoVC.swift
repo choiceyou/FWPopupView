@@ -49,7 +49,6 @@ class FWCustomPopupDemoVC: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.view.backgroundColor = UIColor.white
         self.navigationItem.title = "自定义弹窗"
         
         self.tableView.estimatedRowHeight = 44.0

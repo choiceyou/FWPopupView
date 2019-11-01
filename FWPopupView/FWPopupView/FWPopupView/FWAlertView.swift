@@ -242,7 +242,8 @@ extension FWAlertView {
                 make.right.equalToSuperview().offset(-self.vProperty.letfRigthMargin)
                 make.height.equalTo(40)
             })
-            self.inputTF?.placeholder = inputPlaceholder
+            self.inputTF?.attributedPlaceholder = NSAttributedString(string: inputPlaceholder!, attributes: [NSAttributedString.Key.foregroundColor : property.inputPlaceholderColor])
+            self.inputTF?.textColor = property.inputTextColor
             self.inputTF?.textAlignment = .center
             self.inputTF?.clearButtonMode = .whileEditing
             self.inputTF?.leftViewMode = .always
@@ -400,6 +401,11 @@ open class FWAlertViewProperty: FWPopupViewProperty {
     @objc open var detailFont: UIFont?
     // 描述文字颜色
     @objc open var detailColor: UIColor         = kPV_RGBA(r: 51, g: 51, b: 51, a: 1)
+    
+    // 输入框提示文字颜色
+    @objc open var inputPlaceholderColor: UIColor   = UIColor.lightGray
+    // 输入框文字颜色
+    @objc open var inputTextColor: UIColor      = kPV_RGBA(r: 51, g: 51, b: 51, a: 1)
     
     // 确定按钮默认名称
     @objc open var defaultTextOK                = "知道了"

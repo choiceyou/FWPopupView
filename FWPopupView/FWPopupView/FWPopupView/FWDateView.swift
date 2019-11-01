@@ -61,6 +61,8 @@ extension FWDateView {
         
         let property = self.vProperty as! FWDateViewProperty
         
+        self.datePicker.setValue(property.pickerTextColor, forKey: "textColor")
+        
         self.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: property.datePickerHeight + property.btnHeight)
         
         self.cancelBtn = self.setupBtn(frame: CGRect(x: 0, y: 0, width: property.btnWidth, height: property.btnHeight), title: property.cancelBtnTitle, tag: 0)
@@ -120,6 +122,8 @@ open class FWDateViewProperty : FWPopupViewProperty {
     @objc public var btnHeight: CGFloat         = 40
     // 确定、取消按钮的宽度
     @objc public var btnWidth: CGFloat          = 60
+    // 时间选择器文字颜色
+    @objc public var pickerTextColor: UIColor   = kPV_RGBA(r: 51, g: 51, b: 51, a: 1)
     // 按钮文字颜色
     @objc public var btnTitleColor: UIColor     = kPV_RGBA(r: 51, g: 51, b: 51, a: 1)
     // 按钮文字大小
