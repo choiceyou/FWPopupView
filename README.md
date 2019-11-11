@@ -232,6 +232,10 @@ FWSheetView *sheetView = [FWSheetView sheetWithTitle: @"标题"
 - [x] 解决xcode11中FWPopupWindow单例初始化问题；
 - [x] 其它细节优化；
 
+• v4.0.9:
+- [x] 部分组件适配ios13的深色模式；
+
+
 
 ## 结尾语：
 
