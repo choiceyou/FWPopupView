@@ -397,12 +397,15 @@ extension FWMenuView {
         
         totalMaxSize.height += property.topBottomMargin * 2
         
+        var width: CGFloat = 0.0
         if property.popupViewMaxWidthRate > 0 {
             let tmpWidth = ceil(self.superview!.frame.size.width * property.popupViewMaxWidthRate)
-            totalMaxSize.width = min(ceil(totalMaxSize.width), tmpWidth)
+            width = min(ceil(totalMaxSize.width), tmpWidth)
         } else {
-            totalMaxSize.width = ceil(totalMaxSize.width)
+            width = ceil(totalMaxSize.width)
         }
+        width = max(width, property.popupViewMinWidth)
+        totalMaxSize.width = width
         totalMaxSize.height = ceil(totalMaxSize.height)
         
         return totalMaxSize
@@ -461,6 +464,8 @@ open class FWMenuViewProperty: FWPopupViewProperty {
     
     /// 弹窗的最大宽度占遮罩层宽度的比例，0：表示不限制
     @objc open var popupViewMaxWidthRate: CGFloat  = 0.6
+    /// 弹窗的最小宽度
+    @objc open var popupViewMinWidth: CGFloat  = 20
     
     public override func reSetParams() {
         super.reSetParams()
