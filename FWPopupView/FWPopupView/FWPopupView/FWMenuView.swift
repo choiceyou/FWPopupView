@@ -225,16 +225,18 @@ extension FWMenuView {
             isUpArrow = true
             break
         }
+        
+        // 用来隐藏多余的线条，不想自定义线条
+        let footerViewHeight: CGFloat = 1
+        let footerView = UIView(frame: CGRect(x: 0, y: 0, width: self.frame.width, height: footerViewHeight))
+        footerView.backgroundColor = UIColor.clear
+        self.tableView.tableFooterView = footerView
+        
         self.tableView.snp.remakeConstraints { (make) in
             make.top.equalToSuperview().offset(isUpArrow ? tableViewY : 0)
             make.left.right.equalToSuperview()
-            make.bottom.equalToSuperview().offset(isUpArrow ? 0 : -tableViewY)
+            make.bottom.equalToSuperview().offset(-((isUpArrow ? 0 : tableViewY ) - footerViewHeight))
         }
-        
-        // 用来隐藏多余的线条，不想自定义线条
-        let footerView = UIView(frame: CGRect(x: 0, y: 0, width: self.frame.width, height: 1))
-        footerView.backgroundColor = UIColor.clear
-        self.tableView.tableFooterView = footerView
     }
     
     private func setupFrame(property: FWMenuViewProperty) {
