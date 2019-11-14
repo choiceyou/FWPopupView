@@ -398,13 +398,7 @@ extension FWMenuView {
         
         totalMaxSize.height += property.topBottomMargin * 2
         
-        var width: CGFloat = 0.0
-        if property.popupViewMaxWidthRate > 0 {
-            let tmpWidth = ceil(self.superview!.frame.size.width * property.popupViewMaxWidthRate)
-            width = min(ceil(totalMaxSize.width), tmpWidth)
-        } else {
-            width = ceil(totalMaxSize.width)
-        }
+        var width = min(ceil(totalMaxSize.width), property.popupViewMaxWidth)
         width = max(width, property.popupViewMinWidth)
         totalMaxSize.width = width
         totalMaxSize.height = ceil(totalMaxSize.height)
@@ -463,8 +457,8 @@ open class FWMenuViewProperty: FWPopupViewProperty {
     /// 是否开启tableview回弹效果
     @objc public var bounces: Bool = false
     
-    /// 弹窗的最大宽度占遮罩层宽度的比例，0：表示不限制
-    @objc open var popupViewMaxWidthRate: CGFloat  = 0.6
+    /// 弹窗的最大宽度
+    @objc open var popupViewMaxWidth: CGFloat  = UIScreen.main.bounds.width * 0.6
     /// 弹窗的最小宽度
     @objc open var popupViewMinWidth: CGFloat  = 20
     
