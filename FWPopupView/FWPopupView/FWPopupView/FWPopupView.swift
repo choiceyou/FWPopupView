@@ -177,7 +177,7 @@ open class FWPopupView: UIView, UIGestureRecognizerDelegate {
     internal var isNotMakeSize: Bool = false
     
     /// 弹窗真正的Size
-    private var finalSize = CGSize.zero
+    internal var finalSize = CGSize.zero
     /// 当前Constraints是否被设置过了
     private var haveSetConstraints: Bool = false
     

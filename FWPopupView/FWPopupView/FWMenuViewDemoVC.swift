@@ -177,12 +177,12 @@ extension FWMenuViewDemoVC {
             property.maskViewColor = UIColor(white: 0, alpha: 0.4)
             property.touchWildToHide = "1"
             property.popupViewEdgeInsets = UIEdgeInsets(top: 0, left: 20, bottom: UIScreen.main.bounds.height - self.leftBottomBtn.frame.minY - kStatusBarHeight - kNavBarHeight, right: 0)
-            property.topBottomMargin = 10
             property.animationDuration = 0.3
             property.popupArrowStyle = .none
             property.popupArrowVertexScaleX = 0.5
             property.cornerRadius = 0
             property.textAlignment = .center
+            property.bounces = true
             
             let titles = ["Menu0", "Menu1", "Menu2", "Menu3", "Menu4", "Menu5", "Menu6", "Menu7", "Menu8", "Menu9", "Menu10", "Menu11", "Menu12", "Menu13", "Menu14", "Menu15", "Menu16"]
             let menuView = FWMenuView.menu(itemTitles: titles, itemImageNames: nil, itemBlock: { (popupView, index, title) in

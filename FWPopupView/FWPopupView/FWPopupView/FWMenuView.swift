@@ -51,8 +51,7 @@ class FWMenuViewTableViewCell: UITableViewCell {
             self.iconImgView.image = image
             self.iconImgView.snp.makeConstraints { (make) in
                 make.left.equalToSuperview().offset(property.letfRigthMargin)
-                make.top.equalToSuperview().offset(property.topBottomMargin)
-                make.bottom.equalToSuperview().offset(-property.topBottomMargin)
+                make.centerY.equalToSuperview()
                 make.size.equalTo(image!.size)
             }
         } else {
@@ -81,24 +80,42 @@ class FWMenuViewTableViewCell: UITableViewCell {
 open class FWMenuView: FWPopupView, UITableViewDelegate, UITableViewDataSource {
     
     /// 外部传入的标题数组
-    private var itemTitleArray: [String]?
+    @objc public var itemTitleArray: [String]? {
+        didSet {
+            self.setNeedsLayout()
+            self.setNeedsDisplay()
+        }
+    }
+    
     /// 外部传入的图片数组
-    private var itemImageNameArray: [UIImage]?
+    @objc public var itemImageArray: [UIImage]? {
+        didSet {
+            self.setNeedsLayout()
+            self.setNeedsDisplay()
+        }
+    }
     
     /// 当前选中下标
     private var selectedIndex: Int = 0
     
     /// 最大的那一项的size
-    private var maxItemSize: CGSize!
+    private var maxItemSize: CGSize = CGSize.zero
     
     /// 保存点击回调
     private var popupItemClickedBlock: FWPopupItemClickedBlock?
     
+    /// 有箭头时：当前layer的mask
+    private var maskLayer: CAShapeLayer?
+    /// 有箭头时：当前layer的border
+    private var borderLayer: CAShapeLayer?
+    
     private lazy var tableView: UITableView = {
         
         let tableView = UITableView()
+        tableView.register(FWMenuViewTableViewCell.self, forCellReuseIdentifier: "cellId")
         tableView.delegate = self
         tableView.dataSource = self
+        tableView.backgroundColor = UIColor.clear
         self.addSubview(tableView)
         return tableView
     }()
@@ -150,6 +167,12 @@ open class FWMenuView: FWPopupView, UITableViewDelegate, UITableViewDataSource {
     required public init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    /// 刷新当前视图及数据
+    @objc open func refreshData() {
+        self.setupFrame(property: self.vProperty as! FWMenuViewProperty)
+        self.tableView.reloadData()
+    }
 }
 
 extension FWMenuView {
@@ -169,35 +192,27 @@ extension FWMenuView {
         self.clipsToBounds = true
         
         self.itemTitleArray = itemTitles
-        self.itemImageNameArray = itemImageNames
+        self.itemImageArray = itemImageNames
         
         self.popupItemClickedBlock = itemBlock
         
         let property = self.vProperty as! FWMenuViewProperty
         
-        self.maxItemSize = self.measureMaxSize()
-        if property.popupViewItemHeight > 0 {
-            self.maxItemSize.height = property.popupViewItemHeight
-        }
-        
-        self.tableView.register(FWMenuViewTableViewCell.self, forCellReuseIdentifier: "cellId")
         self.tableView.separatorInset = property.separatorInset
         self.tableView.layoutMargins = property.separatorInset
         self.tableView.separatorColor = property.separatorColor
-        self.tableView.backgroundColor = UIColor.clear
         self.tableView.bounces = property.bounces
         
-        var selfY: CGFloat = 0
-        switch property.popupArrowStyle {
-        case .none:
-            selfY = 0
+        self.maxItemSize = self.measureMaxSize()
+        self.setupFrame(property: property)
+        
+        var tableViewY: CGFloat = 0
+        if property.popupArrowStyle == .none {
             self.layer.cornerRadius = self.vProperty.cornerRadius
             self.layer.borderColor = self.vProperty.splitColor.cgColor
             self.layer.borderWidth = self.vProperty.splitWidth
-            break
-        case .round, .triangle:
-            selfY = property.popupArrowSize.height
-            break
+        } else {
+            tableViewY = property.popupArrowSize.height
         }
         
         // 箭头方向
@@ -210,27 +225,64 @@ extension FWMenuView {
             isUpArrow = true
             break
         }
-        
-        var selfSize: CGSize = CGSize(width: 0, height: 0)
-        
-        if property.popupViewSize.width > 0 && property.popupViewSize.height > 0 {
-            selfSize = property.popupViewSize
-        } else if self.vProperty.popupViewMaxHeightRate > 0 && self.maxItemSize.height * CGFloat(self.itemsCount()) > self.vProperty.popupViewMaxHeightRate*self.superview!.frame.size.height {
-            selfSize = CGSize(width: self.maxItemSize.width, height: self.vProperty.popupViewMaxHeightRate*self.superview!.frame.size.height)
-        } else {
-            selfSize = CGSize(width: self.maxItemSize.width, height: self.maxItemSize.height * CGFloat(self.itemsCount()))
+        self.tableView.snp.remakeConstraints { (make) in
+            make.top.equalToSuperview().offset(isUpArrow ? tableViewY : 0)
+            make.left.right.equalToSuperview()
+            make.bottom.equalToSuperview().offset(isUpArrow ? 0 : -tableViewY)
         }
-        selfSize.height += selfY
-        self.frame = CGRect(x: 0, y: selfY, width: selfSize.width, height: selfSize.height)
-        self.tableView.frame = CGRect(x: 0, y: isUpArrow ? selfY : 0, width: selfSize.width, height: selfSize.height)
         
         // 用来隐藏多余的线条，不想自定义线条
         let footerView = UIView(frame: CGRect(x: 0, y: 0, width: self.frame.width, height: 1))
         footerView.backgroundColor = UIColor.clear
         self.tableView.tableFooterView = footerView
+    }
+    
+    private func setupFrame(property: FWMenuViewProperty) {
+        var tableViewY: CGFloat = 0
+        switch property.popupArrowStyle {
+        case .none:
+            tableViewY = 0
+            break
+        case .round, .triangle:
+            tableViewY = property.popupArrowSize.height
+            break
+        }
         
+        var tmpMaxHeight: CGFloat = 0.0
+        if self.superview != nil {
+            tmpMaxHeight = self.vProperty.popupViewMaxHeightRate * self.superview!.frame.size.height
+        } else {
+            tmpMaxHeight = self.vProperty.popupViewMaxHeightRate * UIScreen.main.bounds.height
+        }
+        
+        var selfSize: CGSize = CGSize.zero
+        if property.popupViewSize.width > 0 && property.popupViewSize.height > 0 {
+            selfSize = property.popupViewSize
+        } else if self.vProperty.popupViewMaxHeightRate > 0 && self.maxItemSize.height * CGFloat(self.itemsCount()) > tmpMaxHeight {
+            selfSize = CGSize(width: self.maxItemSize.width, height: tmpMaxHeight)
+        } else {
+            selfSize = CGSize(width: self.maxItemSize.width, height: self.maxItemSize.height * CGFloat(self.itemsCount()))
+        }
+        selfSize.height += tableViewY
+        self.frame = CGRect(x: 0, y: tableViewY, width: selfSize.width, height: selfSize.height)
+        self.finalSize = selfSize
+        
+        self.setupMaskLayer(property: property)
+    }
+    
+    private func setupMaskLayer(property: FWMenuViewProperty) {
         // 绘制箭头
         if property.popupArrowStyle != .none {
+            if self.maskLayer != nil {
+                self.layer.mask = nil
+                self.maskLayer?.removeFromSuperlayer()
+                self.maskLayer = nil
+            }
+            
+            if self.borderLayer != nil {
+                self.borderLayer?.removeFromSuperlayer()
+                self.borderLayer = nil
+            }
             
             // 圆角值
             let cornerRadius = property.cornerRadius
@@ -241,6 +293,17 @@ extension FWMenuView {
                 property.popupArrowVertexScaleX = 1
             } else if property.popupArrowVertexScaleX < 0 {
                 property.popupArrowVertexScaleX = 0
+            }
+            
+            // 箭头方向
+            var isUpArrow = true
+            switch property.popupCustomAlignment {
+            case .bottomLeft, .bottomRight, .bottomCenter:
+                isUpArrow = false
+                break
+            default:
+                isUpArrow = true
+                break
             }
             
             // 弹窗箭头顶点坐标
@@ -303,19 +366,19 @@ extension FWMenuView {
             maskPath.close()
             
             // 截取圆角和箭头
-            let maskLayer = CAShapeLayer()
-            maskLayer.frame = self.bounds
-            maskLayer.path = maskPath.cgPath
-            self.layer.mask = maskLayer
+            self.maskLayer = CAShapeLayer()
+            self.maskLayer?.frame = self.bounds
+            self.maskLayer?.path = maskPath.cgPath
+            self.layer.mask = self.maskLayer
             
             // 边框
-            let borderLayer = CAShapeLayer()
-            borderLayer.frame = self.bounds
-            borderLayer.path = maskPath.cgPath
-            borderLayer.lineWidth = 1
-            borderLayer.fillColor = UIColor.clear.cgColor
-            borderLayer.strokeColor = property.splitColor.cgColor
-            self.layer.addSublayer(borderLayer)
+            self.borderLayer = CAShapeLayer()
+            self.borderLayer?.frame = self.bounds
+            self.borderLayer?.path = maskPath.cgPath
+            self.borderLayer?.lineWidth = 1
+            self.borderLayer?.fillColor = UIColor.clear.cgColor
+            self.borderLayer?.strokeColor = property.splitColor.cgColor
+            self.layer.addSublayer(self.borderLayer!)
         }
     }
 }
@@ -332,7 +395,7 @@ extension FWMenuView {
     
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cellId", for: indexPath) as! FWMenuViewTableViewCell
-        cell.setupContent(title: (self.itemTitleArray != nil) ? self.itemTitleArray![indexPath.row] : nil , image: (self.itemImageNameArray != nil) ? self.itemImageNameArray![indexPath.row] : nil, property: self.vProperty as! FWMenuViewProperty)
+        cell.setupContent(title: (self.itemTitleArray != nil) ? self.itemTitleArray![indexPath.row] : nil , image: (self.itemImageArray != nil) ? self.itemImageArray![indexPath.row] : nil, property: self.vProperty as! FWMenuViewProperty)
         return cell
     }
     
@@ -353,26 +416,26 @@ extension FWMenuView {
     /// - Returns: CGSize
     fileprivate func measureMaxSize() -> CGSize {
         
-        if self.itemTitleArray == nil && self.itemImageNameArray == nil {
-            return CGSize(width: 0, height: 0)
+        if self.itemTitleArray == nil && self.itemImageArray == nil {
+            return CGSize.zero
         }
         
         let property = self.vProperty as! FWMenuViewProperty
         
-        var titleSize = CGSize(width: 0, height: 0)
-        var imageSize = CGSize(width: 0, height: 0)
-        var totalMaxSize = CGSize(width: 0, height: 0)
+        var titleSize = CGSize.zero
+        var imageSize = CGSize.zero
+        var totalMaxSize = CGSize.zero
         
         let titleAttrs = property.titleTextAttributes
         
         if self.itemTitleArray != nil {
-            var tmpSize = CGSize(width: 0, height: 0)
+            var tmpSize = CGSize.zero
             var index = 0
             for title: String in self.itemTitleArray! {
                 titleSize = (title as NSString).size(withAttributes: titleAttrs)
                 
-                if self.itemImageNameArray != nil && self.itemImageNameArray!.count == self.itemTitleArray!.count {
-                    let image = self.itemImageNameArray![index]
+                if self.itemImageArray != nil && self.itemImageArray!.count == self.itemTitleArray!.count {
+                    let image = self.itemImageArray![index]
                     imageSize = image.size
                 }
                 tmpSize = CGSize(width: titleSize.width + imageSize.width, height: titleSize.height + imageSize.height)
@@ -382,8 +445,8 @@ extension FWMenuView {
                 
                 index += 1
             }
-        } else if self.itemTitleArray == nil && self.itemImageNameArray != nil {
-            for image: UIImage in self.itemImageNameArray! {
+        } else if self.itemTitleArray == nil && self.itemImageArray != nil {
+            for image: UIImage in self.itemImageArray! {
                 imageSize = image.size
                 
                 totalMaxSize.width = max(totalMaxSize.width, imageSize.width)
@@ -392,7 +455,7 @@ extension FWMenuView {
         }
         
         totalMaxSize.width += property.letfRigthMargin * 2
-        if self.itemTitleArray != nil && self.itemImageNameArray != nil {
+        if self.itemTitleArray != nil && self.itemImageArray != nil {
             totalMaxSize.width += property.commponentMargin
         }
         
@@ -401,7 +464,12 @@ extension FWMenuView {
         var width = min(ceil(totalMaxSize.width), property.popupViewMaxWidth)
         width = max(width, property.popupViewMinWidth)
         totalMaxSize.width = width
-        totalMaxSize.height = ceil(totalMaxSize.height)
+        
+        if property.popupViewItemHeight > 0 {
+            totalMaxSize.height = property.popupViewItemHeight
+        } else {
+            totalMaxSize.height = ceil(totalMaxSize.height)
+        }
         
         return totalMaxSize
     }
@@ -413,8 +481,8 @@ extension FWMenuView {
         
         if self.itemTitleArray != nil {
             return self.itemTitleArray!.count
-        } else if self.itemImageNameArray != nil {
-            return self.itemImageNameArray!.count
+        } else if self.itemImageArray != nil {
+            return self.itemImageArray!.count
         } else {
             return 0
         }
@@ -434,8 +502,7 @@ extension FWMenuView {
 open class FWMenuViewProperty: FWPopupViewProperty {
     
     /// 弹窗大小，如果没有设置，将按照统一的计算方式
-    @objc public var popupViewSize = CGSize(width: 0, height: 0)
-    
+    @objc public var popupViewSize = CGSize.zero
     /// 指定行高优先级 > 自动计算的优先级
     @objc public var popupViewItemHeight: CGFloat = 0
     

@@ -216,10 +216,11 @@ extension FWSheetView {
         }
         
         btnContrainerView.snp.makeConstraints { (make) in
-            make.height.equalTo(property.buttonHeight * CGFloat(self.actionItemArray.count-1))
-            if self.vProperty.popupViewMaxHeightRate > 0 {
-                make.height.lessThanOrEqualTo(self.superview!.snp.height).multipliedBy(self.vProperty.popupViewMaxHeightRate)
+            var tmpHeight: CGFloat = property.buttonHeight * CGFloat(self.actionItemArray.count-1)
+            if self.vProperty.popupViewMaxHeightRate > 0 && self.superview != nil && self.superview!.frame.height > 0 {
+                tmpHeight = min(tmpHeight, self.superview!.frame.height * self.vProperty.popupViewMaxHeightRate)
             }
+            make.height.equalTo(tmpHeight)
             make.bottom.equalTo(lastBtn.snp.bottom).offset(-self.vProperty.splitWidth)
         }
         
