@@ -137,6 +137,8 @@ open class FWPopupView: UIView, UIGestureRecognizerDelegate {
             self.attachedView?.fwAnimationDuration = newValue.animationDuration
             if newValue.backgroundColor != nil {
                 self.backgroundColor = newValue.backgroundColor
+            } else if newValue.backgroundLayerColors != nil {
+                self.backgroundLayer.colors = newValue.backgroundLayerColors
             }
         }
     }
@@ -181,6 +183,17 @@ open class FWPopupView: UIView, UIGestureRecognizerDelegate {
     
     /// 是否重新设置了父视图
     private var isResetSuperView: Bool = false
+    
+    /// 渐变的背景颜色
+    private lazy var backgroundLayer: CAGradientLayer = {
+        var backgroundLayer = CAGradientLayer()
+        self.layer.addSublayer(backgroundLayer)
+        backgroundLayer.startPoint = self.vProperty.backgroundLayerStartPoint
+        backgroundLayer.endPoint = self.vProperty.backgroundLayerEndPoint
+        backgroundLayer.locations = self.vProperty.backgroundLayerLocations
+        backgroundLayer.type = CAGradientLayerType.axial
+        return backgroundLayer
+    }()
     
     /// 记录当前弹窗状态
     public var currentPopupViewState: FWPopupViewState = .unKnow {
@@ -229,6 +242,13 @@ open class FWPopupView: UIView, UIGestureRecognizerDelegate {
         
         if self.attachedView!.isKind(of: UIScrollView.self) && self.originScrollEnabled != nil {
             (self.attachedView! as! UIScrollView).isScrollEnabled = self.originScrollEnabled!
+        }
+    }
+    
+    open override func layoutSubviews() {
+        super.layoutSubviews()
+        if self.vProperty.backgroundLayerColors != nil {
+            self.backgroundLayer.frame = self.bounds
         }
     }
     
@@ -1034,6 +1054,15 @@ open class FWPopupViewProperty: NSObject {
     
     /// 弹窗的背景色（注意：这边指的是弹窗而不是遮罩层，遮罩层背景色的设置是：fwMaskViewColor）
     @objc open var backgroundColor: UIColor?
+    /// 弹窗的背景渐变色：当未设置backgroundColor时该值才有效
+    @objc open var backgroundLayerColors: [CGColor]?
+    /// 弹窗的背景渐变色相关属性：当设置了backgroundLayerColors时该值才有效
+    @objc open var backgroundLayerStartPoint: CGPoint = CGPoint(x: 0.0, y: 0.0)
+    /// 弹窗的背景渐变色相关属性：当设置了backgroundLayerColors时该值才有效
+    @objc open var backgroundLayerEndPoint: CGPoint = CGPoint(x: 1.0, y: 0.0)
+    /// 弹窗的背景渐变色相关属性：当设置了backgroundLayerColors时该值才有效
+    @objc open var backgroundLayerLocations: [NSNumber] = [0, 1]
+    
     /// 弹窗的最大高度占遮罩层高度的比例，0：表示不限制
     @objc open var popupViewMaxHeightRate: CGFloat  = 0.6
     

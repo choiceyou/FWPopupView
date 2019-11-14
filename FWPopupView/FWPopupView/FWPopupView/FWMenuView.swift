@@ -26,6 +26,8 @@ class FWMenuViewTableViewCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
+        self.backgroundColor = UIColor.clear
+        
         self.iconImgView = UIImageView()
         self.iconImgView.contentMode = .center
         self.iconImgView.backgroundColor = UIColor.clear
@@ -182,7 +184,7 @@ extension FWMenuView {
         self.tableView.separatorInset = property.separatorInset
         self.tableView.layoutMargins = property.separatorInset
         self.tableView.separatorColor = property.separatorColor
-        self.tableView.backgroundColor = self.backgroundColor
+        self.tableView.backgroundColor = UIColor.clear
         self.tableView.bounces = property.bounces
         
         var selfY: CGFloat = 0
@@ -331,7 +333,6 @@ extension FWMenuView {
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cellId", for: indexPath) as! FWMenuViewTableViewCell
         cell.setupContent(title: (self.itemTitleArray != nil) ? self.itemTitleArray![indexPath.row] : nil , image: (self.itemImageNameArray != nil) ? self.itemImageNameArray![indexPath.row] : nil, property: self.vProperty as! FWMenuViewProperty)
-        cell.backgroundColor = self.vProperty.backgroundColor
         return cell
     }
     

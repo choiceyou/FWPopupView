@@ -203,8 +203,14 @@ extension FWMenuViewDemoVC {
             property.popupArrowStyle = .round
             property.popupArrowVertexScaleX = 0.8
             property.cornerRadius = 5
+            property.backgroundLayerColors = [UIColor.red.cgColor, UIColor.blue.cgColor]
+            property.splitColor = UIColor.clear
+            property.separatorColor = UIColor.init(white: 1, alpha: 0.3)
+            property.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white, NSAttributedString.Key.backgroundColor: UIColor.clear, NSAttributedString.Key.font: UIFont.systemFont(ofSize: 15.0)]
+            property.textAlignment = .left
+            property.separatorInset = UIEdgeInsets(top: 0, left: 15, bottom: 0, right: 15)
             
-            let menuView = FWMenuView.menu(itemTitles: titles, itemImageNames: images as? [UIImage], itemBlock: { (popupView, index, title) in
+            let menuView = FWMenuView.menu(itemTitles: titles, itemImageNames: images2 as? [UIImage], itemBlock: { (popupView, index, title) in
                 print("Menu：点击了第\(index)个按钮")
             }, property: property)
             menuView.show()
