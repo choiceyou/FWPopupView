@@ -329,31 +329,31 @@ extension FWRadioButton {
 open class FWRadioButtonProperty: NSObject {
     
     /// 是否默认选中
-    @objc public var isSelected : Bool                  = false
+    @objc public var isSelected : Bool = false
     /// 是否需要动画
-    @objc public var isAnimated : Bool                  = true
+    @objc public var isAnimated : Bool = true
     /// 动画所需的时间
-    @objc open var animationDuration: TimeInterval      = 0.2
+    @objc open var animationDuration: TimeInterval = 0.2
     /// 偏移量。当视图比较小时会出现不好点击的问题，此时可以把视图frame值设置大一些，同时配合该属性，既可以达到想要的效果，也可以增大点击的接触面积
-    @objc open var radioViewEdgeInsets                  = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+    @objc open var radioViewEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
     
     /// 标题字体大小
-    @objc open var titleFont: UIFont                    = UIFont.systemFont(ofSize: 15.0)
+    @objc open var titleFont: UIFont = UIFont.systemFont(ofSize: 15.0)
     /// 标题文字颜色
-    @objc open var titleColor: UIColor                  = kPV_RGBA(r: 51, g: 51, b: 51, a: 1)
+    @objc open var titleColor: UIColor = kPV_RGBA(r: 51, g: 51, b: 51, a: 1)
     
     
     // ------------ 以下属性为：buttonType == .circular | .rectangle 时有效 ------------
     /// 未选中时的颜色
-    @objc open var normalStateColor: UIColor            = kPV_RGBA(r: 51, g: 51, b: 51, a: 1)
+    @objc open var normalStateColor: UIColor = kPV_RGBA(r: 51, g: 51, b: 51, a: 1)
     /// 选中时的颜色
-    @objc open var selectedStateColor: UIColor          = kPV_RGBA(r: 51, g: 51, b: 51, a: 1)
+    @objc open var selectedStateColor: UIColor = kPV_RGBA(r: 51, g: 51, b: 51, a: 1)
     /// 边框颜色是否需要跟随选中颜色
-    @objc public var isBorderColorNeedChanged : Bool    = true
+    @objc public var isBorderColorNeedChanged : Bool = true
     /// 边的宽度
-    @objc public var lineWidth: CGFloat                 = 2
+    @objc public var lineWidth: CGFloat = 2
     /// 内部选中状态的宽度与内边框的比例
-    @objc public var insideMarginRate: CGFloat          = 0.6
+    @objc public var insideMarginRate: CGFloat = 0.6
     
     
     // ------------ 以下属性为：buttonType == .image 时有效 ------------
