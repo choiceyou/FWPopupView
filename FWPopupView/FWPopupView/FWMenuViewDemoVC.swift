@@ -203,7 +203,7 @@ extension FWMenuViewDemoVC {
             property.popupArrowStyle = .round
             property.popupArrowVertexScaleX = 0.8
             property.cornerRadius = 5
-            property.backgroundLayerColors = [UIColor.red.cgColor, UIColor.blue.cgColor]
+            property.backgroundLayerColors = [UIColor.red, UIColor.blue]
             property.splitColor = UIColor.clear
             property.separatorColor = UIColor.init(white: 1, alpha: 0.3)
             property.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white, NSAttributedString.Key.backgroundColor: UIColor.clear, NSAttributedString.Key.font: UIFont.systemFont(ofSize: 15.0)]
