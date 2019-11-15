@@ -138,7 +138,7 @@ open class FWPopupView: UIView, UIGestureRecognizerDelegate {
             if newValue.backgroundColor != nil {
                 self.backgroundColor = newValue.backgroundColor
             } else if newValue.backgroundLayerColors != nil {
-                var tmpArray: [CGColor] = []
+                var tmpArray: [Any] = []
                 for color: UIColor in newValue.backgroundLayerColors! {
                     tmpArray.append(color.cgColor)
                 }
