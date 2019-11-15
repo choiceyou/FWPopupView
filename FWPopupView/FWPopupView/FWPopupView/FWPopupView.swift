@@ -139,8 +139,8 @@ open class FWPopupView: UIView, UIGestureRecognizerDelegate {
                 self.backgroundColor = newValue.backgroundColor
             } else if newValue.backgroundLayerColors != nil {
                 var tmpArray: [Any] = []
-                for color: UIColor in newValue.backgroundLayerColors! {
-                    tmpArray.append(color.cgColor)
+                for color: CGColor in newValue.backgroundLayerColors! {
+                    tmpArray.append(color as Any)
                 }
                 self.backgroundLayer.colors = tmpArray
             }
@@ -1059,7 +1059,7 @@ open class FWPopupViewProperty: NSObject {
     /// 弹窗的背景色（注意：这边指的是弹窗而不是遮罩层，遮罩层背景色的设置是：fwMaskViewColor）
     @objc open var backgroundColor: UIColor?
     /// 弹窗的背景渐变色：当未设置backgroundColor时该值才有效
-    @objc open var backgroundLayerColors: [UIColor]?
+    @objc open var backgroundLayerColors: [CGColor]?
     /// 弹窗的背景渐变色相关属性：当设置了backgroundLayerColors时该值才有效
     @objc open var backgroundLayerStartPoint: CGPoint = CGPoint(x: 0.0, y: 0.0)
     /// 弹窗的背景渐变色相关属性：当设置了backgroundLayerColors时该值才有效
