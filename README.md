@@ -235,6 +235,10 @@ FWSheetView *sheetView = [FWSheetView sheetWithTitle: @"标题"
 • v4.0.9:
 - [x] 部分组件适配ios13的深色模式；
 
+• v4.1.1:
+- [x] FWPopupView新增渐变背景色功能：backgroundLayerColors；
+- [x] FWMenuView细节优化；
+
 
 
 ## 结尾语：
