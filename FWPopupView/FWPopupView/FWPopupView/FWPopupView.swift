@@ -313,7 +313,7 @@ extension FWPopupView {
         if self.attachedView != nil && self.vProperty.maskViewColor != nil {
             self.attachedView?.fwMaskViewColor = self.vProperty.maskViewColor!
         }
-        self.originKeyWindow = UIApplication.shared.keyWindow
+        self.originKeyWindow = UIApplication.shared.windows.first
         if self.vProperty.touchWildToHide != nil && !self.vProperty.touchWildToHide!.isEmpty && Int(self.vProperty.touchWildToHide!) == 1 {
             FWPopupWindow.sharedInstance.touchWildToHide = true
         } else {
@@ -385,7 +385,7 @@ extension FWPopupView {
         
         for tmpView: UIView in FWPopupWindow.sharedInstance.hiddenViews {
             if tmpView == self {
-                if let index = FWPopupWindow.sharedInstance.hiddenViews.index(of: tmpView) {
+                if let index = FWPopupWindow.sharedInstance.hiddenViews.firstIndex(of: tmpView) {
                     FWPopupWindow.sharedInstance.hiddenViews.remove(at: index)
                 }
             }
@@ -565,7 +565,7 @@ extension FWPopupView {
                 
                 if isRemove == true {
                     strongSelf.removeFromSuperview()
-                    if let index = FWPopupWindow.sharedInstance.hiddenViews.index(of: strongSelf) {
+                    if let index = FWPopupWindow.sharedInstance.hiddenViews.firstIndex(of: strongSelf) {
                         FWPopupWindow.sharedInstance.hiddenViews.remove(at: index)
                     }
                 }

@@ -29,6 +29,12 @@ open class FWPopupWindow: UIWindow, UIGestureRecognizerDelegate {
         struct Static {
             static let kbManager = FWPopupWindow(frame: UIScreen.main.bounds)
         }
+        if #available(iOS 13.0, *) {
+            if Static.kbManager.windowScene == nil {
+                let windowScene = UIApplication.shared.connectedScenes.filter{$0.activationState == .foregroundActive}.first
+                Static.kbManager.windowScene = windowScene as? UIWindowScene
+            }
+        }
         return Static.kbManager
     }
     
