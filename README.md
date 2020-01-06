@@ -239,6 +239,9 @@ FWSheetView *sheetView = [FWSheetView sheetWithTitle: @"标题"
 - [x] FWPopupView新增渐变背景色功能：backgroundLayerColors；
 - [x] FWMenuView细节优化；
 
+• v4.1.2:
+- [x] 解决xcode11.x新建（含SceneDelegate）的项目中弹窗不显示的问题；
+
 
 
 ## 结尾语：
