@@ -121,8 +121,8 @@ open class FWPopupView: UIView, UIGestureRecognizerDelegate {
     /// 单击隐藏
     private var tapGest: UITapGestureRecognizer?
     
-    /// 1、当外部没有传入该参数时，默认为UIWindow的根控制器的视图，即表示弹窗放在FWPopupWindow上，此时若FWPopupWindow.sharedInstance.touchWildToHide = true表示弹窗视图外部可点击；2、当外部传入该参数时，该视图为传入的UIView，即表示弹窗放在传入的UIView上；
-    @objc public var attachedView = FWPopupWindow.sharedInstance.attachView() {
+    /// 1、当外部没有传入该参数时，默认为UIWindow的根控制器的视图，即表示弹窗放在FWPopupSWindow上，此时若FWPopupSWindow.sharedInstance.touchWildToHide = true表示弹窗视图外部可点击；2、当外部传入该参数时，该视图为传入的UIView，即表示弹窗放在传入的UIView上；
+    @objc public var attachedView = FWPopupSWindow.sharedInstance.attachView() {
         willSet {
             newValue?.fwMaskView.addSubview(self)
             if newValue!.isKind(of: UIScrollView.self) {
@@ -224,10 +224,10 @@ open class FWPopupView: UIView, UIGestureRecognizerDelegate {
     private func setupParams() {
         self.backgroundColor = UIColor.white
         
-        FWPopupWindow.sharedInstance.backgroundColor = UIColor.clear
+        FWPopupSWindow.sharedInstance.backgroundColor = UIColor.clear
         
         self.originMaskViewColor = self.attachedView?.fwMaskViewColor
-        self.originTouchWildToHide = FWPopupWindow.sharedInstance.touchWildToHide
+        self.originTouchWildToHide = FWPopupSWindow.sharedInstance.touchWildToHide
         self.attachedView?.fwMaskView.addSubview(self)
         self.isHidden = true
         
@@ -296,7 +296,7 @@ extension FWPopupView {
         self.popupStateBlock = popupStateBlock
         
         if self.attachedView?.fwBackgroundAnimating == true {
-            FWPopupWindow.sharedInstance.willShowingViews.append(self)
+            FWPopupSWindow.sharedInstance.willShowingViews.append(self)
         } else {
             self.showNow()
         }
@@ -315,13 +315,13 @@ extension FWPopupView {
         }
         self.originKeyWindow = UIApplication.shared.windows.first
         if self.vProperty.touchWildToHide != nil && !self.vProperty.touchWildToHide!.isEmpty && Int(self.vProperty.touchWildToHide!) == 1 {
-            FWPopupWindow.sharedInstance.touchWildToHide = true
+            FWPopupSWindow.sharedInstance.touchWildToHide = true
         } else {
-            FWPopupWindow.sharedInstance.touchWildToHide = false
+            FWPopupSWindow.sharedInstance.touchWildToHide = false
         }
         self.attachedView?.fwAnimationDuration = self.vProperty.animationDuration
         
-        if self.attachedView != nil && self.attachedView != FWPopupWindow.sharedInstance.attachView() {
+        if self.attachedView != nil && self.attachedView != FWPopupSWindow.sharedInstance.attachView() {
             if tapGest == nil {
                 tapGest = UITapGestureRecognizer(target: self, action: #selector(tapGesClick(tap:)))
                 //                tapGest?.cancelsTouchesInView = false
@@ -336,7 +336,7 @@ extension FWPopupView {
         }
         
         if self.attachedView == nil {
-            self.attachedView = FWPopupWindow.sharedInstance.attachView()
+            self.attachedView = FWPopupSWindow.sharedInstance.attachView()
         }
         
         self.attachedView?.showFwBackground()
@@ -378,20 +378,20 @@ extension FWPopupView {
         self.currentPopupViewState = .willDisappear
         
         if self.attachedView == nil {
-            self.attachedView = FWPopupWindow.sharedInstance.attachView()
+            self.attachedView = FWPopupSWindow.sharedInstance.attachView()
         }
         
         self.attachedView?.fwAnimationDuration = self.vProperty.animationDuration
         
-        for tmpView: UIView in FWPopupWindow.sharedInstance.hiddenViews {
+        for tmpView: UIView in FWPopupSWindow.sharedInstance.hiddenViews {
             if tmpView == self {
-                if let index = FWPopupWindow.sharedInstance.hiddenViews.firstIndex(of: tmpView) {
-                    FWPopupWindow.sharedInstance.hiddenViews.remove(at: index)
+                if let index = FWPopupSWindow.sharedInstance.hiddenViews.firstIndex(of: tmpView) {
+                    FWPopupSWindow.sharedInstance.hiddenViews.remove(at: index)
                 }
             }
         }
         
-        if FWPopupWindow.sharedInstance.hiddenViews.isEmpty && FWPopupWindow.sharedInstance.willShowingViews.isEmpty && self.attachedView?.fwBackgroundAnimating == false {
+        if FWPopupSWindow.sharedInstance.hiddenViews.isEmpty && FWPopupSWindow.sharedInstance.willShowingViews.isEmpty && self.attachedView?.fwBackgroundAnimating == false {
             self.attachedView?.hideFwBackground()
         }
         
@@ -410,7 +410,7 @@ extension FWPopupView {
         
         // 还原弹窗弹起时的相关参数
         self.attachedView?.fwMaskViewColor = self.originMaskViewColor
-        FWPopupWindow.sharedInstance.touchWildToHide = self.originTouchWildToHide
+        FWPopupSWindow.sharedInstance.touchWildToHide = self.originTouchWildToHide
         if self.attachedView!.isKind(of: UIScrollView.self) && self.originScrollEnabled != nil {
             (self.attachedView! as! UIScrollView).isScrollEnabled = self.originScrollEnabled!
         }
@@ -435,7 +435,7 @@ extension FWPopupView {
     ///
     /// - Returns: 是否隐藏
     @objc open class func isPopupViewHiden() -> Bool {
-        return FWPopupWindow.sharedInstance.isHidden
+        return FWPopupSWindow.sharedInstance.isHidden
     }
 }
 
@@ -466,8 +466,8 @@ extension FWPopupView {
                     }
                 }
             }
-            FWPopupWindow.sharedInstance.hiddenViews.removeAll()
-            FWPopupWindow.sharedInstance.hiddenViews.append(contentsOf: tmpHiddenViews)
+            FWPopupSWindow.sharedInstance.hiddenViews.removeAll()
+            FWPopupSWindow.sharedInstance.hiddenViews.append(contentsOf: tmpHiddenViews)
             
             if !strongSelf.haveSetConstraints || strongSelf.isResetSuperView == true {
                 strongSelf.setupConstraints(constraintsState: .constraintsBeforeAnimation)
@@ -526,10 +526,10 @@ extension FWPopupView {
         }
         self.currentPopupViewState = .didAppear
         
-        if FWPopupWindow.sharedInstance.willShowingViews.count > 0 {
-            let willShowingView: FWPopupView = FWPopupWindow.sharedInstance.willShowingViews.first as! FWPopupView
+        if FWPopupSWindow.sharedInstance.willShowingViews.count > 0 {
+            let willShowingView: FWPopupView = FWPopupSWindow.sharedInstance.willShowingViews.first as! FWPopupView
             willShowingView.showNow()
-            FWPopupWindow.sharedInstance.willShowingViews.removeFirst()
+            FWPopupSWindow.sharedInstance.willShowingViews.removeFirst()
         } else {
             self.attachedView?.fwBackgroundAnimating = false
         }
@@ -565,26 +565,26 @@ extension FWPopupView {
                 
                 if isRemove == true {
                     strongSelf.removeFromSuperview()
-                    if let index = FWPopupWindow.sharedInstance.hiddenViews.firstIndex(of: strongSelf) {
-                        FWPopupWindow.sharedInstance.hiddenViews.remove(at: index)
+                    if let index = FWPopupSWindow.sharedInstance.hiddenViews.firstIndex(of: strongSelf) {
+                        FWPopupSWindow.sharedInstance.hiddenViews.remove(at: index)
                     }
                 }
                 strongSelf.isHidden = true
                 
                 DispatchQueue.main.asyncAfter(deadline: .now()+0.0001, execute: {
-                    if FWPopupWindow.sharedInstance.willShowingViews.count > 0 {
-                        let willShowingView: FWPopupView = FWPopupWindow.sharedInstance.willShowingViews.last as! FWPopupView
+                    if FWPopupSWindow.sharedInstance.willShowingViews.count > 0 {
+                        let willShowingView: FWPopupView = FWPopupSWindow.sharedInstance.willShowingViews.last as! FWPopupView
                         willShowingView.showNow()
-                        FWPopupWindow.sharedInstance.willShowingViews.removeLast()
-                    } else if !FWPopupWindow.sharedInstance.hiddenViews.isEmpty {
-                        let showView: FWPopupView = FWPopupWindow.sharedInstance.hiddenViews.last as! FWPopupView
+                        FWPopupSWindow.sharedInstance.willShowingViews.removeLast()
+                    } else if !FWPopupSWindow.sharedInstance.hiddenViews.isEmpty {
+                        let showView: FWPopupView = FWPopupSWindow.sharedInstance.hiddenViews.last as! FWPopupView
                         showView.isHidden = false
                         showView.currentPopupViewState = .didAppearAgain
-                        FWPopupWindow.sharedInstance.hiddenViews.removeLast()
+                        FWPopupSWindow.sharedInstance.hiddenViews.removeLast()
                         if showView.vProperty.touchWildToHide != nil && !showView.vProperty.touchWildToHide!.isEmpty && Int(showView.vProperty.touchWildToHide!) == 1 {
-                            FWPopupWindow.sharedInstance.touchWildToHide = true
+                            FWPopupSWindow.sharedInstance.touchWildToHide = true
                         } else {
-                            FWPopupWindow.sharedInstance.touchWildToHide = false
+                            FWPopupSWindow.sharedInstance.touchWildToHide = false
                         }
                     }
                     
@@ -983,7 +983,7 @@ extension FWPopupView {
     /// - Parameter tap: 手势
     @objc func tapGesClick(tap: UITapGestureRecognizer) {
         
-        if FWPopupWindow.sharedInstance.touchWildToHide && !self.fwBackgroundAnimating {
+        if FWPopupSWindow.sharedInstance.touchWildToHide && !self.fwBackgroundAnimating {
             for view: UIView in (self.attachedView?.fwMaskView.subviews)! {
                 if view.isKind(of: FWPopupView.self) {
                     let popupView = view as! FWPopupView

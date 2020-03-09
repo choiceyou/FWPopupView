@@ -113,9 +113,9 @@ extension UIView {
         }
         self.fwMaskView.isHidden = false
         
-        if self == FWPopupWindow.sharedInstance.attachView() {
-            FWPopupWindow.sharedInstance.isHidden = false
-            FWPopupWindow.sharedInstance.makeKeyAndVisible()
+        if self == FWPopupSWindow.sharedInstance.attachView() {
+            FWPopupSWindow.sharedInstance.isHidden = false
+            FWPopupSWindow.sharedInstance.makeKeyAndVisible()
         } else if self.isKind(of: UIWindow.self) {
             self.isHidden = false
             let aa = self as! UIWindow
@@ -146,8 +146,8 @@ extension UIView {
             
         }) { (finished) in
             
-            if self == FWPopupWindow.sharedInstance.attachView() {
-                FWPopupWindow.sharedInstance.isHidden = true
+            if self == FWPopupSWindow.sharedInstance.attachView() {
+                FWPopupSWindow.sharedInstance.isHidden = true
             } else if self.isKind(of: UIWindow.self) {
                 self.isHidden = true
             }

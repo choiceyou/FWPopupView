@@ -123,7 +123,7 @@ class FWDemoViewController: UITableViewController {
         self.tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cellId")
         
         // 设置弹窗外部可点击
-        // FWPopupWindow.sharedInstance.touchWildToHide = true
+        // FWPopupSWindow.sharedInstance.touchWildToHide = true
         
         IQKeyboardManager.shared.enable = true
         IQKeyboardManager.shared.enableAutoToolbar = true

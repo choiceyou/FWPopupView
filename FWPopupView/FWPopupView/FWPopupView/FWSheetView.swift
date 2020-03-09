@@ -231,7 +231,7 @@ extension FWSheetView {
         self.snp.makeConstraints { (make) in
             make.left.right.equalToSuperview()
             if #available(iOS 11.0, *) {
-                make.bottom.equalTo(cancelBtn.snp.bottom).inset(-FWPopupWindow.sharedInstance.safeAreaInsets.bottom)
+                make.bottom.equalTo(cancelBtn.snp.bottom).inset(-FWPopupSWindow.sharedInstance.safeAreaInsets.bottom)
             } else {
                 make.bottom.equalTo(cancelBtn.snp.bottom)
             }
