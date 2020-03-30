@@ -313,7 +313,11 @@ extension FWPopupView {
         if self.attachedView != nil && self.vProperty.maskViewColor != nil {
             self.attachedView?.fwMaskViewColor = self.vProperty.maskViewColor!
         }
-        self.originKeyWindow = UIApplication.shared.windows.first
+        for tmpWindow in UIApplication.shared.windows {
+            if tmpWindow.isKeyWindow {
+                self.originKeyWindow = tmpWindow
+            }
+        }
         if self.vProperty.touchWildToHide != nil && !self.vProperty.touchWildToHide!.isEmpty && Int(self.vProperty.touchWildToHide!) == 1 {
             FWPopupSWindow.sharedInstance.touchWildToHide = true
         } else {
