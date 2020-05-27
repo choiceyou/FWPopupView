@@ -7,26 +7,26 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		490163D2241648B500C738E3 /* FWPopupSWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 490163D1241648B500C738E3 /* FWPopupSWindow.swift */; };
-		4904E178218AE8C50014A6E3 /* FWCustomSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4904E177218AE8C50014A6E3 /* FWCustomSheetView.swift */; };
-		49089B94216DA23B00683B2F /* FWRadioButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49089B93216DA23B00683B2F /* FWRadioButton.swift */; };
-		49118B29218BD77C006E6460 /* FWPopupView.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 49118B28218BD77C006E6460 /* FWPopupView.bundle */; };
-		491A970D20AFCD17006E3D70 /* FWMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 491A970C20AFCD17006E3D70 /* FWMenuView.swift */; };
-		493BE226206A322B00E5EF80 /* FWDateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 493BE225206A322B00E5EF80 /* FWDateView.swift */; };
 		49552D3D20B56C24000A1FA6 /* FWCustomPopupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49552D3C20B56C24000A1FA6 /* FWCustomPopupView.swift */; };
 		495AC10120688B3B002773F9 /* FWDemoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495AC10020688B3B002773F9 /* FWDemoViewController.swift */; };
-		495AC1052068C900002773F9 /* FWSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495AC1042068C900002773F9 /* FWSheetView.swift */; };
-		496F49FB21B506A4002AD917 /* FWPopupRootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 496F49FA21B506A4002AD917 /* FWPopupRootViewController.swift */; };
+		49630493247E4215006B121E /* FWPopupRootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49630486247E4215006B121E /* FWPopupRootViewController.swift */; };
+		49630494247E4215006B121E /* FWPopupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49630487247E4215006B121E /* FWPopupView.swift */; };
+		49630495247E4215006B121E /* FWRadioButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49630488247E4215006B121E /* FWRadioButton.swift */; };
+		49630496247E4215006B121E /* FWSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49630489247E4215006B121E /* FWSheetView.swift */; };
+		49630497247E4215006B121E /* FWPopupSWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4963048A247E4215006B121E /* FWPopupSWindow.swift */; };
+		49630498247E4215006B121E /* FWPopupCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4963048B247E4215006B121E /* FWPopupCategory.swift */; };
+		49630499247E4215006B121E /* FWCustomSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4963048C247E4215006B121E /* FWCustomSheetView.swift */; };
+		4963049A247E4215006B121E /* FWPopupView.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 4963048E247E4215006B121E /* FWPopupView.bundle */; };
+		4963049B247E4215006B121E /* FWPopupItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4963048F247E4215006B121E /* FWPopupItem.swift */; };
+		4963049C247E4215006B121E /* FWAlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49630490247E4215006B121E /* FWAlertView.swift */; };
+		4963049D247E4215006B121E /* FWDateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49630491247E4215006B121E /* FWDateView.swift */; };
+		4963049E247E4215006B121E /* FWMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49630492247E4215006B121E /* FWMenuView.swift */; };
 		49812D78205F915600639DDC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49812D77205F915600639DDC /* AppDelegate.swift */; };
 		49812D7F205F915600639DDC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 49812D7E205F915600639DDC /* Assets.xcassets */; };
 		49812D82205F915600639DDC /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 49812D80205F915600639DDC /* LaunchScreen.storyboard */; };
-		49812DA7205F91F100639DDC /* FWPopupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49812DA6205F91F100639DDC /* FWPopupView.swift */; };
 		49A7307D20B6AF8A002A989C /* FWMenuViewDemoVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49A7307C20B6AF8A002A989C /* FWMenuViewDemoVC.swift */; };
 		49A7307F20B6B187002A989C /* FWNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49A7307E20B6B187002A989C /* FWNavigationController.swift */; };
 		49A7308120B6D395002A989C /* FWCustomPopupDemoVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49A7308020B6D395002A989C /* FWCustomPopupDemoVC.swift */; };
-		49BB210F2060B86A00E0DE6E /* FWPopupCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49BB210E2060B86A00E0DE6E /* FWPopupCategory.swift */; };
-		49BB212520623C4A00E0DE6E /* FWAlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49BB212420623C4A00E0DE6E /* FWAlertView.swift */; };
-		49BB212720623E8100E0DE6E /* FWPopupItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49BB212620623E8100E0DE6E /* FWPopupItem.swift */; };
 		49F7A85D2214106B002267FD /* FWPopupViewUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49F7A85C2214106B002267FD /* FWPopupViewUITests.swift */; };
 		49F7A88C221411B5002267FD /* FWPopupViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49F7A88B221411B5002267FD /* FWPopupViewTests.swift */; };
 		56B3717CE2F2FC8C487C2BB0 /* libPods-FWPopupView.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5D859FC06A597D0EEFB02CB7 /* libPods-FWPopupView.a */; };
@@ -51,28 +51,28 @@
 
 /* Begin PBXFileReference section */
 		16EB712AF4359147E48A4A6C /* Pods-FWPopupView.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FWPopupView.release.xcconfig"; path = "Target Support Files/Pods-FWPopupView/Pods-FWPopupView.release.xcconfig"; sourceTree = "<group>"; };
-		490163D1241648B500C738E3 /* FWPopupSWindow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FWPopupSWindow.swift; sourceTree = "<group>"; };
-		4904E177218AE8C50014A6E3 /* FWCustomSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FWCustomSheetView.swift; sourceTree = "<group>"; };
-		49089B93216DA23B00683B2F /* FWRadioButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FWRadioButton.swift; sourceTree = "<group>"; };
-		49118B28218BD77C006E6460 /* FWPopupView.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = FWPopupView.bundle; sourceTree = "<group>"; };
-		491A970C20AFCD17006E3D70 /* FWMenuView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FWMenuView.swift; sourceTree = "<group>"; };
-		493BE225206A322B00E5EF80 /* FWDateView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FWDateView.swift; sourceTree = "<group>"; };
 		49552D3C20B56C24000A1FA6 /* FWCustomPopupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FWCustomPopupView.swift; sourceTree = "<group>"; };
 		495AC10020688B3B002773F9 /* FWDemoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FWDemoViewController.swift; sourceTree = "<group>"; };
-		495AC1042068C900002773F9 /* FWSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FWSheetView.swift; sourceTree = "<group>"; };
-		496F49FA21B506A4002AD917 /* FWPopupRootViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FWPopupRootViewController.swift; sourceTree = "<group>"; };
+		49630486247E4215006B121E /* FWPopupRootViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FWPopupRootViewController.swift; sourceTree = "<group>"; };
+		49630487247E4215006B121E /* FWPopupView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FWPopupView.swift; sourceTree = "<group>"; };
+		49630488247E4215006B121E /* FWRadioButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FWRadioButton.swift; sourceTree = "<group>"; };
+		49630489247E4215006B121E /* FWSheetView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FWSheetView.swift; sourceTree = "<group>"; };
+		4963048A247E4215006B121E /* FWPopupSWindow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FWPopupSWindow.swift; sourceTree = "<group>"; };
+		4963048B247E4215006B121E /* FWPopupCategory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FWPopupCategory.swift; sourceTree = "<group>"; };
+		4963048C247E4215006B121E /* FWCustomSheetView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FWCustomSheetView.swift; sourceTree = "<group>"; };
+		4963048E247E4215006B121E /* FWPopupView.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = FWPopupView.bundle; sourceTree = "<group>"; };
+		4963048F247E4215006B121E /* FWPopupItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FWPopupItem.swift; sourceTree = "<group>"; };
+		49630490247E4215006B121E /* FWAlertView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FWAlertView.swift; sourceTree = "<group>"; };
+		49630491247E4215006B121E /* FWDateView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FWDateView.swift; sourceTree = "<group>"; };
+		49630492247E4215006B121E /* FWMenuView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FWMenuView.swift; sourceTree = "<group>"; };
 		49812D74205F915600639DDC /* FWPopupView.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FWPopupView.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		49812D77205F915600639DDC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		49812D7E205F915600639DDC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		49812D81205F915600639DDC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		49812D83205F915600639DDC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		49812DA6205F91F100639DDC /* FWPopupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FWPopupView.swift; sourceTree = "<group>"; };
 		49A7307C20B6AF8A002A989C /* FWMenuViewDemoVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FWMenuViewDemoVC.swift; sourceTree = "<group>"; };
 		49A7307E20B6B187002A989C /* FWNavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FWNavigationController.swift; sourceTree = "<group>"; };
 		49A7308020B6D395002A989C /* FWCustomPopupDemoVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FWCustomPopupDemoVC.swift; sourceTree = "<group>"; };
-		49BB210E2060B86A00E0DE6E /* FWPopupCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FWPopupCategory.swift; sourceTree = "<group>"; };
-		49BB212420623C4A00E0DE6E /* FWAlertView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FWAlertView.swift; sourceTree = "<group>"; };
-		49BB212620623E8100E0DE6E /* FWPopupItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FWPopupItem.swift; sourceTree = "<group>"; };
 		49F7A85A2214106B002267FD /* FWPopupViewUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FWPopupViewUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		49F7A85C2214106B002267FD /* FWPopupViewUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FWPopupViewUITests.swift; sourceTree = "<group>"; };
 		49F7A85E2214106B002267FD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -121,10 +121,30 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		49118B27218BD741006E6460 /* Resources */ = {
+		49630485247E4215006B121E /* FWPopupView */ = {
 			isa = PBXGroup;
 			children = (
-				49118B28218BD77C006E6460 /* FWPopupView.bundle */,
+				49630487247E4215006B121E /* FWPopupView.swift */,
+				4963048A247E4215006B121E /* FWPopupSWindow.swift */,
+				49630490247E4215006B121E /* FWAlertView.swift */,
+				4963048C247E4215006B121E /* FWCustomSheetView.swift */,
+				49630491247E4215006B121E /* FWDateView.swift */,
+				49630492247E4215006B121E /* FWMenuView.swift */,
+				4963048B247E4215006B121E /* FWPopupCategory.swift */,
+				4963048F247E4215006B121E /* FWPopupItem.swift */,
+				49630486247E4215006B121E /* FWPopupRootViewController.swift */,
+				49630488247E4215006B121E /* FWRadioButton.swift */,
+				49630489247E4215006B121E /* FWSheetView.swift */,
+				4963048D247E4215006B121E /* Resources */,
+			);
+			name = FWPopupView;
+			path = ../../FWPopupView;
+			sourceTree = "<group>";
+		};
+		4963048D247E4215006B121E /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				4963048E247E4215006B121E /* FWPopupView.bundle */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -154,7 +174,7 @@
 		49812D76205F915600639DDC /* FWPopupView */ = {
 			isa = PBXGroup;
 			children = (
-				49812DA5205F916F00639DDC /* FWPopupView */,
+				49630485247E4215006B121E /* FWPopupView */,
 				49812D77205F915600639DDC /* AppDelegate.swift */,
 				49A7307E20B6B187002A989C /* FWNavigationController.swift */,
 				495AC10020688B3B002773F9 /* FWDemoViewController.swift */,
@@ -164,25 +184,6 @@
 				49812D7E205F915600639DDC /* Assets.xcassets */,
 				49812D80205F915600639DDC /* LaunchScreen.storyboard */,
 				49812D83205F915600639DDC /* Info.plist */,
-			);
-			path = FWPopupView;
-			sourceTree = "<group>";
-		};
-		49812DA5205F916F00639DDC /* FWPopupView */ = {
-			isa = PBXGroup;
-			children = (
-				49118B27218BD741006E6460 /* Resources */,
-				49812DA6205F91F100639DDC /* FWPopupView.swift */,
-				490163D1241648B500C738E3 /* FWPopupSWindow.swift */,
-				496F49FA21B506A4002AD917 /* FWPopupRootViewController.swift */,
-				49BB210E2060B86A00E0DE6E /* FWPopupCategory.swift */,
-				49BB212620623E8100E0DE6E /* FWPopupItem.swift */,
-				49BB212420623C4A00E0DE6E /* FWAlertView.swift */,
-				495AC1042068C900002773F9 /* FWSheetView.swift */,
-				4904E177218AE8C50014A6E3 /* FWCustomSheetView.swift */,
-				491A970C20AFCD17006E3D70 /* FWMenuView.swift */,
-				493BE225206A322B00E5EF80 /* FWDateView.swift */,
-				49089B93216DA23B00683B2F /* FWRadioButton.swift */,
 			);
 			path = FWPopupView;
 			sourceTree = "<group>";
@@ -323,7 +324,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				49118B29218BD77C006E6460 /* FWPopupView.bundle in Resources */,
+				4963049A247E4215006B121E /* FWPopupView.bundle in Resources */,
 				49812D82205F915600639DDC /* LaunchScreen.storyboard in Resources */,
 				49812D7F205F915600639DDC /* Assets.xcassets in Resources */,
 			);
@@ -397,23 +398,23 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4963049E247E4215006B121E /* FWMenuView.swift in Sources */,
+				4963049C247E4215006B121E /* FWAlertView.swift in Sources */,
+				4963049D247E4215006B121E /* FWDateView.swift in Sources */,
+				49630494247E4215006B121E /* FWPopupView.swift in Sources */,
 				49A7307D20B6AF8A002A989C /* FWMenuViewDemoVC.swift in Sources */,
+				49630493247E4215006B121E /* FWPopupRootViewController.swift in Sources */,
+				49630498247E4215006B121E /* FWPopupCategory.swift in Sources */,
+				4963049B247E4215006B121E /* FWPopupItem.swift in Sources */,
 				49A7307F20B6B187002A989C /* FWNavigationController.swift in Sources */,
-				49BB212520623C4A00E0DE6E /* FWAlertView.swift in Sources */,
 				49812D78205F915600639DDC /* AppDelegate.swift in Sources */,
 				49A7308120B6D395002A989C /* FWCustomPopupDemoVC.swift in Sources */,
-				49BB210F2060B86A00E0DE6E /* FWPopupCategory.swift in Sources */,
-				496F49FB21B506A4002AD917 /* FWPopupRootViewController.swift in Sources */,
-				49BB212720623E8100E0DE6E /* FWPopupItem.swift in Sources */,
-				491A970D20AFCD17006E3D70 /* FWMenuView.swift in Sources */,
-				490163D2241648B500C738E3 /* FWPopupSWindow.swift in Sources */,
-				49089B94216DA23B00683B2F /* FWRadioButton.swift in Sources */,
 				49552D3D20B56C24000A1FA6 /* FWCustomPopupView.swift in Sources */,
-				49812DA7205F91F100639DDC /* FWPopupView.swift in Sources */,
-				493BE226206A322B00E5EF80 /* FWDateView.swift in Sources */,
-				495AC1052068C900002773F9 /* FWSheetView.swift in Sources */,
+				49630496247E4215006B121E /* FWSheetView.swift in Sources */,
+				49630497247E4215006B121E /* FWPopupSWindow.swift in Sources */,
 				495AC10120688B3B002773F9 /* FWDemoViewController.swift in Sources */,
-				4904E178218AE8C50014A6E3 /* FWCustomSheetView.swift in Sources */,
+				49630499247E4215006B121E /* FWCustomSheetView.swift in Sources */,
+				49630495247E4215006B121E /* FWRadioButton.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
