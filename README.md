@@ -142,20 +142,6 @@ FWSheetView *sheetView = [FWSheetView sheetWithTitle: @"标题"
 
 ## 更新记录：
 
-• v2.0.4：
-- [x] 支持图形加载完成后用户添加代理事件灰色背景默认值由原来的 alpha=0.6 改为 alpha=0.5；
-- [x] 在原类初始化方法中添加输入框键盘类型参数：UIKeyboardType（鉴于方法可能跟着版本改动，所以建议封装使用）；
-  
-• v2.0.5:
-- [x] 修复弹窗隐藏时未设置原window为keywindow的问题；
-  
-• v2.0.6:
-- [x] 原FWPopupItemHandler改为FWPopupItemClickedBlock，增加反馈当前弹窗参数；
-- [x] FWItemType加入参数canAutoHide：点击该按钮后会自动隐藏弹窗。这样子做能够适应更多的弹窗场景；
-  
-• v2.0.7:
-- [x] 支持单独设置某个按钮的文字、背景颜色；
-  
 • v3.0.0（大版本）:
 - [x] 弹窗基类重构：设置视图展示位置+偏移量来设置弹窗真正需要展示的位置；有多重可选动画类型。
 - [x] 由于OC类不能继承Swift类，所以弹窗基类实现了两种语言。swift版本：FWPopupView；OC版本：FWPopupBaseView；
@@ -249,7 +235,8 @@ FWSheetView *sheetView = [FWSheetView sheetWithTitle: @"标题"
 • v4.1.4:
 - [x] 解决还原keywindow时未判断原记录的window是否keywindow的问题；
 
-
+• v4.1.5:
+- [x] 支持 xib 方式创建弹窗；
 
 
 
