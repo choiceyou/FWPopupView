@@ -13,7 +13,7 @@ import IQKeyboardManagerSwift
 class FWDemoViewController: UITableViewController {
     
     /// 注意：这边不同的示例可能还附加演示了一些特性（比如：遮罩层是否能够点击、遮罩层的背景颜色等等），有用到时可以参考
-    var titleArray = ["0、Alert - 单个按钮", "1、Alert - 两个按钮", "2、Alert - 两个按钮（修改参数）", "3、Alert - 多个按钮", "4、Alert - 带输入框", "5、Alert - 带自定义视图", "6、Sheet - 少量Item", "7、Sheet - 标题+少量Item", "8、Sheet - 大量Item", "9、Date - 自定义日期选择", "10、Menu - 自定义菜单", "11、Custom - 自定义弹窗", "12、CustomSheet - 类似Sheet效果", "13、CustomSheet - 类似Sheet效果2", "14、同时显示两个弹窗（展示可以同时调用多个弹窗的显示方法，但是显示过程按“后来者先显示”的原则，因此过程则反之）", "15、RadioButton", "16、含RadioButton的Alert"]
+    var titleArray = ["0、Alert - 单个按钮", "1、Alert - 两个按钮", "2、Alert - 两个按钮（修改参数）", "3、Alert - 多个按钮", "4、Alert - 带输入框", "5、Alert - 带自定义视图", "6、Sheet - 少量Item", "7、Sheet - 标题+少量Item", "8、Sheet - 大量Item", "9、Date - 自定义日期选择", "10、Menu - 自定义菜单", "11、Custom - 自定义弹窗", "12、CustomSheet - 类似Sheet效果", "13、CustomSheet - 类似Sheet效果2", "14、同时显示两个弹窗（展示可以同时调用多个弹窗的显示方法，但是显示过程按“后来者先显示”的原则，因此过程则反之）", "15、RadioButton", "16、含RadioButton的Alert", "17、xib 方式创建弹窗"]
     
     let block: FWPopupItemClickedBlock = { (popupView, index, title) in
         print("AlertView：点击了第\(index)个按钮")
@@ -320,6 +320,22 @@ extension FWDemoViewController {
             let alertView = FWAlertView.alert(title: "温馨提示", detail: "是否记住当前状态？", inputPlaceholder: nil, keyboardType: .default, isSecureTextEntry: false, customView: radioButton, items: items)
             alertView.show()
             break
+        case 17:
+            let customPopupView = FWCustomPopupView2(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width * 0.8, height: UIScreen.main.bounds.height * 0.5))
+            customPopupView.backgroundColor = UIColor.yellow
+            
+            let vProperty = FWPopupViewProperty()
+            vProperty.popupCustomAlignment = .center
+            vProperty.popupAnimationType = .scale
+            vProperty.maskViewColor = UIColor(white: 0, alpha: 0.5)
+            vProperty.touchWildToHide = "1"
+            vProperty.popupViewEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+            vProperty.animationDuration = 0.3
+            customPopupView.vProperty = vProperty
+            
+            customPopupView.show()
+            break;
+            
         default:
             break
         }

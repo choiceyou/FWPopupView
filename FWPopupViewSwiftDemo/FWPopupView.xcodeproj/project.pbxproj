@@ -21,6 +21,8 @@
 		4963049C247E4215006B121E /* FWAlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49630490247E4215006B121E /* FWAlertView.swift */; };
 		4963049D247E4215006B121E /* FWDateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49630491247E4215006B121E /* FWDateView.swift */; };
 		4963049E247E4215006B121E /* FWMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49630492247E4215006B121E /* FWMenuView.swift */; };
+		496D142924809975007CB41A /* FWCustomPopupView2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 496D142824809975007CB41A /* FWCustomPopupView2.swift */; };
+		496D142B248099D3007CB41A /* FWCustomPopupView2.xib in Resources */ = {isa = PBXBuildFile; fileRef = 496D142A248099D3007CB41A /* FWCustomPopupView2.xib */; };
 		49812D78205F915600639DDC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49812D77205F915600639DDC /* AppDelegate.swift */; };
 		49812D7F205F915600639DDC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 49812D7E205F915600639DDC /* Assets.xcassets */; };
 		49812D82205F915600639DDC /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 49812D80205F915600639DDC /* LaunchScreen.storyboard */; };
@@ -65,6 +67,8 @@
 		49630490247E4215006B121E /* FWAlertView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FWAlertView.swift; sourceTree = "<group>"; };
 		49630491247E4215006B121E /* FWDateView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FWDateView.swift; sourceTree = "<group>"; };
 		49630492247E4215006B121E /* FWMenuView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FWMenuView.swift; sourceTree = "<group>"; };
+		496D142824809975007CB41A /* FWCustomPopupView2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FWCustomPopupView2.swift; sourceTree = "<group>"; };
+		496D142A248099D3007CB41A /* FWCustomPopupView2.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FWCustomPopupView2.xib; sourceTree = "<group>"; };
 		49812D74205F915600639DDC /* FWPopupView.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FWPopupView.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		49812D77205F915600639DDC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		49812D7E205F915600639DDC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -181,6 +185,8 @@
 				49A7307C20B6AF8A002A989C /* FWMenuViewDemoVC.swift */,
 				49A7308020B6D395002A989C /* FWCustomPopupDemoVC.swift */,
 				49552D3C20B56C24000A1FA6 /* FWCustomPopupView.swift */,
+				496D142824809975007CB41A /* FWCustomPopupView2.swift */,
+				496D142A248099D3007CB41A /* FWCustomPopupView2.xib */,
 				49812D7E205F915600639DDC /* Assets.xcassets */,
 				49812D80205F915600639DDC /* LaunchScreen.storyboard */,
 				49812D83205F915600639DDC /* Info.plist */,
@@ -324,6 +330,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				496D142B248099D3007CB41A /* FWCustomPopupView2.xib in Resources */,
 				4963049A247E4215006B121E /* FWPopupView.bundle in Resources */,
 				49812D82205F915600639DDC /* LaunchScreen.storyboard in Resources */,
 				49812D7F205F915600639DDC /* Assets.xcassets in Resources */,
@@ -398,6 +405,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				496D142924809975007CB41A /* FWCustomPopupView2.swift in Sources */,
 				4963049E247E4215006B121E /* FWMenuView.swift in Sources */,
 				4963049C247E4215006B121E /* FWAlertView.swift in Sources */,
 				4963049D247E4215006B121E /* FWDateView.swift in Sources */,

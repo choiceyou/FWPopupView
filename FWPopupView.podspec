@@ -16,7 +16,7 @@ Pod::Spec.new do |s|
   #
 
   s.name         = "FWPopupView"
-  s.version      = "4.1.4"
+  s.version      = "4.1.5"
   s.summary      = "自定义弹窗"
 
   # This description is used to generate tags and improve search results.
@@ -25,7 +25,7 @@ Pod::Spec.new do |s|
   #   * Write the description between the DESC delimiters below.
   #   * Finally, don't worry about the indent, CocoaPods strips it!
   s.description  = <<-DESC
-自定义弹窗，Alert、Sheet、Custom类型
+  自定义弹窗，Alert、Sheet、Custom类型
                    DESC
 
   s.homepage     = "https://github.com/choiceyou/FWPopupView"
@@ -64,8 +64,7 @@ Pod::Spec.new do |s|
   #  the deployment target. You can optionally include the target after the platform.
   #
 
-  s.swift_version  = "4.2" 
-  s.platform     = :ios
+  s.swift_version  = "4.2"
   s.platform     = :ios, "8.0"
 
   #  When using multiple platforms
@@ -92,7 +91,7 @@ Pod::Spec.new do |s|
   #  Not including the public_header_files will make all headers public.
   #
 
-  s.source_files  = "FWPopupView/FWPopupView/FWPopupView/*.swift"
+  s.source_files  = "FWPopupView", "FWPopupView/**/*.swift"
   s.exclude_files = "Classes/Exclude"
 
   # s.public_header_files = "Classes/**/*.h"
@@ -107,7 +106,7 @@ Pod::Spec.new do |s|
   #
 
   # s.resource  = "icon.png"
-  s.resources = "FWPopupView/FWPopupView/FWPopupView/Resources/FWPopupView.bundle"
+  s.resources = "FWPopupView/**/Resources/FWPopupView.bundle"
 
   # s.preserve_paths = "FilesToSave", "MoreFilesToSave"
 
@@ -119,7 +118,7 @@ Pod::Spec.new do |s|
   #
 
   # s.framework  = "SomeFramework"
-  # s.frameworks = "SomeFramework", "AnotherFramework"
+  s.frameworks = "UIKit", "Foundation"
 
   # s.library   = "iconv"
   # s.libraries = "iconv", "xml2"
