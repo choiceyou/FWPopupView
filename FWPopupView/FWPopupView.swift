@@ -607,6 +607,9 @@ extension FWPopupView {
         
         let myAlignment: FWPopupCustomAlignment = self.vProperty.popupCustomAlignment
         let edgeInsets = self.vProperty.popupViewEdgeInsets
+        if (self.superview == nil) {
+            return
+        }
         
         if constraintsState == .constraintsBeforeAnimation {
             self.layoutIfNeeded()
