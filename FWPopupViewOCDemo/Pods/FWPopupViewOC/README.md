@@ -222,6 +222,11 @@ pod 'FWPopupViewOC'
 - [x] 支持重新设置弹窗视图size；
 - [x] 添加两种弹窗状态：FWPopupStateDidAppearButCovered、FWPopupStateDidAppearAgain；
 
+• v3.0.4:
+- [x] 解决多个弹窗同时存在时，最后一个弹窗可能无法外部点击的问题；
+
+• v3.0.5:
+- [x] 解决（View controller-based status bar appearance = "YES"）状态栏隐藏的情况下，弹窗时会显示出状态栏的问题；
 
 
 ## 结尾语：

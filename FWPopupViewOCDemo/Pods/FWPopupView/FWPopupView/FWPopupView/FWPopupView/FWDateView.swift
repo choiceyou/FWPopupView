@@ -61,6 +61,8 @@ extension FWDateView {
         
         let property = self.vProperty as! FWDateViewProperty
         
+        self.datePicker.setValue(property.pickerTextColor, forKey: "textColor")
+        
         self.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: property.datePickerHeight + property.btnHeight)
         
         self.cancelBtn = self.setupBtn(frame: CGRect(x: 0, y: 0, width: property.btnWidth, height: property.btnHeight), title: property.cancelBtnTitle, tag: 0)
@@ -114,20 +116,22 @@ extension FWDateView {
 open class FWDateViewProperty : FWPopupViewProperty {
     
     // UIDatePicker的高度
-    @objc public var datePickerHeight: CGFloat  = 240
+    @objc public var datePickerHeight: CGFloat = 240
     
     // 确定、取消按钮的高度
-    @objc public var btnHeight: CGFloat         = 40
+    @objc public var btnHeight: CGFloat = 40
     // 确定、取消按钮的宽度
-    @objc public var btnWidth: CGFloat          = 60
+    @objc public var btnWidth: CGFloat = 60
+    // 时间选择器文字颜色
+    @objc public var pickerTextColor: UIColor = kPV_RGBA(r: 51, g: 51, b: 51, a: 1)
     // 按钮文字颜色
-    @objc public var btnTitleColor: UIColor     = kPV_RGBA(r: 51, g: 51, b: 51, a: 1)
+    @objc public var btnTitleColor: UIColor = kPV_RGBA(r: 51, g: 51, b: 51, a: 1)
     // 按钮文字大小
-    @objc public var btnTitleFont: CGFloat      = 17.0
+    @objc public var btnTitleFont: CGFloat = 17.0
     // 取消按钮名称
-    @objc public var cancelBtnTitle             = "取消"
+    @objc public var cancelBtnTitle = "取消"
     // 确定按钮名称
-    @objc public var confirmBtnTitle            = "确定"
+    @objc public var confirmBtnTitle = "确定"
     
     public override func reSetParams() {
         super.reSetParams()

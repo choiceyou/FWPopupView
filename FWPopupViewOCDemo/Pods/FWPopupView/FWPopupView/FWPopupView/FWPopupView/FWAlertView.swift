@@ -242,7 +242,8 @@ extension FWAlertView {
                 make.right.equalToSuperview().offset(-self.vProperty.letfRigthMargin)
                 make.height.equalTo(40)
             })
-            self.inputTF?.placeholder = inputPlaceholder
+            self.inputTF?.attributedPlaceholder = NSAttributedString(string: inputPlaceholder!, attributes: [NSAttributedString.Key.foregroundColor : property.inputPlaceholderColor])
+            self.inputTF?.textColor = property.inputTextColor
             self.inputTF?.textAlignment = .center
             self.inputTF?.clearButtonMode = .whileEditing
             self.inputTF?.leftViewMode = .always
@@ -307,10 +308,10 @@ extension FWAlertView {
                     make.width.equalTo(btnContrainerView).offset(property.splitWidth*2)
                     if tmpIndex == 0 {
                         make.top.equalToSuperview()
-                        lastBtn = btn;
+                        lastBtn = btn
                     } else {
                         make.top.equalTo(lastBtn.snp.bottom).offset(-self.vProperty.splitWidth)
-                        lastBtn = btn;
+                        lastBtn = btn
                     }
                 }
             }
@@ -390,23 +391,28 @@ extension FWAlertView {
 open class FWAlertViewProperty: FWPopupViewProperty {
     
     // FWAlertView宽度
-    @objc open var alertViewWidth: CGFloat      = 275.0
+    @objc open var alertViewWidth: CGFloat = 275.0
     // 为保持FWAlertView美观，设置FWAlertView的最小高度
-    @objc open var alertViewMinHeight: CGFloat  = 150
+    @objc open var alertViewMinHeight: CGFloat = 150
     
     // 描述字体大小
-    @objc open var detailFontSize: CGFloat      = 14.0
+    @objc open var detailFontSize: CGFloat = 14.0
     // 描述字体，设置该值后detailFontSize无效
     @objc open var detailFont: UIFont?
     // 描述文字颜色
-    @objc open var detailColor: UIColor         = kPV_RGBA(r: 51, g: 51, b: 51, a: 1)
+    @objc open var detailColor: UIColor = kPV_RGBA(r: 51, g: 51, b: 51, a: 1)
+    
+    // 输入框提示文字颜色
+    @objc open var inputPlaceholderColor: UIColor = UIColor.lightGray
+    // 输入框文字颜色
+    @objc open var inputTextColor: UIColor = kPV_RGBA(r: 51, g: 51, b: 51, a: 1)
     
     // 确定按钮默认名称
-    @objc open var defaultTextOK                = "知道了"
+    @objc open var defaultTextOK = "知道了"
     // 取消按钮默认名称
-    @objc open var defaultTextCancel            = "取消"
+    @objc open var defaultTextCancel = "取消"
     // 确定按钮默认名称
-    @objc open var defaultTextConfirm           = "确定"
+    @objc open var defaultTextConfirm = "确定"
     
     
     public override func reSetParams() {

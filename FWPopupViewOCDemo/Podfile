@@ -1,10 +1,15 @@
 # Uncomment the next line to define a global platform for your project
-platform :ios, '8.0'
-use_frameworks!
+platform :ios, '9.0'
+source 'https://github.com/cocoapods/specs.git'
 
 target 'FWPopupView_OC' do
+
+    use_frameworks!
     
     pod 'FWPopupView'
+    
+    # 以下库非必要，演示作用
     pod 'FWPopupViewOC'
+    pod 'SVProgressHUD'
     
 end

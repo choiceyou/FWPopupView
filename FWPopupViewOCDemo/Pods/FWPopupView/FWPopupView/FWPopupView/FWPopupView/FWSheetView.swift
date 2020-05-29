@@ -180,10 +180,10 @@ extension FWSheetView {
                 make.width.equalTo(btnContrainerView).offset(property.splitWidth*2)
                 if tmpIndex == 0 {
                     make.top.equalToSuperview()
-                    lastBtn = btn;
+                    lastBtn = btn
                 } else if tmpIndex > 0 && tmpIndex < self.actionItemArray.count - 1 {
                     make.top.equalTo(lastBtn.snp.bottom).offset(-self.vProperty.splitWidth)
-                    lastBtn = btn;
+                    lastBtn = btn
                 }
             }
             // 按钮标题
@@ -216,10 +216,11 @@ extension FWSheetView {
         }
         
         btnContrainerView.snp.makeConstraints { (make) in
-            make.height.equalTo(property.buttonHeight * CGFloat(self.actionItemArray.count-1))
-            if self.vProperty.popupViewMaxHeightRate > 0 {
-                make.height.lessThanOrEqualTo(self.superview!.snp.height).multipliedBy(self.vProperty.popupViewMaxHeightRate)
+            var tmpHeight: CGFloat = property.buttonHeight * CGFloat(self.actionItemArray.count-1)
+            if self.vProperty.popupViewMaxHeightRate > 0 && self.superview != nil && self.superview!.frame.height > 0 {
+                tmpHeight = min(tmpHeight, self.superview!.frame.height * self.vProperty.popupViewMaxHeightRate)
             }
+            make.height.equalTo(tmpHeight)
             make.bottom.equalTo(lastBtn.snp.bottom).offset(-self.vProperty.splitWidth)
         }
         
@@ -230,7 +231,7 @@ extension FWSheetView {
         self.snp.makeConstraints { (make) in
             make.left.right.equalToSuperview()
             if #available(iOS 11.0, *) {
-                make.bottom.equalTo(cancelBtn.snp.bottom).inset(-FWPopupWindow.sharedInstance.safeAreaInsets.bottom)
+                make.bottom.equalTo(cancelBtn.snp.bottom).inset(-FWPopupSWindow.sharedInstance.safeAreaInsets.bottom)
             } else {
                 make.bottom.equalTo(cancelBtn.snp.bottom)
             }
@@ -262,9 +263,9 @@ extension FWSheetView {
 open class FWSheetViewProperty: FWPopupViewProperty {
     
     // 取消按钮距离头部的距离
-    @objc public var cancelBtnMarginTop: CGFloat    = 6
+    @objc public var cancelBtnMarginTop: CGFloat = 6
     // 取消按钮名称
-    @objc public var cancelItemTitle                = "取消"
+    @objc public var cancelItemTitle = "取消"
     // 取消按钮字体颜色
     @objc public var cancelItemTitleColor: UIColor?
     // 取消按钮字体大小

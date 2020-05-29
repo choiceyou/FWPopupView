@@ -63,4 +63,8 @@ alpha:(a)]
  */
 @property (nonatomic, assign) BOOL shouldResetDimMaskView;
 
+
+/// 隐藏全部的弹窗（包括当前不可见的弹窗）
+- (void)removeAllPopupView;
+
 @end

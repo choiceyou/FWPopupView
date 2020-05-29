@@ -1,5 +1,5 @@
 //
-//  FWPopupWindow.swift
+//  FWPopupSWindow.swift
 //  FWPopupView
 //
 //  Created by xfg on 2018/3/19.
@@ -22,12 +22,18 @@ public func kPV_RGBA (r:CGFloat, g:CGFloat, b:CGFloat, a:CGFloat) -> UIColor {
     return UIColor (red: r/255.0, green: g/255.0, blue: b/255.0, alpha: a)
 }
 
-open class FWPopupWindow: UIWindow, UIGestureRecognizerDelegate {
+open class FWPopupSWindow: UIWindow, UIGestureRecognizerDelegate {
     
     /// 单例模式
-    @objc public class var sharedInstance: FWPopupWindow {
+    @objc public class var sharedInstance: FWPopupSWindow {
         struct Static {
-            static let kbManager = FWPopupWindow(frame: UIScreen.main.bounds)
+            static let kbManager = FWPopupSWindow(frame: UIScreen.main.bounds)
+        }
+        if #available(iOS 13.0, *) {
+            if Static.kbManager.windowScene == nil {
+                let windowScene = UIApplication.shared.connectedScenes.filter{$0.activationState == .foregroundActive}.first
+                Static.kbManager.windowScene = windowScene as? UIWindowScene
+            }
         }
         return Static.kbManager
     }
@@ -66,7 +72,7 @@ open class FWPopupWindow: UIWindow, UIGestureRecognizerDelegate {
     }
 }
 
-extension FWPopupWindow {
+extension FWPopupSWindow {
     
     @objc func tapGesClick(tap: UIGestureRecognizer) {
         
@@ -87,6 +93,17 @@ extension FWPopupWindow {
         if self.panWildToHide {
             self.tapGesClick(tap: pan)
         }
+    }
+    
+    /// 隐藏全部的弹窗（包括当前不可见的弹窗）
+    @objc public func removeAllPopupView() {
+        for view in (self.attachView()?.fwMaskView.subviews)! {
+            if view.isKind(of: FWPopupView.self) {
+                let popupView = view as! FWPopupView
+                popupView.hide()
+            }
+        }
+        self.attachView()?.hideFwBackground()
     }
     
     public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {

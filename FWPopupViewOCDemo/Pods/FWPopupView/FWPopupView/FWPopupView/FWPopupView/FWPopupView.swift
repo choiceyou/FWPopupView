@@ -121,8 +121,8 @@ open class FWPopupView: UIView, UIGestureRecognizerDelegate {
     /// 单击隐藏
     private var tapGest: UITapGestureRecognizer?
     
-    /// 1、当外部没有传入该参数时，默认为UIWindow的根控制器的视图，即表示弹窗放在FWPopupWindow上，此时若FWPopupWindow.sharedInstance.touchWildToHide = true表示弹窗视图外部可点击；2、当外部传入该参数时，该视图为传入的UIView，即表示弹窗放在传入的UIView上；
-    @objc public var attachedView = FWPopupWindow.sharedInstance.attachView() {
+    /// 1、当外部没有传入该参数时，默认为UIWindow的根控制器的视图，即表示弹窗放在FWPopupSWindow上，此时若FWPopupSWindow.sharedInstance.touchWildToHide = true表示弹窗视图外部可点击；2、当外部传入该参数时，该视图为传入的UIView，即表示弹窗放在传入的UIView上；
+    @objc public var attachedView = FWPopupSWindow.sharedInstance.attachView() {
         willSet {
             newValue?.fwMaskView.addSubview(self)
             if newValue!.isKind(of: UIScrollView.self) {
@@ -137,6 +137,12 @@ open class FWPopupView: UIView, UIGestureRecognizerDelegate {
             self.attachedView?.fwAnimationDuration = newValue.animationDuration
             if newValue.backgroundColor != nil {
                 self.backgroundColor = newValue.backgroundColor
+            } else if newValue.backgroundLayerColors != nil {
+                var tmpArray: [Any] = []
+                for color: UIColor in newValue.backgroundLayerColors! {
+                    tmpArray.append(color.cgColor as Any)
+                }
+                self.backgroundLayer.colors = tmpArray
             }
         }
     }
@@ -175,12 +181,23 @@ open class FWPopupView: UIView, UIGestureRecognizerDelegate {
     internal var isNotMakeSize: Bool = false
     
     /// 弹窗真正的Size
-    private var finalSize = CGSize.zero
+    internal var finalSize = CGSize.zero
     /// 当前Constraints是否被设置过了
     private var haveSetConstraints: Bool = false
     
     /// 是否重新设置了父视图
     private var isResetSuperView: Bool = false
+    
+    /// 渐变的背景颜色
+    private lazy var backgroundLayer: CAGradientLayer = {
+        var backgroundLayer = CAGradientLayer()
+        self.layer.addSublayer(backgroundLayer)
+        backgroundLayer.startPoint = self.vProperty.backgroundLayerStartPoint
+        backgroundLayer.endPoint = self.vProperty.backgroundLayerEndPoint
+        backgroundLayer.locations = self.vProperty.backgroundLayerLocations
+        backgroundLayer.type = CAGradientLayerType.axial
+        return backgroundLayer
+    }()
     
     /// 记录当前弹窗状态
     public var currentPopupViewState: FWPopupViewState = .unKnow {
@@ -207,10 +224,10 @@ open class FWPopupView: UIView, UIGestureRecognizerDelegate {
     private func setupParams() {
         self.backgroundColor = UIColor.white
         
-        FWPopupWindow.sharedInstance.backgroundColor = UIColor.clear
+        FWPopupSWindow.sharedInstance.backgroundColor = UIColor.clear
         
         self.originMaskViewColor = self.attachedView?.fwMaskViewColor
-        self.originTouchWildToHide = FWPopupWindow.sharedInstance.touchWildToHide
+        self.originTouchWildToHide = FWPopupSWindow.sharedInstance.touchWildToHide
         self.attachedView?.fwMaskView.addSubview(self)
         self.isHidden = true
         
@@ -229,6 +246,13 @@ open class FWPopupView: UIView, UIGestureRecognizerDelegate {
         
         if self.attachedView!.isKind(of: UIScrollView.self) && self.originScrollEnabled != nil {
             (self.attachedView! as! UIScrollView).isScrollEnabled = self.originScrollEnabled!
+        }
+    }
+    
+    open override func layoutSubviews() {
+        super.layoutSubviews()
+        if self.vProperty.backgroundLayerColors != nil {
+            self.backgroundLayer.frame = self.bounds
         }
     }
     
@@ -256,7 +280,7 @@ extension FWPopupView {
     @objc open func show(popupDidAppearBlock: FWPopupDidAppearBlock? = nil) {
         
         self.popupDidAppearBlock = popupDidAppearBlock
-        self.show(popupStateBlock: nil);
+        self.show(popupStateBlock: nil)
     }
     
     /// 显示
@@ -272,7 +296,7 @@ extension FWPopupView {
         self.popupStateBlock = popupStateBlock
         
         if self.attachedView?.fwBackgroundAnimating == true {
-            FWPopupWindow.sharedInstance.willShowingViews.append(self)
+            FWPopupSWindow.sharedInstance.willShowingViews.append(self)
         } else {
             self.showNow()
         }
@@ -289,15 +313,19 @@ extension FWPopupView {
         if self.attachedView != nil && self.vProperty.maskViewColor != nil {
             self.attachedView?.fwMaskViewColor = self.vProperty.maskViewColor!
         }
-        self.originKeyWindow = UIApplication.shared.keyWindow;
+        for tmpWindow in UIApplication.shared.windows {
+            if tmpWindow.isKeyWindow {
+                self.originKeyWindow = tmpWindow
+            }
+        }
         if self.vProperty.touchWildToHide != nil && !self.vProperty.touchWildToHide!.isEmpty && Int(self.vProperty.touchWildToHide!) == 1 {
-            FWPopupWindow.sharedInstance.touchWildToHide = true
+            FWPopupSWindow.sharedInstance.touchWildToHide = true
         } else {
-            FWPopupWindow.sharedInstance.touchWildToHide = false
+            FWPopupSWindow.sharedInstance.touchWildToHide = false
         }
         self.attachedView?.fwAnimationDuration = self.vProperty.animationDuration
         
-        if self.attachedView != nil && self.attachedView != FWPopupWindow.sharedInstance.attachView() {
+        if self.attachedView != nil && self.attachedView != FWPopupSWindow.sharedInstance.attachView() {
             if tapGest == nil {
                 tapGest = UITapGestureRecognizer(target: self, action: #selector(tapGesClick(tap:)))
                 //                tapGest?.cancelsTouchesInView = false
@@ -312,7 +340,7 @@ extension FWPopupView {
         }
         
         if self.attachedView == nil {
-            self.attachedView = FWPopupWindow.sharedInstance.attachView()
+            self.attachedView = FWPopupSWindow.sharedInstance.attachView()
         }
         
         self.attachedView?.showFwBackground()
@@ -354,20 +382,20 @@ extension FWPopupView {
         self.currentPopupViewState = .willDisappear
         
         if self.attachedView == nil {
-            self.attachedView = FWPopupWindow.sharedInstance.attachView()
+            self.attachedView = FWPopupSWindow.sharedInstance.attachView()
         }
         
         self.attachedView?.fwAnimationDuration = self.vProperty.animationDuration
         
-        for tmpView: UIView in FWPopupWindow.sharedInstance.hiddenViews {
+        for tmpView: UIView in FWPopupSWindow.sharedInstance.hiddenViews {
             if tmpView == self {
-                if let index = FWPopupWindow.sharedInstance.hiddenViews.index(of: tmpView) {
-                    FWPopupWindow.sharedInstance.hiddenViews.remove(at: index)
+                if let index = FWPopupSWindow.sharedInstance.hiddenViews.firstIndex(of: tmpView) {
+                    FWPopupSWindow.sharedInstance.hiddenViews.remove(at: index)
                 }
             }
         }
         
-        if FWPopupWindow.sharedInstance.hiddenViews.isEmpty && FWPopupWindow.sharedInstance.willShowingViews.isEmpty && self.attachedView?.fwBackgroundAnimating == false {
+        if FWPopupSWindow.sharedInstance.hiddenViews.isEmpty && FWPopupSWindow.sharedInstance.willShowingViews.isEmpty && self.attachedView?.fwBackgroundAnimating == false {
             self.attachedView?.hideFwBackground()
         }
         
@@ -386,7 +414,7 @@ extension FWPopupView {
         
         // 还原弹窗弹起时的相关参数
         self.attachedView?.fwMaskViewColor = self.originMaskViewColor
-        FWPopupWindow.sharedInstance.touchWildToHide = self.originTouchWildToHide
+        FWPopupSWindow.sharedInstance.touchWildToHide = self.originTouchWildToHide
         if self.attachedView!.isKind(of: UIScrollView.self) && self.originScrollEnabled != nil {
             (self.attachedView! as! UIScrollView).isScrollEnabled = self.originScrollEnabled!
         }
@@ -411,7 +439,7 @@ extension FWPopupView {
     ///
     /// - Returns: 是否隐藏
     @objc open class func isPopupViewHiden() -> Bool {
-        return FWPopupWindow.sharedInstance.isHidden
+        return FWPopupSWindow.sharedInstance.isHidden
     }
 }
 
@@ -442,8 +470,8 @@ extension FWPopupView {
                     }
                 }
             }
-            FWPopupWindow.sharedInstance.hiddenViews.removeAll()
-            FWPopupWindow.sharedInstance.hiddenViews.append(contentsOf: tmpHiddenViews)
+            FWPopupSWindow.sharedInstance.hiddenViews.removeAll()
+            FWPopupSWindow.sharedInstance.hiddenViews.append(contentsOf: tmpHiddenViews)
             
             if !strongSelf.haveSetConstraints || strongSelf.isResetSuperView == true {
                 strongSelf.setupConstraints(constraintsState: .constraintsBeforeAnimation)
@@ -502,10 +530,10 @@ extension FWPopupView {
         }
         self.currentPopupViewState = .didAppear
         
-        if FWPopupWindow.sharedInstance.willShowingViews.count > 0 {
-            let willShowingView: FWPopupView = FWPopupWindow.sharedInstance.willShowingViews.first as! FWPopupView
+        if FWPopupSWindow.sharedInstance.willShowingViews.count > 0 {
+            let willShowingView: FWPopupView = FWPopupSWindow.sharedInstance.willShowingViews.first as! FWPopupView
             willShowingView.showNow()
-            FWPopupWindow.sharedInstance.willShowingViews.removeFirst()
+            FWPopupSWindow.sharedInstance.willShowingViews.removeFirst()
         } else {
             self.attachedView?.fwBackgroundAnimating = false
         }
@@ -541,26 +569,26 @@ extension FWPopupView {
                 
                 if isRemove == true {
                     strongSelf.removeFromSuperview()
-                    if let index = FWPopupWindow.sharedInstance.hiddenViews.index(of: strongSelf) {
-                        FWPopupWindow.sharedInstance.hiddenViews.remove(at: index)
+                    if let index = FWPopupSWindow.sharedInstance.hiddenViews.firstIndex(of: strongSelf) {
+                        FWPopupSWindow.sharedInstance.hiddenViews.remove(at: index)
                     }
                 }
                 strongSelf.isHidden = true
                 
                 DispatchQueue.main.asyncAfter(deadline: .now()+0.0001, execute: {
-                    if FWPopupWindow.sharedInstance.willShowingViews.count > 0 {
-                        let willShowingView: FWPopupView = FWPopupWindow.sharedInstance.willShowingViews.last as! FWPopupView
+                    if FWPopupSWindow.sharedInstance.willShowingViews.count > 0 {
+                        let willShowingView: FWPopupView = FWPopupSWindow.sharedInstance.willShowingViews.last as! FWPopupView
                         willShowingView.showNow()
-                        FWPopupWindow.sharedInstance.willShowingViews.removeLast()
-                    } else if !FWPopupWindow.sharedInstance.hiddenViews.isEmpty {
-                        let showView: FWPopupView = FWPopupWindow.sharedInstance.hiddenViews.last as! FWPopupView
+                        FWPopupSWindow.sharedInstance.willShowingViews.removeLast()
+                    } else if !FWPopupSWindow.sharedInstance.hiddenViews.isEmpty {
+                        let showView: FWPopupView = FWPopupSWindow.sharedInstance.hiddenViews.last as! FWPopupView
                         showView.isHidden = false
                         showView.currentPopupViewState = .didAppearAgain
-                        FWPopupWindow.sharedInstance.hiddenViews.removeLast()
+                        FWPopupSWindow.sharedInstance.hiddenViews.removeLast()
                         if showView.vProperty.touchWildToHide != nil && !showView.vProperty.touchWildToHide!.isEmpty && Int(showView.vProperty.touchWildToHide!) == 1 {
-                            FWPopupWindow.sharedInstance.touchWildToHide = true
+                            FWPopupSWindow.sharedInstance.touchWildToHide = true
                         } else {
-                            FWPopupWindow.sharedInstance.touchWildToHide = false
+                            FWPopupSWindow.sharedInstance.touchWildToHide = false
                         }
                     }
                     
@@ -959,7 +987,7 @@ extension FWPopupView {
     /// - Parameter tap: 手势
     @objc func tapGesClick(tap: UITapGestureRecognizer) {
         
-        if FWPopupWindow.sharedInstance.touchWildToHide && !self.fwBackgroundAnimating {
+        if FWPopupSWindow.sharedInstance.touchWildToHide && !self.fwBackgroundAnimating {
             for view: UIView in (self.attachedView?.fwMaskView.subviews)! {
                 if view.isKind(of: FWPopupView.self) {
                     let popupView = view as! FWPopupView
@@ -999,79 +1027,88 @@ extension FWPopupView {
 open class FWPopupViewProperty: NSObject {
     
     /// 标题字体大小
-    @objc open var titleFontSize: CGFloat           = 18.0
+    @objc open var titleFontSize: CGFloat = 18.0
     /// 标题字体，设置该值后titleFontSize无效
     @objc open var titleFont: UIFont?
     /// 标题文字颜色
-    @objc open var titleColor: UIColor              = kPV_RGBA(r: 51, g: 51, b: 51, a: 1)
+    @objc open var titleColor: UIColor = kPV_RGBA(r: 51, g: 51, b: 51, a: 1)
     
     /// 按钮字体大小
-    @objc open var buttonFontSize: CGFloat          = 17.0
+    @objc open var buttonFontSize: CGFloat = 17.0
     /// 按钮字体，设置该值后buttonFontSize无效
     @objc open var buttonFont: UIFont?
     /// 按钮高度
-    @objc open var buttonHeight: CGFloat            = 48.0
+    @objc open var buttonHeight: CGFloat = 48.0
     /// 普通按钮文字颜色
-    @objc open var itemNormalColor: UIColor         = kPV_RGBA(r: 51, g: 51, b: 51, a: 1)
+    @objc open var itemNormalColor: UIColor = kPV_RGBA(r: 51, g: 51, b: 51, a: 1)
     /// 高亮按钮文字颜色
-    @objc open var itemHighlightColor: UIColor      = kPV_RGBA(r: 254, g: 226, b: 4, a: 1)
+    @objc open var itemHighlightColor: UIColor = kPV_RGBA(r: 254, g: 226, b: 4, a: 1)
     /// 选中按钮文字颜色
-    @objc open var itemPressedColor: UIColor        = kPV_RGBA(r: 240, g: 240, b: 240, a: 1)
+    @objc open var itemPressedColor: UIColor = kPV_RGBA(r: 240, g: 240, b: 240, a: 1)
     
     /// 单个控件中的文字（图片）等与该控件上（下）之前的距离。注意：这个距离指的是单个控件内部哦，不是控件与控件之间
-    @objc open var topBottomMargin:CGFloat          = 10
+    @objc open var topBottomMargin:CGFloat = 10
     /// 单个控件中的文字（图片）等与该控件左（右）之前的距离。注意：这个距离指的是单个控件内部哦，不是控件与控件之间
-    @objc open var letfRigthMargin:CGFloat          = 10
+    @objc open var letfRigthMargin:CGFloat = 10
     /// 控件之间的间距
-    @objc open var commponentMargin:CGFloat         = 10
+    @objc open var commponentMargin:CGFloat = 10
     
     /// 边框颜色（部分控件分割线也用这个颜色）
-    @objc open var splitColor: UIColor              = kPV_RGBA(r: 231, g: 231, b: 231, a: 1)
+    @objc open var splitColor: UIColor = kPV_RGBA(r: 231, g: 231, b: 231, a: 1)
     /// 分割线、边框的宽度
-    @objc open var splitWidth: CGFloat              = (1/UIScreen.main.scale)
+    @objc open var splitWidth: CGFloat = (1/UIScreen.main.scale)
     /// 圆角值
-    @objc open var cornerRadius: CGFloat            = 5.0
+    @objc open var cornerRadius: CGFloat = 5.0
     
     /// 弹窗的背景色（注意：这边指的是弹窗而不是遮罩层，遮罩层背景色的设置是：fwMaskViewColor）
     @objc open var backgroundColor: UIColor?
+    /// 弹窗的背景渐变色：当未设置backgroundColor时该值才有效
+    @objc open var backgroundLayerColors: [UIColor]?
+    /// 弹窗的背景渐变色相关属性：当设置了backgroundLayerColors时该值才有效
+    @objc open var backgroundLayerStartPoint: CGPoint = CGPoint(x: 0.0, y: 0.0)
+    /// 弹窗的背景渐变色相关属性：当设置了backgroundLayerColors时该值才有效
+    @objc open var backgroundLayerEndPoint: CGPoint = CGPoint(x: 1.0, y: 0.0)
+    /// 弹窗的背景渐变色相关属性：当设置了backgroundLayerColors时该值才有效
+    @objc open var backgroundLayerLocations: [NSNumber] = [0, 1]
+    
     /// 弹窗的最大高度占遮罩层高度的比例，0：表示不限制
-    @objc open var popupViewMaxHeightRate: CGFloat  = 0.6
+    @objc open var popupViewMaxHeightRate: CGFloat = 0.6
     
     /// 弹窗箭头的样式
-    @objc open var popupArrowStyle                  = FWMenuArrowStyle.none
+    @objc open var popupArrowStyle = FWMenuArrowStyle.none
     /// 弹窗箭头的尺寸
-    @objc open var popupArrowSize                   = CGSize(width: 28, height: 12)
+    @objc open var popupArrowSize = CGSize(width: 28, height: 12)
     /// 弹窗箭头的顶点的X值相对于弹窗的宽度，默认在弹窗X轴的一半，因此设置范围：0~1
-    @objc open var popupArrowVertexScaleX: CGFloat  = 0.5
+    @objc open var popupArrowVertexScaleX: CGFloat = 0.5
     /// 弹窗圆角箭头的圆角值
-    @objc open var popupArrowCornerRadius: CGFloat  = 2.5
+    @objc open var popupArrowCornerRadius: CGFloat = 2.5
     /// 弹窗圆角箭头与边线交汇处的圆角值
-    @objc open var popupArrowBottomCornerRadius: CGFloat  = 4.0
+    @objc open var popupArrowBottomCornerRadius: CGFloat = 4.0
     
     
     // ===== 自定义弹窗（继承FWPopupView）时可能会用到 =====
     
     /// 弹窗校准位置
-    @objc open var popupCustomAlignment: FWPopupCustomAlignment     = .center
+    @objc open var popupCustomAlignment: FWPopupCustomAlignment = .center
     /// 弹窗动画类型
-    @objc open var popupAnimationType: FWPopupAnimationType         = .position
+    @objc open var popupAnimationType: FWPopupAnimationType = .position
     
     /// 弹窗偏移量
-    @objc open var popupViewEdgeInsets                              = UIEdgeInsets.zero
+    @objc open var popupViewEdgeInsets = UIEdgeInsets.zero
     /// 遮罩层的背景色（也可以使用fwMaskViewColor），注意：该参数在弹窗隐藏后，还原为弹窗弹起时的值
     @objc open var maskViewColor: UIColor?
     /// 为了兼容OC，0表示false，1表示true，为true时：用户点击外部遮罩层页面可以消失，注意：该参数在弹窗隐藏后，还原为弹窗弹起时的值
     @objc open var touchWildToHide: String?
     
     /// 显示、隐藏动画所需的时间
-    @objc open var animationDuration: TimeInterval                  = 0.2
+    @objc open var animationDuration: TimeInterval = 0.2
     /// 阻尼系数，范围：0.0f~1.0f，数值越小「弹簧」的振动效果越明显。默认：-1，表示没有「弹簧」效果
-    @objc open var usingSpringWithDamping: CGFloat                  = -1
+    @objc open var usingSpringWithDamping: CGFloat = -1
     /// 初始速率，数值越大一开始移动越快，默认为：5
-    @objc open var initialSpringVelocity: CGFloat                   = 5
+    @objc open var initialSpringVelocity: CGFloat = 5
     
     /// 3D放射动画（当且仅当：popupAnimationType == .scale3D 时有效）
-    @objc open var transform3D: CATransform3D                       = CATransform3DMakeScale(1.2, 1.2, 1.0)
+    @objc open var transform3D: CATransform3D = CATransform3DMakeScale(1.2, 1.2, 1.0)
     /// 2D放射动画
     @objc open var transform: CGAffineTransform                     = CGAffineTransform(scaleX: 0.001, y: 0.001)
     

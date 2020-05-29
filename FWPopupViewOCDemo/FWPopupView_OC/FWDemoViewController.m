@@ -10,6 +10,8 @@
 #import <FWPopupView/FWPopupView-Swift.h>
 #import "FWCustomDemoVC.h"
 #import "FWMenuViewDemoVC.h"
+#import "SVProgressHUD.h"
+#import "FWCustomView.h"
 
 @interface FWDemoViewController ()
 
@@ -28,7 +30,7 @@
     
     self.navigationItem.title = @"FWPopupView";
     
-    self.titleArray = @[@"0、Alert - 单个按钮", @"1、Alert - 两个按钮", @"2、Alert - 两个按钮（修改参数）", @"3、Alert - 多个按钮", @"4、Alert - 带输入框", @"5、Alert - 带自定义视图", @"6、Sheet - 少量Item", @"7、Sheet - 大量Item", @"8、Date - 自定义日期选择", @"9、Menu - 自定义菜单", @"10、Custom - 自定义弹窗", @"11、CustomSheet - 类似Sheet效果", @"12、CustomSheet - 类似Sheet效果2"];
+    self.titleArray = @[@"0、Alert - 单个按钮", @"1、Alert - 两个按钮", @"2、Alert - 两个按钮（修改参数）", @"3、Alert - 多个按钮", @"4、Alert - 带输入框", @"5、Alert - 带自定义视图", @"6、Sheet - 少量Item", @"7、Sheet - 大量Item", @"8、Date - 自定义日期选择", @"9、Menu - 自定义菜单", @"10、Custom - 自定义弹窗", @"11、CustomSheet - 类似Sheet效果", @"12、CustomSheet - 类似Sheet效果2", @"13、展示如何让SVProgressHUD显示在FWPopupView上面"];
     
     [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"cellId"];
     self.tableView.estimatedRowHeight = 44.0;
@@ -228,6 +230,24 @@
         case 12:
         {
             [self.customSheetView2 show];
+        }
+            break;
+        case 13:
+        {
+            FWCustomView *customView = [[FWCustomView alloc] initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width * 0.6, [UIScreen mainScreen].bounds.size.height * 0.3)];
+            customView.backgroundColor = [UIColor yellowColor];
+            FWPopupBaseViewProperty *property = [FWPopupBaseViewProperty manager];
+            property.popupAlignment = FWPopupAlignmentCenter;
+            property.popupAnimationStyle = FWPopupAnimationStyleScale;
+            property.maskViewColor = [UIColor colorWithWhite:0 alpha:0.3];
+            property.touchWildToHide = @"1";
+            property.animationDuration = 0.2;
+            customView.vProperty = property;
+            [customView show];
+            
+            // 重新设置SVProgressHUD的Window层级
+            [SVProgressHUD setMaxSupportedWindowLevel:UIWindowLevelStatusBar+2];
+            [SVProgressHUD show];
         }
             break;
             

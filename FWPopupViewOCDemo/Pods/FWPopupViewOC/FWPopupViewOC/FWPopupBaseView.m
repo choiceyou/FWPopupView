@@ -532,6 +532,10 @@ typedef NS_ENUM(NSInteger, FWConstraintsStates) {
 {
     FWPopupAlignment myAlignment = self.vProperty.popupAlignment;
     UIEdgeInsets edgeInsets = self.vProperty.popupEdgeInsets;
+    UIView *tmpSuperview = self.superview;
+    if (!tmpSuperview) {
+        return;
+    }
     
     if (constraintsStates == FWConstraintsStatesBeforeAnimation) {
         
@@ -600,23 +604,23 @@ typedef NS_ENUM(NSInteger, FWConstraintsStates) {
         [self mas_updateConstraints:^(MASConstraintMaker *make) {
             if (self.vProperty.popupAnimationStyle == FWPopupAnimationStylePosition) {
                 if (myAlignment == FWPopupAlignmentCenter) {
-                    make.centerY.equalTo(self.superview).offset(edgeInsets.top - edgeInsets.bottom);
+                    make.centerY.equalTo(tmpSuperview).offset(edgeInsets.top - edgeInsets.bottom);
                 } else if (myAlignment == FWPopupAlignmentTopCenter) {
-                    make.top.equalTo(self.superview).offset(edgeInsets.top - edgeInsets.bottom);
+                    make.top.equalTo(tmpSuperview).offset(edgeInsets.top - edgeInsets.bottom);
                 } else if (myAlignment == FWPopupAlignmentLeftCenter) {
-                    make.left.equalTo(self.superview).offset(edgeInsets.left - edgeInsets.right);
+                    make.left.equalTo(tmpSuperview).offset(edgeInsets.left - edgeInsets.right);
                 } else if (myAlignment == FWPopupAlignmentBottomCenter) {
-                    make.bottom.equalTo(self.superview).offset(edgeInsets.top - edgeInsets.bottom);
+                    make.bottom.equalTo(tmpSuperview).offset(edgeInsets.top - edgeInsets.bottom);
                 } else if (myAlignment == FWPopupAlignmentRightCenter) {
-                    make.right.equalTo(self.superview).offset(edgeInsets.left - edgeInsets.right);
+                    make.right.equalTo(tmpSuperview).offset(edgeInsets.left - edgeInsets.right);
                 } else if (myAlignment == FWPopupAlignmentTopLeft) {
-                    make.top.equalTo(self.superview).offset(edgeInsets.top - edgeInsets.bottom);
+                    make.top.equalTo(tmpSuperview).offset(edgeInsets.top - edgeInsets.bottom);
                 } else if (myAlignment == FWPopupAlignmentTopRight) {
-                    make.top.equalTo(self.superview).offset(edgeInsets.top - edgeInsets.bottom);
+                    make.top.equalTo(tmpSuperview).offset(edgeInsets.top - edgeInsets.bottom);
                 } else if (myAlignment == FWPopupAlignmentBottomLeft) {
-                    make.bottom.equalTo(self.superview).offset(edgeInsets.top - edgeInsets.bottom);
+                    make.bottom.equalTo(tmpSuperview).offset(edgeInsets.top - edgeInsets.bottom);
                 } else if (myAlignment == FWPopupAlignmentBottomRight) {
-                    make.bottom.equalTo(self.superview).offset(edgeInsets.top - edgeInsets.bottom);
+                    make.bottom.equalTo(tmpSuperview).offset(edgeInsets.top - edgeInsets.bottom);
                 }
             } else if (self.vProperty.popupAnimationStyle == FWPopupAnimationStyleFrame) {
                 if (myAlignment == FWPopupAlignmentCenter) {
@@ -644,23 +648,23 @@ typedef NS_ENUM(NSInteger, FWConstraintsStates) {
         [self mas_updateConstraints:^(MASConstraintMaker *make) {
             if (self.vProperty.popupAnimationStyle == FWPopupAnimationStylePosition) {
                 if (myAlignment == FWPopupAlignmentCenter) {
-                    make.centerY.equalTo(self.superview).offset(-self.finalFrame.size.height/2 - self.superview.frame.size.height/2);
+                    make.centerY.equalTo(tmpSuperview).offset(-self.finalFrame.size.height/2 - tmpSuperview.frame.size.height/2);
                 } else if (myAlignment == FWPopupAlignmentTopCenter) {
-                    make.top.equalTo(self.superview).offset(-self.finalFrame.size.height);
+                    make.top.equalTo(tmpSuperview).offset(-self.finalFrame.size.height);
                 } else if (myAlignment == FWPopupAlignmentLeftCenter) {
-                    make.left.equalTo(self.superview).offset(-self.finalFrame.size.width);
+                    make.left.equalTo(tmpSuperview).offset(-self.finalFrame.size.width);
                 } else if (myAlignment == FWPopupAlignmentBottomCenter) {
-                    make.bottom.equalTo(self.superview).offset(self.finalFrame.size.height);
+                    make.bottom.equalTo(tmpSuperview).offset(self.finalFrame.size.height);
                 } else if (myAlignment == FWPopupAlignmentRightCenter) {
-                    make.right.equalTo(self.superview).offset(self.finalFrame.size.width);
+                    make.right.equalTo(tmpSuperview).offset(self.finalFrame.size.width);
                 } else if (myAlignment == FWPopupAlignmentTopLeft) {
-                    make.top.equalTo(self.superview).offset(-self.finalFrame.size.height);
+                    make.top.equalTo(tmpSuperview).offset(-self.finalFrame.size.height);
                 } else if (myAlignment == FWPopupAlignmentTopRight) {
-                    make.top.equalTo(self.superview).offset(-self.finalFrame.size.height);
+                    make.top.equalTo(tmpSuperview).offset(-self.finalFrame.size.height);
                 } else if (myAlignment == FWPopupAlignmentBottomLeft) {
-                    make.bottom.equalTo(self.superview).offset(self.finalFrame.size.height);
+                    make.bottom.equalTo(tmpSuperview).offset(self.finalFrame.size.height);
                 } else if (myAlignment == FWPopupAlignmentBottomRight) {
-                    make.bottom.equalTo(self.superview).offset(self.finalFrame.size.height);
+                    make.bottom.equalTo(tmpSuperview).offset(self.finalFrame.size.height);
                 }
             } else if (self.vProperty.popupAnimationStyle == FWPopupAnimationStyleFrame) {
                 if (myAlignment == FWPopupAlignmentCenter) {
@@ -697,33 +701,36 @@ typedef NS_ENUM(NSInteger, FWConstraintsStates) {
 {
     UIEdgeInsets edgeInsets = self.vProperty.popupEdgeInsets;
     
-    if (myAlignment == FWPopupAlignmentCenter) {
-        make.centerX.equalTo(self.superview).offset(edgeInsets.left - edgeInsets.right);
-        make.centerY.equalTo(self.superview).offset(-self.finalFrame.size.height/2 - self.superview.frame.size.height/2);
-    } else if (myAlignment == FWPopupAlignmentTopCenter) {
-        make.centerX.equalTo(self.superview).offset(edgeInsets.left - edgeInsets.right);
-        make.top.equalTo(self.superview).offset(-self.finalFrame.size.height);
-    } else if (myAlignment == FWPopupAlignmentLeftCenter) {
-        make.centerY.equalTo(self.superview).offset(edgeInsets.top - edgeInsets.bottom);
-        make.left.equalTo(self.superview).offset(-self.finalFrame.size.width);
-    } else if (myAlignment == FWPopupAlignmentBottomCenter) {
-        make.centerX.equalTo(self.superview).offset(edgeInsets.left - edgeInsets.right);
-        make.bottom.equalTo(self.superview).offset(self.finalFrame.size.height);
-    } else if (myAlignment == FWPopupAlignmentRightCenter) {
-        make.centerY.equalTo(self.superview).offset(edgeInsets.top - edgeInsets.bottom);
-        make.right.equalTo(self.superview).offset(self.finalFrame.size.width);
-    } else if (myAlignment == FWPopupAlignmentTopLeft) {
-        make.left.equalTo(self.superview).offset(edgeInsets.left - edgeInsets.right);
-        make.top.equalTo(self.superview).offset(-self.finalFrame.size.height);
-    } else if (myAlignment == FWPopupAlignmentTopRight) {
-        make.right.equalTo(self.superview).offset(edgeInsets.left - edgeInsets.right);
-        make.top.equalTo(self.superview).offset(-self.finalFrame.size.height);
-    } else if (myAlignment == FWPopupAlignmentBottomLeft) {
-        make.left.equalTo(self.superview).offset(edgeInsets.left - edgeInsets.right);
-        make.bottom.equalTo(self.superview).offset(self.finalFrame.size.height);
-    } else if (myAlignment == FWPopupAlignmentBottomRight) {
-        make.right.equalTo(self.superview).offset(edgeInsets.left - edgeInsets.right);
-        make.bottom.equalTo(self.superview).offset(self.finalFrame.size.height);
+    UIView *tmpSuperview = self.superview;
+    if (tmpSuperview) {
+        if (myAlignment == FWPopupAlignmentCenter) {
+            make.centerX.equalTo(tmpSuperview).offset(edgeInsets.left - edgeInsets.right);
+            make.centerY.equalTo(tmpSuperview).offset(-self.finalFrame.size.height/2 - tmpSuperview.frame.size.height/2);
+        } else if (myAlignment == FWPopupAlignmentTopCenter) {
+            make.centerX.equalTo(tmpSuperview).offset(edgeInsets.left - edgeInsets.right);
+            make.top.equalTo(tmpSuperview).offset(-self.finalFrame.size.height);
+        } else if (myAlignment == FWPopupAlignmentLeftCenter) {
+            make.centerY.equalTo(tmpSuperview).offset(edgeInsets.top - edgeInsets.bottom);
+            make.left.equalTo(tmpSuperview).offset(-self.finalFrame.size.width);
+        } else if (myAlignment == FWPopupAlignmentBottomCenter) {
+            make.centerX.equalTo(tmpSuperview).offset(edgeInsets.left - edgeInsets.right);
+            make.bottom.equalTo(tmpSuperview).offset(self.finalFrame.size.height);
+        } else if (myAlignment == FWPopupAlignmentRightCenter) {
+            make.centerY.equalTo(tmpSuperview).offset(edgeInsets.top - edgeInsets.bottom);
+            make.right.equalTo(tmpSuperview).offset(self.finalFrame.size.width);
+        } else if (myAlignment == FWPopupAlignmentTopLeft) {
+            make.left.equalTo(tmpSuperview).offset(edgeInsets.left - edgeInsets.right);
+            make.top.equalTo(tmpSuperview).offset(-self.finalFrame.size.height);
+        } else if (myAlignment == FWPopupAlignmentTopRight) {
+            make.right.equalTo(tmpSuperview).offset(edgeInsets.left - edgeInsets.right);
+            make.top.equalTo(tmpSuperview).offset(-self.finalFrame.size.height);
+        } else if (myAlignment == FWPopupAlignmentBottomLeft) {
+            make.left.equalTo(tmpSuperview).offset(edgeInsets.left - edgeInsets.right);
+            make.bottom.equalTo(tmpSuperview).offset(self.finalFrame.size.height);
+        } else if (myAlignment == FWPopupAlignmentBottomRight) {
+            make.right.equalTo(tmpSuperview).offset(edgeInsets.left - edgeInsets.right);
+            make.bottom.equalTo(tmpSuperview).offset(self.finalFrame.size.height);
+        }
     }
 }
 
@@ -737,51 +744,54 @@ typedef NS_ENUM(NSInteger, FWConstraintsStates) {
 {
     UIEdgeInsets edgeInsets = self.vProperty.popupEdgeInsets;
     
-    if (myAlignment == FWPopupAlignmentCenter) {
-        make.top.equalTo(self.superview).offset((self.superview.frame.size.height-self.finalFrame.size.height)/2 + edgeInsets.top - edgeInsets.bottom);
-        make.centerX.equalTo(self.superview).offset(edgeInsets.left - edgeInsets.right);
-        make.width.mas_equalTo(self.finalFrame.size.width);
-        make.height.mas_equalTo(0);
-    } else if (myAlignment == FWPopupAlignmentTopCenter) {
-        make.centerX.equalTo(self.superview).offset(edgeInsets.left - edgeInsets.right);
-        make.top.equalTo(self.superview).offset(edgeInsets.top - edgeInsets.bottom);
-        make.width.mas_equalTo(self.finalFrame.size.width);
-        make.height.mas_equalTo(0);
-    } else if (myAlignment == FWPopupAlignmentLeftCenter) {
-        make.centerY.equalTo(self.superview).offset(edgeInsets.top - edgeInsets.bottom);
-        make.left.equalTo(self.superview).offset(edgeInsets.left - edgeInsets.right);
-        make.width.mas_equalTo(0);
-        make.height.mas_equalTo(self.finalFrame.size.height);
-    } else if (myAlignment == FWPopupAlignmentBottomCenter) {
-        make.centerX.equalTo(self.superview).offset(edgeInsets.left - edgeInsets.right);
-        make.bottom.equalTo(self.superview).offset(edgeInsets.top - edgeInsets.bottom);
-        make.width.mas_equalTo(self.finalFrame.size.width);
-        make.height.mas_equalTo(0);
-    } else if (myAlignment == FWPopupAlignmentRightCenter) {
-        make.centerY.equalTo(self.superview).offset(edgeInsets.top - edgeInsets.bottom);
-        make.right.equalTo(self.superview).offset(edgeInsets.left - edgeInsets.right);
-        make.width.mas_equalTo(0);
-        make.height.mas_equalTo(self.finalFrame.size.height);
-    } else if (myAlignment == FWPopupAlignmentTopLeft) {
-        make.left.equalTo(self.superview).offset(edgeInsets.left - edgeInsets.right);
-        make.top.equalTo(self.superview).offset(edgeInsets.top - edgeInsets.bottom);
-        make.width.mas_equalTo(self.finalFrame.size.width);
-        make.height.mas_equalTo(0);
-    } else if (myAlignment == FWPopupAlignmentTopRight) {
-        make.right.equalTo(self.superview).offset(edgeInsets.left - edgeInsets.right);
-        make.top.equalTo(self.superview).offset(edgeInsets.top - edgeInsets.bottom);
-        make.width.mas_equalTo(self.finalFrame.size.width);
-        make.height.mas_equalTo(0);
-    } else if (myAlignment == FWPopupAlignmentBottomLeft) {
-        make.left.equalTo(self.superview).offset(edgeInsets.left - edgeInsets.right);
-        make.bottom.equalTo(self.superview).offset(edgeInsets.top - edgeInsets.bottom);
-        make.width.mas_equalTo(self.finalFrame.size.width);
-        make.height.mas_equalTo(0);
-    } else if (myAlignment == FWPopupAlignmentBottomRight) {
-        make.right.equalTo(self.superview).offset(edgeInsets.left - edgeInsets.right);
-        make.bottom.equalTo(self.superview).offset(edgeInsets.top - edgeInsets.bottom);
-        make.width.mas_equalTo(self.finalFrame.size.width);
-        make.height.mas_equalTo(0);
+    UIView *tmpSuperview = self.superview;
+    if (tmpSuperview) {
+        if (myAlignment == FWPopupAlignmentCenter) {
+            make.top.equalTo(tmpSuperview).offset((tmpSuperview.frame.size.height-self.finalFrame.size.height)/2 + edgeInsets.top - edgeInsets.bottom);
+            make.centerX.equalTo(tmpSuperview).offset(edgeInsets.left - edgeInsets.right);
+            make.width.mas_equalTo(self.finalFrame.size.width);
+            make.height.mas_equalTo(0);
+        } else if (myAlignment == FWPopupAlignmentTopCenter) {
+            make.centerX.equalTo(tmpSuperview).offset(edgeInsets.left - edgeInsets.right);
+            make.top.equalTo(tmpSuperview).offset(edgeInsets.top - edgeInsets.bottom);
+            make.width.mas_equalTo(self.finalFrame.size.width);
+            make.height.mas_equalTo(0);
+        } else if (myAlignment == FWPopupAlignmentLeftCenter) {
+            make.centerY.equalTo(tmpSuperview).offset(edgeInsets.top - edgeInsets.bottom);
+            make.left.equalTo(tmpSuperview).offset(edgeInsets.left - edgeInsets.right);
+            make.width.mas_equalTo(0);
+            make.height.mas_equalTo(self.finalFrame.size.height);
+        } else if (myAlignment == FWPopupAlignmentBottomCenter) {
+            make.centerX.equalTo(tmpSuperview).offset(edgeInsets.left - edgeInsets.right);
+            make.bottom.equalTo(tmpSuperview).offset(edgeInsets.top - edgeInsets.bottom);
+            make.width.mas_equalTo(self.finalFrame.size.width);
+            make.height.mas_equalTo(0);
+        } else if (myAlignment == FWPopupAlignmentRightCenter) {
+            make.centerY.equalTo(tmpSuperview).offset(edgeInsets.top - edgeInsets.bottom);
+            make.right.equalTo(tmpSuperview).offset(edgeInsets.left - edgeInsets.right);
+            make.width.mas_equalTo(0);
+            make.height.mas_equalTo(self.finalFrame.size.height);
+        } else if (myAlignment == FWPopupAlignmentTopLeft) {
+            make.left.equalTo(tmpSuperview).offset(edgeInsets.left - edgeInsets.right);
+            make.top.equalTo(tmpSuperview).offset(edgeInsets.top - edgeInsets.bottom);
+            make.width.mas_equalTo(self.finalFrame.size.width);
+            make.height.mas_equalTo(0);
+        } else if (myAlignment == FWPopupAlignmentTopRight) {
+            make.right.equalTo(tmpSuperview).offset(edgeInsets.left - edgeInsets.right);
+            make.top.equalTo(tmpSuperview).offset(edgeInsets.top - edgeInsets.bottom);
+            make.width.mas_equalTo(self.finalFrame.size.width);
+            make.height.mas_equalTo(0);
+        } else if (myAlignment == FWPopupAlignmentBottomLeft) {
+            make.left.equalTo(tmpSuperview).offset(edgeInsets.left - edgeInsets.right);
+            make.bottom.equalTo(tmpSuperview).offset(edgeInsets.top - edgeInsets.bottom);
+            make.width.mas_equalTo(self.finalFrame.size.width);
+            make.height.mas_equalTo(0);
+        } else if (myAlignment == FWPopupAlignmentBottomRight) {
+            make.right.equalTo(tmpSuperview).offset(edgeInsets.left - edgeInsets.right);
+            make.bottom.equalTo(tmpSuperview).offset(edgeInsets.top - edgeInsets.bottom);
+            make.width.mas_equalTo(self.finalFrame.size.width);
+            make.height.mas_equalTo(0);
+        }
     }
 }
 
@@ -797,40 +807,43 @@ typedef NS_ENUM(NSInteger, FWConstraintsStates) {
     CGPoint anchorPoint = [self obtainAnchorPoint];
     self.layer.anchorPoint = anchorPoint;
     
-    if (myAlignment == FWPopupAlignmentCenter) {
-        make.center.equalTo(self.superview).insets(edgeInsets);
-    } else if (myAlignment == FWPopupAlignmentTopCenter) {
-        // 设置锚点后会导致约束偏移，因此这边特意做了一个反向偏移
-        make.centerX.equalTo(self.superview).offset(-self.finalFrame.size.width*(0.5-anchorPoint.x) + edgeInsets.left - edgeInsets.right);
-        make.top.equalTo(self.superview).offset(-self.finalFrame.size.height*(1-anchorPoint.y)/2 + edgeInsets.top - edgeInsets.bottom);
-    } else if (myAlignment == FWPopupAlignmentLeftCenter) {
-        // 设置锚点后会导致约束偏移，因此这边特意做了一个反向偏移
-        make.centerY.equalTo(self.superview).offset(-self.finalFrame.size.height*(0.5-anchorPoint.y) + edgeInsets.top - edgeInsets.bottom);
-        make.left.equalTo(self.superview).offset(-self.finalFrame.size.width/2 + self.finalFrame.size.width*anchorPoint.x + edgeInsets.left - edgeInsets.right);
-    } else if (myAlignment == FWPopupAlignmentBottomCenter) {
-        // 设置锚点后会导致约束偏移，因此这边特意做了一个反向偏移
-        make.centerX.equalTo(self.superview).offset(edgeInsets.left - edgeInsets.right);
-        make.bottom.equalTo(self.superview).offset(self.finalFrame.size.height*(anchorPoint.y-0.5) + edgeInsets.top - edgeInsets.bottom);
-    } else if (myAlignment == FWPopupAlignmentRightCenter) {
-        // 设置锚点后会导致约束偏移，因此这边特意做了一个反向偏移
-        make.centerY.equalTo(self.superview).offset(-self.finalFrame.size.height*(0.5-anchorPoint.y) + edgeInsets.top - edgeInsets.bottom);
-        make.right.equalTo(self.superview).offset(self.finalFrame.size.width/2 - self.finalFrame.size.width*(1-anchorPoint.x) + edgeInsets.left - edgeInsets.right);
-    } else if (myAlignment == FWPopupAlignmentTopLeft) {
-        // 设置锚点后会导致约束偏移，因此这边特意做了一个反向偏移
-        make.left.equalTo(self.superview).offset(-self.finalFrame.size.width/2 + self.finalFrame.size.width*anchorPoint.x + edgeInsets.left - edgeInsets.right);
-        make.top.equalTo(self.superview).offset(-self.finalFrame.size.height*(1-anchorPoint.y)/2 + edgeInsets.top - edgeInsets.bottom);
-    } else if (myAlignment == FWPopupAlignmentTopRight) {
-        // 设置锚点后会导致约束偏移，因此这边特意做了一个反向偏移
-        make.right.equalTo(self.superview).offset(self.finalFrame.size.width/2 - self.finalFrame.size.width*(1-anchorPoint.x) + edgeInsets.left - edgeInsets.right);
-        make.top.equalTo(self.superview).offset(-self.finalFrame.size.height*(1-anchorPoint.y)/2 + edgeInsets.top - edgeInsets.bottom);
-    } else if (myAlignment == FWPopupAlignmentBottomLeft) {
-        // 设置锚点后会导致约束偏移，因此这边特意做了一个反向偏移
-        make.left.equalTo(self.superview).offset(-self.finalFrame.size.width/2 + self.finalFrame.size.width*anchorPoint.x + edgeInsets.left - edgeInsets.right);
-        make.bottom.equalTo(self.superview).offset(self.finalFrame.size.height*(anchorPoint.y-0.5) + edgeInsets.top - edgeInsets.bottom);
-    } else if (myAlignment == FWPopupAlignmentBottomRight) {
-        // 设置锚点后会导致约束偏移，因此这边特意做了一个反向偏移
-        make.right.equalTo(self.superview).offset(self.finalFrame.size.width/2 - self.finalFrame.size.width*(1-anchorPoint.x) + edgeInsets.left - edgeInsets.right);
-        make.bottom.equalTo(self.superview).offset(self.finalFrame.size.height*(anchorPoint.y-0.5) + edgeInsets.top - edgeInsets.bottom);
+    UIView *tmpSuperview = self.superview;
+    if (tmpSuperview) {
+        if (myAlignment == FWPopupAlignmentCenter) {
+            make.center.equalTo(tmpSuperview).insets(edgeInsets);
+        } else if (myAlignment == FWPopupAlignmentTopCenter) {
+            // 设置锚点后会导致约束偏移，因此这边特意做了一个反向偏移
+            make.centerX.equalTo(tmpSuperview).offset(-self.finalFrame.size.width*(0.5-anchorPoint.x) + edgeInsets.left - edgeInsets.right);
+            make.top.equalTo(tmpSuperview).offset(-self.finalFrame.size.height*(1-anchorPoint.y)/2 + edgeInsets.top - edgeInsets.bottom);
+        } else if (myAlignment == FWPopupAlignmentLeftCenter) {
+            // 设置锚点后会导致约束偏移，因此这边特意做了一个反向偏移
+            make.centerY.equalTo(tmpSuperview).offset(-self.finalFrame.size.height*(0.5-anchorPoint.y) + edgeInsets.top - edgeInsets.bottom);
+            make.left.equalTo(tmpSuperview).offset(-self.finalFrame.size.width/2 + self.finalFrame.size.width*anchorPoint.x + edgeInsets.left - edgeInsets.right);
+        } else if (myAlignment == FWPopupAlignmentBottomCenter) {
+            // 设置锚点后会导致约束偏移，因此这边特意做了一个反向偏移
+            make.centerX.equalTo(tmpSuperview).offset(edgeInsets.left - edgeInsets.right);
+            make.bottom.equalTo(tmpSuperview).offset(self.finalFrame.size.height*(anchorPoint.y-0.5) + edgeInsets.top - edgeInsets.bottom);
+        } else if (myAlignment == FWPopupAlignmentRightCenter) {
+            // 设置锚点后会导致约束偏移，因此这边特意做了一个反向偏移
+            make.centerY.equalTo(tmpSuperview).offset(-self.finalFrame.size.height*(0.5-anchorPoint.y) + edgeInsets.top - edgeInsets.bottom);
+            make.right.equalTo(tmpSuperview).offset(self.finalFrame.size.width/2 - self.finalFrame.size.width*(1-anchorPoint.x) + edgeInsets.left - edgeInsets.right);
+        } else if (myAlignment == FWPopupAlignmentTopLeft) {
+            // 设置锚点后会导致约束偏移，因此这边特意做了一个反向偏移
+            make.left.equalTo(tmpSuperview).offset(-self.finalFrame.size.width/2 + self.finalFrame.size.width*anchorPoint.x + edgeInsets.left - edgeInsets.right);
+            make.top.equalTo(tmpSuperview).offset(-self.finalFrame.size.height*(1-anchorPoint.y)/2 + edgeInsets.top - edgeInsets.bottom);
+        } else if (myAlignment == FWPopupAlignmentTopRight) {
+            // 设置锚点后会导致约束偏移，因此这边特意做了一个反向偏移
+            make.right.equalTo(tmpSuperview).offset(self.finalFrame.size.width/2 - self.finalFrame.size.width*(1-anchorPoint.x) + edgeInsets.left - edgeInsets.right);
+            make.top.equalTo(tmpSuperview).offset(-self.finalFrame.size.height*(1-anchorPoint.y)/2 + edgeInsets.top - edgeInsets.bottom);
+        } else if (myAlignment == FWPopupAlignmentBottomLeft) {
+            // 设置锚点后会导致约束偏移，因此这边特意做了一个反向偏移
+            make.left.equalTo(tmpSuperview).offset(-self.finalFrame.size.width/2 + self.finalFrame.size.width*anchorPoint.x + edgeInsets.left - edgeInsets.right);
+            make.bottom.equalTo(tmpSuperview).offset(self.finalFrame.size.height*(anchorPoint.y-0.5) + edgeInsets.top - edgeInsets.bottom);
+        } else if (myAlignment == FWPopupAlignmentBottomRight) {
+            // 设置锚点后会导致约束偏移，因此这边特意做了一个反向偏移
+            make.right.equalTo(tmpSuperview).offset(self.finalFrame.size.width/2 - self.finalFrame.size.width*(1-anchorPoint.x) + edgeInsets.left - edgeInsets.right);
+            make.bottom.equalTo(tmpSuperview).offset(self.finalFrame.size.height*(anchorPoint.y-0.5) + edgeInsets.top - edgeInsets.bottom);
+        }
     }
 }
 
