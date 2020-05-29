@@ -30,38 +30,15 @@
     
     self.navigationItem.title = @"FWPopupView";
     
-    self.titleArray = @[@"0、Alert - 单个按钮", @"1、Alert - 两个按钮", @"2、Alert - 两个按钮（修改参数）", @"3、Alert - 多个按钮", @"4、Alert - 带输入框", @"5、Alert - 带自定义视图", @"6、Sheet - 少量Item", @"7、Sheet - 大量Item", @"8、Date - 自定义日期选择", @"9、Menu - 自定义菜单", @"10、Custom - 自定义弹窗", @"11、CustomSheet - 类似Sheet效果", @"12、CustomSheet - 类似Sheet效果2", @"13、展示如何让SVProgressHUD显示在FWPopupView上面"];
-    
     [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"cellId"];
     self.tableView.estimatedRowHeight = 44.0;
     
-    // customSheetView
-    FWCustomSheetViewProperty *property = [[FWCustomSheetViewProperty alloc] init];
-    property.popupViewItemHeight = 40;
-    property.selectedIndex = 1;
-    
-    NSArray *itemTitles = @[@"EOS", @"DICE", @"ZKS"];
-    
-    self.customSheetView = [FWCustomSheetView sheetWithHeaderTitle:@"选择代币" itemTitles:itemTitles itemSecondaryTitles:nil itemImages:nil itemBlock:^(FWPopupView * popupView, NSInteger index, NSString *title) {
-        
-        NSLog(@"当前选中了：%@", title);
-        
-    } property:property];
-    
-    
-    // customSheetView
-    FWCustomSheetViewProperty *property2 = [[FWCustomSheetViewProperty alloc] init];
-    property2.lastNeedAccessoryView = YES;
-
-    NSArray *itemTitles2 = @[@"eoslinwu1122", @"eoslinwusd23", @"导入钱包"];
-    NSArray *itemSecondaryTitles2 = @[@"EOS6sHTCXbm4Gz5WRhKxuuBgVZYttvM9tEdU6ThH6kseMWLYDTk9q", @"EOS1sdksbm4Gz5WRhKxuuBgVZYttvM9tEdU6ThH6kseMWLYDTk9q", @""];
-
-    self.customSheetView2 = [FWCustomSheetView sheetWithHeaderTitle:@"选择一个钱包" itemTitles:itemTitles2 itemSecondaryTitles:itemSecondaryTitles2 itemImages:nil itemBlock:^(FWPopupView * popupView, NSInteger index, NSString *title) {
-
-        NSLog(@"当前选中了：%@", title);
-
-    } property:property2];
+    self.titleArray = @[@"0、Alert - 单个按钮", @"1、Alert - 两个按钮", @"2、Alert - 两个按钮（修改参数）", @"3、Alert - 多个按钮", @"4、Alert - 带输入框", @"5、Alert - 带自定义视图", @"6、Sheet - 少量Item", @"7、Sheet - 大量Item", @"8、Date - 自定义日期选择", @"9、Menu - 自定义菜单", @"10、Custom - 自定义弹窗", @"11、CustomSheet - 类似Sheet效果", @"12、CustomSheet - 类似Sheet效果2", @"13、展示如何让SVProgressHUD显示在FWPopupView上面"];
 }
+
+
+#pragma mark -
+#pragma mark - UITableViewDelegate, UITableViewDataSource
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
@@ -254,6 +231,42 @@
         default:
             break;
     }
+}
+
+
+#pragma mark -
+#pragma mark - GET
+
+- (FWCustomSheetView *)customSheetView
+{
+    if (!_customSheetView) {
+        FWCustomSheetViewProperty *property = [[FWCustomSheetViewProperty alloc] init];
+        property.popupViewItemHeight = 40;
+        property.selectedIndex = 1;
+        
+        NSArray *itemTitles = @[@"Objective-C", @"Swift", @"Java", @"python"];
+        
+        _customSheetView = [FWCustomSheetView sheetWithHeaderTitle:@"选择开发语言" itemTitles:itemTitles itemSecondaryTitles:nil itemImages:nil itemBlock:^(FWPopupView * popupView, NSInteger index, NSString *title) {
+            NSLog(@"当前选中了：%@", title);
+        } property:property];
+    }
+    return _customSheetView;
+}
+
+- (FWCustomSheetView *)customSheetView2
+{
+    if (!_customSheetView2) {
+        FWCustomSheetViewProperty *property2 = [[FWCustomSheetViewProperty alloc] init];
+        property2.lastNeedAccessoryView = YES;
+
+        NSArray *itemTitles2 = @[@"Objective-C", @"Swift", @"其他开发语言"];
+        NSArray *itemSecondaryTitles2 = @[@"Objective-C，通常写作ObjC或OC和较少用的Objective C或Obj-C", @"Swift 是苹果推出的编程语言，专门针对 OS X 和 iOS 的应用开发", @""];
+
+        _customSheetView2 = [FWCustomSheetView sheetWithHeaderTitle:@"选择一种开发语言" itemTitles:itemTitles2 itemSecondaryTitles:itemSecondaryTitles2 itemImages:nil itemBlock:^(FWPopupView * popupView, NSInteger index, NSString *title) {
+            NSLog(@"当前选中了：%@", title);
+        } property:property2];
+    }
+    return _customSheetView2;
 }
 
 @end

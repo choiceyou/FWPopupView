@@ -25,9 +25,9 @@ class FWDemoViewController: UITableViewController {
         property.popupViewItemHeight = 40
         property.selectedIndex = 1
         
-        let titles = ["EOS", "DICE", "ZKS"]
+        let titles = ["Objective-C", "Swift", "Java", "python"]
         
-        let customSheetView = FWCustomSheetView.sheet(headerTitle: "选择代币", itemTitles: titles, itemSecondaryTitles: nil, itemImages: nil, itemBlock: { (popupView, index, title) in
+        let customSheetView = FWCustomSheetView.sheet(headerTitle: "选择开发语言", itemTitles: titles, itemSecondaryTitles: nil, itemImages: nil, itemBlock: { (popupView, index, title) in
             print("customSheet：点击了第\(index)个按钮")
         }, property: property)
         
@@ -41,13 +41,13 @@ class FWDemoViewController: UITableViewController {
         // 设置默认不选中
         property.selectedIndex = -1
         
-        let titles = ["fdksds123123", "fdksds112233", "导入钱包"]
-        let secondaryTitles = ["EOS6sHTCXbm4Gz5WRhKxuuBgVZYttvM9tEdU6ThH6kseMWLYDTk9q", "EOS1sdksbm4Gz5WRhKxuuBgVZYttvM9tEdU6ThH6kseMWLYDTk9q",""]
+        let titles = ["Objective-C", "Swift", "其他开发语言"]
+        let secondaryTitles = ["Objective-C，通常写作ObjC或OC和较少用的Objective C或Obj-C", "Swift 是苹果推出的编程语言，专门针对 OS X 和 iOS 的应用开发",""]
         let images = [UIImage(named: "right_menu_addFri"),
                       UIImage(named: "right_menu_addFri"),
                       UIImage(named: "right_menu_multichat")]
         
-        let customSheetView = FWCustomSheetView.sheet(headerTitle: "选择一个钱包", itemTitles: titles, itemSecondaryTitles: secondaryTitles, itemImages: images as? [UIImage], itemBlock: { (popupView, index, title) in
+        let customSheetView = FWCustomSheetView.sheet(headerTitle: "选择一种开发语言", itemTitles: titles, itemSecondaryTitles: secondaryTitles, itemImages: images as? [UIImage], itemBlock: { (popupView, index, title) in
             print("customSheet：点击了第\(index)个按钮")
         }, property: property)
         
