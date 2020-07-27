@@ -219,6 +219,9 @@ extension FWDemoViewController {
                          FWPopupItem(title: "确定", itemType: .normal, isCancel: false, canAutoHide: true, itemClickedBlock: block)]
             
             let alertView = FWAlertView.alert(title: "标题", detail: "带输入框", inputPlaceholder: "请输入...", keyboardType: .numberPad, isSecureTextEntry: true, customView: nil, items: items)
+            alertView.inputBlock = { (text) in
+                print("您当前输入的文字是：\(text)")
+            }
             alertView.show()
             break
         case 5:
