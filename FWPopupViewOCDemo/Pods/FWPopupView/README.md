@@ -242,6 +242,15 @@ FWSheetView *sheetView = [FWSheetView sheetWithTitle: @"标题"
 • v4.1.2:
 - [x] 解决xcode11.x新建（含SceneDelegate）的项目中弹窗不显示的问题；
 
+• v4.1.3:
+- [x] 原FWPopupWindow类改名：FWPopupSWindow（主要为了解决OC项目同时引入：FWPopupView、FWPopupViewOC库时需要使用FWPopupWindow时类重名的问题）；
+- [x] FWPopupSWindow新增removeAllPopupView方法：隐藏全部的弹窗（包括当前不可见的弹窗）；
+
+• v4.1.4:
+- [x] 解决还原keywindow时未判断原记录的window是否keywindow的问题；
+
+
+
 
 
 ## 结尾语：

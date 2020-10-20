@@ -1,5 +1,5 @@
 PODS:
-  - FWPopupView (4.1.4):
+  - FWPopupView (4.1.5):
     - SnapKit
   - FWPopupViewOC (3.1.0):
     - Masonry
@@ -21,12 +21,12 @@ SPEC REPOS:
     - SVProgressHUD
 
 SPEC CHECKSUMS:
-  FWPopupView: 8efc8fd8b620fc75756165cdc5163f69b71a7adc
+  FWPopupView: 367cc1aca505ca83e2dbe8567c52afdbdd916d8d
   FWPopupViewOC: 116094e33ba1f492e60c262a095a9ae6bfd0c715
   Masonry: 678fab65091a9290e40e2832a55e7ab731aad201
   SnapKit: fe8a619752f3f27075cc9a90244d75c6c3f27e2a
   SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
 
-PODFILE CHECKSUM: e0b7621084305b94feec4b740fca97a75447b35e
+PODFILE CHECKSUM: adf02bec6e551eef9dddf23aa7ac097709157576
 
-COCOAPODS: 1.9.2
+COCOAPODS: 1.9.3
