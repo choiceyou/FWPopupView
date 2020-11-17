@@ -78,6 +78,7 @@ class FWMenuViewDemoVC: UIViewController {
     
     var centerBtn: UIButton!
     var leftBottomBtn: UIButton!
+    var bottomCenterBtn: UIButton!
     var rightBottomBtn: UIButton!
     
     
@@ -112,7 +113,15 @@ class FWMenuViewDemoVC: UIViewController {
             make.size.equalTo(CGSize(width: 100, height: 50))
         }
         
-        rightBottomBtn = self.setupBtn(title: "右下角按钮", tag: 3) as? UIButton
+        bottomCenterBtn = self.setupBtn(title: "底部中间按钮", tag: 3) as? UIButton
+        self.view.addSubview(bottomCenterBtn)
+        bottomCenterBtn.snp.makeConstraints { (make) in
+            make.centerX.equalToSuperview()
+            make.bottom.equalToSuperview().offset(-20)
+            make.size.equalTo(CGSize(width: 100, height: 50))
+        }
+        
+        rightBottomBtn = self.setupBtn(title: "右下角按钮", tag: 4) as? UIButton
         self.view.addSubview(rightBottomBtn)
         rightBottomBtn.snp.makeConstraints { (make) in
             make.right.equalToSuperview().offset(-20)
@@ -192,6 +201,30 @@ extension FWMenuViewDemoVC {
             break
             
         case 3:
+            let property = FWMenuViewProperty()
+            property.popupCustomAlignment = .bottomCenter
+            property.popupAnimationType = .scale
+            property.maskViewColor = UIColor.clear
+            property.touchWildToHide = "1"
+            property.popupViewEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: UIScreen.main.bounds.height - self.leftBottomBtn.frame.minY - kStatusBarHeight - kNavBarHeight, right: 0)
+            property.topBottomMargin = 0
+            property.animationDuration = 0.3
+            property.popupArrowStyle = .round
+            property.popupArrowVertexScaleX = 0.5
+            property.cornerRadius = 5
+            property.backgroundLayerColors = [UIColor.red, UIColor.blue]
+            property.splitColor = UIColor.clear
+            property.separatorColor = UIColor.init(white: 1, alpha: 0.3)
+            property.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white, NSAttributedString.Key.backgroundColor: UIColor.clear, NSAttributedString.Key.font: UIFont.systemFont(ofSize: 15.0)]
+            property.textAlignment = .left
+            property.separatorInset = UIEdgeInsets(top: 0, left: 15, bottom: 0, right: 15)
+            
+            let menuView = FWMenuView.menu(itemTitles: titles, itemImageNames: images2 as? [UIImage], itemBlock: { (popupView, index, title) in
+                print("Menu：点击了第\(index)个按钮")
+            }, property: property)
+            menuView.show()
+            break
+        case 4:
             let property = FWMenuViewProperty()
             property.popupCustomAlignment = .bottomRight
             property.popupAnimationType = .scale
