@@ -61,6 +61,9 @@ extension FWDateView {
         
         let property = self.vProperty as! FWDateViewProperty
         
+        if #available(iOS 13.4, *) {
+            self.datePicker.preferredDatePickerStyle = .wheels
+        }
         self.datePicker.setValue(property.pickerTextColor, forKey: "textColor")
         
         self.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: property.datePickerHeight + property.btnHeight)
