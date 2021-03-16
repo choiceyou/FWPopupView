@@ -16,7 +16,7 @@ Pod::Spec.new do |s|
   #
 
   s.name         = "FWPopupView"
-  s.version      = "4.1.5"
+  s.version      = "4.1.6"
   s.summary      = "自定义弹窗"
 
   # This description is used to generate tags and improve search results.
