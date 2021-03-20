@@ -238,6 +238,9 @@ FWSheetView *sheetView = [FWSheetView sheetWithTitle: @"标题"
 • v4.1.5:
 - [x] 支持 xib 方式创建弹窗；
 
+• v4.2.0:
+- [x] 兼容深色模式（可通过参数修改深色模式下的相关色值）；
+
 
 
 ## 结尾语：
