@@ -135,9 +135,10 @@ open class FWPopupView: UIView, UIGestureRecognizerDelegate {
     @objc public var vProperty = FWPopupViewProperty() {
         willSet {
             self.attachedView?.fwAnimationDuration = newValue.animationDuration
-            if newValue.backgroundColor != nil {
-                self.backgroundColor = newValue.backgroundColor
-            } else if newValue.backgroundLayerColors != nil {
+            
+            self.backgroundColor = UIColor.fw_colorWithStyleColors(lightColor: newValue.backgroundColor, darkColor: newValue.dark_backgroundColor)
+            
+            if newValue.backgroundLayerColors != nil {
                 var tmpArray: [Any] = []
                 for color: UIColor in newValue.backgroundLayerColors! {
                     tmpArray.append(color.cgColor as Any)
@@ -216,9 +217,8 @@ open class FWPopupView: UIView, UIGestureRecognizerDelegate {
     }
     
     private func setupParams() {
-        self.backgroundColor = UIColor.white
         
-        FWPopupSWindow.sharedInstance.backgroundColor = UIColor.clear
+        self.backgroundColor = UIColor.fw_colorWithStyleColors(lightColor: self.vProperty.backgroundColor, darkColor: self.vProperty.dark_backgroundColor)
         
         self.originMaskViewColor = self.attachedView?.fwMaskViewColor
         self.originTouchWildToHide = FWPopupSWindow.sharedInstance.touchWildToHide
@@ -1057,8 +1057,8 @@ open class FWPopupViewProperty: NSObject {
     /// 圆角值
     @objc open var cornerRadius: CGFloat = 5.0
     
-    /// 弹窗的背景色（注意：这边指的是弹窗而不是遮罩层，遮罩层背景色的设置是：fwMaskViewColor）
-    @objc open var backgroundColor: UIColor?
+    /// 弹窗的背景色（注意：部分子类有重新定义该背景色。这边指的是弹窗而不是遮罩层，遮罩层背景色的设置是：fwMaskViewColor）
+    @objc open var backgroundColor: UIColor = UIColor.white
     /// 弹窗的背景渐变色：当未设置backgroundColor时该值才有效
     @objc open var backgroundLayerColors: [UIColor]?
     /// 弹窗的背景渐变色相关属性：当设置了backgroundLayerColors时该值才有效
@@ -1081,6 +1081,22 @@ open class FWPopupViewProperty: NSObject {
     @objc open var popupArrowCornerRadius: CGFloat = 2.5
     /// 弹窗圆角箭头与边线交汇处的圆角值
     @objc open var popupArrowBottomCornerRadius: CGFloat = 4.0
+    
+    
+    // ===== 深色模式 =====
+    
+    /// 深色模式：弹窗的背景色
+    @objc open var dark_backgroundColor: UIColor = kPV_RGBA(r: 44, g: 44, b: 44, a: 1)
+    /// 深色模式：标题文字颜色
+    @objc open var dark_titleColor: UIColor = kPV_RGBA(r: 213, g: 213, b: 213, a: 1)
+    /// 深色模式：普通按钮文字颜色
+    @objc open var dark_itemNormalColor: UIColor = kPV_RGBA(r: 213, g: 213, b: 213, a: 1)
+    /// 深色模式：高亮按钮文字颜色
+    @objc open var dark_itemHighlightColor: UIColor = kPV_RGBA(r: 254, g: 226, b: 4, a: 1)
+    /// 深色模式：选中按钮文字颜色
+    @objc open var dark_itemPressedColor: UIColor = kPV_RGBA(r: 50, g: 50, b: 50, a: 1)
+    /// 深色模式：边框颜色（部分控件分割线也用这个颜色）
+    @objc open var dark_splitColor: UIColor = kPV_RGBA(r: 55, g: 55, b: 55, a: 1)
     
     
     // ===== 自定义弹窗（继承FWPopupView）时可能会用到 =====
@@ -1107,7 +1123,7 @@ open class FWPopupViewProperty: NSObject {
     /// 3D放射动画（当且仅当：popupAnimationType == .scale3D 时有效）
     @objc open var transform3D: CATransform3D = CATransform3DMakeScale(1.2, 1.2, 1.0)
     /// 2D放射动画
-    @objc open var transform: CGAffineTransform                     = CGAffineTransform(scaleX: 0.001, y: 0.001)
+    @objc open var transform: CGAffineTransform = CGAffineTransform(scaleX: 0.001, y: 0.001)
     
     
     public override init() {

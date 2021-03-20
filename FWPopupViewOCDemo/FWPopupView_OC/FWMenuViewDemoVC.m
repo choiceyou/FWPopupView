@@ -8,6 +8,7 @@
 
 #import "FWMenuViewDemoVC.h"
 #import <FWPopupView/FWPopupView-Swift.h>
+#import "UIColor+FWEx.h"
 
 // 状态栏、导航栏
 #define kStatusBarHeight        ([UIApplication sharedApplication].statusBarFrame.size.height)
@@ -42,7 +43,7 @@ alpha:1.f]
 {
     [super viewDidLoad];
     
-    self.view.backgroundColor = [UIColor whiteColor];
+    self.view.backgroundColor = [UIColor colorWithLightColor:[UIColor whiteColor] darkColor:[UIColor blackColor]];
     
     self.titleArray = @[@"创建群聊", @"加好友/群", @"扫一扫", @"面对面快传", @"付款", @"拍摄"];
     self.imageArray = @[[UIImage imageNamed:@"right_menu_multichat"],

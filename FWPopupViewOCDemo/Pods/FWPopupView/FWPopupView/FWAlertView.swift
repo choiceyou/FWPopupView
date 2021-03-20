@@ -32,6 +32,7 @@ open class FWAlertView: FWPopupView {
     private var detailLabel: UILabel?
     private var inputTF: UITextField?
     private var customView: UIView?
+    private var btnContrainerView: UIView!
     
     private var commponenetCount: Int = 0
     
@@ -203,7 +204,7 @@ extension FWAlertView {
                 make.right.equalToSuperview().offset(-self.vProperty.letfRigthMargin)
             })
             self.titleLabel?.text = title
-            self.titleLabel?.textColor = self.vProperty.titleColor
+            self.titleLabel?.textColor = UIColor.fw_colorWithStyleColors(lightColor: self.vProperty.titleColor, darkColor: self.vProperty.dark_titleColor)
             self.titleLabel?.textAlignment = .center
             self.titleLabel?.font = (self.vProperty.titleFont != nil) ? self.vProperty.titleFont! : UIFont.systemFont(ofSize: self.vProperty.titleFontSize)
             self.titleLabel?.numberOfLines = 5
@@ -223,7 +224,7 @@ extension FWAlertView {
                 make.height.lessThanOrEqualTo(self.superview!.frame.size.height*property.popupViewMaxHeightRate-100)
             })
             self.detailLabel?.text = detail
-            self.detailLabel?.textColor = property.detailColor
+            self.detailLabel?.textColor = UIColor.fw_colorWithStyleColors(lightColor: property.detailColor, darkColor: property.dark_detailColor)
             self.detailLabel?.textAlignment = .center
             self.detailLabel?.font = (property.detailFont != nil) ? property.detailFont! : UIFont.systemFont(ofSize: property.detailFontSize)
             self.detailLabel?.numberOfLines = 0
@@ -243,11 +244,11 @@ extension FWAlertView {
                 make.height.equalTo(40)
             })
             self.inputTF?.attributedPlaceholder = NSAttributedString(string: inputPlaceholder!, attributes: [NSAttributedString.Key.foregroundColor : property.inputPlaceholderColor])
-            self.inputTF?.textColor = property.inputTextColor
+            self.inputTF?.textColor = UIColor.fw_colorWithStyleColors(lightColor: property.inputTextColor, darkColor: property.dark_inputTextColor)
             self.inputTF?.textAlignment = .center
             self.inputTF?.clearButtonMode = .whileEditing
             self.inputTF?.leftViewMode = .always
-            self.inputTF?.layer.borderColor = self.vProperty.splitColor.cgColor
+            self.inputTF?.layer.borderColor = UIColor.fw_colorWithStyleColors(lightColor: self.vProperty.splitColor, darkColor: self.vProperty.dark_splitColor).cgColor
             self.inputTF?.layer.borderWidth = self.vProperty.splitWidth
             self.inputTF?.layer.cornerRadius = self.vProperty.cornerRadius
             self.inputTF?.keyboardType = keyboardType
@@ -270,7 +271,7 @@ extension FWAlertView {
             lastConstraintItem = self.customView!.snp.bottom
         }
         
-        let btnContrainerView = UIView()
+        btnContrainerView = UIView()
         self.addSubview(btnContrainerView)
         btnContrainerView.backgroundColor = UIColor.clear
         btnContrainerView.snp.makeConstraints { (make) in
@@ -322,16 +323,14 @@ extension FWAlertView {
             
             // 按钮背景颜色
             if popupItem.itemBackgroundColor != nil {
-                btn.backgroundColor = popupItem.itemBackgroundColor
+                btn.backgroundColor = UIColor.fw_colorWithStyleColors(lightColor: popupItem.itemBackgroundColor, darkColor: popupItem.dark_itemBackgroundColor)
             } else {
-                btn.backgroundColor = self.backgroundColor
+                btn.backgroundColor = UIColor.fw_colorWithStyleColors(lightColor: self.vProperty.backgroundColor, darkColor: self.vProperty.dark_backgroundColor)
             }
             // 按钮文字颜色
-            if popupItem.itemTitleColor != nil {
-                btn.setTitleColor(popupItem.itemTitleColor, for: .normal)
-            } else {
-                btn.setTitleColor(popupItem.highlight ? self.vProperty.itemHighlightColor : self.vProperty.itemNormalColor, for: .normal)
-            }
+            let titleLightColor = (popupItem.itemTitleColor != nil) ? popupItem.itemTitleColor : ((popupItem.highlight == true) ? self.vProperty.itemHighlightColor : self.vProperty.itemNormalColor)
+            let titleDarkColor = (popupItem.dark_itemTitleColor != nil) ? popupItem.dark_itemTitleColor : ((popupItem.highlight == true) ? self.vProperty.dark_itemHighlightColor : self.vProperty.dark_itemNormalColor)
+            btn.setTitleColor(UIColor.fw_colorWithStyleColors(lightColor: titleLightColor, darkColor: titleDarkColor), for: .normal)
             
             // 按钮文字大小
             if popupItem.itemTitleFont != nil {
@@ -342,9 +341,9 @@ extension FWAlertView {
             
             btn.setTitle(popupItem.title, for: .normal)
             btn.layer.borderWidth = self.vProperty.splitWidth
-            btn.layer.borderColor = self.vProperty.splitColor.cgColor
+            btn.layer.borderColor = UIColor.fw_colorWithStyleColors(lightColor: self.vProperty.splitColor, darkColor: self.vProperty.dark_splitColor).cgColor
             btn.setBackgroundImage(self.getImageWithColor(color: btn.backgroundColor!), for: .normal)
-            btn.setBackgroundImage(self.getImageWithColor(color: self.vProperty.itemPressedColor), for: .highlighted)
+            btn.setBackgroundImage(self.getImageWithColor(color: UIColor.fw_colorWithStyleColors(lightColor: self.vProperty.itemPressedColor, darkColor: self.vProperty.dark_itemPressedColor)), for: .highlighted)
             
             tmpIndex += 1
         }
@@ -354,6 +353,26 @@ extension FWAlertView {
         
         self.snp.makeConstraints { (make) in
             make.bottom.equalTo(btnContrainerView.snp.bottom)
+        }
+    }
+    
+    open override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        
+        if #available(iOS 13.0, *), FWPopupSWindow.sharedInstance.compatibleDarkStyle == true {
+            if self.traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection) {
+                for tmpView: UIView in self.btnContrainerView.subviews {
+                    let btn: UIButton = tmpView as! UIButton
+                    btn.setBackgroundImage(self.getImageWithColor(color: btn.backgroundColor!), for: .normal)
+                    if self.traitCollection.userInterfaceStyle == .dark {
+                        btn.layer.borderColor = self.vProperty.dark_splitColor.cgColor
+                        btn.setBackgroundImage(self.getImageWithColor(color: self.vProperty.dark_itemPressedColor), for: .highlighted)
+                    } else {
+                        btn.layer.borderColor = self.vProperty.splitColor.cgColor
+                        btn.setBackgroundImage(self.getImageWithColor(color: self.vProperty.itemPressedColor), for: .highlighted)
+                    }
+                }
+            }
         }
     }
 }
@@ -413,6 +432,16 @@ open class FWAlertViewProperty: FWPopupViewProperty {
     @objc open var defaultTextCancel = "取消"
     // 确定按钮默认名称
     @objc open var defaultTextConfirm = "确定"
+    
+    
+    // ===== 深色模式 =====
+    
+    // 深色模式：描述文字颜色
+    @objc open var dark_detailColor: UIColor = kPV_RGBA(r: 149, g: 149, b: 149, a: 1)
+    // 深色模式：输入框提示文字颜色
+    @objc open var dark_inputPlaceholderColor: UIColor = UIColor.lightGray
+    // 深色模式：输入框文字颜色
+    @objc open var dark_inputTextColor: UIColor = kPV_RGBA(r: 149, g: 149, b: 149, a: 1)
     
     
     public override func reSetParams() {

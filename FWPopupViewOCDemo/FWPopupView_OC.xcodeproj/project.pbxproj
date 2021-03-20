@@ -19,6 +19,7 @@
 		495D5E71206A46E9008F8545 /* FWDemoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 495D5E70206A46E9008F8545 /* FWDemoViewController.m */; };
 		49B9255220D2964200954C3D /* FWMenuViewDemoVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 49B9255120D2964200954C3D /* FWMenuViewDemoVC.m */; };
 		49B9255520D2978D00954C3D /* FWNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 49B9255420D2978D00954C3D /* FWNavigationController.m */; };
+		AFDE31712605EED500ACC3D2 /* UIColor+FWEx.m in Sources */ = {isa = PBXBuildFile; fileRef = AFDE31702605EED500ACC3D2 /* UIColor+FWEx.m */; };
 		DC65B6AD01B25393FC8E6323 /* Pods_FWPopupView_OC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03BB08F72D0D257361AC20D3 /* Pods_FWPopupView_OC.framework */; };
 /* End PBXBuildFile section */
 
@@ -70,6 +71,8 @@
 		61F5B1CCAF3BD049ACBFADE2 /* Pods_FWPopupView_OCUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FWPopupView_OCUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6CCD887969761536C01A0E2B /* Pods-FWPopupView_OC.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FWPopupView_OC.release.xcconfig"; path = "Pods/Target Support Files/Pods-FWPopupView_OC/Pods-FWPopupView_OC.release.xcconfig"; sourceTree = "<group>"; };
 		9811B543FC2CFA6C181C66C6 /* Pods_FWPopupView_OCTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FWPopupView_OCTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		AFDE316F2605EED500ACC3D2 /* UIColor+FWEx.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIColor+FWEx.h"; sourceTree = "<group>"; };
+		AFDE31702605EED500ACC3D2 /* UIColor+FWEx.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIColor+FWEx.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -137,6 +140,8 @@
 				49B9255120D2964200954C3D /* FWMenuViewDemoVC.m */,
 				493CD3D620BCE4890044C3BB /* FWCustomView.h */,
 				493CD3D520BCE4890044C3BB /* FWCustomView.m */,
+				AFDE316F2605EED500ACC3D2 /* UIColor+FWEx.h */,
+				AFDE31702605EED500ACC3D2 /* UIColor+FWEx.m */,
 				495D5E34206A4695008F8545 /* Assets.xcassets */,
 				495D5E36206A4695008F8545 /* LaunchScreen.storyboard */,
 				495D5E39206A4695008F8545 /* Info.plist */,
@@ -364,6 +369,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AFDE31712605EED500ACC3D2 /* UIColor+FWEx.m in Sources */,
 				495D5E3B206A4695008F8545 /* main.m in Sources */,
 				493CD3D420BCE46B0044C3BB /* FWCustomDemoVC.m in Sources */,
 				49B9255220D2964200954C3D /* FWMenuViewDemoVC.m in Sources */,

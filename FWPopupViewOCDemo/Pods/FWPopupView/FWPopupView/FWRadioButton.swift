@@ -49,7 +49,7 @@ open class FWRadioButton : UIView {
         let insideLayer = CAShapeLayer()
         self.layer.addSublayer(insideLayer)
         insideLayer.lineWidth = 0
-        insideLayer.fillColor = self.vProperty.selectedStateColor.cgColor
+        insideLayer.fillColor = UIColor.fw_colorWithStyleColors(lightColor: self.vProperty.selectedStateColor, darkColor: self.vProperty.dark_selectedStateColor).cgColor
         insideLayer.anchorPoint = CGPoint(x: 0.5, y: 0.5)
         return insideLayer
     }()
@@ -181,11 +181,27 @@ extension FWRadioButton {
         
         if title != nil && !title!.isEmpty {
             self.titleLabel.font = self.vProperty.titleFont
-            self.titleLabel.textColor = self.vProperty.titleColor
+            self.titleLabel.textColor = UIColor.fw_colorWithStyleColors(lightColor: self.vProperty.titleColor, darkColor: self.vProperty.dark_titleColor)
             self.titleLabel.text = title
             self.titleLabel.snp.makeConstraints { (make) in
                 make.left.equalTo(self).offset(radioFrame.width + self.vProperty.radioViewEdgeInsets.left + self.vProperty.radioViewEdgeInsets.right)
                 make.top.bottom.right.equalTo(self)
+            }
+        }
+    }
+    
+    open override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        
+        if #available(iOS 13.0, *), FWPopupSWindow.sharedInstance.compatibleDarkStyle == true {
+            if self.traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection) {
+                if self.traitCollection.userInterfaceStyle == .dark {
+                    self.borderLayer.strokeColor = self.vProperty.dark_normalStateColor.cgColor
+                    self.insideLayer.fillColor = self.vProperty.dark_selectedStateColor.cgColor
+                } else {
+                    self.borderLayer.strokeColor = self.vProperty.normalStateColor.cgColor
+                    self.insideLayer.fillColor = self.vProperty.selectedStateColor.cgColor
+                }
             }
         }
     }
@@ -223,7 +239,7 @@ extension FWRadioButton {
             }
         } else {
             if self.vProperty.isBorderColorNeedChanged {
-                self.borderLayer.strokeColor = selected ? self.vProperty.selectedStateColor.cgColor : self.vProperty.normalStateColor.cgColor
+                self.borderLayer.strokeColor = selected ? UIColor.fw_colorWithStyleColors(lightColor: self.vProperty.selectedStateColor, darkColor: self.vProperty.dark_selectedStateColor).cgColor : UIColor.fw_colorWithStyleColors(lightColor: self.vProperty.normalStateColor, darkColor: self.vProperty.dark_normalStateColor).cgColor
             }
             
             if self.vProperty.isAnimated && self.vProperty.animationDuration > 0 {
@@ -272,7 +288,7 @@ extension FWRadioButton {
         }
         
         self.borderLayer.frame = CGRect(x: rect.origin.x, y: rect.origin.y, width: rect.width, height: rect.height)
-        self.borderLayer.strokeColor = self.vProperty.normalStateColor.cgColor
+        self.borderLayer.strokeColor = UIColor.fw_colorWithStyleColors(lightColor: self.vProperty.normalStateColor, darkColor: self.vProperty.dark_normalStateColor).cgColor
         self.borderLayer.path = borderPath.cgPath
     }
     
@@ -341,6 +357,8 @@ open class FWRadioButtonProperty: NSObject {
     @objc open var titleFont: UIFont = UIFont.systemFont(ofSize: 15.0)
     /// 标题文字颜色
     @objc open var titleColor: UIColor = kPV_RGBA(r: 51, g: 51, b: 51, a: 1)
+    /// 深色模式：标题文字颜色
+    @objc open var dark_titleColor: UIColor = kPV_RGBA(r: 213, g: 213, b: 213, a: 1)
     
     
     // ------------ 以下属性为：buttonType == .circular | .rectangle 时有效 ------------
@@ -348,6 +366,10 @@ open class FWRadioButtonProperty: NSObject {
     @objc open var normalStateColor: UIColor = kPV_RGBA(r: 51, g: 51, b: 51, a: 1)
     /// 选中时的颜色
     @objc open var selectedStateColor: UIColor = kPV_RGBA(r: 51, g: 51, b: 51, a: 1)
+    /// 深色模式：未选中时的颜色
+    @objc open var dark_normalStateColor: UIColor = UIColor.white
+    /// 深色模式：选中时的颜色
+    @objc open var dark_selectedStateColor: UIColor = UIColor.white
     /// 边框颜色是否需要跟随选中颜色
     @objc public var isBorderColorNeedChanged : Bool = true
     /// 边的宽度
