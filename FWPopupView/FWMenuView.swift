@@ -200,7 +200,11 @@ extension FWMenuView {
         
         self.tableView.separatorInset = property.separatorInset
         self.tableView.layoutMargins = property.separatorInset
-        self.tableView.separatorColor = property.separatorColor
+        if self.vProperty.backgroundLayerColors == nil {
+            self.tableView.separatorColor = UIColor.fw_colorWithStyleColors(lightColor: property.separatorColor, darkColor: property.dark_separatorColor)
+        } else {
+            self.tableView.separatorColor = property.separatorColor
+        }
         self.tableView.bounces = property.bounces
         
         self.maxItemSize = self.measureMaxSize()
@@ -209,7 +213,7 @@ extension FWMenuView {
         var tableViewY: CGFloat = 0
         if property.popupArrowStyle == .none {
             self.layer.cornerRadius = self.vProperty.cornerRadius
-            self.layer.borderColor = self.vProperty.splitColor.cgColor
+            self.layer.borderColor = UIColor.fw_colorWithStyleColors(lightColor: self.vProperty.splitColor, darkColor: self.vProperty.dark_splitColor).cgColor
             self.layer.borderWidth = self.vProperty.splitWidth
         } else {
             tableViewY = property.popupArrowSize.height
@@ -379,8 +383,24 @@ extension FWMenuView {
             self.borderLayer?.path = maskPath.cgPath
             self.borderLayer?.lineWidth = 1
             self.borderLayer?.fillColor = UIColor.clear.cgColor
-            self.borderLayer?.strokeColor = property.splitColor.cgColor
+            self.borderLayer?.strokeColor = UIColor.fw_colorWithStyleColors(lightColor: property.splitColor, darkColor: property.dark_splitColor).cgColor
             self.layer.addSublayer(self.borderLayer!)
+        }
+    }
+    
+    open override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        
+        if #available(iOS 13.0, *), FWPopupSWindow.sharedInstance.compatibleDarkStyle == true {
+            if self.traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection) {
+                if self.traitCollection.userInterfaceStyle == .dark {
+                    self.layer.borderColor = self.vProperty.dark_splitColor.cgColor
+                    self.borderLayer?.strokeColor = self.vProperty.dark_splitColor.cgColor
+                } else {
+                    self.layer.borderColor = self.vProperty.splitColor.cgColor
+                    self.borderLayer?.strokeColor = self.vProperty.splitColor.cgColor
+                }
+            }
         }
     }
 }
@@ -520,6 +540,8 @@ open class FWMenuViewProperty: FWPopupViewProperty {
     
     /// 分割线颜色
     @objc public var separatorColor: UIColor = kPV_RGBA(r: 231, g: 231, b: 231, a: 1)
+    /// 深色模式：分割线颜色
+    @objc public var dark_separatorColor: UIColor = kPV_RGBA(r: 55, g: 55, b: 55, a: 1)
     /// 分割线偏移量
     @objc public var separatorInset: UIEdgeInsets = UIEdgeInsets.zero
     
@@ -534,7 +556,7 @@ open class FWMenuViewProperty: FWPopupViewProperty {
     public override func reSetParams() {
         super.reSetParams()
         
-        self.titleTextAttributes = [NSAttributedString.Key.foregroundColor: self.itemNormalColor, NSAttributedString.Key.backgroundColor: UIColor.clear, NSAttributedString.Key.font: UIFont.systemFont(ofSize: self.buttonFontSize)]
+        self.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.fw_colorWithStyleColors(lightColor: self.itemNormalColor, darkColor: self.dark_itemNormalColor), NSAttributedString.Key.backgroundColor: UIColor.clear, NSAttributedString.Key.font: UIFont.systemFont(ofSize: self.buttonFontSize)]
         
         self.letfRigthMargin = 20
         

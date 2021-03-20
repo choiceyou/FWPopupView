@@ -14,7 +14,7 @@ class FWCustomSheetViewTableViewCell: UITableViewCell {
     var imgView: UIImageView!
     var titleLabel: UILabel!
     var secondaryTitleLabel: UILabel!
-    var line: CALayer!
+    var line: UIView!
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -30,8 +30,8 @@ class FWCustomSheetViewTableViewCell: UITableViewCell {
         self.secondaryTitleLabel.numberOfLines = 1
         self.addSubview(self.secondaryTitleLabel)
         
-        self.line = CALayer()
-        self.layer.addSublayer(self.line)
+        self.line = UIView()
+        self.addSubview(self.line)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -42,7 +42,7 @@ class FWCustomSheetViewTableViewCell: UITableViewCell {
         self.selectionStyle = property.selectionStyle
         
         self.line.frame = CGRect(x: property.separatorInset.left, y: ceil(self.frame.height-property.splitWidth), width: self.frame.width-property.separatorInset.left-property.separatorInset.right, height: property.splitWidth)
-        self.line.backgroundColor = property.splitColor.cgColor
+        self.line.backgroundColor = UIColor.fw_colorWithStyleColors(lightColor: property.splitColor, darkColor: property.dark_splitColor)
         
         var leftMargin = property.letfRigthMargin
         
@@ -167,13 +167,13 @@ extension FWCustomSheetView {
         // 绘制头部视图
         if headerTitle != nil {
             self.headerView = UIView(frame: CGRect(x: 0, y: 0, width: selfSize.width, height: property.headerViewHeight))
-            self.headerView?.backgroundColor = self.vProperty.backgroundColor
+            self.headerView?.backgroundColor = UIColor.fw_colorWithStyleColors(lightColor: self.vProperty.backgroundColor, darkColor: self.vProperty.dark_backgroundColor)
             self.addSubview(self.headerView!)
             
-            let line = CALayer()
+            let line = UIView()
             line.frame = CGRect(x: 0, y: floor(property.headerViewHeight-property.splitWidth), width: selfSize.width, height: property.splitWidth)
-            line.backgroundColor = property.splitColor.cgColor
-            self.headerView!.layer.addSublayer(line)
+            line.backgroundColor = UIColor.fw_colorWithStyleColors(lightColor: self.vProperty.splitColor, darkColor: self.vProperty.dark_splitColor)
+            self.headerView!.addSubview(line)
             
             let titleLabel = UILabel(frame: CGRect(x: property.letfRigthMargin, y: 0, width: selfSize.width-property.letfRigthMargin*3, height: property.headerViewHeight))
             self.headerView!.addSubview(titleLabel)
@@ -204,7 +204,7 @@ extension FWCustomSheetView {
         
         self.tableView.register(FWCustomSheetViewTableViewCell.self, forCellReuseIdentifier: "cellId")
         self.tableView.separatorStyle = .none
-        self.tableView.backgroundColor = self.backgroundColor
+        self.tableView.backgroundColor = UIColor.fw_colorWithStyleColors(lightColor: self.vProperty.backgroundColor, darkColor: self.vProperty.dark_backgroundColor)
         self.tableView.bounces = property.bounces
         
         if property.popupViewMaxHeightRate > 0 && property.popupViewItemHeight * CGFloat(self.itemsCount()) > property.popupViewMaxHeightRate*self.superview!.frame.size.height  {
@@ -239,7 +239,7 @@ extension FWCustomSheetView {
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cellId", for: indexPath) as! FWCustomSheetViewTableViewCell
         cell.setupContent(title: (self.itemTitleArray != nil) ? self.itemTitleArray![indexPath.row] : nil, secondaryTitle: (self.itemSecondaryTitleArray != nil) ? self.itemSecondaryTitleArray![indexPath.row] : nil,  image: (self.itemImageNameArray != nil) ? self.itemImageNameArray![indexPath.row] : nil, property: self.vProperty as! FWCustomSheetViewProperty)
-        cell.backgroundColor = self.vProperty.backgroundColor
+        cell.backgroundColor = UIColor.fw_colorWithStyleColors(lightColor: self.vProperty.backgroundColor, darkColor: self.vProperty.dark_backgroundColor)
         
         let property = self.vProperty as! FWCustomSheetViewProperty
         if property.lastNeedAccessoryView == true && indexPath.row == (self.itemsCount()-1) {
@@ -362,8 +362,6 @@ open class FWCustomSheetViewProperty: FWPopupViewProperty {
     /// 选中风格
     @objc public var selectionStyle: UITableViewCell.SelectionStyle = .none
     
-    /// 分割线颜色
-    @objc public var separatorColor: UIColor = kPV_RGBA(r: 231, g: 231, b: 231, a: 1)
     /// 分割线偏移量
     @objc public var separatorInset: UIEdgeInsets = UIEdgeInsets.zero
     
@@ -375,7 +373,7 @@ open class FWCustomSheetViewProperty: FWPopupViewProperty {
         
         self.buttonFontSize = 15
         
-        self.titleTextAttributes = [NSAttributedString.Key.foregroundColor: self.itemNormalColor, NSAttributedString.Key.backgroundColor: UIColor.clear, NSAttributedString.Key.font: UIFont.systemFont(ofSize: self.buttonFontSize)]
+        self.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.fw_colorWithStyleColors(lightColor: self.itemNormalColor, darkColor: self.dark_itemNormalColor), NSAttributedString.Key.backgroundColor: UIColor.clear, NSAttributedString.Key.font: UIFont.systemFont(ofSize: self.buttonFontSize)]
         
         let tmpColor = kPV_RGBA(r: 138, g: 146, b: 165, a: 1)
         self.secondaryTitleTextAttributes = [NSAttributedString.Key.foregroundColor: tmpColor, NSAttributedString.Key.backgroundColor: UIColor.clear, NSAttributedString.Key.font: UIFont.systemFont(ofSize: 12)]

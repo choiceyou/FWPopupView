@@ -32,6 +32,7 @@
 		49F7A85D2214106B002267FD /* FWPopupViewUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49F7A85C2214106B002267FD /* FWPopupViewUITests.swift */; };
 		49F7A88C221411B5002267FD /* FWPopupViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49F7A88B221411B5002267FD /* FWPopupViewTests.swift */; };
 		56B3717CE2F2FC8C487C2BB0 /* libPods-FWPopupView.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5D859FC06A597D0EEFB02CB7 /* libPods-FWPopupView.a */; };
+		AF6C51A32601F0EE001F236A /* FWPColorCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF6C51A22601F0EE001F236A /* FWPColorCategory.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -85,6 +86,7 @@
 		49F7A88D221411B5002267FD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5D859FC06A597D0EEFB02CB7 /* libPods-FWPopupView.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-FWPopupView.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7C6363DF5ABBB1DEAF568394 /* Pods-FWPopupView.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FWPopupView.debug.xcconfig"; path = "Target Support Files/Pods-FWPopupView/Pods-FWPopupView.debug.xcconfig"; sourceTree = "<group>"; };
+		AF6C51A22601F0EE001F236A /* FWPColorCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FWPColorCategory.swift; sourceTree = "<group>"; };
 		E68A3B6EB8B1506E0B09A7B8 /* Pods_FWPopupViewUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FWPopupViewUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FAB7438A54E83AA546D1BB16 /* Pods_FWPopupViewTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FWPopupViewTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -135,6 +137,7 @@
 				49630491247E4215006B121E /* FWDateView.swift */,
 				49630492247E4215006B121E /* FWMenuView.swift */,
 				4963048B247E4215006B121E /* FWPopupCategory.swift */,
+				AF6C51A22601F0EE001F236A /* FWPColorCategory.swift */,
 				4963048F247E4215006B121E /* FWPopupItem.swift */,
 				49630486247E4215006B121E /* FWPopupRootViewController.swift */,
 				49630488247E4215006B121E /* FWRadioButton.swift */,
@@ -420,6 +423,7 @@
 				49552D3D20B56C24000A1FA6 /* FWCustomPopupView.swift in Sources */,
 				49630496247E4215006B121E /* FWSheetView.swift in Sources */,
 				49630497247E4215006B121E /* FWPopupSWindow.swift in Sources */,
+				AF6C51A32601F0EE001F236A /* FWPColorCategory.swift in Sources */,
 				495AC10120688B3B002773F9 /* FWDemoViewController.swift in Sources */,
 				49630499247E4215006B121E /* FWCustomSheetView.swift in Sources */,
 				49630495247E4215006B121E /* FWRadioButton.swift in Sources */,

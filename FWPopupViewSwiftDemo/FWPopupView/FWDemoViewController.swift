@@ -13,7 +13,7 @@ import IQKeyboardManagerSwift
 class FWDemoViewController: UITableViewController {
     
     /// 注意：这边不同的示例可能还附加演示了一些特性（比如：遮罩层是否能够点击、遮罩层的背景颜色等等），有用到时可以参考
-    var titleArray = ["0、Alert - 单个按钮", "1、Alert - 两个按钮", "2、Alert - 两个按钮（修改参数）", "3、Alert - 多个按钮", "4、Alert - 带输入框", "5、Alert - 带自定义视图", "6、Sheet - 少量Item", "7、Sheet - 标题+少量Item", "8、Sheet - 大量Item", "9、Date - 自定义日期选择", "10、Menu - 自定义菜单", "11、Custom - 自定义弹窗", "12、CustomSheet - 类似Sheet效果", "13、CustomSheet - 类似Sheet效果2", "14、同时显示两个弹窗（展示可以同时调用多个弹窗的显示方法，但是显示过程按“后来者先显示”的原则，因此过程则反之）", "15、RadioButton", "16、含RadioButton的Alert", "17、xib 方式创建弹窗"]
+    var titleArray = ["0、Alert - 单个按钮", "1、Alert - 两个按钮", "2、Alert - 两个按钮（演示修改各种配置）", "3、Alert - 多个按钮", "4、Alert - 带输入框", "5、Alert - 带自定义视图", "6、Sheet - 少量Item", "7、Sheet - 标题+少量Item", "8、Sheet - 大量Item", "9、Date - 自定义日期选择", "10、Menu - 自定义菜单", "11、Custom - 自定义弹窗", "12、CustomSheet - 类似Sheet效果", "13、CustomSheet - 类似Sheet效果2", "14、同时显示两个弹窗（展示可以同时调用多个弹窗的显示方法，但是显示过程按“后来者先显示”的原则，隐藏过程则反之）", "15、RadioButton", "16、含RadioButton的Alert", "17、xib 方式创建弹窗"]
     
     let block: FWPopupItemClickedBlock = { (popupView, index, title) in
         print("AlertView：点击了第\(index)个按钮")
@@ -127,7 +127,7 @@ class FWDemoViewController: UITableViewController {
         
         IQKeyboardManager.shared.enable = true
         IQKeyboardManager.shared.enableAutoToolbar = true
-        IQKeyboardManager.shared.keyboardDistanceFromTextField = 60
+        IQKeyboardManager.shared.keyboardDistanceFromTextField = 100
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle{get { return .lightContent}}
@@ -189,6 +189,8 @@ extension FWDemoViewController {
             vProperty.buttonFontSize = 14.0
             vProperty.maskViewColor = UIColor(white: 0, alpha: 0.5)
             vProperty.touchWildToHide = "1"
+            vProperty.dark_backgroundColor = kPV_RGBA(r: 90, g: 90, b: 90, a: 1)
+            vProperty.dark_splitColor = kPV_RGBA(r: 100, g: 100, b: 100, a: 1)
             // 还有很多参数可设置...
             
             let alertView = FWAlertView.alert(title: "标题", detail: "描述描述描述描述描述描述描述描述描述描述", inputPlaceholder: nil, keyboardType: .default, isSecureTextEntry: false, customView: nil, items: items, vProperty: vProperty)
@@ -233,6 +235,7 @@ extension FWDemoViewController {
             let vProperty = FWSheetViewProperty()
             vProperty.touchWildToHide = "1"
             vProperty.cancelItemTitleColor = UIColor.red
+            vProperty.dark_cancelItemTitleColor = kPV_RGBA(r: 125, g: 144, b: 169, a: 1)
             
             let sheetView = FWSheetView.sheet(title: "", itemTitles: items, itemBlock: { (popupView, index, title) in
                 print("Sheet：点击了第\(index)个按钮")

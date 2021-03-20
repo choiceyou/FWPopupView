@@ -18,10 +18,6 @@
 import Foundation
 import UIKit
 
-public func kPV_RGBA (r:CGFloat, g:CGFloat, b:CGFloat, a:CGFloat) -> UIColor {
-    return UIColor (red: r/255.0, green: g/255.0, blue: b/255.0, alpha: a)
-}
-
 open class FWPopupSWindow: UIWindow, UIGestureRecognizerDelegate {
     
     /// 单例模式
@@ -42,6 +38,8 @@ open class FWPopupSWindow: UIWindow, UIGestureRecognizerDelegate {
     @objc open var touchWildToHide: Bool = false
     // 默认false，当为true时：用户拖动外部遮罩层页面可以消失
     @objc open var panWildToHide: Bool = false
+    // 当为true时：兼容深色模式
+    @objc open var compatibleDarkStyle: Bool = true
     
     /// 被隐藏的视图队列（A视图正在显示，接着B视图显示，此时就把A视图隐藏同时放入该队列）
     open var hiddenViews: [UIView] = []
@@ -51,6 +49,8 @@ open class FWPopupSWindow: UIWindow, UIGestureRecognizerDelegate {
     
     public override init(frame: CGRect) {
         super.init(frame: frame)
+        
+        self.backgroundColor = .clear
         
         let rootVC = FWPopupRootViewController()
         rootVC.view.backgroundColor = UIColor.clear

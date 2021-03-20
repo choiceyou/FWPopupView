@@ -60,31 +60,30 @@ extension FWDateView {
     private func setupUI(confirmBlock: FWDateViewConfirmBlock? = nil, cancelBlock: FWPopupVoidBlock? = nil) {
         
         let property = self.vProperty as! FWDateViewProperty
+        property.popupCustomAlignment = .bottomCenter
+        property.popupAnimationType = .position
+        
+        self.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: property.datePickerHeight + property.btnHeight)
         
         if #available(iOS 13.4, *) {
             self.datePicker.preferredDatePickerStyle = .wheels
         }
-        self.datePicker.setValue(property.pickerTextColor, forKey: "textColor")
+        self.datePicker.frame = CGRect(x: 0, y: property.btnHeight, width: self.frame.width, height: property.datePickerHeight)
+        self.datePicker.backgroundColor = self.backgroundColor
+        self.datePicker.locale = Locale(identifier: "zh_Hans_CN")
+        self.datePicker.setValue(UIColor.fw_colorWithStyleColors(lightColor: property.pickerTextColor, darkColor: property.dark_pickerTextColor), forKey: "textColor")
+        self.addSubview(self.datePicker)
         
-        self.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: property.datePickerHeight + property.btnHeight)
-        
+        // 取消按钮
         self.cancelBtn = self.setupBtn(frame: CGRect(x: 0, y: 0, width: property.btnWidth, height: property.btnHeight), title: property.cancelBtnTitle, tag: 0)
         self.addSubview(self.cancelBtn!)
         
+        // 确定按钮
         self.confirmBtn = self.setupBtn(frame: CGRect(x: self.frame.width - property.btnWidth, y: 0, width: property.btnWidth, height: property.btnHeight), title: property.confirmBtnTitle, tag: 1)
         self.addSubview(self.confirmBtn!)
         
-        self.datePicker.frame = CGRect(x: 0, y: property.btnHeight, width: self.frame.width, height: property.datePickerHeight)
-        self.datePicker.backgroundColor = self.backgroundColor
-        // 默认
-        self.datePicker.locale = Locale(identifier: "zh_Hans_CN")
-        self.addSubview(self.datePicker)
-        
         self.confirmBlock = confirmBlock
         self.cancelBlock = cancelBlock
-        
-        property.popupCustomAlignment = .bottomCenter
-        property.popupAnimationType = .position
     }
     
     private func setupBtn(frame: CGRect, title: String, tag: Int) -> UIButton {
@@ -96,8 +95,8 @@ extension FWDateView {
         btn.frame = frame
         btn.tag = tag
         btn.setTitle(title, for: .normal)
-        btn.setTitleColor(property.btnTitleColor, for: .normal)
-        btn.backgroundColor = self.backgroundColor
+        btn.setTitleColor(UIColor.fw_colorWithStyleColors(lightColor: property.btnTitleColor, darkColor: property.dark_btnTitleColor), for: .normal)
+        btn.backgroundColor = UIColor.clear
         btn.titleLabel?.font = UIFont.systemFont(ofSize: property.btnTitleFont)
         return btn
     }
@@ -135,6 +134,15 @@ open class FWDateViewProperty : FWPopupViewProperty {
     @objc public var cancelBtnTitle = "取消"
     // 确定按钮名称
     @objc public var confirmBtnTitle = "确定"
+    
+    
+    // ===== 深色模式 =====
+    
+    // 时间选择器文字颜色
+    @objc public var dark_pickerTextColor: UIColor = kPV_RGBA(r: 213, g: 213, b: 213, a: 1)
+    // 按钮文字颜色
+    @objc public var dark_btnTitleColor: UIColor = kPV_RGBA(r: 213, g: 213, b: 213, a: 1)
+    
     
     public override func reSetParams() {
         super.reSetParams()

@@ -85,7 +85,7 @@ class FWMenuViewDemoVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.view.backgroundColor = UIColor.white
+        self.view.backgroundColor = UIColor.fw_colorWithStyleColors(lightColor: UIColor.white, darkColor: UIColor.black)
         
         let buttonItem: UIBarButtonItem = UIBarButtonItem(image: UIImage(named: "mqz_nav_add"), style: .plain, target: self, action: #selector(barBtnAction(_:)))
         buttonItem.imageInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: -6)
