@@ -220,7 +220,11 @@ extension FWDemoViewController {
             let items = [FWPopupItem(title: "取消", itemType: .normal, isCancel: true, canAutoHide: true, itemClickedBlock: block),
                          FWPopupItem(title: "确定", itemType: .normal, isCancel: false, canAutoHide: true, itemClickedBlock: block)]
             
-            let alertView = FWAlertView.alert(title: "标题", detail: "带输入框", inputPlaceholder: "请输入...", keyboardType: .numberPad, isSecureTextEntry: true, customView: nil, items: items)
+            // 演示：修改参数
+            let vProperty = FWAlertViewProperty()
+            vProperty.inputTextFont = UIFont.systemFont(ofSize: 15)
+            
+            let alertView = FWAlertView.alert(title: "标题", detail: "带输入框", inputPlaceholder: "请输入...", keyboardType: .numberPad, isSecureTextEntry: false, customView: nil, items: items, vProperty: vProperty)
             alertView.inputBlock = { (text) in
                 print("您当前输入的文字是：\(text)")
             }

@@ -253,6 +253,7 @@ extension FWAlertView {
             self.inputTF?.layer.cornerRadius = self.vProperty.cornerRadius
             self.inputTF?.keyboardType = keyboardType
             self.inputTF?.isSecureTextEntry = isSecureTextEntry
+            self.inputTF?.font = property.inputTextFont
             
             lastTopBottomMargin = 0.0
             lastConstraintItem = self.inputTF!.snp.bottom
@@ -425,6 +426,8 @@ open class FWAlertViewProperty: FWPopupViewProperty {
     @objc open var inputPlaceholderColor: UIColor = UIColor.lightGray
     // 输入框文字颜色
     @objc open var inputTextColor: UIColor = kPV_RGBA(r: 51, g: 51, b: 51, a: 1)
+    // 输入框文字大小
+    @objc open var inputTextFont: UIFont = UIFont.systemFont(ofSize: 15)
     
     // 确定按钮默认名称
     @objc open var defaultTextOK = "知道了"
