@@ -122,7 +122,7 @@ open class FWPopupView: UIView, UIGestureRecognizerDelegate {
     private var tapGest: UITapGestureRecognizer?
     
     /// 1、当外部没有传入该参数时，默认为UIWindow的根控制器的视图，即表示弹窗放在FWPopupSWindow上，此时若FWPopupSWindow.sharedInstance.touchWildToHide = true表示弹窗视图外部可点击；2、当外部传入该参数时，该视图为传入的UIView，即表示弹窗放在传入的UIView上；
-    @objc public var attachedView = FWPopupSWindow.sharedInstance.attachView() {
+    @objc public weak var attachedView = FWPopupSWindow.sharedInstance.attachView() {
         willSet {
             newValue?.fwMaskView.addSubview(self)
             if newValue!.isKind(of: UIScrollView.self) {
@@ -238,7 +238,7 @@ open class FWPopupView: UIView, UIGestureRecognizerDelegate {
     deinit {
         NotificationCenter.default.removeObserver(self)
         
-        if self.attachedView!.isKind(of: UIScrollView.self) && self.originScrollEnabled != nil {
+        if self.attachedView != nil && self.attachedView!.isKind(of: UIScrollView.self) && self.originScrollEnabled != nil {
             (self.attachedView! as! UIScrollView).isScrollEnabled = self.originScrollEnabled!
         }
     }
@@ -409,7 +409,7 @@ extension FWPopupView {
         // 还原弹窗弹起时的相关参数
         self.attachedView?.fwMaskViewColor = self.originMaskViewColor
         FWPopupSWindow.sharedInstance.touchWildToHide = self.originTouchWildToHide
-        if self.attachedView!.isKind(of: UIScrollView.self) && self.originScrollEnabled != nil {
+        if self.attachedView != nil && self.attachedView!.isKind(of: UIScrollView.self) && self.originScrollEnabled != nil {
             (self.attachedView! as! UIScrollView).isScrollEnabled = self.originScrollEnabled!
         }
         if self.originKeyWindow != nil {
@@ -453,14 +453,16 @@ extension FWPopupView {
             
             // 保证前一次弹窗销毁完毕
             var tmpHiddenViews: [UIView] = []
-            for view in strongSelf.attachedView!.fwMaskView.subviews {
-                if view.isKind(of: FWPopupView.self) {
-                    if view == strongSelf {
-                        view.isHidden = false
-                    } else if (view as! FWPopupView).currentPopupViewState != .unKnow {
-                        view.isHidden = true
-                        (view as! FWPopupView).currentPopupViewState = .didAppearButCovered
-                        tmpHiddenViews.append(view)
+            if strongSelf.attachedView != nil {
+                for view in strongSelf.attachedView!.fwMaskView.subviews {
+                    if view.isKind(of: FWPopupView.self) {
+                        if view == strongSelf {
+                            view.isHidden = false
+                        } else if (view as! FWPopupView).currentPopupViewState != .unKnow {
+                            view.isHidden = true
+                            (view as! FWPopupView).currentPopupViewState = .didAppearButCovered
+                            tmpHiddenViews.append(view)
+                        }
                     }
                 }
             }
