@@ -90,9 +90,12 @@ extension FWSheetView {
             self.vProperty = property!
         }
         
-        let itemClickedBlock: FWPopupItemClickedBlock = { (popupView, index, title) in
+        let itemClickedBlock: FWPopupItemClickedBlock = { [weak self] (popupView, index, title) in
+            guard let weakSelf = self else {
+                return
+            }
             if itemBlock != nil {
-                itemBlock!(self, index, title)
+                itemBlock!(weakSelf, index, title)
             }
         }
         for title in itemTitles {

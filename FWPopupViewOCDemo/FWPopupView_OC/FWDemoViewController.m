@@ -186,6 +186,7 @@
             } cancelBlock:^{
                 NSLog(@"点击了 FWDateView 的取消");
             }];
+            dateView.datePicker.datePickerMode = UIDatePickerModeDate;
             [dateView show];
         }
             break;
