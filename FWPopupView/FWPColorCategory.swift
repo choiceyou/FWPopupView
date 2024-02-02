@@ -19,7 +19,7 @@ extension UIColor {
     ///   - lightColor: 浅色模式颜色
     ///   - darkColor: 深色模式颜色
     /// - Returns: 颜色
-    open class func fw_colorWithStyleColors(lightColor: UIColor?, darkColor: UIColor?) -> UIColor {
+    public class func fw_colorWithStyleColors(lightColor: UIColor?, darkColor: UIColor?) -> UIColor {
         if #available(iOS 13.0, *), FWPopupSWindow.sharedInstance.compatibleDarkStyle == true {
             return UIColor.init { (tc: UITraitCollection) -> UIColor in
                 if tc.userInterfaceStyle == .light {

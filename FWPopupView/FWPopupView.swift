@@ -1025,17 +1025,13 @@ extension FWPopupView {
 // MARK: - 弹窗的相关配置属性
 open class FWPopupViewProperty: NSObject {
     
-    /// 标题字体大小
-    @objc open var titleFontSize: CGFloat = 18.0
-    /// 标题字体，设置该值后titleFontSize无效
-    @objc open var titleFont: UIFont?
+    /// 标题字体
+    @objc open var titleFont = UIFont.systemFont(ofSize: 18)
     /// 标题文字颜色
     @objc open var titleColor: UIColor = kPV_RGBA(r: 51, g: 51, b: 51, a: 1)
     
-    /// 按钮字体大小
-    @objc open var buttonFontSize: CGFloat = 17.0
-    /// 按钮字体，设置该值后buttonFontSize无效
-    @objc open var buttonFont: UIFont?
+    /// 按钮字体
+    @objc open var buttonFont = UIFont.systemFont(ofSize: 17)
     /// 按钮高度
     @objc open var buttonHeight: CGFloat = 48.0
     /// 普通按钮文字颜色
@@ -1044,6 +1040,7 @@ open class FWPopupViewProperty: NSObject {
     @objc open var itemHighlightColor: UIColor = kPV_RGBA(r: 254, g: 226, b: 4, a: 1)
     /// 选中按钮文字颜色
     @objc open var itemPressedColor: UIColor = kPV_RGBA(r: 240, g: 240, b: 240, a: 1)
+    
     
     /// 单个控件中的文字（图片）等与该控件上（下）之前的距离。注意：这个距离指的是单个控件内部哦，不是控件与控件之间
     @objc open var topBottomMargin:CGFloat = 10

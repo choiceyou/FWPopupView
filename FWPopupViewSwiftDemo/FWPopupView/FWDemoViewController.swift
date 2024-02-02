@@ -13,7 +13,26 @@ import IQKeyboardManagerSwift
 class FWDemoViewController: UITableViewController {
     
     /// 注意：这边不同的示例可能还附加演示了一些特性（比如：遮罩层是否能够点击、遮罩层的背景颜色等等），有用到时可以参考
-    var titleArray = ["0、Alert - 单个按钮", "1、Alert - 两个按钮", "2、Alert - 两个按钮（演示修改各种配置）", "3、Alert - 多个按钮", "4、Alert - 带输入框", "5、Alert - 带自定义视图", "6、Sheet - 少量Item", "7、Sheet - 标题+少量Item", "8、Sheet - 大量Item", "9、Date - 自定义日期选择", "10、Menu - 自定义菜单", "11、Custom - 自定义弹窗", "12、CustomSheet - 类似Sheet效果", "13、CustomSheet - 类似Sheet效果2", "14、同时显示两个弹窗（展示可以同时调用多个弹窗的显示方法，但是显示过程按“后来者先显示”的原则，隐藏过程则反之）", "15、RadioButton", "16、含RadioButton的Alert", "17、xib 方式创建弹窗"]
+    var titleArray = ["0、Alert - 单个按钮", 
+                      "1、Alert - 两个按钮",
+                      "2、Alert - 两个按钮（演示修改各种配置）",
+                      "3、Alert - 自定义按钮",
+                      "4、Alert - 多个按钮",
+                      "5、Alert - 带输入框",
+                      "6、Alert - 带自定义视图",
+                      "7、Sheet - 少量Item",
+                      "8、Sheet - 标题+少量Item",
+                      "9、Sheet - 大量Item",
+                      "10、Date - 自定义日期选择",
+                      "11、Menu - 自定义菜单",
+                      "12、Custom - 自定义弹窗",
+                      "13、CustomSheet - 类似Sheet效果",
+                      "14、CustomSheet - 类似Sheet效果2",
+                      "15、同时显示两个弹窗（展示可以同时调用多个弹窗的显示方法，但是显示过程按“后来者先显示”的原则，隐藏过程则反之）",
+                      "16、RadioButton",
+                      "17、含RadioButton的Alert",
+                      "18、xib 方式创建弹窗"
+    ]
     
     let block: FWPopupItemClickedBlock = { (popupView, index, title) in
         print("AlertView：点击了第\(index)个按钮")
@@ -84,7 +103,11 @@ class FWDemoViewController: UITableViewController {
         let vProperty = FWSheetViewProperty()
         vProperty.touchWildToHide = "1"
         vProperty.titleColor = UIColor.lightGray
-        vProperty.titleFontSize = 15.0
+        vProperty.titleFont = UIFont.systemFont(ofSize: 15.0)
+        // 取消按钮底下区域通铺效果（必须修改以下属性）
+        vProperty.bottomCoherent = true
+        vProperty.backgroundColor = UIColor.white
+        vProperty.dark_backgroundColor = kPV_RGBA(r: 44, g: 44, b: 44, a: 1)
         
         let sheetView = FWSheetView.sheet(title: "你们知道微信中为什么经常使用这种提示，而不使用Alert加两个按钮的那种提示吗？", itemTitles: items, itemBlock: { (popupView, index, title) in
             print("Sheet：点击了第\(index)个按钮")
@@ -111,6 +134,8 @@ class FWDemoViewController: UITableViewController {
         })
         return radioButton
     }()
+    
+    var customBtnAlert: FWAlertView?
     
     
     override func viewDidLoad() {
@@ -175,7 +200,7 @@ extension FWDemoViewController {
             break
         case 2:
             // 注意：此时“确定”按钮是不让按钮自己隐藏的
-            let items = [
+            let items: [FWPopupItem] = [
                 FWPopupItem(title: "取消", itemType: .normal, isCancel: true, canAutoHide: true, itemTitleColor: kPV_RGBA(r: 141, g: 151, b: 163, a: 1.0), itemBackgroundColor: nil, itemClickedBlock: block),
                 FWPopupItem(title: "确定", itemType: .normal, isCancel: false, canAutoHide: true, itemTitleColor: kPV_RGBA(r: 29, g: 150, b: 227, a: 1.0), itemTitleFont: UIFont.systemFont(ofSize: 20.0), itemBackgroundColor: nil, itemClickedBlock: block)
             ]
@@ -184,16 +209,16 @@ extension FWDemoViewController {
             let vProperty = FWAlertViewProperty()
             vProperty.alertViewWidth = max(UIScreen.main.bounds.width * 0.65, 275)
             vProperty.titleFont = UIFont.systemFont(ofSize: 17.0)
-            vProperty.detailFontSize = 14.0
+            vProperty.detailFont = UIFont.systemFont(ofSize: 14.0)
             vProperty.detailColor = kPV_RGBA(r: 141, g: 151, b: 163, a: 1.0)
-            vProperty.buttonFontSize = 14.0
+            vProperty.buttonFont = UIFont.systemFont(ofSize: 14.0)
             vProperty.maskViewColor = UIColor(white: 0, alpha: 0.5)
             vProperty.touchWildToHide = "1"
             vProperty.dark_backgroundColor = kPV_RGBA(r: 90, g: 90, b: 90, a: 1)
             vProperty.dark_splitColor = kPV_RGBA(r: 100, g: 100, b: 100, a: 1)
             // 还有很多参数可设置...
             
-            let alertView = FWAlertView.alert(title: "标题", detail: "描述描述描述描述描述描述描述描述描述描述", inputPlaceholder: nil, keyboardType: .default, isSecureTextEntry: false, customView: nil, items: items, vProperty: vProperty)
+            let alertView = FWAlertView.alert(title: "标题", detail: "描述描述描述描述", inputPlaceholder: nil, keyboardType: .default, isSecureTextEntry: false, customView: nil, items: items, vProperty: vProperty)
             alertView.show { (popupView, popupViewState) in
                 print("当前弹窗状态：\(popupViewState.rawValue)")
                 if popupViewState == .didDisappear {
@@ -202,6 +227,56 @@ extension FWDemoViewController {
             }
             break
         case 3:
+            let tmpWidth = max(UIScreen.main.bounds.width * 0.65, 275)
+            let customView = UIView(frame: CGRect(x: 0, y: 0, width: tmpWidth, height: 90))
+            
+            let tmpMargin: CGFloat = 20
+            let btn1 = UIButton(type: .custom)
+            btn1.frame = CGRect(x: tmpMargin, y: 20, width: ((tmpWidth - tmpMargin * 2 - 26)/2), height: 44)
+            btn1.backgroundColor = kPV_RGBA(r: 69, g: 85, b: 255, a: 1)
+            btn1.clipsToBounds = true
+            btn1.layer.cornerRadius = 10
+            btn1.setTitle("OK", for: .normal)
+            btn1.setTitleColor(UIColor.white, for: .normal)
+            btn1.titleLabel?.font = UIFont.systemFont(ofSize: 14)
+            btn1.addTarget(self, action: #selector(confirmBtnAction), for: .touchUpInside)
+            customView.addSubview(btn1)
+            
+            let btn2 = UIButton(type: .custom)
+            btn2.frame = CGRect(x: CGRectGetMaxX(btn1.frame) + 26, y: 20, width: ((tmpWidth - tmpMargin * 2 - 26)/2), height: 44)
+            btn2.backgroundColor = UIColor.white
+            btn2.clipsToBounds = true
+            btn2.layer.borderColor = UIColor.black.cgColor
+            btn2.layer.borderWidth = 1
+            btn2.layer.cornerRadius = 10
+            btn2.setTitle("CANCEL", for: .normal)
+            btn2.setTitleColor(UIColor.black, for: .normal)
+            btn2.titleLabel?.font = UIFont.systemFont(ofSize: 14)
+            btn2.addTarget(self, action: #selector(cancelBtnAction), for: .touchUpInside)
+            customView.addSubview(btn2)
+            
+            // 演示：修改参数
+            let vProperty = FWAlertViewProperty()
+            vProperty.alertViewWidth = tmpWidth
+            vProperty.detailFont = UIFont.systemFont(ofSize: 14.0)
+            vProperty.titleColor = kPV_RGBA(r: 25, g: 32, b: 45, a: 1)
+            vProperty.maskViewColor = UIColor(white: 0, alpha: 0.5)
+            vProperty.touchWildToHide = "1"
+            vProperty.dark_backgroundColor = kPV_RGBA(r: 90, g: 90, b: 90, a: 1)
+            vProperty.cornerRadius = 16
+            // 还有很多参数可设置...
+            
+            let items: [FWPopupItem] = []
+            
+            customBtnAlert = FWAlertView.alert(title: nil, detail: "描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述述描述描述描述描述描述述描述描述描述描述描述", inputPlaceholder: nil, keyboardType: .default, isSecureTextEntry: false, customView: customView, items: items, vProperty: vProperty)
+            customBtnAlert?.show { (popupView, popupViewState) in
+                print("当前弹窗状态：\(popupViewState.rawValue)")
+                if popupViewState == .didDisappear {
+                    print("当前弹窗已经隐藏")
+                }
+            }
+            break
+        case 4:
             let myBlock: FWPopupItemClickedBlock = { [weak self] (popupView, index, title) in
                 print("AlertView：点击了第\(index)个按钮")
                 if index == 2 {
@@ -216,7 +291,7 @@ extension FWDemoViewController {
             let alertView = FWAlertView.alert(title: "标题", detail: "描述描述描述描述描述描述描述描述描述描述", inputPlaceholder: nil, keyboardType: .default, isSecureTextEntry: false, customView: nil, items: items)
             alertView.show()
             break
-        case 4:
+        case 5:
             let items = [FWPopupItem(title: "取消", itemType: .normal, isCancel: true, canAutoHide: true, itemClickedBlock: block),
                          FWPopupItem(title: "确定", itemType: .normal, isCancel: false, canAutoHide: true, itemClickedBlock: block)]
             
@@ -230,28 +305,34 @@ extension FWDemoViewController {
             }
             alertView.show()
             break
-        case 5:
+        case 6:
             self.alertImage.show()
             break
-        case 6:
+        case 7:
             let items = ["Sheet0", "Sheet1", "Sheet2", "Sheet3"]
             
             let vProperty = FWSheetViewProperty()
             vProperty.touchWildToHide = "1"
             vProperty.cancelItemTitleColor = UIColor.red
             vProperty.dark_cancelItemTitleColor = kPV_RGBA(r: 125, g: 144, b: 169, a: 1)
+            // 取消按钮底下区域通铺效果（必须修改以下属性）
+            vProperty.bottomCoherent = true
+            vProperty.backgroundColor = UIColor.white
+            vProperty.dark_backgroundColor = kPV_RGBA(r: 44, g: 44, b: 44, a: 1)
             
             let sheetView = FWSheetView.sheet(title: "", itemTitles: items, itemBlock: { (popupView, index, title) in
                 print("Sheet：点击了第\(index)个按钮")
             }, cancenlBlock: {
                 print("点击了取消")
             }, property: vProperty)
-            sheetView.show()
-            break
-        case 7:
-            self.sheetView.show()
+            sheetView.show { popupView, popupViewState in
+                print("当前sheet状态：\(popupViewState.rawValue)")
+            }
             break
         case 8:
+            self.sheetView.show()
+            break
+        case 9:
             let items = ["Sheet0", "Sheet1", "Sheet2", "Sheet3", "Sheet4", "Sheet5", "Sheet6", "Sheet7", "Sheet8", "Sheet9", "Sheet10", "Sheet11", "Sheet12", "Sheet13", "Sheet14"]
             
             let sheetView = FWSheetView.sheet(title: "标题", itemTitles: items, itemBlock: { (popupView, index, title) in
@@ -261,7 +342,7 @@ extension FWDemoViewController {
             })
             sheetView.show()
             break
-        case 9:
+        case 10:
             let dateView = FWDateView.date(confirmBlock: { (datePicker) in
                 print("当前选定时间：\(datePicker.date)")
             }, cancelBlock: {
@@ -273,19 +354,19 @@ extension FWDemoViewController {
             dateView.datePicker.calendar = Calendar.current
             dateView.show()
             break
-        case 10:
+        case 11:
             self.navigationController?.pushViewController(FWMenuViewDemoVC(), animated: true)
             break
-        case 11:
+        case 12:
             self.navigationController?.pushViewController(FWCustomPopupDemoVC(), animated: true)
             break
-        case 12:
+        case 13:
             self.customSheetView.show()
             break
-        case 13:
+        case 14:
             self.customSheetView2.show()
             break
-        case 14:
+        case 15:
             let alertView = FWAlertView.alert(title: "标题", detail: "描述描述描述描述") { (popupView, index, title) in
                 print("点击了确定")
             }
@@ -303,11 +384,11 @@ extension FWDemoViewController {
             }, property: vProperty)
             sheetView.show()
             break
-        case 15:
+        case 16:
             // 演示如何修改是否选中的状态
             self.radioButton.isSelected = !self.radioButton.isSelected
             break
-        case 16:
+        case 17:
             let property = FWRadioButtonProperty()
             property.animationDuration = 0.2
             property.isAnimated = true
@@ -330,7 +411,7 @@ extension FWDemoViewController {
             let alertView = FWAlertView.alert(title: "温馨提示", detail: "是否记住当前状态？", inputPlaceholder: nil, keyboardType: .default, isSecureTextEntry: false, customView: radioButton, items: items)
             alertView.show()
             break
-        case 17:
+        case 18:
             let customPopupView = FWCustomPopupView2(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width * 0.8, height: UIScreen.main.bounds.height * 0.5))
             customPopupView.backgroundColor = UIColor.yellow
             
@@ -349,5 +430,16 @@ extension FWDemoViewController {
         default:
             break
         }
+    }
+}
+
+
+extension FWDemoViewController {
+    @objc private func confirmBtnAction() {
+        customBtnAlert?.hide()
+    }
+    
+    @objc private func cancelBtnAction() {
+        customBtnAlert?.hide()
     }
 }
