@@ -253,6 +253,14 @@ extension FWSheetView {
                 make.bottom.equalTo(cancelBtn.snp.bottom)
             }
         }
+        
+        if property.leftRightTopCornerRadius > 0 {
+            self.layoutIfNeeded()
+            let fieldPath = UIBezierPath(roundedRect: self.bounds, byRoundingCorners: UIRectCorner(rawValue: (UIRectCorner.topLeft.rawValue)|(UIRectCorner.topRight.rawValue)), cornerRadii: CGSize(width: property.leftRightTopCornerRadius, height: property.leftRightTopCornerRadius))
+            let fieldLayer = CAShapeLayer()
+            fieldLayer.path = fieldPath.cgPath
+            self.layer.mask = fieldLayer
+        }
     }
     
     open override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
@@ -319,6 +327,8 @@ open class FWSheetViewProperty: FWPopupViewProperty {
     @objc public var bottomCoherent: Bool = false
     // 分割区域背景颜色
     @objc public var splitViewBackgroundColor: UIColor = kPV_RGBA(r: 231, g: 231, b: 231, a: 1)
+    // 左、右上角圆角值
+    @objc public var leftRightTopCornerRadius: CGFloat = 0
     
     
     // ===== 深色模式 =====

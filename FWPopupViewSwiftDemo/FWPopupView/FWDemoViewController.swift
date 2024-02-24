@@ -319,6 +319,7 @@ extension FWDemoViewController {
             vProperty.bottomCoherent = true
             vProperty.backgroundColor = UIColor.white
             vProperty.dark_backgroundColor = kPV_RGBA(r: 44, g: 44, b: 44, a: 1)
+            vProperty.leftRightTopCornerRadius = 10
             
             let sheetView = FWSheetView.sheet(title: "", itemTitles: items, itemBlock: { (popupView, index, title) in
                 print("Sheet：点击了第\(index)个按钮")
