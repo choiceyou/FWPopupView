@@ -25,6 +25,7 @@ open class FWSheetView: FWPopupView {
     private var titleLabel: UILabel?
     private var titleContainerView: UIView?
     private var btnContrainerView: UIScrollView!
+    private var splitView: UIView!
     
     /// 类初始化方法1
     ///
@@ -90,9 +91,12 @@ extension FWSheetView {
             self.vProperty = property!
         }
         
-        let itemClickedBlock: FWPopupItemClickedBlock = { (popupView, index, title) in
+        let itemClickedBlock: FWPopupItemClickedBlock = { [weak self] (popupView, index, title) in
+            guard let weakSelf = self else {
+                return
+            }
             if itemBlock != nil {
-                itemBlock!(self, index, title)
+                itemBlock!(weakSelf, index, title)
             }
         }
         for title in itemTitles {
@@ -113,7 +117,6 @@ extension FWSheetView {
         var lastConstraintItem = self.snp.top
         
         if title != nil && !title!.isEmpty {
-            
             self.titleContainerView = UIView()
             self.addSubview(self.titleContainerView!)
             self.titleContainerView?.snp.makeConstraints({ (make) in
@@ -129,7 +132,7 @@ extension FWSheetView {
             self.titleLabel?.text = title
             self.titleLabel?.textColor = UIColor.fw_colorWithStyleColors(lightColor: self.vProperty.titleColor, darkColor: self.vProperty.dark_titleColor)
             self.titleLabel?.textAlignment = .center
-            self.titleLabel?.font = (self.vProperty.titleFont != nil) ? self.vProperty.titleFont! : UIFont.systemFont(ofSize: self.vProperty.titleFontSize)
+            self.titleLabel?.font = self.vProperty.titleFont
             self.titleLabel?.numberOfLines = 10
             self.titleLabel?.backgroundColor = UIColor.clear
             
@@ -145,6 +148,10 @@ extension FWSheetView {
             make.top.equalTo(lastConstraintItem)
             make.left.right.equalTo(self)
         }
+        
+        self.splitView = UIView()
+        self.splitView.backgroundColor = UIColor.fw_colorWithStyleColors(lightColor: property.splitViewBackgroundColor, darkColor: property.dark_splitViewBackgroundColor)
+        self.addSubview(self.splitView!)
         
         let block: FWPopupItemClickedBlock = { (popupView, index, title) in
             if cancenlBlock != nil {
@@ -162,7 +169,6 @@ extension FWSheetView {
         var cancelBtn: UIButton!
         
         for popupItem: FWPopupItem in self.actionItemArray {
-            
             let btn = UIButton(type: .custom)
             btn.tag = tmpIndex + 1
             if tmpIndex == self.actionItemArray.count - 1 {
@@ -193,7 +199,7 @@ extension FWSheetView {
             if popupItem.itemTitleFont != nil {
                 btn.titleLabel?.font = popupItem.itemTitleFont
             } else {
-                btn.titleLabel?.font = (self.vProperty.buttonFont != nil) ? self.vProperty.buttonFont! : UIFont.systemFont(ofSize: self.vProperty.buttonFontSize)
+                btn.titleLabel?.font = self.vProperty.buttonFont
             }
             
             // 按钮标题字体颜色
@@ -209,8 +215,13 @@ extension FWSheetView {
             // 按钮选中高亮颜色
             btn.setBackgroundImage(self.getImageWithColor(color: UIColor.fw_colorWithStyleColors(lightColor: self.vProperty.itemPressedColor, darkColor: self.vProperty.dark_itemPressedColor)), for: .highlighted)
             
-            btn.layer.borderWidth = self.vProperty.splitWidth
-            btn.layer.borderColor = UIColor.fw_colorWithStyleColors(lightColor: self.vProperty.splitColor, darkColor: self.vProperty.dark_splitColor).cgColor
+            if tmpIndex == self.actionItemArray.count - 1 && property.bottomCoherent == true {
+                btn.layer.borderWidth = 0
+                btn.layer.borderColor = UIColor.clear.cgColor
+            } else {
+                btn.layer.borderWidth = self.vProperty.splitWidth
+                btn.layer.borderColor = UIColor.fw_colorWithStyleColors(lightColor: self.vProperty.splitColor, darkColor: self.vProperty.dark_splitColor).cgColor
+            }
             
             tmpIndex += 1
         }
@@ -224,6 +235,12 @@ extension FWSheetView {
             make.bottom.equalTo(lastBtn.snp.bottom).offset(-self.vProperty.splitWidth)
         }
         
+        self.splitView?.snp.makeConstraints({ (make) in
+            make.top.equalTo(btnContrainerView.snp_bottom)
+            make.left.right.equalTo(self)
+            make.bottom.equalTo(cancelBtn.snp_top)
+        })
+        
         cancelBtn.snp.makeConstraints { (make) in
             make.top.equalTo(btnContrainerView.snp.bottom).offset(property.cancelBtnMarginTop)
         }
@@ -235,6 +252,14 @@ extension FWSheetView {
             } else {
                 make.bottom.equalTo(cancelBtn.snp.bottom)
             }
+        }
+        
+        if property.leftRightTopCornerRadius > 0 {
+            self.layoutIfNeeded()
+            let fieldPath = UIBezierPath(roundedRect: self.bounds, byRoundingCorners: UIRectCorner(rawValue: (UIRectCorner.topLeft.rawValue)|(UIRectCorner.topRight.rawValue)), cornerRadii: CGSize(width: property.leftRightTopCornerRadius, height: property.leftRightTopCornerRadius))
+            let fieldLayer = CAShapeLayer()
+            fieldLayer.path = fieldPath.cgPath
+            self.layer.mask = fieldLayer
         }
     }
     
@@ -298,6 +323,12 @@ open class FWSheetViewProperty: FWPopupViewProperty {
     @objc public var cancelItemBackgroundColor: UIColor?
     // 按钮默认背景颜色（如果FWPopupItem设置了背景色会覆盖该值）
     @objc public var itemDefaultBackgroundColor: UIColor = UIColor.white
+    // 有安全区的机型下：底部是否通铺效果
+    @objc public var bottomCoherent: Bool = false
+    // 分割区域背景颜色
+    @objc public var splitViewBackgroundColor: UIColor = kPV_RGBA(r: 231, g: 231, b: 231, a: 1)
+    // 左、右上角圆角值
+    @objc public var leftRightTopCornerRadius: CGFloat = 0
     
     
     // ===== 深色模式 =====
@@ -307,11 +338,13 @@ open class FWSheetViewProperty: FWPopupViewProperty {
     @objc public var dark_cancelItemTitleColor: UIColor?
     // 取消按钮背景颜色
     @objc public var dark_cancelItemBackgroundColor: UIColor?
+    // 分割区域背景颜色
+    @objc public var dark_splitViewBackgroundColor: UIColor = kPV_RGBA(r: 33, g: 33, b: 33, a: 1)
     
     public override func reSetParams() {
         super.reSetParams()
         
-        self.backgroundColor = kPV_RGBA(r: 230, g: 230, b: 230, a: 1)
+        self.backgroundColor = kPV_RGBA(r: 231, g: 231, b: 231, a: 1)
         self.dark_backgroundColor = kPV_RGBA(r: 31, g: 31, b: 31, a: 1)
     }
 }

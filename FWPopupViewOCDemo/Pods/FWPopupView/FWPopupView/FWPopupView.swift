@@ -122,7 +122,7 @@ open class FWPopupView: UIView, UIGestureRecognizerDelegate {
     private var tapGest: UITapGestureRecognizer?
     
     /// 1、当外部没有传入该参数时，默认为UIWindow的根控制器的视图，即表示弹窗放在FWPopupSWindow上，此时若FWPopupSWindow.sharedInstance.touchWildToHide = true表示弹窗视图外部可点击；2、当外部传入该参数时，该视图为传入的UIView，即表示弹窗放在传入的UIView上；
-    @objc public var attachedView = FWPopupSWindow.sharedInstance.attachView() {
+    @objc public weak var attachedView = FWPopupSWindow.sharedInstance.attachView() {
         willSet {
             newValue?.fwMaskView.addSubview(self)
             if newValue!.isKind(of: UIScrollView.self) {
@@ -238,7 +238,7 @@ open class FWPopupView: UIView, UIGestureRecognizerDelegate {
     deinit {
         NotificationCenter.default.removeObserver(self)
         
-        if self.attachedView!.isKind(of: UIScrollView.self) && self.originScrollEnabled != nil {
+        if self.attachedView != nil && self.attachedView!.isKind(of: UIScrollView.self) && self.originScrollEnabled != nil {
             (self.attachedView! as! UIScrollView).isScrollEnabled = self.originScrollEnabled!
         }
     }
@@ -409,7 +409,7 @@ extension FWPopupView {
         // 还原弹窗弹起时的相关参数
         self.attachedView?.fwMaskViewColor = self.originMaskViewColor
         FWPopupSWindow.sharedInstance.touchWildToHide = self.originTouchWildToHide
-        if self.attachedView!.isKind(of: UIScrollView.self) && self.originScrollEnabled != nil {
+        if self.attachedView != nil && self.attachedView!.isKind(of: UIScrollView.self) && self.originScrollEnabled != nil {
             (self.attachedView! as! UIScrollView).isScrollEnabled = self.originScrollEnabled!
         }
         if self.originKeyWindow != nil {
@@ -453,14 +453,16 @@ extension FWPopupView {
             
             // 保证前一次弹窗销毁完毕
             var tmpHiddenViews: [UIView] = []
-            for view in strongSelf.attachedView!.fwMaskView.subviews {
-                if view.isKind(of: FWPopupView.self) {
-                    if view == strongSelf {
-                        view.isHidden = false
-                    } else if (view as! FWPopupView).currentPopupViewState != .unKnow {
-                        view.isHidden = true
-                        (view as! FWPopupView).currentPopupViewState = .didAppearButCovered
-                        tmpHiddenViews.append(view)
+            if strongSelf.attachedView != nil {
+                for view in strongSelf.attachedView!.fwMaskView.subviews {
+                    if view.isKind(of: FWPopupView.self) {
+                        if view == strongSelf {
+                            view.isHidden = false
+                        } else if (view as! FWPopupView).currentPopupViewState != .unKnow {
+                            view.isHidden = true
+                            (view as! FWPopupView).currentPopupViewState = .didAppearButCovered
+                            tmpHiddenViews.append(view)
+                        }
                     }
                 }
             }
@@ -1023,17 +1025,13 @@ extension FWPopupView {
 // MARK: - 弹窗的相关配置属性
 open class FWPopupViewProperty: NSObject {
     
-    /// 标题字体大小
-    @objc open var titleFontSize: CGFloat = 18.0
-    /// 标题字体，设置该值后titleFontSize无效
-    @objc open var titleFont: UIFont?
+    /// 标题字体
+    @objc open var titleFont = UIFont.systemFont(ofSize: 18)
     /// 标题文字颜色
     @objc open var titleColor: UIColor = kPV_RGBA(r: 51, g: 51, b: 51, a: 1)
     
-    /// 按钮字体大小
-    @objc open var buttonFontSize: CGFloat = 17.0
-    /// 按钮字体，设置该值后buttonFontSize无效
-    @objc open var buttonFont: UIFont?
+    /// 按钮字体
+    @objc open var buttonFont = UIFont.systemFont(ofSize: 17)
     /// 按钮高度
     @objc open var buttonHeight: CGFloat = 48.0
     /// 普通按钮文字颜色
@@ -1042,6 +1040,7 @@ open class FWPopupViewProperty: NSObject {
     @objc open var itemHighlightColor: UIColor = kPV_RGBA(r: 254, g: 226, b: 4, a: 1)
     /// 选中按钮文字颜色
     @objc open var itemPressedColor: UIColor = kPV_RGBA(r: 240, g: 240, b: 240, a: 1)
+    
     
     /// 单个控件中的文字（图片）等与该控件上（下）之前的距离。注意：这个距离指的是单个控件内部哦，不是控件与控件之间
     @objc open var topBottomMargin:CGFloat = 10

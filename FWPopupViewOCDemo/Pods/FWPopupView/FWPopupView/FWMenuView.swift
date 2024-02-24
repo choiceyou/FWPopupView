@@ -556,7 +556,7 @@ open class FWMenuViewProperty: FWPopupViewProperty {
     public override func reSetParams() {
         super.reSetParams()
         
-        self.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.fw_colorWithStyleColors(lightColor: self.itemNormalColor, darkColor: self.dark_itemNormalColor), NSAttributedString.Key.backgroundColor: UIColor.clear, NSAttributedString.Key.font: UIFont.systemFont(ofSize: self.buttonFontSize)]
+        self.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.fw_colorWithStyleColors(lightColor: self.itemNormalColor, darkColor: self.dark_itemNormalColor), NSAttributedString.Key.backgroundColor: UIColor.clear, NSAttributedString.Key.font: self.buttonFont]
         
         self.letfRigthMargin = 20
         

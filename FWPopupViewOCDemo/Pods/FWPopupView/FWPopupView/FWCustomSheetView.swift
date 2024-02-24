@@ -371,9 +371,9 @@ open class FWCustomSheetViewProperty: FWPopupViewProperty {
     public override func reSetParams() {
         super.reSetParams()
         
-        self.buttonFontSize = 15
+        self.buttonFont = UIFont.systemFont(ofSize: 15)
         
-        self.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.fw_colorWithStyleColors(lightColor: self.itemNormalColor, darkColor: self.dark_itemNormalColor), NSAttributedString.Key.backgroundColor: UIColor.clear, NSAttributedString.Key.font: UIFont.systemFont(ofSize: self.buttonFontSize)]
+        self.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.fw_colorWithStyleColors(lightColor: self.itemNormalColor, darkColor: self.dark_itemNormalColor), NSAttributedString.Key.backgroundColor: UIColor.clear, NSAttributedString.Key.font: self.buttonFont]
         
         let tmpColor = kPV_RGBA(r: 138, g: 146, b: 165, a: 1)
         self.secondaryTitleTextAttributes = [NSAttributedString.Key.foregroundColor: tmpColor, NSAttributedString.Key.backgroundColor: UIColor.clear, NSAttributedString.Key.font: UIFont.systemFont(ofSize: 12)]
