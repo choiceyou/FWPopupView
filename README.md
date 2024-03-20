@@ -241,6 +241,10 @@ FWSheetView *sheetView = [FWSheetView sheetWithTitle: @"标题"
 • v4.2.0:
 - [x] 兼容深色模式（可通过参数修改深色模式下的相关色值）；
 
+• v4.2.2:
+- [x] FWAlertView 支持自定义底部按钮（详见FWPopupViewSwiftDemo）；
+- [x] FWSheetView 支持取消按钮底部通铺效果（详见FWPopupViewSwiftDemo）；
+
 
 
 ## 结尾语：
