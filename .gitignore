@@ -22,6 +22,14 @@ DerivedData/
 *.perspectivev3
 !default.perspectivev3
 
+*.xcuserstate
+project.xcworkspace
+xcuserdata
+UserInterfaceState.xcuserstate
+project.xcworkspace/
+xcuserdata/
+UserInterface.xcuserstate 
+
 ## Obj-C/Swift specific
 *.hmap
 
